@@ -1,7 +1,7 @@
 from django.shortcuts import render
-# from models import MercadoSuperFavorito
+from analytics.models import VwAnalyticsMercadoV2
 
 # Create your views here.
 def index(request):
-    # mercados = MercadoSuperFavorito.objects.all()
-    return render(request, 'analytics/index.html')
+    analytics = VwAnalyticsMercadoV2.objects.all()
+    return render(request, 'analytics/index.html', {'analytics': analytics})
