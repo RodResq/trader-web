@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from models import MercadoSuperFavorito
 
 # Create your views here.
 def index(request):
-    return render(request, 'analytics/index.html')
+    mercados = MercadoSuperFavorito.objects.all()
+    return render(request, 'analytics/index.html', {"mercados": mercados})
