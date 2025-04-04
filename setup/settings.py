@@ -28,7 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'analytics.apps.AnalyticsConfig',
 ]
 
@@ -80,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'traderdb',
         'USER': 'root',
-        'PASSWORD': 'New_Strong_Pass123!',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT': '3306',
     }

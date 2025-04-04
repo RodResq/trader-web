@@ -90,3 +90,19 @@ body {
   .nav-link i {
     margin-right: 10px;
   }
+
+  .market-status {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  
+  .status-open {
+    background-color: #28a745;
+  }
+  
+  .status-closed {
+    background-color: #dc3545;
+  }

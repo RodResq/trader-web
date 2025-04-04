@@ -13,3 +13,19 @@ class VwAnalyticsMercadoV2(models.Model):
     class Meta:
         managed = False
         db_table = 'vw_analytics_mercado_v2'
+        
+
+class VwConsultaMercadoSf(models.Model):
+    # id = models.PositiveBigIntegerField()
+    mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    odd = models.FloatField(blank=True, null=True)
+    home_actual = models.IntegerField(blank=True, null=True)
+    away_actual = models.IntegerField(blank=True, null=True)
+    data_jogo = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'vw_consulta_mercado_sf'
+        
+    def __str__(self):
+        return f"VwConsultaMercadoSf[mercado={self.mercado}]"

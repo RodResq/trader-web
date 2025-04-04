@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from analytics.models import VwAnalyticsMercadoV2
+from analytics.models import VwConsultaMercadoSf
 
 # Create your views here.
 def index(request):
-    analytics = VwAnalyticsMercadoV2.objects.all()
-    return render(request, 'analytics/index.html', {'analytics': analytics})
+    mercados = VwConsultaMercadoSf.objects.all()
+    for mercado in mercados:
+        print(mercado.mercado)
+    return render(request, 'analytics/index.html', {'mercados': mercados})

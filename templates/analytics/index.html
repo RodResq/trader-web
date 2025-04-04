@@ -1,7 +1,7 @@
 {% extends "analytics/base.html" %}
 {% load static %}
 {% block content %}
-
+<link rel="stylesheet" href="{% static 'styles/index.css' %}" >
   <div class="main-content">
     <div class="container-fluid">
       <h1 class="mt-4 mb-4">Dashboard</h1>
@@ -150,6 +150,52 @@
             </div>
           </div>
         </div>
+      
+
+        <!-- Novo card para listar mercados -->
+         <div>
+            <div class="card shadow col-lg-8 mb-4">
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Lista de Mercados</h6>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Mercado</th>
+                        <th>Odd</th>
+                        <th>Home %</th>
+                        <th>Away %</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if mercados %}
+                      {% for mercado in mercados %}
+                      <tr>
+                        <td>{{ mercado.mercado }}</td>
+                        <td>{{ mercado.odd }}</td>
+                        <td><span class="market-status status-open"></span>{{ mercado.home_actual }}</td>
+                        <td>{{ mercado.away_actual }}</td>
+                        <td>{{ mercado.data_jogo }}</td>
+                        <td>
+                          <button class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></button>
+                          <button class="btn btn-sm btn-info"><i class="bi bi-eye"></i></button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
       </div>
     </div>
   </div>
