@@ -109,8 +109,8 @@
             <div class="card-body">
               <div class="mb-3">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="task1">
-                  <label class="form-check-label" for="task1">
+                  <input class="form-check-input" type="checkbox" value="" id="toggleSuperFavoritosHome">
+                  <label class="form-check-label" for="toggleSuperFavoritosHome">
                     Mostrar Super Favoritos Home
                   </label>
                 </div>
@@ -153,7 +153,7 @@
       
 
         <!-- Novo card para listar mercados -->
-         <div>
+         <div id="marketsCard">
             <div class="card shadow col-lg-8 mb-4">
               <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Lista de Mercados</h6>
@@ -202,25 +202,6 @@
 
   <!-- Bootstrap JS Bundle with Popper -->
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-  
-  <!-- Script para controlar o sidebar -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const sidebarToggle = document.getElementById('sidebarToggle');
-      
-      sidebarToggle.addEventListener('click', function() {
-        document.body.classList.toggle('sidebar-collapsed');
-        
-        // Para dispositivos móveis
-        if (window.innerWidth < 768) {
-          document.body.classList.toggle('sidebar-active');
-        }
-      });
-      
-      // Inicialização para dispositivos móveis
-      if (window.innerWidth < 768) {
-        document.body.classList.add('sidebar-collapsed');
-      }
-    });
-  </script>
+  <script src="{% static 'js/dashboard.js' %}"></script> 
+ 
   {% endblock %}
