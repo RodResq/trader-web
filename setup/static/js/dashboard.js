@@ -71,10 +71,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Remove as classes existentes e adiciona a classe apropriada
         statusIcon.classList.remove('status-open', 'status-close', 'status-warning');
         
-        if (homeValue >= 75) {
+        if (homeValue >= 80) {
             statusIcon.classList.add('status-open');
-        } else if (homeValue <=75 && homeValue < 65) {
-            statusIcon.classList.add('status-open');
+        } else if (homeValue >= 70) {
+            statusIcon.classList.add('status-warning');
         } else {
             statusIcon.classList.add('status-close'); 
         }
