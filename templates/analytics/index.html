@@ -157,10 +157,25 @@
             <div class="card shadow col-lg-8 mb-4">
               <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Lista de Mercados</h6>
+                <div class="d-flex align-items-center">
+                  <div class="input-group date-filter mr-2" style="width: 200px;">
+                    <input type="text" 
+                           id="marketDateFilter" 
+                           class="form-control form-control-sm" 
+                           placeholder="dd/mm/yyyy"
+                           maxlength="10"
+                           autocomplete="off"
+                           data-input-type="text"
+                           pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
+                    <div class="input-group-append">
+                      <button id="clearDateFilter" class="btn btn-sm btn-outline-secondary" type="button">Limpar</button>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-hover">
+                  <table class="table table-hover" id="marketsTable">
                     <thead>
                       <tr>
                         <th>Mercado</th>
@@ -179,7 +194,7 @@
                         <td>{{ mercado.odd }}</td>
                         <td><span class="market-status status-open"></span>{{ mercado.home_actual }}</td>
                         <td>{{ mercado.away_actual }}</td>
-                        <td>{{ mercado.data_jogo }}</td>
+                        <td>{{ mercado.data_jogo|date:"d/m/Y" }}</td>
                         <td>
                           <button class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></button>
                           <button class="btn btn-sm btn-info"><i class="bi bi-eye"></i></button>
