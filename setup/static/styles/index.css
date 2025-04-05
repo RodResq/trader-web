@@ -102,7 +102,11 @@ body {
   .status-open {
     background-color: #28a745;
   }
+
+  .status-warning {
+    background-color: #f06c00;
+  }
   
-  .status-closed {
-    background-color: #dc3545;
+  .status-close {
+    background-color: #f06c00;
   }

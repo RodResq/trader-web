@@ -180,8 +180,8 @@
                       <tr>
                         <th>Mercado</th>
                         <th>Odd</th>
-                        <th>Home %</th>
-                        <th>Away %</th>
+                        <th>Home</th>
+                        <th>Away</th>
                         <th>Data</th>
                         <th>Ações</th>
                       </tr>
@@ -190,10 +190,10 @@
                       {% if mercados %}
                       {% for mercado in mercados %}
                       <tr>
-                        <td>{{ mercado.mercado }}</td>
+                        <td><span class="market-status"></span>{{ mercado.mercado }}</td>
                         <td>{{ mercado.odd }}</td>
-                        <td><span class="market-status status-open"></span>{{ mercado.home_actual }}</td>
-                        <td>{{ mercado.away_actual }}</td>
+                        <td>{{ mercado.home_actual }}%</td>
+                        <td>{{ mercado.away_actual|default:"0" }}%</td>
                         <td>{{ mercado.data_jogo|date:"d/m/Y" }}</td>
                         <td>
                           <button class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></button>

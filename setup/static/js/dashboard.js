@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const dateCell = row.querySelector(`td:nth-child(${dateColumnIndex + 1})`);
             if (dateCell) {
                 const originalDate = dateCell.textContent.trim();
-    
+                
                 if (isValidateFormat(originalDate)) {
                     return;
                 }
@@ -35,14 +35,57 @@ document.addEventListener("DOMContentLoaded", function () {
                 } catch (e) {
                     console.warn('Não foi possível formatar a data:', originalDate)
                 }
+
             }
         });
     }
 
+    // Função para aplicar as classes de status com base nos valores de Home %
+  function updateHomeStatusIcons() {
+    const table = document.getElementById('marketsTable');
+    if (!table) return;
+    
+    const mercadoColumnIndex = 0;
+    const homeColumnIndex = 2; // Índice da coluna Home % (3ª coluna, índice 2)
+    const rows = table.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+      const mercadoCell = row.querySelector(`td:nth-child(${mercadoColumnIndex + 1})`);
+      const homeCell = row.querySelector(`td:nth-child(${homeColumnIndex + 1})`);
+      
+      if (homeCell) {
+        const statusIcon = mercadoCell.querySelector('.market-status');
+        if (!statusIcon) return;
+        
+        // Extrair o valor numérico da célula (removendo o span do texto)
+        let homeValue = homeCell.textContent.trim();
+        
+        // Tenta converter para número
+        homeValue = parseFloat(homeValue);
+        
+        // Se não for um número válido, considera como 0
+        if (isNaN(homeValue)) {
+          homeValue = 0;
+        }
+        
+        // Remove as classes existentes e adiciona a classe apropriada
+        statusIcon.classList.remove('status-open', 'status-close', 'status-warning');
+        
+        if (homeValue >= 75) {
+            statusIcon.classList.add('status-open');
+        } else if (homeValue <=75 && homeValue < 65) {
+            statusIcon.classList.add('status-open');
+        } else {
+            statusIcon.classList.add('status-close'); 
+        }
+      }
+    });
+  }
 
 
     // Executa a formatação das datas quando a página carregar
-    formatDateCells()
+    formatDateCells();
+    updateHomeStatusIcons();
 
     function isValidateFormat(dataString) {
         // Verifica se o formato é DD/MM/YYYY
