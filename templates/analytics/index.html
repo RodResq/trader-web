@@ -8,37 +8,41 @@
       
       <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
-          <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                    Lucros (Semanal)</div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">R$ 40.000</div>
-                </div>
-                <div class="col-auto">
-                  <i class="bi bi-cash-coin fs-2 text-gray-300"></i>
+          <a href="{% url 'analytics:lucros' %}" class="text-decoration-none">
+            <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                      Lucros (Semanal)</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$ 40.000</div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="bi bi-cash-coin fs-2 text-gray-300"></i>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-          <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                    Qtd. Eventos (Semanal)</div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">215.000</div>
-                </div>
-                <div class="col-auto">
-                  <i class="bi bi-currency-dollar fs-2 text-gray-300"></i>
+          <a href="{% url 'analytics:eventos' %}" class="text-decoration-none">
+            <div class="card border-left-success shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                      Qtd. Eventos (Semanal)</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">215.000</div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="bi bi-currency-dollar fs-2 text-gray-300"></i>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
@@ -196,8 +200,8 @@
                         <td>{{ mercado.away_actual|default:"0" }}%</td>
                         <td>{{ mercado.data_jogo|date:"d/m/Y" }}</td>
                         <td>
-                          <button class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></button>
-                          <button class="btn btn-sm btn-info"><i class="bi bi-eye"></i></button>
+                          <a href="{% url 'evento' mercado.home_actual %}" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                          <a href="detalhar" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
                         </td>
                       </tr>
                       {% endfor %}

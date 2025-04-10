@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from analytics.views import index
+from analytics.views import index, evento, lucros
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
-    path('', index),
+    path('', index, name='index'),
+    path('resultado/<int:id_evento>', evento, name='evento'),
+    path('analytics/', include('analytics.urls')),
 ]

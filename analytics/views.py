@@ -5,3 +5,15 @@ from analytics.models import VwConsultaMercadoSf
 def index(request):
     mercados = VwConsultaMercadoSf.objects.all().order_by("-home_actual")
     return render(request, 'analytics/index.html', {'mercados': mercados})
+
+
+def evento(request, id_evento):
+    return render(request, 'analytics/resultado.html', {'id_evento': id_evento})
+
+
+def lucros(request):
+    return render(request, 'analytics/lucros.html')
+
+
+def eventos(request):
+    return render(request, 'analytics/eventos/eventos.html')
