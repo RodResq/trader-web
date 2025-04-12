@@ -8,7 +8,7 @@ from .forms import LucroForm
 def lucros(request):
     """Exibe a lista de registros de lucro."""
     # lucros = Lucro.objects.all()
-    return render(request, 'lucros:lucro.html')
+    return render(request, 'lucros:lucros.html')
 
 def lucro_edit(request, pk=None):
     """Edita um registro de lucro existente ou cria um novo."""
@@ -22,7 +22,7 @@ def lucro_edit(request, pk=None):
         if form.is_valid():
             form.save()
             messages.success(request, 'Registro de lucro salvo com sucesso!')
-            return redirect('lucros:lucro_list')
+            return redirect('lucros:lucros')
     else:
         form = LucroForm(instance=lucro)
 
