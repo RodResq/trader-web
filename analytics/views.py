@@ -12,7 +12,7 @@ def evento(request, id_evento):
 
 
 def lucros(request):
-    return render(request, 'analytics/lucros.html')
+    return render(request, 'analytics/lucro/lucros_list.html')
 
 
 def eventos(request):

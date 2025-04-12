@@ -1,0 +1,116 @@
+{% extends "analytics/base.html" %}
+{% load static %}
+{% block content %}
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Gerenciamento de Lucros</h1>
+      {% comment %} <a href="{% url 'lucro:lucro_create' %}" class="btn btn-primary"> {% endcomment %}
+        <i class="bi bi-plus-circle"></i> Novo Registro
+      {% comment %} </a> {% endcomment %}
+    </div>
+    {% comment %} 
+    {% if messages %}
+    <div class="alert alert-success" role="alert">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Registros de Lucro</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-three-dots-vertical text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Opções:</div>
+            <a class="dropdown-item" href="#"><i class="bi bi-file-earmark-excel me-2"></i>Exportar para Excel</a>
+            <a class="dropdown-item" href="#"><i class="bi bi-file-earmark-pdf me-2"></i>Exportar para PDF</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover" id="lucroTable">
+            <thead>
+              <tr>
+                <th>Semana</th>
+                <th>Período</th>
+                <th>Qtd. Apostas</th>
+                <th>Valor Individual (R$)</th>
+                <th>Valor Total (R$)</th>
+                <th class="text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if lucros %}
+                {% for lucro in lucros %}
+                <tr>
+                  <td>{{ lucro.semana }}</td>
+                  <td>{{ lucro.data_inicial|date:"d/m/Y" }} a {{ lucro.data_final|date:"d/m/Y" }}</td>
+                  <td>{{ lucro.quantidade_apostas }}</td>
+                  <td>{{ lucro.valor_inidividual_aposta }}</td>
+                  <td>{{ lucro.valor_total_apostas }}</td>
+                  <td class="text-center">
+                    <a href="{% url 'lucro:lucro_edit' lucro.pk %}" class="btn btn-sm btn-primary" title="Editar">
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'lucro:lucro_delete' lucro.pk %}" class="btn btn-sm btn-danger" title="Excluir">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="6" class="text-center">Nenhum registro encontrado.</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Desempenho Semanal</h6>
+          </div>
+          <div class="card-body">
+            <div class="chart-area">
+              <div style="height: 300px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                <p class="text-center text-muted">Gráfico de Lucro Semanal</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Desempenho Mensal</h6>
+          </div>
+          <div class="card-body">
+            <div class="chart-area">
+              <div style="height: 300px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                <p class="text-center text-muted">Gráfico de Lucro Mensal</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   {% endcomment %}
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endblock %}
