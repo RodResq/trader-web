@@ -5,10 +5,10 @@ from django.contrib import messages
 from .models import Lucro
 from .forms import LucroForm
 
-def lucro_list(request):
+def lucros(request):
     """Exibe a lista de registros de lucro."""
     # lucros = Lucro.objects.all()
-    return render(request, 'lucro/lucro_list.html')
+    return render(request, 'lucros:lucro.html')
 
 def lucro_edit(request, pk=None):
     """Edita um registro de lucro existente ou cria um novo."""
@@ -22,7 +22,7 @@ def lucro_edit(request, pk=None):
         if form.is_valid():
             form.save()
             messages.success(request, 'Registro de lucro salvo com sucesso!')
-            return redirect('lucro:lucro_list')
+            return redirect('lucros:lucro_list')
     else:
         form = LucroForm(instance=lucro)
 
