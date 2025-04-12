@@ -24,5 +24,4 @@ urlpatterns = [
     path('', index, name='index'),
     path('resultado/<int:id_evento>', evento, name='evento'),
     path('analytics/', include('analytics.urls')),
-    # path('lucro/', include('lucro.urls')),
 ]

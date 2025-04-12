@@ -1,0 +1,80 @@
+{% extends "analytics/base.html" %}
+{% load static %}
+{% block content %}
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 mb-0 text-gray-800">{{ titulo }}</h1>
+      <a href="{% url 'analytics:lucro:index' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Voltar
+      </a>
+    </div>
+    
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Informações do Lucro</h6>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="id_semana" class="form-label">Semana</label>
+              {{ form.semana }}
+              {% if form.semana.errors %}
+                <div class="invalid-feedback d-block">{{ form.semana.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="col-md-4">
+              <label for="id_quantidade_apostas" class="form-label">Quantidade de Apostas</label>
+              {{ form.quantidade_apostas }}
+              {% if form.quantidade_apostas.errors %}
+                <div class="invalid-feedback d-block">{{ form.quantidade_apostas.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="col-md-4">
+              <label for="id_valor_inidividual_aposta" class="form-label">Valor Individual (R$)</label>
+              {{ form.valor_inidividual_aposta }}
+              {% if form.valor_inidividual_aposta.errors %}
+                <div class="invalid-feedback d-block">{{ form.valor_inidividual_aposta.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="id_data_inicial" class="form-label">Data Inicial</label>
+              {{ form.data_inicial }}
+              {% if form.data_inicial.errors %}
+                <div class="invalid-feedback d-block">{{ form.data_inicial.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="col-md-6">
+              <label for="id_data_final" class="form-label">Data Final</label>
+              {{ form.data_final }}
+              {% if form.data_final.errors %}
+                <div class="invalid-feedback d-block">{{ form.data_final.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save"></i> Salvar
+            </button>
+            <a href="{% url 'analytics:lucro:index' %}" class="btn btn-secondary">
+              <i class="bi bi-x"></i> Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endblock %}
