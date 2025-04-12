@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'analytics.apps.AnalyticsConfig',
+    'lucro.apps.LucroConfig',
 ]
 
 MIDDLEWARE = [

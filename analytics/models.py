@@ -29,3 +29,4 @@ class VwConsultaMercadoSf(models.Model):
         
     def __str__(self):
         return f"VwConsultaMercadoSf[mercado={self.mercado}]"
+    
