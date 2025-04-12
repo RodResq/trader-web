@@ -200,8 +200,8 @@
                         <td>{{ mercado.away_actual|default:"0" }}%</td>
                         <td>{{ mercado.data_jogo|date:"d/m/Y h:m:s" }}</td>
                         <td>
-                          <a href="{% url 'evento' mercado.home_actual %}" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
-                          <a href="detalhar" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
+                          <a id="aceitar-aposta" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                          <a id="recusar-aposta" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
                         </td>
                       </tr>
                       {% endfor %}
