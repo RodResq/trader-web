@@ -237,4 +237,125 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Função para gerenciar as apostas via método AJAX 
+    function setupApostaButtons() {
+        const apostarButtons = document.querySelectorAll('.apostar-btn')
+        apostarButtons.forEach(buttons => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const eventId = this.getAttribute('data-event-id');
+                if (!eventId) {
+                    console.error('ID do evento não encontrado');
+                    return;
+                }
+
+                const apostaBtn = this;
+                const tableRow = apostaBtn.closest('tr');
+
+                if (confirm('Deseja confirmar esta aposta?')) {
+                    apostaBtn.disable = true;
+                    apostaBtn.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+
+                    const url = `/api/apostar?event_id=${eventId}&action=aceitar`;
+
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao processar a aposta');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                         // Processar resposta bem-sucedida
+                        apostaBtn.innerHTML = '<i class="bi bi-check-all"></i>';
+                        apostaBtn.classList.remove('btn-success');
+                        apostaBtn.classList.add('btn-secondary');
+                        apostaBtn.disabled = true;
+                        
+                        // Adicionar visual de sucesso à linha da tabela
+                        tableRow.classList.add('table-success');
+                        
+                        // Exibir notificação de sucesso
+                        showNotification('Aposta registrada com sucesso!', 'success');
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        apostaBtn.innerHTML = '<i class="bi bi-check"></i>';
+                        apostaBtn.disabled = false;
+                        
+                        // Exibir notificação de erro
+                        showNotification('Erro ao registrar aposta. Tente novamente.', 'danger');
+                    });
+                }
+            });
+        });
+    }
+
+    // Função para exibir notificações
+    function showNotification(message, type) {
+        // Verifica se já existe um container para notificações
+        let notificationContainer = document.getElementById('notification-container');
+        
+        if (!notificationContainer) {
+        notificationContainer = document.createElement('div');
+        notificationContainer.id = 'notification-container';
+        notificationContainer.style.position = 'fixed';
+        notificationContainer.style.top = '20px';
+        notificationContainer.style.right = '20px';
+        notificationContainer.style.zIndex = '1050';
+        document.body.appendChild(notificationContainer);
+        }
+        
+        // Cria a notificação
+        const notification = document.createElement('div');
+        notification.classList.add('toast', 'show', `bg-${type}`, 'text-white');
+        notification.role = 'alert';
+        notification.setAttribute('aria-live', 'assertive');
+        notification.setAttribute('aria-atomic', 'true');
+        
+        // Conteúdo da notificação
+        notification.innerHTML = `
+        <div class="toast-header bg-${type} text-white">
+            <strong class="me-auto">Notificação</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${message}
+        </div>
+        `;
+        
+        // Adiciona ao container
+        notificationContainer.appendChild(notification);
+        
+        // Remove após 5 segundos
+        setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notificationContainer.removeChild(notification);
+        }, 300);
+        }, 5000);
+        
+        // Configura o botão de fechar
+        const closeButton = notification.querySelector('.btn-close');
+        closeButton.addEventListener('click', () => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notificationContainer.removeChild(notification);
+        }, 300);
+        });
+  }
+
+  // Inicializa os botões de aposta
+  setupApostaButtons();
+  
+  // Mantém as demais funções existentes
+  formatDateCells();
+  updateHomeStatusIcons();
+
 });
