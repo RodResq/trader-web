@@ -4,7 +4,7 @@ from analytics.models import VwConsultaMercadoSf
 # Create your views here.
 def index(request):
     mercados = VwConsultaMercadoSf.objects.all().order_by("-home_actual")
-    return render(request, 'analytics/index.html', {'mercados': mercados})
+    return render(request, 'analytics/index.html', {'mercados': mercados, 'use_utc': True})
 
 
 def evento(request, id_evento):

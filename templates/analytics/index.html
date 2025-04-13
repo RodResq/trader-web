@@ -182,6 +182,7 @@
                   <table class="table table-hover" id="marketsTable">
                     <thead>
                       <tr>
+                        <th>ID</th>
                         <th>Mercado</th>
                         <th>Odd</th>
                         <th>Home</th>
@@ -194,11 +195,12 @@
                       {% if mercados %}
                       {% for mercado in mercados %}
                       <tr>
+                        <td>{{ mercado.id_event }}</td>
                         <td><span class="market-status"></span>{{ mercado.mercado }}</td>
                         <td>{{ mercado.odd }}</td>
                         <td>{{ mercado.home_actual }}%</td>
                         <td>{{ mercado.away_actual|default:"0" }}%</td>
-                        <td>{{ mercado.data_jogo|date:"d/m/Y h:m:s" }}</td>
+                        <td>{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
                         <td>
                           <a id="aceitar-aposta" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
                           <a id="recusar-aposta" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
