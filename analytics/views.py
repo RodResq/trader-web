@@ -46,14 +46,16 @@ def apostar(request):
         else:
             return JsonResponse({
                 'sucess': False,
-                'message': f'Erro ao processar aposta {str(e)}',
+                'message': f'Ação "{action}" não reconhecida.'
             }, status=400)
             
     except Exception as e:
-        pass
+        return JsonResponse({
+            'sucess': False,
+            'message': f'Erro ao processar aposta: {str(e)}',
+        }, status=400)
     
     
-    pass
 def evento(request, id_evento):
     return render(request, 'analytics/resultado.html', {'id_evento': id_evento})
 
