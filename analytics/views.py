@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from analytics.models import VwConsultaMercadoSf
+from analytics.models import VwConsultaMercadoSf, LittleFaith
 from django.http import JsonResponse
 
 # Create your views here.
@@ -24,6 +24,15 @@ def apostar(request):
         if action == 'aceitar':
             
             print(f'Aposta aceita no mercado: {mercado}')
+            
+            LittleFaith.objects.create(
+                id_event=mercado.id_event, 
+                mercado=mercado.mercado, 
+                odd=mercado.odd, 
+                home_actual=mercado.home_actual, 
+                away_actual=mercado.away_actual, 
+                data_jogo=mercado.data_jogo
+            )
             
             return JsonResponse({
                 'success': True,
