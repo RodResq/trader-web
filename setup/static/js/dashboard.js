@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Função para gerenciar as apostas via método AJAX 
     function setupApostaButtons() {
         const apostarButtons = document.querySelectorAll('.apostar-btn')
-        apostarButtons.forEach(buttons => {
+        apostarButtons.forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
 
