@@ -5,7 +5,14 @@ from django.http import JsonResponse
 # Create your views here.
 def index(request):
     mercados = VwConsultaMercadoSf.objects.all().order_by("-home_actual")
-    return render(request, 'analytics/index.html', {'mercados': mercados, 'use_utc': True})
+    
+    apostas_aceitas = LittleFaith.objects.values_list('id_event', flat=True)
+    
+    return render(request, 'analytics/index.html', {
+        'mercados': mercados,
+        'apostas_aceitas': list(apostas_aceitas), 
+        'use_utc': True
+    })
 
 
 def apostar(request):

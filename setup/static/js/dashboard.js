@@ -351,11 +351,49 @@ document.addEventListener("DOMContentLoaded", function () {
         });
   }
 
+  // Função para verificar apostas aceitas
+  function checkAcceptsBets() {
+    const rows = marketsTable.querySelectorAll('tbody td');
+
+    rows.forEach(row => {
+        if (row.classList.contains('table-success')) {
+            const apostarBtn = row.querySelector('.apostar-btn');
+            if (apostarBtn) {
+                apostarBtn.classList.remove('btn-success');
+                apostarBtn.classList.add('btn-secondary');
+                apostarBtn.innerHTML = '<i class="bi bi-check-all"></i>';
+                apostarBtn.disabled = true;
+            }
+        }
+    });
+  }
+  
+// Função que contem a Lógica de animação do btn atualizar.
+  function setupRefreshButton() {
+    const refreshButton = document.getElementById('updateMarkets');
+    if (!refreshButton) return;
+
+    refreshButton.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Adicionar classes de animação
+        const icon = this.querySelector('i');
+        icon.classList.add('rotate');
+        this.classList.add('loading');
+        this.disabled = true;
+
+        fetchUpdatesMarkets();
+    });
+  }
+
   // Inicializa os botões de aposta
   setupApostaButtons();
   
   // Mantém as demais funções existentes
   formatDateCells();
   updateHomeStatusIcons();
+
+  // Verificar apostas já aceitas
+  checkAcceptsBets();
 
 });

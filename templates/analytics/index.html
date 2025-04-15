@@ -162,17 +162,20 @@
               <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Lista de Mercados</h6>
                 <div class="d-flex align-items-center">
-                  <div class="input-group date-filter mr-2" style="width: 200px;">
+                  <div class="input-group date-filter" style="width: 200px;">
                     <input type="text" 
                            id="marketDateFilter" 
-                           class="form-control form-control-sm" 
+                           class="form-control form-control-sm me-2" 
                            placeholder="dd/mm/yyyy"
                            maxlength="10"
                            autocomplete="off"
                            data-input-type="text"
                            pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
-                    <div class="input-group-append">
+                    <div class="input-group-append me-2">
                       <button id="clearDateFilter" class="btn btn-sm btn-outline-secondary" type="button">Limpar</button>
+                    </div>
+                    <div class="input-group-append">
+                      <a id="updateMarkets" class="btn btn-sm btn-success refresh-btn" title="atualizar mercados"><i class="bi bi-arrow-repeat"></i></a>
                     </div>
                   </div>
                 </div>
@@ -194,7 +197,7 @@
                     <tbody>
                       {% if mercados %}
                       {% for mercado in mercados %}
-                      <tr>
+                      <tr {% if mercado.id_event in apostas_aceitas %}class="table-success"{% endif %}>
                         <td>{{ mercado.id_event }}</td>
                         <td><span class="market-status"></span>{{ mercado.mercado }}</td>
                         <td>{{ mercado.odd }}</td>
@@ -202,7 +205,15 @@
                         <td>{{ mercado.away_actual|default:"0" }}%</td>
                         <td>{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
                         <td>
-                          <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id="{{ mercado.id_event }}" title="Aceitar aposta"><i class="bi bi-check"></i></a>
+                          {% if mercado.id_event in apostas_aceitas %}
+                          <a class="btn btn-sm btn-secondary disabled">
+                            <i class="bi bi-check-all"></i>
+                          </a>
+                          {% else %}
+                          <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id="{{ mercado.id_event }}" title="Aceitar aposta">
+                            <i class="bi bi-check"></i>
+                          </a>
+                          {% endif %}
                           <a id="recusar-aposta" class="btn btn-sm btn-danger"><i class="bi bi-x"></i></a>
                         </td>
                       </tr>
