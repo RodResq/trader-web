@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'analytics.apps.AnalyticsConfig',
     'lucro.apps.LucroConfig',
+    'eventos.apps.EventosConfig',
 ]
 
 MIDDLEWARE = [
