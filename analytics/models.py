@@ -30,6 +30,17 @@ class VwConsultaMercadoSf(models.Model):
     def __str__(self):
         return f"VwConsultaMercadoSf[id_event={self.id_event}, mercado={self.mercado}, data_jogo={self.data_jogo}]"
     
+
+class Tournament(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    country_name = models.CharField(max_length=255, blank=True, null=True)
+    ativo = models.SmallIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'tournament'
+    
     
 class LittleFaith(models.Model):
     id_event = models.IntegerField(primary_key=True)

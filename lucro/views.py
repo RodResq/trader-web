@@ -1,18 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
-from .models import Lucro
+from .models import Resultado
 from .forms import LucroForm
 
 def lucros(request):
     """Exibe a lista de registros de lucro."""
-    lucros = Lucro.objects.all()
+    lucros = Resultado.objects.all()
     return render(request, 'analytics/lucro/lucros.html', {'lucros': lucros})
 
 def lucro_edit(request, pk=None):
     """Edita um registro de lucro existente ou cria um novo."""
     if pk:
-        lucro = get_object_or_404(Lucro, pk=pk)
+        lucro = get_object_or_404(Resultado, pk=pk)
     else:
         lucro = None
 
@@ -34,7 +34,7 @@ def lucro_edit(request, pk=None):
 
 def lucro_delete(request, pk):
     """Exclui um registro de lucro."""
-    lucro = get_object_or_404(Lucro, pk=pk)
+    lucro = get_object_or_404(Resultado, pk=pk)
     
     if request.method == 'POST':
         lucro.delete()

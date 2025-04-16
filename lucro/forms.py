@@ -1,12 +1,12 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Lucro
+from .models import Resultado
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 class LucroForm(forms.ModelForm):
     class Meta:
-        model = Lucro
+        model = Resultado
         fields = ['semana', 'quantidade_apostas', 'valor_inidividual_aposta', 'data_inicial', 'data_final']
         widgets = {
             'data_inicial': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),

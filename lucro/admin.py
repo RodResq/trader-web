@@ -1,5 +1,5 @@
 from django.contrib import admin
-from lucro.models import Lucro
+from lucro.models import Resultado
 
 class ListandoLucro(admin.ModelAdmin):
     list_display = ("semana", "quantidade_apostas", "valor_inidividual_aposta", "data_inicial", "data_final") 
@@ -7,5 +7,5 @@ class ListandoLucro(admin.ModelAdmin):
     search_fields = ("semana",)
     list_per_page = 10   
     
-admin.site.register(Lucro, ListandoLucro)
+admin.site.register(Resultado, ListandoLucro)
 # Register your models here.
