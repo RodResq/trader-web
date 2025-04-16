@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'analytics.apps.AnalyticsConfig',
     'lucro.apps.LucroConfig',
+    'eventos.apps.EventosConfig',
 ]
 
 MIDDLEWARE = [
@@ -84,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'traderdb',
         'USER': 'root',
-        'PASSWORD': '123',
+        'PASSWORD': 'New_Strong_Pass123!',
         'HOST': 'localhost',
         'PORT': '3306',
     }

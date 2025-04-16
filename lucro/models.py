@@ -24,6 +24,7 @@ class Lucro(models.Model):
     
     
     class Meta:
+        db_table = "lucro"
         verbose_name = "Lucro"
         verbose_name_plural = "Lucros"
         ordering = ["-semana"]
