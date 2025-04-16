@@ -45,7 +45,7 @@ class LittleFaith(models.Model):
     
     class Meta:
         verbose_name = "Little Faith"
-        verbose_name_plural = "Lucros"
+        verbose_name_plural = "Little Faith"
         ordering = ["-data_jogo"]
     
     

@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'traderdb',
         'USER': 'root',
-        'PASSWORD': '123',
+        'PASSWORD': 'New_Strong_Pass123!',
         'HOST': 'localhost',
         'PORT': '3306',
     }
