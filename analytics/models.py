@@ -38,6 +38,7 @@ class LittleFaith(models.Model):
     home_actual = models.IntegerField(blank=True, null=True)
     away_actual = models.IntegerField(blank=True, null=True)
     data_jogo = models.DateTimeField(blank=True, null=True)
+    aposta_aceita = models.BooleanField(default=False)
     
     def __str__(self):
         return f"LittleFaith - {self.id_event} - mercado: {self.mercado}"    

@@ -38,7 +38,8 @@ def apostar(request):
                 odd=mercado.odd, 
                 home_actual=mercado.home_actual, 
                 away_actual=mercado.away_actual, 
-                data_jogo=mercado.data_jogo
+                data_jogo=mercado.data_jogo,
+                aposta_aceita=True
             )
             
             return JsonResponse({
@@ -73,3 +74,32 @@ def lucros(request):
 
 def eventos(request):
     return render(request, 'analytics/eventos/eventos.html')
+
+
+def mercados(request):
+    try:
+        # mercados = VwConsultaMercadoSf.objects.all().order_by("-home_actual");
+        # apostas_aceitas = list(LittleFaith.objects.values_list('id_event', flat=True));
+        mercados = LittleFaith.objects.all().order_by("-home_actual")
+        
+        data = []
+        for mercado in mercados:
+            data.append({
+                'id_event': mercado.id_event,
+                'mercado': mercado.mercado,
+                'odd': float(mercado.odd) if mercado.odd else None,
+                'home_actual': mercado.home_actual,
+                'away_actual': mercado.away_actual if mercado.away_actual else 0,
+                'data_jogo': mercado.data_jogo.strftime('%d/%m/%Y %H:%M:%S') if mercado.data_jogo else None,
+                'aposta_aceita': mercado.aposta_aceita
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'mercados': data
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': True,
+            'mercados': f'Erro ao obter mercados: {str(e)}'
+        }, status=500)

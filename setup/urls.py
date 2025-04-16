@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from analytics.views import index, evento, lucros, apostar
+from analytics.views import index, evento, lucros, apostar, mercados
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,5 @@ urlpatterns = [
     path('resultado/<int:id_evento>', evento, name='evento'),
     path('analytics/', include('analytics.urls')),
     path('api/apostar', apostar, name='apostar'),
+    path('api/mercados', mercados, name='mercados'),
 ]

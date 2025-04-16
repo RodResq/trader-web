@@ -386,14 +386,171 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Inicializa os botões de aposta
-  setupApostaButtons();
-  
-  // Mantém as demais funções existentes
-  formatDateCells();
-  updateHomeStatusIcons();
 
-  // Verificar apostas já aceitas
-  checkAcceptsBets();
+//   Função para buscar os mercados atualizados
+  function fetchUpdatesMarkets() {
+    const url = 'api/mercados';
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao atualizar os mercados');
+        }
+        return response.json();
+    }).then(data => {
+        updateMarketsTable(data);
+
+        showNotification('Mercados atualizados com sucesso!', 'success');
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+
+        showNotification('Error ao atualizar mercados. Tente novamente.', 'danger');
+    })
+    .finally(() => {
+        stopRefreshAnimation();
+    });
+
+  }
+
+//Função para parar a animação do botão de atualização   
+  function stopRefreshAnimation() {
+    const refreshButton = document.getElementById('updateMarkets');
+    if (!refreshButton) return;
+
+    const icon = refreshButton.querySelector('i');
+
+    icon.classList.remove('rotate');
+    refreshButton.classList.remove('loading');
+    refreshButton.disabled = false;
+
+  }
+
+  // Versão completa da função para atualizar a tabela
+
+function updateMarketsTable(data) {
+    if (!data.success || !data.mercados) {
+        showNotification('Dados inválidos recebidos do servidor', 'warning');
+        return;
+    }
+    
+    const table = document.getElementById('marketsTable');
+    if (!table) return;
+    
+    const tbody = table.querySelector('tbody');
+    
+    // Limpar a tabela existente
+    tbody.innerHTML = '';
+    
+    // Adicionar as novas linhas
+    data.mercados.forEach(mercado => {
+        const row = document.createElement('tr');
+        
+        // Adicionar classe para linhas de apostas aceitas
+        if (mercado.aposta_aceita) {
+            row.classList.add('table-success');
+        }
+        
+        // Conteúdo da célula ID
+        const idCell = document.createElement('td');
+        idCell.textContent = mercado.id_event;
+        row.appendChild(idCell);
+        
+        // Conteúdo da célula Mercado
+        const mercadoCell = document.createElement('td');
+        const statusSpan = document.createElement('span');
+        statusSpan.className = 'market-status';
+        mercadoCell.appendChild(statusSpan);
+        mercadoCell.appendChild(document.createTextNode(mercado.mercado));
+        row.appendChild(mercadoCell);
+        
+        // Conteúdo da célula Odd
+        const oddCell = document.createElement('td');
+        oddCell.textContent = mercado.odd;
+        row.appendChild(oddCell);
+        
+        // Conteúdo da célula Home
+        const homeCell = document.createElement('td');
+        homeCell.textContent = mercado.home_actual + '%';
+        row.appendChild(homeCell);
+        
+        // Conteúdo da célula Away
+        const awayCell = document.createElement('td');
+        awayCell.textContent = mercado.away_actual + '%';
+        row.appendChild(awayCell);
+        
+        // Conteúdo da célula Data
+        const dataCell = document.createElement('td');
+        dataCell.textContent = mercado.data_jogo;
+        row.appendChild(dataCell);
+        
+        // Conteúdo da célula Ações
+        const acoesCell = document.createElement('td');
+        
+        if (mercado.aposta_aceita) {
+            // Botão desabilitado para apostas já aceitas
+            const btnAceito = document.createElement('a');
+            btnAceito.className = 'btn btn-sm btn-secondary disabled';
+            btnAceito.title = 'Aposta já aceita';
+            
+            const iconAceito = document.createElement('i');
+            iconAceito.className = 'bi bi-check-all';
+            btnAceito.appendChild(iconAceito);
+            
+            acoesCell.appendChild(btnAceito);
+        } else {
+            // Botão de aceitar aposta
+            const btnAceitar = document.createElement('a');
+            btnAceitar.className = 'btn btn-sm btn-success apostar-btn';
+            btnAceitar.setAttribute('data-event-id', mercado.id_event);
+            btnAceitar.title = 'Aceitar aposta';
+            
+            const iconAceitar = document.createElement('i');
+            iconAceitar.className = 'bi bi-check';
+            btnAceitar.appendChild(iconAceitar);
+            
+            acoesCell.appendChild(btnAceitar);
+        }
+        
+        // Botão de recusar aposta (sempre presente)
+        const btnRecusar = document.createElement('a');
+        btnRecusar.className = 'btn btn-sm btn-danger ms-1';
+        
+        const iconRecusar = document.createElement('i');
+        iconRecusar.className = 'bi bi-x';
+        btnRecusar.appendChild(iconRecusar);
+        
+        acoesCell.appendChild(btnRecusar);
+        row.appendChild(acoesCell);
+        
+        // Adicionar a linha completa à tabela
+        tbody.appendChild(row);
+    });
+    
+    // Atualizar o status visual
+    updateHomeStatusIcons();
+    
+    // Reconfigurar os botões de aposta
+    setupApostaButtons();
+}
+
+
+    formatDateCells();
+    
+    // Mantém as demais funções existentes
+    updateHomeStatusIcons();
+    
+    // Verificar apostas já aceitas
+    checkAcceptsBets();
+    
+    // Inicializa os botões de aposta
+    setupApostaButtons();
+    // Nova chamada para o botão de atualização
+    setupRefreshButton();
 
 });
