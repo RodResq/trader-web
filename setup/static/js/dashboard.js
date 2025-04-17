@@ -10,6 +10,7 @@ import { initFilters } from './modules/filters.js';
 import { setupApostaButtons } from './modules/api.js';
 import { setupRefreshButton } from './modules/api.js';
 import { setupRecusarModal } from './modules/recusarAposta.js';
+import { initChecklist } from './modules/checklist.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa componentes de UI
@@ -26,4 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializa modal de recusa
     setupRecusarModal();
+
+    // Inicializa checklist
+    initChecklist()
 });
