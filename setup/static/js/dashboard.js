@@ -9,6 +9,7 @@ import { updateMarketStatus } from './modules/marketStatus.js';
 import { initFilters } from './modules/filters.js';
 import { setupApostaButtons } from './modules/api.js';
 import { setupRefreshButton } from './modules/api.js';
+import { setupRecusarModal } from './modules/recusarAposta.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa componentes de UI
@@ -22,4 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializa funcionalidades da Api
     setupApostaButtons();
     setupRefreshButton();
+
+    // Inicializa modal de recusa
+    setupRecusarModal();
 });

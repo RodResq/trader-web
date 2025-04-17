@@ -160,6 +160,7 @@ export function updateMarketsTable(data) {
         // Botão de recusar aposta (sempre presente)
         const btnRecusar = document.createElement('a');
         btnRecusar.className = 'btn btn-sm btn-danger ms-1';
+        btnRecusar.setAttribute('id', 'recusar-aposta');
         
         const iconRecusar = document.createElement('i');
         iconRecusar.className = 'bi bi-x';

@@ -1,0 +1,44 @@
+<!-- templates/analytics/modal/modal_recusar_aposta.html -->
+<div class="modal fade" id="recusarApostaModal" tabindex="-1" aria-labelledby="recusarApostaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="recusarApostaModalLabel">Confirmar Recusa</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i> Você está prestes a recusar esta aposta. Esta ação não pode ser desfeita.
+          </div>
+          
+          <div class="mb-3">
+            <p><strong>ID do Evento:</strong> <span id="evento-id"></span></p>
+            <p><strong>Mercado:</strong> <span id="evento-mercado"></span></p>
+          </div>
+          
+          <div class="mb-3">
+            <label for="recusarMotivo" class="form-label">Motivo da Recusa (opcional):</label>
+            <select class="form-select" id="recusarMotivo">
+              <option value="">Selecione um motivo...</option>
+              <option value="odd_baixa">Odd muito baixa</option>
+              <option value="risco_alto">Risco muito alto</option>
+              <option value="horario_inadequado">Horário inadequado</option>
+              <option value="estatisticas_desfavoraveis">Estatísticas desfavoráveis</option>
+              <option value="outros">Outros</option>
+            </select>
+          </div>
+          
+          <div class="mb-3" id="outroMotivoContainer" style="display: none;">
+            <label for="outroMotivo" class="form-label">Especifique o motivo:</label>
+            <textarea class="form-control" id="outroMotivo" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmarRecusaBtn">
+            <i class="bi bi-x-circle"></i> Confirmar Recusa
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

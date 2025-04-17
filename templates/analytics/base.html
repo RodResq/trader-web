@@ -15,14 +15,17 @@
   <!-- Navbar -->
     {% include 'analytics/partials/_navbar.html' %}
     {% block content %}{% endblock %}
-    {% block modalSalvarAposta %}{% endblock %}
-  <!-- Sidebar -->
+    {% comment %} {% block modalSalvarAposta %}{% endblock %} {% endcomment %}
+
+    <!-- Modal de recusar aposta -->
+    {% include 'analytics/modal/modal_recusar_aposta.html' %}
+    <!-- Sidebar -->
     {% include 'analytics/partials/_sidebar.html' %}
-  <!-- Conteúdo Principal -->
+    <!-- Conteúdo Principal -->
   
-  <!-- Footer -->
+    <!-- Footer -->
     {% include 'analytics/partials/_footer.html' %}
-  <!-- Bootstrap JS Bundle with Popper -->
+    <!-- Bootstrap JS Bundle with Popper -->
   <script type="module" src="{% static 'js/dashboard.js' %}"></script>
 </body>
 </html>
