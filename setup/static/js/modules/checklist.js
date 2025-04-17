@@ -35,9 +35,19 @@ function toggleChecklist() {
     const table = document.getElementById('marketsTable');
     if (!table) return;
     
+    const headerRow = table.querySelector('thead tr');
     const rows = table.querySelectorAll('tbody tr');
     
     if (checklistVisible) {
+
+        // Adiciona cabeçalho de checkbox
+        if (headerRow) {
+            const checkboxHeader = document.createElement('th');
+            checkboxHeader.className = 'checkbox-cell';
+            checkboxHeader.width = '40px';
+            headerRow.insertBefore(checkboxHeader, headerRow.firstChild);
+        }
+
         // Adiciona checkboxes a cada linha
         rows.forEach((row, index) => {
             addCheckboxToRow(row, index);
@@ -49,6 +59,15 @@ function toggleChecklist() {
         // Oculta a coluna de ações e desabilita os botões
         toggleActionColumn(false);
     } else {
+
+        // Remove cabeçalho de checkbox
+        if (headerRow) {
+            const checkboxHeader = headerRow.querySelector('.checkbox-cell');
+            if (checkboxHeader) {
+                checkboxHeader.remove();
+            }
+        }
+
         // Remove checkboxes
         rows.forEach(row => {
             const checkboxCell = row.querySelector('.checkbox-cell');
@@ -404,13 +423,29 @@ function setupTableObserver() {
                         }
                     });
                 }
+
+                // Verificar se precisamos adicionar o cabeçalho da checkbox
+                const thead = table.querySelector('thead');
+                if (thead && mutation.target === thead) {
+                    const headerRow = thead.querySelector('tr');
+                    if (headerRow && !headerRow.querySelector('.checkbox-cell')) {
+                        const checkboxHeader = document.createElement('th');
+                        checkboxHeader.className = 'checkbox-cell';
+                        checkboxHeader.width = '40px';
+                        headerRow.insertBefore(checkboxHeader, headerRow.firstChild);
+                    }
+                }
             });
         }
     });
     
     // Observar o tbody da tabela
     const tbody = table.querySelector('tbody');
+    const thead = table.querySelector('thead');
     if (tbody) {
         observer.observe(tbody, { childList: true, subtree: true });
+    }
+    if (thead) {
+        observer.observe(thead, { childList: true, subtree: true });
     }
 }
