@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from analytics.models import VwConsultaMercadoSf, LittleFaith
+from analytics.models import VwConsultaMercadoSf, Entrada
 from django.http import JsonResponse
 
 # Create your views here.
 def index(request):
     mercados = VwConsultaMercadoSf.objects.all().order_by("-home_actual")
     
-    apostas_aceitas = LittleFaith.objects.values_list('id_event', flat=True)
+    apostas_aceitas = Entrada.objects.values_list('id_event', flat=True)
     
     return render(request, 'analytics/index.html', {
         'mercados': mercados,
@@ -32,7 +32,7 @@ def apostar(request):
             
             print(f'Aposta aceita no mercado: {mercado}')
             
-            LittleFaith.objects.create(
+            Entrada.objects.create(
                 id_event=mercado.id_event, 
                 mercado=mercado.mercado, 
                 odd=mercado.odd, 
@@ -80,7 +80,7 @@ def mercados(request):
     try:
         # mercados = VwConsultaMercadoSf.objects.all().order_by("-home_actual");
         # apostas_aceitas = list(LittleFaith.objects.values_list('id_event', flat=True));
-        mercados = LittleFaith.objects.all().order_by("-home_actual")
+        mercados = Entrada.objects.all().order_by("-home_actual")
         
         data = []
         for mercado in mercados:

@@ -1,5 +1,5 @@
 from django.db import models
-from analytics.models import LittleFaith, Tournament
+from analytics.models import Entrada, Tournament
 
 class Evento(models.Model):
     OPCAO_RESULTADOS = {
@@ -18,7 +18,7 @@ class Evento(models.Model):
         "SABADO": "sábado"
     }
     
-    id_event = models.ForeignKey(LittleFaith, on_delete=models.CASCADE)
+    id_event = models.ForeignKey(Entrada, on_delete=models.CASCADE)
     id_campeonato = models.ForeignKey(Tournament, on_delete=models.DO_NOTHING) # mapear tabela tournament
     nome_campeonato = models.CharField(max_length=200, null=False)
     odd = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)

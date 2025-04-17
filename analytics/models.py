@@ -42,7 +42,7 @@ class Tournament(models.Model):
         db_table = 'tournament'
     
     
-class LittleFaith(models.Model):
+class Entrada(models.Model):
     id_event = models.IntegerField(primary_key=True)
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd = models.FloatField(blank=True, null=True)
@@ -52,13 +52,13 @@ class LittleFaith(models.Model):
     aposta_aceita = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"LittleFaith - {self.id_event} - mercado: {self.mercado}"    
+        return f"Entrada - {self.id_event} - mercado: {self.mercado}"    
     
     
     class Meta:
-        db_table = "little_faith"
-        verbose_name = "Little Faith"
-        verbose_name_plural = "Little Faith"
+        db_table = "entrada"
+        verbose_name = "entrada"
+        verbose_name_plural = "Entrada"
         ordering = ["-data_jogo"]
     
     

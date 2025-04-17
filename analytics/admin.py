@@ -1,5 +1,5 @@
 from django.contrib import admin
-from analytics.models import LittleFaith
+from analytics.models import Entrada
 
 
 class ListandoLitleFaith(admin.ModelAdmin):
@@ -8,4 +8,4 @@ class ListandoLitleFaith(admin.ModelAdmin):
     search_fields = ("mercado",)
     list_per_page = 10   
 
-admin.site.register(LittleFaith, ListandoLitleFaith)
+admin.site.register(Entrada, ListandoLitleFaith)
