@@ -1,18 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from analytics.models import VwConsultaMercadoSf, Entrada
+from analytics.helpers import dump_mercados_para_entrada
 from django.http import JsonResponse
 
 # Create your views here.
 def index(request):
-    mercados = VwConsultaMercadoSf.objects.all().order_by("-home_actual")
-    
-    apostas_aceitas = Entrada.objects.values_list('id_event', flat=True)
-    
-    return render(request, 'analytics/index.html', {
-        'mercados': mercados,
-        'apostas_aceitas': list(apostas_aceitas), 
-        'use_utc': True
-    })
+        dump_mercados_para_entrada()
+        entradas = Entrada.objects.all().order_by("-data_jogo") 
+           
+        return render(request, 'analytics/index.html', {
+            'mercados': entradas, 
+            'use_utc': True
+        })
+
 
 
 def apostar(request):

@@ -45,14 +45,14 @@ class Tournament(models.Model):
 class Entrada(models.Model):
     id_event = models.IntegerField(primary_key=True)
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    odd = models.FloatField(blank=True, null=True)
-    home_actual = models.IntegerField(blank=True, null=True)
-    away_actual = models.IntegerField(blank=True, null=True)
+    odd = models.FloatField(blank=False, null=False, default=0.00)
+    home_actual = models.IntegerField(blank=False, null=False, default=0)
+    away_actual = models.IntegerField(blank=False, null=False, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
     aposta_aceita = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"Entrada - {self.id_event} - mercado: {self.mercado}"    
+        return f"Entrada - {self.id_event} - mercado: {self.mercado} - away_actual: {self.away_actual}"    
     
     
     class Meta:
