@@ -45,6 +45,9 @@ function toggleChecklist() {
         
         // Adiciona botão de ação em massa
         addBulkActionButtons();
+
+        // Oculta a coluna de ações e desabilita os botões
+        toggleActionColumn(false);
     } else {
         // Remove checkboxes
         rows.forEach(row => {
@@ -59,11 +62,59 @@ function toggleChecklist() {
         if (bulkActionsContainer) {
             bulkActionsContainer.remove();
         }
+
+        // Mostra a coluna de ações e habilita os botões
+        toggleActionColumn(true);
         
         // Limpa seleção
         selectedItems.clear();
     }
 }
+
+
+/**
+ * Oculta ou mostra a coluna de ações e desabilita/habilita os botões
+ * @param {boolean} show - true para mostrar, false para ocultar
+ */
+function toggleActionColumn(show) {
+    const table = document.getElementById('marketsTable');
+    if (!table) return;
+    
+    // Ajusta o cabeçalho da tabela
+    const headerRow = table.querySelector('thead tr');
+    if (headerRow) {
+        const actionHeader = headerRow.querySelector('th:last-child');
+        if (actionHeader) {
+            actionHeader.style.display = show ? '' : 'none';
+        }
+    }
+    
+    // Ajusta as células de ação em cada linha
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const actionCell = row.querySelector('td:last-child');
+        if (actionCell) {
+            actionCell.style.display = show ? '' : 'none';
+            
+            // Desabilita/habilita os botões
+            const buttons = actionCell.querySelectorAll('a.btn');
+            buttons.forEach(button => {
+                button.style.pointerEvents = show ? '' : 'none';
+                if (!show) {
+                    button.setAttribute('data-original-class', button.className);
+                    button.className = button.className + ' disabled';
+                } else {
+                    const originalClass = button.getAttribute('data-original-class');
+                    if (originalClass) {
+                        button.className = originalClass;
+                        button.removeAttribute('data-original-class');
+                    }
+                }
+            });
+        }
+    });
+}
+
 
 /**
  * Atualiza o botão de mostrar checklist
