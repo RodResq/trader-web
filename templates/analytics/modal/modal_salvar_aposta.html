@@ -1,0 +1,58 @@
+{% extends "analytics/base.html" %}
+{% load static %}
+{% block modalSalvarAposta %}
+<link rel="stylesheet" href="{% static 'styles/index.css' %}" >
+<div class="modal fade" id="apostasModal" tabindex="-1" aria-labelledby="apostasModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="apostasModalLabel">Confirmar Apostas</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Confira os itens abaixo antes de confirmar suas apostas.
+          </div>
+          
+          <div class="table-responsive">
+            <table class="table table-striped" id="apostasTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Mercado</th>
+                  <th>Odd</th>
+                  <th>Home</th>
+                  <th>Away</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Itens de apostas serão adicionados aqui dinamicamente -->
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="mt-3">
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>Total de apostas:</strong> <span id="totalApostas">0</span>
+              </div>
+              <div>
+                <strong>Valor total:</strong> R$ <span id="valorTotal">0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnSalvarApostas">
+            <i class="bi bi-check-circle"></i> Confirmar Apostas
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/dashboard.js' %}"></script> 
+{% endblock %}
