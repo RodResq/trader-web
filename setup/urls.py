@@ -26,4 +26,5 @@ urlpatterns = [
     path('analytics/', include('analytics.urls')),
     path('api/apostar', apostar, name='apostar'),
     path('api/mercados', mercados, name='mercados'),
+    path('periodos/', include('periodo.urls', namespace='periodo'))
 ]

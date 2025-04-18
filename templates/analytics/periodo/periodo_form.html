@@ -1,0 +1,88 @@
+{% extends "analytics/base.html" %}
+{% load static %}
+{% block content %}
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 mb-0 text-gray-800">{{ titulo }}</h1>
+      <a href="{% url 'periodo:index' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Voltar
+      </a>
+    </div>
+    
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Informações do Período</h6>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="id_categoria" class="form-label">Categoria</label>
+              {{ form.categoria }}
+              {% if form.categoria.errors %}
+                <div class="invalid-feedback d-block">{{ form.categoria.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="col-md-4">
+              <label for="id_saldo_atual" class="form-label">Saldo Atual (R$)</label>
+              {{ form.saldo_atual }}
+              {% if form.saldo_atual.errors %}
+                <div class="invalid-feedback d-block">{{ form.saldo_atual.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="col-md-4">
+              <label for="id_disponivel_entrada" class="form-label">Disponível p/ Entrada (R$)</label>
+              {{ form.disponivel_entrada }}
+              {% if form.disponivel_entrada.errors %}
+                <div class="invalid-feedback d-block">{{ form.disponivel_entrada.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="id_data_inicial" class="form-label">Data Inicial</label>
+              {{ form.data_inicial }}
+              {% if form.data_inicial.errors %}
+                <div class="invalid-feedback d-block">{{ form.data_inicial.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="col-md-6">
+              <label for="id_data_final" class="form-label">Data Final</label>
+              {{ form.data_final }}
+              {% if form.data_final.errors %}
+                <div class="invalid-feedback d-block">{{ form.data_final.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+          
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {% for error in form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+          <div class="mt-4">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save"></i> Salvar
+            </button>
+            <a href="{% url 'periodo:index' %}" class="btn btn-secondary">
+              <i class="bi bi-x"></i> Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endblock %}
