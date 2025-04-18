@@ -9,6 +9,7 @@ import { isValidDateFormat } from './utils.js';
 export function initTableHandlers() {
     formatDateCells();
     checkAcceptedBets();
+    checkRejectBets()
 }
 
 /**
@@ -97,6 +98,8 @@ export function updateEntryOptionIcon(row, estado="E") {
     // Remove o marcador de estado do texto
     mercadoCell.textContent = mercadoText.replace(/\[\w\]\s*/, '').trim();
     mercadoCell.insertBefore(iconElement, mercadoCell.firstChild);
+
+    initTableHandlers()
 }
 
 
@@ -110,13 +113,46 @@ export function checkAcceptedBets() {
     const rows = table.querySelectorAll('tbody tr');
 
     rows.forEach(row => {
-        if (row.classList.contains('table-success')) {
+        const mercadoCell = row.querySelector('td:nth-child(2)');
+        const iconElement = mercadoCell ? mercadoCell.querySelector('.bi-check') : null;
+
+        if (iconElement) {
             const apostarBtn = row.querySelector('.apostar-btn');
-            if (apostarBtn) {
+
+            if (!apostarBtn.disabled) {
                 apostarBtn.classList.remove('btn-success');
                 apostarBtn.classList.add('btn-secondary');
                 apostarBtn.innerHTML = '<i class="bi bi-check-all"></i>';
                 apostarBtn.disabled = true;
+            } else {
+                apostarBtn.disabled = false;
+            }
+        }
+    });
+}
+
+/**
+ * Verifica apostas já aceitas e atualiza a UI adequadamente / refatora
+ */
+export function checkRejectBets() {
+    const table = document.getElementById('marketsTable');
+    if (!table) return;
+
+    const rows = table.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+        const mercadoCell = row.querySelector('td:nth-child(2)');
+        const iconElement = mercadoCell ? mercadoCell.querySelector('.bi-x') : null;
+
+        if (iconElement) {
+            const recusarBtn = row.querySelector('.recusar-btn');
+            if (!recusarBtn.disabled) {
+                recusarBtn.classList.remove('btn-danger');
+                recusarBtn.classList.add('btn-secondary');
+                recusarBtn.innerHTML = '<i class="bi bi-x"></i>';
+                recusarBtn.disabled = true;
+            } else {
+                recusarBtn.disabled = false;
             }
         }
     });
