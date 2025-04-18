@@ -218,15 +218,9 @@
                         <td>{{ mercado.away_actual }}%</td>
                         <td>{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
                         <td>
-                          {% if mercado.aposta_aceita %}
-                          <a class="btn btn-sm btn-secondary disabled">
-                            <i class="bi bi-check-all"></i>
-                          </a>
-                          {% else %}
                           <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id="{{ mercado.id_event }}" title="Aceitar aposta">
                             <i class="bi bi-check"></i>
                           </a>
-                          {% endif %}
                           <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id="{{ mercado.id_event }}" title="Recusar aposta">
                             <i class="bi bi-x"></i>
                           </a>

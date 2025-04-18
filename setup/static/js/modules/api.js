@@ -2,8 +2,9 @@
  * Módulo API - Gerencia chamadas de API e operações de dados
  */
 import { showNotification } from './notifications.js';
-import { updateMarketsTable } from './table.js';
+import { updateEntryOptionIcon, updateMarketsTable } from './table.js';
 import { updateMarketStatus } from './marketStatus.js';
+import { setupRecusarModal } from './recusarAposta.js';
 
 /**
  * Configura botões de aposta com manipuladores de eventos
@@ -50,10 +51,11 @@ export function setupApostaButtons() {
                     apostaBtn.disabled = true;
                     
                     // Adiciona visual de sucesso à linha da tabela
-                    tableRow.classList.add('table-success');
+                    // tableRow.classList.add('table-warnning');
                     
                     // Exibe notificação de sucesso
                     showNotification('Aposta registrada com sucesso!', 'success');
+                    return updateEntryOptionIcon(tableRow, "A")
                 })
                 .catch(error => {
                     console.error('Erro:', error);
@@ -113,14 +115,17 @@ function fetchUpdatedMarkets() {
         if (success) {
             updateMarketStatus();
             setupApostaButtons();
+            setupRecusarModal();
             showNotification('Mercados atualizados com sucesso!', 'success');
         } else {
             showNotification('Erro ao processar dados dos mercados', 'warning');
         }
+        return data;
     })
     .catch(error => {
         console.error('Erro:', error);
         showNotification('Erro ao atualizar mercados. Tente novamente.', 'danger');
+        throw error; // Re-throw para permitir tratamento adicional
     })
     .finally(() => {
         stopRefreshAnimation();

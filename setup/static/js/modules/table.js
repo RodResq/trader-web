@@ -49,7 +49,59 @@ export function formatDateCells() {
 }
 
 /**
- * Verifica apostas já aceitas e atualiza a UI adequadamente
+ * Atualiza o icone da linha onde a ação foi executada
+*/
+export function updateEntryOptionIcon(row, estado="E") {
+    if (!row) return;
+    
+    const mercadoCell = row.querySelector('td:nth-child(2)');
+    
+    // Cria elemento de ícone para estado da entrada
+    const iconElement = document.createElement('i');
+    // Se não existir, cria um novo
+    if (!iconElement) {
+        iconElement = document.createElement('i');
+        mercadoCell.insertBefore(iconElement, mercadoCell.firstChild);
+    }
+
+    // Obtém o texto original do mercado
+    const mercadoText = mercadoCell.textContent.trim();
+
+    // Reseta classes do ícone
+    iconElement.classList.remove('bi-check', 'bi-x', 'bi-alarm');
+    iconElement.classList.remove('text-success', 'text-danger', 'text-primary');
+
+    const opcoesEntradaMap = {
+        'A': {
+            icon: 'bi-check',
+            color: 'text-success'
+        },
+        'R': {
+            icon: 'bi-x', 
+            color: 'text-danger'
+        },
+        'E': {
+            icon: 'bi-alarm', 
+            color: 'text-primary'
+        }
+    };
+    
+    // Aplica o estilo correto
+    const estadoConfig = opcoesEntradaMap[estado] || opcoesEntradaMap['E'];
+    
+    // Adiciona classes de ícone e estilo
+    iconElement.classList.add('bi', estadoConfig.icon, estadoConfig.color);
+    iconElement.style.fontSize = '1rem';
+    iconElement.style.marginRight = '5px';
+    
+    // Remove o marcador de estado do texto
+    mercadoCell.textContent = mercadoText.replace(/\[\w\]\s*/, '').trim();
+    mercadoCell.insertBefore(iconElement, mercadoCell.firstChild);
+}
+
+
+/**
+ * Verifica apostas já aceitas e atualiza a UI adequadamente / refatora
  */
 export function checkAcceptedBets() {
     const table = document.getElementById('marketsTable');
@@ -91,11 +143,6 @@ export function updateMarketsTable(data) {
     data.mercados.forEach(mercado => {
         const row = document.createElement('tr');
         
-        // Adicionar classe para linhas de apostas aceitas
-        if (mercado.aposta_aceita) {
-            row.classList.add('table-success');
-        }
-        
         // Célula de ID
         const idCell = document.createElement('td');
         idCell.textContent = mercado.id_event;
@@ -105,7 +152,31 @@ export function updateMarketsTable(data) {
         const mercadoCell = document.createElement('td');
         const statusSpan = document.createElement('span');
         statusSpan.className = 'market-status';
+
+        // Cria elemento de ícone para estado da entrada
+        const iconElement = document.createElement('i');
+        const opcoesEntradaMap = {
+            'A': {
+                icon: 'bi-check',
+                color: 'text-success'
+            },
+            'R': {
+                icon: 'bi-x', 
+                color: 'text-danger'
+            },
+            'E': {
+                icon: 'bi-alarm',
+                color: 'text-primary'
+            }
+        }; 
+
+        const estadoConfig = opcoesEntradaMap[mercado.opcao_entrada] || opcoesEntradaMap['E'];
+        iconElement.classList.add('bi', estadoConfig.icon, estadoConfig.color);
+        iconElement.style.fontSize = '1rem';
+        iconElement.style.marginRight = '5px';
+
         mercadoCell.appendChild(statusSpan);
+        mercadoCell.appendChild(iconElement)
         mercadoCell.appendChild(document.createTextNode(mercado.mercado));
         row.appendChild(mercadoCell);
         
@@ -132,7 +203,7 @@ export function updateMarketsTable(data) {
         // Célula de Ações
         const acoesCell = document.createElement('td');
         
-        if (mercado.aposta_aceita) {
+        if (mercado.opcao_entrada === 'A') {
             // Botão desabilitado para apostas já aceitas
             const btnAceito = document.createElement('a');
             btnAceito.className = 'btn btn-sm btn-secondary disabled';
@@ -143,34 +214,18 @@ export function updateMarketsTable(data) {
             btnAceito.appendChild(iconAceito);
             
             acoesCell.appendChild(btnAceito);
-        } else {
+        } else if (mercado.opcao_entrada == 'R') {
             // Botão de aceitar aposta
-            const btnAceitar = document.createElement('a');
-            btnAceitar.className = 'btn btn-sm btn-success apostar-btn';
-            btnAceitar.setAttribute('data-event-id', mercado.id_event);
-            btnAceitar.title = 'Aceitar aposta';
+            const btnRecusar = document.createElement('a');
+            btnRecusar.className = 'btn btn-sm btn-danger disabled';
+            btnRecusar.title = 'Recusada aposta';
             
-            const iconAceitar = document.createElement('i');
-            iconAceitar.className = 'bi bi-check';
-            btnAceitar.appendChild(iconAceitar);
+            const iconRecusar = document.createElement('i');
+            iconRecusar.className = 'bi bi-x';
+            btnRecusar.appendChild(iconRecusar);
             
-            acoesCell.appendChild(btnAceitar);
-        }
-        
-        // Botão de recusar aposta (sempre presente)
-        const btnRecusar = document.createElement('a');
-        btnRecusar.className = 'btn btn-sm btn-danger ms-1';
-        btnRecusar.setAttribute('id', 'recusar-aposta');
-        
-        const iconRecusar = document.createElement('i');
-        iconRecusar.className = 'bi bi-x';
-        btnRecusar.appendChild(iconRecusar);
-        
-        acoesCell.appendChild(btnRecusar);
-        row.appendChild(acoesCell);
-        
-        // Adicionar a linha completa à tabela
-        tbody.appendChild(row);
+            acoesCell.appendChild(btnRecusar);
+        } 
     });
     
     return true;

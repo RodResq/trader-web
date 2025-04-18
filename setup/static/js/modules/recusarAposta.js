@@ -3,6 +3,7 @@
  * Módulo de Recusa de Aposta - Gerencia a funcionalidade do modal de recusa
  */
 import { showNotification } from './notifications.js';
+import { updateEntryOptionIcon } from './table.js';
 
 /**
  * Inicializa o modal de recusa de aposta e seus manipuladores de eventos
@@ -106,18 +107,13 @@ export function setupRecusarModal() {
                 btnRecusar.disabled = true;
             }
 
-            // Atualizar botões na linha
-            // const btnAceitar = currentRow.querySelector('.apostar-btn');
-            // if (btnAceitar) {
-            //     btnAceitar.classList.remove('btn-success');
-            //     btnAceitar.classList.add('btn-secondary');
-            //     btnAceitar.disabled = true;
-            // }
-            // Ocultar o modal
+            
             modalInstance.hide();
             // Resetar botão
             this.disabled = false;
             this.innerHTML = '<i class="bi bi-x-circle"></i> Confirmar Recusa';
+
+            updateEntryOptionIcon(currentRow, "R");
             
             // Mostrar notificação
             showNotification('Aposta recusada com sucesso!', 'warning');
