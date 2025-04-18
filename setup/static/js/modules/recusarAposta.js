@@ -1,4 +1,3 @@
-// setup/static/js/modules/recusarAposta.js
 /**
  * Módulo de Recusa de Aposta - Gerencia a funcionalidade do modal de recusa
  */

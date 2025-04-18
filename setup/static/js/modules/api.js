@@ -45,13 +45,7 @@ export function setupApostaButtons() {
                 })
                 .then(data => {
                     // Processa resposta bem-sucedida
-                    apostaBtn.innerHTML = '<i class="bi bi-check-all"></i>';
-                    apostaBtn.classList.remove('btn-success');
-                    apostaBtn.classList.add('btn-secondary');
-                    apostaBtn.disabled = true;
-                    
-                    // Adiciona visual de sucesso à linha da tabela
-                    // tableRow.classList.add('table-warnning');
+                    desabilitarBtnAceitarAposta(apostaBtn);
                     
                     // Exibe notificação de sucesso
                     showNotification('Aposta registrada com sucesso!', 'success');
@@ -68,6 +62,13 @@ export function setupApostaButtons() {
             }
         });
     });
+}
+
+function desabilitarBtnAceitarAposta(apostaBtn) {
+    apostaBtn.innerHTML = '<i class="bi bi-check-all"></i>';
+    apostaBtn.classList.remove('btn-success');
+    apostaBtn.classList.add('btn-secondary');
+    apostaBtn.disabled = true;
 }
 
 /**

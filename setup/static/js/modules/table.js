@@ -124,9 +124,7 @@ export function checkAcceptedBets() {
                 apostarBtn.classList.add('btn-secondary');
                 apostarBtn.innerHTML = '<i class="bi bi-check-all"></i>';
                 apostarBtn.disabled = true;
-            } else {
-                apostarBtn.disabled = false;
-            }
+            } 
         }
     });
 }
