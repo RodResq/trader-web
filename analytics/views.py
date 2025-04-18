@@ -30,12 +30,18 @@ def apostar(request):
     
     try:
         entrada = get_object_or_404(Entrada, id_event=event_id)
+        existe_periodo = Periodo.objects.filter(data_inicial__lte=entrada.data_jogo, data_final__gte=entrada.data_jogo).exists()
         
-        if action == 'aceitar':
+        if not existe_periodo:
+            return JsonResponse({
+                'sucess': False,
+                'message': f'Não existe período para a entrada.'
+            }, status=400)
             
+        if action == 'aceitar':        
             print(f'Aposta aceita no mercado: {entrada}')
             
-            entrada.aposta_aceita = True
+            entrada.opcao_entrada = "A"
             entrada.save()
             
             return JsonResponse({
@@ -47,9 +53,8 @@ def apostar(request):
                     'odd': float(entrada.odd) if entrada.odd else None,
                 }
             })
-            
         elif action == 'recusar':
-            entrada.aposta_aceita = False
+            entrada.opcao_entrada = "R"
             entrada.save()
             
             return JsonResponse({
@@ -61,13 +66,11 @@ def apostar(request):
                     'odd': float(entrada.odd) if entrada.odd else None,
                 }
             })
-            
         else:
             return JsonResponse({
                 'sucess': False,
                 'message': f'Ação "{action}" não reconhecida.'
             }, status=400)
-            
     except Exception as e:
         return JsonResponse({
             'sucess': False,

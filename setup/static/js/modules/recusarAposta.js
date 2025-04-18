@@ -98,15 +98,21 @@ export function setupRecusarModal() {
             return response.json();
         }).then(data => {
             // Marcar visualmente a linha como recusada
-            currentRow.classList.add('table-danger');
+            // currentRow.classList.add('table-danger');
+            const btnRecusar = currentRow.querySelector('.recusar-btn')
+            if (btnRecusar) {
+                btnRecusar.classList.remove('btn-danger');
+                btnRecusar.classList.add('btn-secondary');
+                btnRecusar.disabled = true;
+            }
 
             // Atualizar botões na linha
-            const btnAceitar = currentRow.querySelector('.apostar-btn');
-            if (btnAceitar) {
-                btnAceitar.classList.remove('btn-success');
-                btnAceitar.classList.add('btn-secondary');
-                btnAceitar.disabled = true;
-            }
+            // const btnAceitar = currentRow.querySelector('.apostar-btn');
+            // if (btnAceitar) {
+            //     btnAceitar.classList.remove('btn-success');
+            //     btnAceitar.classList.add('btn-secondary');
+            //     btnAceitar.disabled = true;
+            // }
             // Ocultar o modal
             modalInstance.hide();
             // Resetar botão

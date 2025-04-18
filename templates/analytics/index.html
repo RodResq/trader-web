@@ -204,8 +204,10 @@
                       {% for mercado in mercados %}
                       <tr>
                         <td>{{ mercado.id_event }}</td>
-                        <td><i {% if mercado.aposta_aceita %}
+                        <td><i {% if mercado.opcao_entrada == "A" %}
                               class="bi-check" style="font-size: 1rem; color: green;"
+                              {% elif  mercado.opcao_entrada == "R" %}
+                              class="bi bi-x" style="font-size: 1rem; color: red;"
                               {% else %}
                               class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"
                             {% endif %}></i>
@@ -225,7 +227,7 @@
                             <i class="bi bi-check"></i>
                           </a>
                           {% endif %}
-                          <a id="recusar-aposta" class="btn btn-sm btn-danger" data-event-id="{{ mercado.id_event }}" title="Recusar aposta">
+                          <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id="{{ mercado.id_event }}" title="Recusar aposta">
                             <i class="bi bi-x"></i>
                           </a>
                         </td>
