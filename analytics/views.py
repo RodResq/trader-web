@@ -2,14 +2,17 @@ from django.shortcuts import render, get_object_or_404, redirect
 from analytics.models import VwConsultaMercadoSf, Entrada
 from analytics.helpers import dump_mercados_para_entrada
 from django.http import JsonResponse
+from periodo.models import Periodo 
 
 # Create your views here.
 def index(request):
         dump_mercados_para_entrada()
-        entradas = Entrada.objects.all().order_by("-data_jogo") 
+        entradas = Entrada.objects.all().order_by("-data_jogo")
+        qtd_periodos = Periodo.objects.count() 
            
         return render(request, 'analytics/index.html', {
-            'mercados': entradas, 
+            'mercados': entradas,
+            'qtd_periodos': qtd_periodos, 
             'use_utc': True
         })
 
@@ -26,31 +29,39 @@ def apostar(request):
         }, status=400)
     
     try:
-        mercado = get_object_or_404(VwConsultaMercadoSf, id_event=event_id)
+        entrada = get_object_or_404(Entrada, id_event=event_id)
         
         if action == 'aceitar':
             
-            print(f'Aposta aceita no mercado: {mercado}')
+            print(f'Aposta aceita no mercado: {entrada}')
             
-            Entrada.objects.create(
-                id_event=mercado.id_event, 
-                mercado=mercado.mercado, 
-                odd=mercado.odd, 
-                home_actual=mercado.home_actual, 
-                away_actual=mercado.away_actual, 
-                data_jogo=mercado.data_jogo,
-                aposta_aceita=True
-            )
+            entrada.aposta_aceita = True
+            entrada.save()
             
             return JsonResponse({
                 'success': True,
                 'message': 'Aposta registrada com sucesso!',
                 'data': {
-                    'id_event': mercado.id_event,
-                    'mercado': mercado.mercado,
-                    'odd': float(mercado.odd) if mercado.odd else None,
+                    'id_event': entrada.id_event,
+                    'mercado': entrada.mercado,
+                    'odd': float(entrada.odd) if entrada.odd else None,
                 }
             })
+            
+        elif action == 'recusar':
+            entrada.aposta_aceita = False
+            entrada.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Aposta recusada!',
+                'data': {
+                    'id_event': entrada.id_event,
+                    'mercado': entrada.mercado,
+                    'odd': float(entrada.odd) if entrada.odd else None,
+                }
+            })
+            
         else:
             return JsonResponse({
                 'sucess': False,

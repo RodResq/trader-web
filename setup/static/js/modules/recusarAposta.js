@@ -83,11 +83,23 @@ export function setupRecusarModal() {
         this.disabled = true;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
         
-        // Simular chamada de API (você deve implementar a chamada real à API)
-        setTimeout(() => {
+        // Chamada de API (você deve implementar a chamada real à API)
+        const url = `/api/apostar?event_id=${currentEventId}&action=recusar`;
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json' 
+            }
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao recusar a aposta');
+            }
+            return response.json();
+        }).then(data => {
             // Marcar visualmente a linha como recusada
             currentRow.classList.add('table-danger');
-            
+
             // Atualizar botões na linha
             const btnAceitar = currentRow.querySelector('.apostar-btn');
             if (btnAceitar) {
@@ -95,10 +107,8 @@ export function setupRecusarModal() {
                 btnAceitar.classList.add('btn-secondary');
                 btnAceitar.disabled = true;
             }
-            
             // Ocultar o modal
             modalInstance.hide();
-            
             // Resetar botão
             this.disabled = false;
             this.innerHTML = '<i class="bi bi-x-circle"></i> Confirmar Recusa';
@@ -109,6 +119,7 @@ export function setupRecusarModal() {
             // Limpar referências
             currentEventId = null;
             currentRow = null;
-        }, 1000);
+        })
+
     });
 }
