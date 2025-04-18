@@ -202,9 +202,15 @@
                     <tbody>
                       {% if mercados %}
                       {% for mercado in mercados %}
-                      <tr {% if mercado.id_event in apostas_aceitas %}class="table-success"{% endif %}>
+                      <tr>
                         <td>{{ mercado.id_event }}</td>
-                        <td><span class="market-status"></span>{{ mercado.mercado }}</td>
+                        <td><i {% if mercado.aposta_aceita %}
+                              class="bi-check" style="font-size: 1rem; color: green;"
+                              {% else %}
+                              class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"
+                            {% endif %}></i>
+                          {{ mercado.mercado }}
+                        </td>
                         <td>{{ mercado.odd }}</td>
                         <td>{{ mercado.home_actual }}%</td>
                         <td>{{ mercado.away_actual }}%</td>
