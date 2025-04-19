@@ -220,6 +220,9 @@
                         <td>{{ mercado.away_actual }}%</td>
                         <td>{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
                         <td>
+                          <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id="{{ mercado.id_event }}" title="Editar Odd">
+                            <i class="bi bi-pencil"></i>
+                          </a>
                           <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id="{{ mercado.id_event }}" title="Aceitar aposta">
                             <i class="bi bi-check"></i>
                           </a>

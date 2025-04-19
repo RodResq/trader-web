@@ -12,6 +12,7 @@ import { setupRefreshButton } from './modules/api.js';
 import { setupRecusarModal } from './modules/recusarAposta.js';
 import { setupDesfazerAcaoModal } from './modules/desfazerAcao.js';
 import { initChecklist } from './modules/checklist.js';
+import { setupEditarModal } from './modules/editarOdd.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa componentes de UI
@@ -31,6 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
      // Inicializa modal de desfazer
     setupDesfazerAcaoModal()
+
+    // Inicializa modal de editar odd
+    setupEditarModal();
 
     // Inicializa checklist
     initChecklist()

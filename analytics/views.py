@@ -106,10 +106,7 @@ def eventos(request):
 
 def mercados(request):
     try:
-        # mercados = VwConsultaMercadoSf.objects.all().order_by("-home_actual");
-        # apostas_aceitas = list(LittleFaith.objects.values_list('id_event', flat=True));
         mercados = Entrada.objects.all().order_by("-home_actual")
-        
         data = []
         for mercado in mercados:
             data.append({
@@ -121,7 +118,6 @@ def mercados(request):
                 'data_jogo': mercado.data_jogo.strftime('%d/%m/%Y %H:%M:%S') if mercado.data_jogo else None,
                 'opcao_entrada': mercado.opcao_entrada
             })
-        
         return JsonResponse({
             'success': True,
             'mercados': data
@@ -131,3 +127,49 @@ def mercados(request):
             'success': True,
             'mercados': f'Erro ao obter mercados: {str(e)}'
         }, status=500)
+        
+        
+def editar_odd(request):
+    if request.method == 'GET':
+        event_id = request.GET.get('event_id')
+        nova_odd = request.GET.get('odd')
+        
+        if not event_id or not nova_odd:
+            return JsonResponse({
+                'success': False,
+                'message': 'Parâmetros incompletos. É necessário fornecer event_id e odd.'
+            }, status=400)
+            
+        try:
+            
+            nova_odd = float(nova_odd)
+            if nova_odd < 1.01:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Odd inválida. Valor mínimo é 1.01.'
+                }, status=400)
+                
+            entrada = get_object_or_404(Entrada, id_event=event_id)
+            entrada.odd = nova_odd
+            entrada.save()
+            
+            return JsonResponse({
+                'success': False,
+                'message': 'Odd atualizada com sucesso!',
+                'data': {
+                    'id_event': entrada.id_event,
+                    'odd': float(entrada.odd),
+                    'mercado': entrada.mercado
+                }
+            })
+        except ValueError:
+            return JsonResponse({
+                'success': False,
+                'message': 'Odd inválida. Use um número decimal.'
+            }, status=400)
+        except Exception as e:
+            return JsonResponse({
+                'sucess':False,
+                'message': f'Erro ao atualizar odd: {str(e)}'
+            }, status=500)
+            

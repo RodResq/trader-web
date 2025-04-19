@@ -1,4 +1,5 @@
 from django.db import models
+from periodo.models import Periodo
 
 # Create your models here.    
 
@@ -49,16 +50,35 @@ class Entrada(models.Model):
         ("E", "em_espera")
     ]
     id_event = models.IntegerField(primary_key=True)
+    id_periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE, null=True, blank=True, related_name="entradas", verbose_name="Período")
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd = models.FloatField(blank=False, null=False, default=0.00)
     home_actual = models.IntegerField(blank=False, null=False, default=0)
     away_actual = models.IntegerField(blank=False, null=False, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
     opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
+    valor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Valor de Entrada")
+    is_multipla = models.BooleanField(default=False, verbose_name="[0-simples, 1-multipla]")
     
     def __str__(self):
         return f"Entrada - {self.id_event} - mercado: {self.mercado} - away_actual: {self.away_actual}"    
     
+    
+    def save(self, *args, **kwargs):
+        """
+        Automatically assigns the period based on data_jogo if not explicitly set
+        """
+        if not self.id_periodo and self.data_jogo:
+            try:
+                # Find a period that includes the game date
+                self.id_periodo = Periodo.objects.filter(
+                    data_inicial__lte=self.data_jogo, 
+                    data_final__gte=self.data_jogo
+                ).first()
+            except Periodo.DoesNotExist:
+                pass
+            
+        return super().save(*args, **kwargs)
     
     class Meta:
         db_table = "entrada"

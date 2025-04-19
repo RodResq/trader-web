@@ -46,7 +46,7 @@ export function setupApostaButtons() {
             // Atualizar dados no modal
             document.getElementById('aceitar-evento-id').textContent = eventId;
             document.getElementById('aceitar-evento-mercado').textContent = mercado;
-            document.getElementById('aceitar-evento-odd').textContent = odd;;
+            document.getElementById('aceitar-evento-odd').textContent = odd;
 
             modalInstance.show();
         });
