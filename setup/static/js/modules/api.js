@@ -12,7 +12,17 @@ import { desabilitarBtnAceitar } from './utils.js';
  * Configura botões de aposta com manipuladores de eventos
  */
 export function setupApostaButtons() {
+    const modal = document.getElementById('aceitarApostaModal');
+    const aceitarBtn = document.querySelectorAll('#aceitar-aposta');
+    const confirmarBrn = document.getElementById('confirmarAceiteBtn')
     const apostarButtons = document.querySelectorAll('.apostar-btn');
+
+    if (!modal || !aceitarBtn.length || !confirmarBrn || !apostarButtons) return;
+
+    const modalInstance = new bootstrap.Modal(modal);
+
+    let currentEventId = null;
+    let currentRow = null;
     
     apostarButtons.forEach(button => {
         button.addEventListener('click', function(e) {
@@ -25,61 +35,53 @@ export function setupApostaButtons() {
             }
 
             const apostaBtn = this;
-            const tableRow = apostaBtn.closest('tr');
+            currentRow = apostaBtn.closest('tr');
 
-            if (confirm('Deseja confirmar esta aposta?')) {
-                apostaBtn.disabled = true;
-                // apostaBtn.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+            if (!currentRow) return;
 
-                const url = `/api/apostar?event_id=${eventId}&action=aceitar`;
+            const mercado = currentRow.querySelector('td:nth-child(2)').textContent;
+            const odd = currentRow.querySelector('td:nth-child(3)').textContent;
+            currentEventId = eventId;
 
-                fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao processar a aposta');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Processa resposta bem-sucedida
-                    desabilitarBtnAceitar(tableRow);
-                    
-                    // Exibe notificação de sucesso
-                    showNotification('Aposta registrada com sucesso!', 'success');
-                    return updateEntryOptionIcon(tableRow, "A")
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    apostaBtn.innerHTML = '<i class="bi bi-check"></i>';
-                    apostaBtn.disabled = false;
-                    
-                    // Exibe notificação de erro
-                    showNotification('Erro ao registrar aposta. Tente novamente.', 'danger');
-                });
-            }
+            // Atualizar dados no modal
+            document.getElementById('aceitar-evento-id').textContent = eventId;
+            document.getElementById('aceitar-evento-mercado').textContent = mercado;
+            document.getElementById('aceitar-evento-odd').textContent = odd;;
+
+            modalInstance.show();
         });
     });
+
+
+    confirmarBrn.addEventListener('click', function() {
+        if (!currentEventId || !currentRow) {
+            modalInstance.hide();
+            return;
+        }
+
+        const url = `/api/apostar?event_id=${currentEventId}&action=aceitar`;
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao aceitar entrada');
+            }
+            return response.json();
+        }).then(data => {
+            desabilitarBtnAceitar(currentRow);
+            modalInstance.hide();
+            showNotification('Aposta registrada com sucesso!', 'success');
+            
+            return updateEntryOptionIcon(currentRow, "A")
+        }).catch(error => {
+            console.error('Erro:', error);
+            showNotification('Erro ao registrar aposta. Tente novamente.', 'danger');
+        })
+    })
 }
-
-// function desabilitarBtnAceitarAposta(apostaBtn, row) {
-//     apostaBtn.innerHTML = '<i class="bi bi-check-all"></i>';
-//     apostaBtn.classList.remove('btn-success');
-//     apostaBtn.classList.add('btn-secondary');
-//     apostaBtn.disabled = true;
-
-//     abilitarBotoesRecusarDesfazer(row);
-// }
-
-// function abilitarBotoesRecusarDesfazer(row) {
-//     abilitarBtnRecusar(row);
-//     abilitarBtnDesfazer(row);
-// }
-
 
 /**
  * Configura o botão de atualização com manipulador de eventos

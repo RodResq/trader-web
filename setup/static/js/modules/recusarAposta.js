@@ -51,8 +51,8 @@ export function setupRecusarModal() {
             currentEventId = eventId;
             
             // Atualizar dados no modal
-            document.getElementById('evento-id').textContent = eventId;
-            document.getElementById('evento-mercado').textContent = mercado;
+            document.getElementById('recusar-evento-id').textContent = eventId;
+            document.getElementById('recusar-evento-mercado').textContent = mercado;
             
             // Resetar campos do formulário
             motivoSelect.value = '';
