@@ -9,7 +9,8 @@ import { isValidDateFormat } from './utils.js';
 export function initTableHandlers() {
     formatDateCells();
     checkAcceptedBets();
-    checkRejectBets()
+    checkRejectBets();
+    checkDesfazerAcao();
 }
 
 /**
@@ -152,6 +153,34 @@ export function checkRejectBets() {
             } else {
                 recusarBtn.disabled = false;
             }
+        }
+    });
+}
+
+/**
+ * Verifica se estado no estado de espera e atualiza a UI adequadamente 
+ **/
+export function checkDesfazerAcao() {
+    const table = document.getElementById('marketsTable');
+    if (!table) return;
+
+    const rows = table.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+        const mercadoCell = row.querySelector('td:nth-child(2)');
+        const iconElement = mercadoCell ? mercadoCell.querySelector('.bi-alarm') : null;
+
+        const desfazerBtn = row.querySelector('.desfazer-acao-btn');
+        
+        if (iconElement) {
+            if (!desfazerBtn.disabled) {
+                desfazerBtn.classList.remove('btn-warning');
+                desfazerBtn.classList.add('btn-secondary');
+            }
+        } else {
+            desfazerBtn.classList.remove('btn-secondary');
+            desfazerBtn.classList.add('btn-warning');
+            desfazerBtn.disabled = false;
         }
     });
 }

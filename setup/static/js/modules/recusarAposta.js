@@ -3,6 +3,7 @@
  */
 import { showNotification } from './notifications.js';
 import { updateEntryOptionIcon } from './table.js';
+import { desabilitarBtnRecusar } from './utils.js';
 
 /**
  * Inicializa o modal de recusa de aposta e seus manipuladores de eventos
@@ -99,12 +100,7 @@ export function setupRecusarModal() {
         }).then(data => {
             // Marcar visualmente a linha como recusada
             // currentRow.classList.add('table-danger');
-            const btnRecusar = currentRow.querySelector('.recusar-btn')
-            if (btnRecusar) {
-                btnRecusar.classList.remove('btn-danger');
-                btnRecusar.classList.add('btn-secondary');
-                btnRecusar.disabled = true;
-            }
+            desabilitarBtnRecusar(currentRow);
 
             
             modalInstance.hide();

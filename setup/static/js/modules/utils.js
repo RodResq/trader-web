@@ -53,3 +53,54 @@ export function applyDateMask(input) {
 
     return v;
 }
+
+export function desabilitarBtnAceitar(row) {
+    const btnAceitar = row.querySelector('.apostar-btn');
+    if (btnAceitar) {
+        btnAceitar.classList.remove('btn-success');
+        btnAceitar.classList.add('btn-secondary');
+        btnAceitar.disabled = true;
+    }
+
+    abilitarBtnRecusar(row);
+    abilitarBtnDesfazer(row);
+}
+
+export function desabilitarBtnRecusar(row) {
+    const btnRecusar = row.querySelector('.recusar-btn');
+    if (btnRecusar) {
+        btnRecusar.classList.remove('btn-danger');
+        btnRecusar.classList.add('btn-secondary');
+        btnRecusar.disabled = true;
+    }
+
+    abilitarBtnAceitar(row);
+    abilitarBtnDesfazer(row);
+}
+
+export function abilitarBtnAceitar(row) {
+    const btnsAcao = row.querySelector('td:nth-child(7)');
+    if (btnsAcao) {
+        const btnAceitar = btnsAcao.querySelector('#aceitar-aposta');
+        if (btnAceitar) {
+            btnAceitar.classList.remove('btn-secondary')
+            btnAceitar.classList.add('btn-success');
+            btnAceitar.disabled = false;
+        }
+    }
+}
+
+export function abilitarBtnDesfazer(row) {
+    const btnsAcao = row.querySelector('td:nth-child(7)');
+    const btnDesfazer = btnsAcao.querySelector('#desfazer-acao');
+    btnDesfazer.classList.remove('btn-secondary')
+    btnDesfazer.classList.add('btn-warning');
+    btnDesfazer.disabled = false;    
+}
+
+
+export function abilitarBtnRecusar(row) {
+    const btnsAcao = row.querySelector('td:nth-child(7)');
+    const btnRecusar = btnsAcao.querySelector('#recusar-aposta');
+    btnRecusar.disabled = false;    
+}

@@ -5,6 +5,8 @@ import { showNotification } from './notifications.js';
 import { updateEntryOptionIcon, updateMarketsTable } from './table.js';
 import { updateMarketStatus } from './marketStatus.js';
 import { setupRecusarModal } from './recusarAposta.js';
+import { desabilitarBtnAceitar } from './utils.js';
+
 
 /**
  * Configura botões de aposta com manipuladores de eventos
@@ -27,7 +29,7 @@ export function setupApostaButtons() {
 
             if (confirm('Deseja confirmar esta aposta?')) {
                 apostaBtn.disabled = true;
-                apostaBtn.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+                // apostaBtn.innerHTML = '<i class="bi bi-hourglass-split"></i>';
 
                 const url = `/api/apostar?event_id=${eventId}&action=aceitar`;
 
@@ -45,7 +47,7 @@ export function setupApostaButtons() {
                 })
                 .then(data => {
                     // Processa resposta bem-sucedida
-                    desabilitarBtnAceitarAposta(apostaBtn);
+                    desabilitarBtnAceitar(tableRow);
                     
                     // Exibe notificação de sucesso
                     showNotification('Aposta registrada com sucesso!', 'success');
@@ -64,12 +66,20 @@ export function setupApostaButtons() {
     });
 }
 
-function desabilitarBtnAceitarAposta(apostaBtn) {
-    apostaBtn.innerHTML = '<i class="bi bi-check-all"></i>';
-    apostaBtn.classList.remove('btn-success');
-    apostaBtn.classList.add('btn-secondary');
-    apostaBtn.disabled = true;
-}
+// function desabilitarBtnAceitarAposta(apostaBtn, row) {
+//     apostaBtn.innerHTML = '<i class="bi bi-check-all"></i>';
+//     apostaBtn.classList.remove('btn-success');
+//     apostaBtn.classList.add('btn-secondary');
+//     apostaBtn.disabled = true;
+
+//     abilitarBotoesRecusarDesfazer(row);
+// }
+
+// function abilitarBotoesRecusarDesfazer(row) {
+//     abilitarBtnRecusar(row);
+//     abilitarBtnDesfazer(row);
+// }
+
 
 /**
  * Configura o botão de atualização com manipulador de eventos
