@@ -66,6 +66,20 @@ def apostar(request):
                     'odd': float(entrada.odd) if entrada.odd else None,
                 }
             })
+        elif action == 'desfazer':
+            entrada.opcao_entrada = "E"
+            entrada.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Entrada desfeita!',
+                'data': {
+                    'id_event': entrada.id_event,
+                    'mercado': entrada.mercado,
+                    'odd': float(entrada.odd) if entrada.odd else None,
+                }
+            })
+            
         else:
             return JsonResponse({
                 'sucess': False,

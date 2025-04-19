@@ -10,6 +10,7 @@ import { initFilters } from './modules/filters.js';
 import { setupApostaButtons } from './modules/api.js';
 import { setupRefreshButton } from './modules/api.js';
 import { setupRecusarModal } from './modules/recusarAposta.js';
+import { setupDesfazerAcaoModal } from './modules/desfazerAcao.js';
 import { initChecklist } from './modules/checklist.js';
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -27,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializa modal de recusa
     setupRecusarModal();
+
+     // Inicializa modal de desfazer
+    setupDesfazerAcaoModal()
 
     // Inicializa checklist
     initChecklist()
