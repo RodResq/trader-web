@@ -36,8 +36,8 @@ export function setupDesfazerAcaoModal() {
             currentEventId = eventId;
 
             // Atualizar dados no modal
-            document.getElementById('evento-id').textContent = eventId;
-            document.getElementById('evento-mercado').textContent = mercado;
+            document.getElementById('evento-id-desfazer').textContent = eventId;
+            document.getElementById('evento-mercado-desfazer').textContent = mercado;
 
             modalInstance.show();
         });

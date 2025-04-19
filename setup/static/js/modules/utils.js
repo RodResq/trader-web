@@ -109,6 +109,12 @@ export function abilitarBtnDesfazer(row) {
 
 export function abilitarBtnRecusar(row) {
     const btnsAcao = row.querySelector('td:nth-child(7)');
-    const btnRecusar = btnsAcao.querySelector('#recusar-aposta');
-    btnRecusar.disabled = false;    
+    if (btnsAcao) {
+        const btnRecusar = btnsAcao.querySelector('.recusar-btn');
+        if (btnRecusar) {
+            btnRecusar.classList.remove('btn-secondary');
+            btnRecusar.classList.add('btn-danger')
+            btnRecusar.disabled = false;    
+        }
+    }
 }
