@@ -21,14 +21,10 @@ export function isValidDateFormat(dateString) {
 export function formatDateForComparison(dateString) {
     if (!dateString) return '';
 
-    // Remove espaços extras
     dateString = dateString.trim();
-
-    // Verifica se já está no formato esperado DD/MM/AAAA
     if (isValidDateFormat(dateString)) {
         return dateString;
     }
-
     return dateString;
 }
 
@@ -76,6 +72,18 @@ export function desabilitarBtnRecusar(row) {
 
     abilitarBtnAceitar(row);
     abilitarBtnDesfazer(row);
+}
+
+export function desabilitarBtnDesfazer(row) {
+    const btnDesfazer = row.querySelector('.desfazer-acao-btn');
+    if (btnDesfazer) {
+        btnDesfazer.classList.remove('btn-warning');
+        btnDesfazer.classList.add('btn-secondary');
+        btnDesfazer.disabled = true;
+    }
+
+    abilitarBtnAceitar(row);
+    abilitarBtnRecusar(row);
 }
 
 export function abilitarBtnAceitar(row) {

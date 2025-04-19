@@ -3,6 +3,7 @@
  */
 import { showNotification } from './notifications.js';
 import { updateEntryOptionIcon } from './table.js';
+import { desabilitarBtnDesfazer } from './utils.js';
 
 /**
  * Inicializa o modal de desfazer ação
@@ -65,13 +66,8 @@ export function setupDesfazerAcaoModal() {
             }
             return response.json();
         }).then(data => {
-            const btnDesfazer = currentRow.querySelector('.desfazer-acao-btn')
-            if (btnDesfazer) {
-                btnDesfazer.classList.remove('btn-warning');
-                btnDesfazer.classList.add('btn-secondary');
-                btnDesfazer.disabled = true;
-            }
 
+            desabilitarBtnDesfazer(currentRow);
             
             modalInstance.hide();
             // Resetar botão
