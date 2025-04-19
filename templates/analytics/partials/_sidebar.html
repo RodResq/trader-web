@@ -5,23 +5,28 @@
     </div>
     <ul class="nav flex-column px-3">
       <li class="nav-item">
-        <a class="nav-link active" href="#">
+        <a class="nav-link active" href="/">
           <i class="bi bi-house-door"></i> Dashboard
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="bi bi-file-earmark"></i> Relatórios
+        <a class="nav-link" href="{% url 'periodo:index' %}">
+            <i class="bi bi-calendar"></i> Períodos
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'analytics:eventos' %}">
           <i class="bi bi-dribbble"></i> Mercados
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'analytics:lucro:index' %}">
+            <i class="bi bi-graph-up"></i> Resultados
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="#">
-          <i class="bi bi-graph-up"></i> Estatísticas
+          <i class="bi bi-bar-chart"></i> Estatísticas
         </a>
       </li>
       <li class="nav-item">

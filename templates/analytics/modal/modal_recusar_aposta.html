@@ -1,7 +1,7 @@
 <div class="modal fade" id="recusarApostaModal" tabindex="-1" aria-labelledby="recusarApostaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
+      <div class="modal-content bg-dark">
+        <div class="modal-header border-bottom-0">
           <h5 class="modal-title" id="recusarApostaModalLabel">Confirmar Recusa</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
@@ -17,7 +17,7 @@
           
           <div class="mb-3">
             <label for="recusarMotivo" class="form-label">Motivo da Recusa (opcional):</label>
-            <select class="form-select" id="recusarMotivo">
+            <select class="form-select bg-dark text-light" id="recusarMotivo">
               <option value="">Selecione um motivo...</option>
               <option value="odd_baixa">Odd muito baixa</option>
               <option value="risco_alto">Risco muito alto</option>
@@ -29,10 +29,10 @@
           
           <div class="mb-3" id="outroMotivoContainer" style="display: none;">
             <label for="outroMotivo" class="form-label">Especifique o motivo:</label>
-            <textarea class="form-control" id="outroMotivo" rows="3"></textarea>
+            <textarea class="form-control bg-dark text-light" id="outroMotivo" rows="3"></textarea>
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer border-top-0">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           <button type="button" class="btn btn-danger" id="confirmarRecusaBtn">
             <i class="bi bi-x-circle"></i> Confirmar Recusa
@@ -41,3 +41,15 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Adiciona evento para mostrar/esconder campo de outro motivo
+    document.addEventListener('DOMContentLoaded', function() {
+      const motivoSelect = document.getElementById('recusarMotivo');
+      const outroMotivoContainer = document.getElementById('outroMotivoContainer');
+      
+      motivoSelect.addEventListener('change', function() {
+        outroMotivoContainer.style.display = this.value === 'outros' ? 'block' : 'none';
+      });
+    });
+  </script>
