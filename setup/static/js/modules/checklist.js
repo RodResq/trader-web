@@ -2,6 +2,8 @@
  * Módulo de Checklist - Gerencia funcionalidades de checklist para mercados
  */
 import { showNotification } from './notifications.js';
+import { updateEntryOptionIcon } from './table.js';
+import { addCSRFToken } from './token.js';
 
 /**
  * Estado da aplicação para as checkboxes
@@ -333,7 +335,7 @@ function bulkAction(action) {
         // Por enquanto, apenas uma simulação
         setTimeout(() => {
             if (action === 'aceitar') {
-                // Lógica para processa em lote.
+                
 
                 processAcceptItems();
             } else if (action === 'recusar') {
@@ -348,27 +350,55 @@ function bulkAction(action) {
  */
 function processAcceptItems() {
     const checkboxes = document.querySelectorAll('.market-checkbox:checked');
-    
-    checkboxes.forEach(checkbox => {
-        const row = checkbox.closest('tr');
-        if (row) {
-            row.classList.remove('table-active');
-            row.classList.add('table-success');
+    const eventIds = Array.from(checkboxes)
+        .map(checkbox => checkbox.dataset.eventId);
+
+    // Lógica para processa em lote.
+    fetch('/api/entrada_multipla', addCSRFToken({
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            event_ids: eventIds,
+            action: 'aceitar'
+        })
+    }))
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const checkboxes = document.querySelectorAll('.market-checkbox:checked');
             
-            // Desabilitar botão de aceitar na linha
-            const acceptBtn = row.querySelector('.apostar-btn');
-            if (acceptBtn) {
-                acceptBtn.classList.remove('btn-success');
-                acceptBtn.classList.add('btn-secondary');
-                acceptBtn.innerHTML = '<i class="bi bi-check-all"></i>';
-                acceptBtn.disabled = true;
-            }
+            checkboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                if (row) {
+                    row.classList.remove('table-active');
+
+                    //Atualiza o icone de estado da entrada
+                    updateEntryOptionIcon(row, 'A'); // TODO AJUSTAR POSICAO DA COLUNA DIFERENTE
+                    
+                    // Desabilitar botão de aceitar na linha
+                    const acceptBtn = row.querySelector('.apostar-btn');
+                    if (acceptBtn) {
+                        acceptBtn.classList.remove('btn-success');
+                        acceptBtn.classList.add('btn-secondary');
+                        acceptBtn.innerHTML = '<i class="bi bi-check-all"></i>';
+                        acceptBtn.disabled = true;
+                    }
+                }
+            });
+
+            showNotification(`${selectedItems.size} aposta(s) aceita(s) com sucesso!`, 'sucess');
+            selectedItems.clear();
+            updateSelectedCount();
+        } else {
+            showNotification(data.message || 'Erro ao aceitar apostas', 'danger');
         }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        showNotification('Erro ao processar apostas', 'danger');
     });
-    
-    showNotification(`${selectedItems.size} aposta(s) aceita(s) com sucesso!`, 'success');
-    selectedItems.clear();
-    updateSelectedCount();
 }
 
 /**
@@ -376,26 +406,54 @@ function processAcceptItems() {
  */
 function processRejectItems() {
     const checkboxes = document.querySelectorAll('.market-checkbox:checked');
-    
-    checkboxes.forEach(checkbox => {
-        const row = checkbox.closest('tr');
-        if (row) {
-            row.classList.remove('table-active');
-            row.classList.add('table-danger');
+    const eventIds = Array.from(checkboxes)
+        .map(checkboxe => checkboxe.dataset.eventId);
+
+    fetch('/api/entrada_multipla', addCSRFToken({
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            event_ids: eventIds,
+            action: 'recusar'
+        })
+    }))
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const checkboxes = document.querySelectorAll('.market-checkbox:checked');
             
-            // Desabilitar botão de aceitar na linha
-            const acceptBtn = row.querySelector('.apostar-btn');
-            if (acceptBtn) {
-                acceptBtn.classList.remove('btn-success');
-                acceptBtn.classList.add('btn-secondary');
-                acceptBtn.disabled = true;
-            }
-        }
-    });
+            checkboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                if (row) {
+                    row.classList.remove('table-active');
+                    row.classList.add('table-danger');
     
-    showNotification(`${selectedItems.size} aposta(s) recusada(s) com sucesso!`, 'warning');
-    selectedItems.clear();
-    updateSelectedCount();
+                    // Atualiza o ícone de estado da entrada
+                    updateEntryOptionIcon(row, 'R');
+                    
+                    // Desabilitar botão de aceitar na linha
+                    const acceptBtn = row.querySelector('.apostar-btn');
+                    if (acceptBtn) {
+                        acceptBtn.classList.remove('btn-success');
+                        acceptBtn.classList.add('btn-secondary');
+                        acceptBtn.disabled = true;
+                    }
+                }
+            });
+    
+            showNotification(`${selectedItems.size} aposta(s) recusada(s) com sucesso!`, 'warning');
+            selectedItems.clear();
+            updateSelectedCount();
+        } else {
+            showNotification(data.message || 'Erro ao recusar apostas', 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        showNotification('Erro ao processar apostas', 'danger');
+    })
 }
 
 /**

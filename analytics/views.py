@@ -1,3 +1,7 @@
+import json
+from django.utils import timezone
+from django.db import transaction
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from analytics.models import VwConsultaMercadoSf, Entrada
 from analytics.helpers import dump_mercados_para_entrada
@@ -9,11 +13,12 @@ def index(request):
         dump_mercados_para_entrada()
         entradas = Entrada.objects.all()
         qtd_periodos = Periodo.objects.count() 
-        for entrada in entradas:
-            print(f'Entrada: {entrada.mercado}, away_actual: {entrada.away_actual}, type away_actual: {type(entrada.away_actual)}')
-           
+        qtd_eventos = Entrada.objects.count()
+            
         return render(request, 'analytics/index.html', {
-            'mercados': entradas
+            'mercados': entradas,
+            'qtd_eventos': qtd_eventos,
+            'qtd_periodos': qtd_periodos
         })
 
 def apostar(request):
@@ -174,5 +179,94 @@ def editar_odd(request):
             
 
 def entrada_multipla(request):
-    pass
+    if request.method == 'POST':
+        try:
+             # Obter dados da requisição
+            data = json.loads(request.body)
+            event_ids = data.get('event_ids', [])
+            action = data.get('action')
+             
+             # Validar parâmetros
+            if not event_ids or action not in ['aceitar', 'recusar']:
+                return JsonResponse({'sucess': False,'message': 'Parâmetros inválidos.'}, status=400)
+            
+             # Recuperar todas as entradas
+            entradas = Entrada.objects.filter(id_event__in=event_ids)
+            
+             # Verificar se todos os eventos foram encontrados
+            if len(entradas) != len(event_ids):   
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Alguns eventos não foram encontrados.'
+                }, status=400)
+            
+             # Gerar um código único para a múltipla
+            cod_multipla = f"ML-{timezone.now().strftime('%Y%m%d%H%M%S')}"
+            
+            odd_multipla = 1.0
+             
+            for entrada in entradas:
+                 # Verificar se alguma entrada já está em uma múltipla
+                if entrada.is_multipla:
+                    return JsonResponse({
+                        'sucess': False,
+                        'message':  f'O evento {entrada.id_event} já faz parte de uma múltipla.'
+                    }, status=400)
+                     
+            odd_multipla *= entrada.odd
+             
+             # Verificar período válido
+            periodos_validos = Periodo.objects.filter(
+                data_inicial__lte=min(entrada.data_jogo for entrada in entradas),
+                data_final__gte=max(entrada.data_jogo for entrada in entradas)
+            )
+             
+            if not periodos_validos.exists():
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Não existe um período válido para esta múltipla.'
+                }, status=400)
+            
+             # Selecionar o primeiro período válido
+            periodo = periodos_validos.first()
+            
+             # Processar cada entrada
+            with transaction.atomic():
+                for entrada in entradas:
+                    if action == 'aceitar':
+                        entrada.opcao_entrada = "A"
+                    elif action == 'recusar':
+                        entrada.opcao_entrada == "R"
+                    entrada.is_multipla = True
+                    entrada.cod_multipla = cod_multipla
+                    entrada.id_periodo = periodo
+                    entrada.save()
+                     
+            return JsonResponse({
+                 'success': True,
+                 'message': f'Múltipla criada com sucesso!',
+                 'data': {
+                    'cod_multipla': cod_multipla,
+                    'odd_multipla': odd_multipla,
+                    'quantidade_eventos': len(event_ids),
+                    'periodo': periodo.id
+                 }
+             })
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'message': 'Corpo da requisição inválido.'
+            }, status=400)
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': f'Erro ao processar múltipla: {str(e)}'
+            }, status=500)
+            
+    return JsonResponse({
+        'success': False,
+        'message': 'Método não permitido.'
+    }, status=405)
             
