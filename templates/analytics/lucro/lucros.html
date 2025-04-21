@@ -50,7 +50,12 @@
               {% if lucros %}
                 {% for lucro in lucros %}
                 <tr>
-                  <td>{{ lucro.semana }}</td>
+                  <td>
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ lucro.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ lucro.pk }}">
+                    {{ lucro.semana }}
+                    <i class="bi bi-chevron-down ms-1"></i>
+                    </a>
+                  </td>
                   <td>{{ lucro.data_inicial|date:"d/m/Y" }} a {{ lucro.data_final|date:"d/m/Y" }}</td>
                   <td>{{ lucro.quantidade_apostas }}</td>
                   <td>{{ lucro.valor_inidividual_aposta }}</td>
@@ -62,6 +67,41 @@
                     <a href="{% url 'analytics:lucro:lucro_delete' lucro.pk %}" class="btn btn-sm btn-danger" title="Excluir">
                       <i class="bi bi-trash"></i>
                     </a>
+                  </td>
+                </tr>
+                <tr class="collapse" id="detalhesLucro{{ lucro.pk }}">
+                  <td colspan="6">
+                    <div class="card card-body bg-dark">
+                      <h6 class="text-primary mb-3">Detalhes das Entradas</h6>
+                      {% comment %} Add logic to fetch and display entries for this period {% endcomment %}
+                      <p class="text-muted">Funcionalidade de buscar entradas para este período ainda não implementada.</p>
+                      
+                      {% comment %} Example of how it might look once implemented {% endcomment %}
+                      {% comment %}
+                      <div class="table-responsive">
+                        <table class="table table-dark table-striped">
+                          <thead>
+                            <tr>
+                              <th>ID Evento</th>
+                              <th>Mercado</th>
+                              <th>Odd</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for entrada in lucro.entradas.all %}
+                            <tr>
+                              <td>{{ entrada.id_event }}</td>
+                              <td>{{ entrada.mercado }}</td>
+                              <td>{{ entrada.odd }}</td>
+                              <td>{{ entrada.get_opcao_entrada_display }}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                      {% endcomment %}
+                    </div>
                   </td>
                 </tr>
                 {% endfor %}
