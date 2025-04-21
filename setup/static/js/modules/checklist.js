@@ -320,9 +320,9 @@ function bulkAction(action) {
     let confirmMessage = '';
     
     if (action === 'aceitar') {
-        confirmMessage = `Deseja aceitar ${selectedItems.size} aposta${selectedItems.size !== 1 ? 's' : ''}?`;
+        confirmMessage = `Deseja aceitar ${selectedItems.size} aposta${selectedItems.size !== 1 ? 's' : ''}?`; //subistituir por modal
     } else if (action === 'recusar') {
-        confirmMessage = `Deseja recusar ${selectedItems.size} aposta${selectedItems.size !== 1 ? 's' : ''}?`;
+        confirmMessage = `Deseja recusar ${selectedItems.size} aposta${selectedItems.size !== 1 ? 's' : ''}?`; //subistituir por modal
     }
     
     if (confirm(confirmMessage)) {
@@ -333,6 +333,8 @@ function bulkAction(action) {
         // Por enquanto, apenas uma simulação
         setTimeout(() => {
             if (action === 'aceitar') {
+                // Lógica para processa em lote.
+
                 processAcceptItems();
             } else if (action === 'recusar') {
                 processRejectItems();

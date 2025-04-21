@@ -7,16 +7,14 @@ from periodo.models import Periodo
 # Create your views here.
 def index(request):
         dump_mercados_para_entrada()
-        entradas = Entrada.objects.all().order_by("-data_jogo")
+        entradas = Entrada.objects.all()
         qtd_periodos = Periodo.objects.count() 
+        for entrada in entradas:
+            print(f'Entrada: {entrada.mercado}, away_actual: {entrada.away_actual}, type away_actual: {type(entrada.away_actual)}')
            
         return render(request, 'analytics/index.html', {
-            'mercados': entradas,
-            'qtd_periodos': qtd_periodos, 
-            'use_utc': True
+            'mercados': entradas
         })
-
-
 
 def apostar(request):
     event_id = request.GET.get('event_id')
@@ -109,12 +107,13 @@ def mercados(request):
         mercados = Entrada.objects.all().order_by("-home_actual")
         data = []
         for mercado in mercados:
+            print(f"Event ID: {mercado.id_event}, Away Actual: {mercado.away_actual}")
             data.append({
                 'id_event': mercado.id_event,
                 'mercado': mercado.mercado,
                 'odd': float(mercado.odd) if mercado.odd else None,
                 'home_actual': mercado.home_actual,
-                'away_actual': mercado.away_actual if mercado.away_actual else 0,
+                'away_actual': mercado.away_actual,
                 'data_jogo': mercado.data_jogo.strftime('%d/%m/%Y %H:%M:%S') if mercado.data_jogo else None,
                 'opcao_entrada': mercado.opcao_entrada
             })
@@ -124,7 +123,7 @@ def mercados(request):
         })
     except Exception as e:
         return JsonResponse({
-            'success': True,
+            'success': False,
             'mercados': f'Erro ao obter mercados: {str(e)}'
         }, status=500)
         
@@ -172,4 +171,8 @@ def editar_odd(request):
                 'sucess':False,
                 'message': f'Erro ao atualizar odd: {str(e)}'
             }, status=500)
+            
+
+def entrada_multipla(request):
+    pass
             

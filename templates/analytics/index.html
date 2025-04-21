@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'styles/index.css' %}" >
   <div class="main-content">
     <div class="container-fluid">
-      <h1 class="mt-4 mb-4">Dashboard</h1>
+      {% comment %} <h1 class="mt-4 mb-4">Dashboard</h1> {% endcomment %}
       
       <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
@@ -94,8 +94,8 @@
       </div>
 
       <div class="row">
-        <div class="col-lg-8 mb-4">
-          <div class="card shadow mb-4">
+        <div class="col-lg-8 mb-1">
+          <div class="card shadow mb-3">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Mercados Atual</h6>
             </div>
@@ -182,7 +182,7 @@
                       <a id="updateMarkets" class="btn btn-sm btn-success refresh-btn" title="atualizar mercados"><i class="bi bi-arrow-repeat"></i></a>
                     </div>
                     <div class="input-group-append">
-                      <a id="mostrarCheckList" class="btn btn-sm btn-primary" title="Entradas em Lote"><i class="bi bi-list-check"></i></a>
+                      <a id="mostrarCheckList" class="btn btn-sm btn-primary" title="Múltiplas"><i class="bi bi-list-check"></i></a>
                     </div>
                   </div>
                 </div>

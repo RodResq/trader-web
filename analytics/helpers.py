@@ -16,7 +16,7 @@ def dump_mercados_para_entrada() -> bool:
                     mercado=mercado.mercado,
                     odd=mercado.odd,
                     home_actual=mercado.home_actual,
-                    away_actual=mercado.away_actual if mercado.away_actual else 0,
+                    away_actual=mercado.away_actual,
                     data_jogo=mercado.data_jogo
                 )
                 contador_inseridos += 1

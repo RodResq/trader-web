@@ -59,7 +59,9 @@ class Entrada(models.Model):
     opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
     valor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Valor de Entrada")
     is_multipla = models.BooleanField(default=False, verbose_name="[0-simples, 1-multipla]")
-    
+    cod_multipla = models.CharField(max_length=20, blank=True, null=True)
+            
+        
     def __str__(self):
         return f"Entrada - {self.id_event} - mercado: {self.mercado} - away_actual: {self.away_actual}"    
     
