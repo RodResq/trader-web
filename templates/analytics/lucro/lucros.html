@@ -86,6 +86,8 @@
                               <th>Away</th>
                               <th>Valor (R$)</th>
                               <th>Data</th>
+                              <th>Resultado</th>
+                              <th>Ação</th>
                             </tr>
                           </thead>
                           <tbody>lucros
@@ -98,6 +100,34 @@
                               <td>{{ entrada.away_actual }}%</td>
                               <td>{{ entrada.valor }}</td>
                               <td>{{ entrada.data_jogo|date:"d/m/Y H:i" }}</td>
+                              <td class="resultado-container">
+                                <div class="input-group">
+                                  <select class="form-select form-select-sm resultado-select" 
+                                          data-event-id="{{ entrada.id_event }}">
+                                    <option value="" 
+                                      {% if not entrada.resultado_entrada %}selected{% endif %}>
+                                      Selecione
+                                    </option>
+                                    <option value="G" 
+                                      {% if entrada.resultado_entrada == 'G' %}selected{% endif %}>
+                                      Green
+                                    </option>
+                                    <option value="R" 
+                                      {% if entrada.resultado_entrada == 'R' %}selected{% endif %}>
+                                      Red
+                                    </option>
+                                    <option value="A" 
+                                      {% if entrada.resultado_entrada == 'A' %}selected{% endif %}>
+                                      Anulado
+                                    </option>
+                                  </select>
+                                </div>
+                              </td>
+                              <td>
+                                <a class="btn btn-sm btn-primary salvar-resultado" data-event-id="{{ entrada.id_event }}">
+                                  <i class="bi bi-save"></i>
+                                </a>
+                              </td>
                             </tr>
                             {% endfor %}
                           </tbody>

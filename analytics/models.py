@@ -1,5 +1,6 @@
 from django.db import models
 from periodo.models import Periodo
+from django.core.validators import MinValueValidator
 
 # Create your models here.    
 
@@ -62,7 +63,13 @@ class Entrada(models.Model):
     away_actual = models.IntegerField(blank=False, null=False, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
     opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
-    valor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Valor de Entrada")
+    valor = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        validators=[MinValueValidator(0)], 
+        verbose_name="Valor de Entrada", 
+        default=0.0
+    )
     is_multipla = models.BooleanField(default=False, verbose_name="[0-simples, 1-multipla]")
     cod_multipla = models.CharField(max_length=20, blank=True, null=True)
     resultado_entrada = models.CharField(max_length=20, blank=True, null=True, choices=OPCOES_RESULTADO)
