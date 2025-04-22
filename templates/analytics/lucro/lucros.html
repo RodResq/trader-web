@@ -4,7 +4,7 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="h3 mb-0 text-gray-800">Gerencia de Entrada</h1>
+      <h1 class="h3 mb-0 text-gray-800">Gerência de Entradas</h1>
       <a href="{% url 'analytics:lucro:lucro_create' %}" class="btn btn-primary">
         <i class="bi bi-plus-circle"></i> Novo Registro
       </a>
@@ -47,8 +47,9 @@
               </tr>
             </thead>
             <tbody>
-              {% if lucros %}
-                {% for lucro in lucros %}
+              {% if resultado_entradas %}
+                {% for resultado in resultado_entradas %}
+                {% with lucro=resultado.lucro entradas=resultado.entradas %}
                 <tr>
                   <td>
                     <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ lucro.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ lucro.pk }}">
@@ -57,9 +58,9 @@
                     </a>
                   </td>
                   <td>{{ lucro.data_inicial|date:"d/m/Y" }} a {{ lucro.data_final|date:"d/m/Y" }}</td>
-                  <td>{{ lucro.quantidade_apostas }}</td>
-                  <td>{{ lucro.valor_inidividual_aposta }}</td>
-                  <td>{{ lucro.valor_total_apostas }}</td>
+                  <td>{{ entradas|length }}</td>
+                  <td>{{ lucro.total_entradas }}</td>
+                  <td>{{ lucro.total_retorno }}</td>
                   <td class="text-center">
                     <a href="{% url 'analytics:lucro:lucro_edit' lucro.pk %}" class="btn btn-sm btn-primary" title="Editar">
                       <i class="bi bi-pencil"></i>
@@ -73,11 +74,7 @@
                   <td colspan="6">
                     <div class="card card-body bg-dark">
                       <h6 class="text-primary mb-3">Detalhes das Entradas</h6>
-                      {% comment %} Add logic to fetch and display entries for this period {% endcomment %}
-                      <p class="text-muted">Funcionalidade de buscar entradas para este período ainda não implementada.</p>
-                      
-                      {% comment %} Example of how it might look once implemented {% endcomment %}
-                      {% comment %}
+                      {% if entradas %}
                       <div class="table-responsive">
                         <table class="table table-dark table-striped">
                           <thead>
@@ -85,25 +82,32 @@
                               <th>ID Evento</th>
                               <th>Mercado</th>
                               <th>Odd</th>
-                              <th>Status</th>
+                              <th>Home</th>
+                              <th>Away</th>
+                              <th>Data</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            {% for entrada in lucro.entradas.all %}
+                          <tbody>lucros
+                            {% for entrada in entradas %}
                             <tr>
                               <td>{{ entrada.id_event }}</td>
                               <td>{{ entrada.mercado }}</td>
                               <td>{{ entrada.odd }}</td>
-                              <td>{{ entrada.get_opcao_entrada_display }}</td>
+                              <td>{{ entrada.home_actual }}%</td>
+                              <td>{{ entrada.away_actual }}%</td>
+                              <td>{{ entrada.data_jogo|date:"d/m/Y H:i" }}</td>
                             </tr>
                             {% endfor %}
                           </tbody>
                         </table>
                       </div>
-                      {% endcomment %}
+                      {% else %}
+                      <p class="text-muted">Nenhuma entrada encontrada para este período.</p>
+                      {% endif %}
                     </div>
                   </td>
                 </tr>
+                {% endwith %}
                 {% endfor %}
               {% else %}
                 <tr>

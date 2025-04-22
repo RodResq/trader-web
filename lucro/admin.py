@@ -2,7 +2,7 @@ from django.contrib import admin
 from lucro.models import Resultado
 
 class ListandoLucro(admin.ModelAdmin):
-    list_display = ("semana", "quantidade_apostas", "valor_inidividual_aposta", "data_inicial", "data_final") 
+    list_display = ("semana", "quantidade_apostas", "total_entradas", "total_retorno", "data_inicial", "data_final") 
     list_display_links = ("semana",)
     search_fields = ("semana",)
     list_per_page = 10   

@@ -21,8 +21,8 @@
           <p><strong>Semana:</strong> {{ lucro.semana }}</p>
           <p><strong>Período:</strong> {{ lucro.data_inicial|date:"d/m/Y" }} a {{ lucro.data_final|date:"d/m/Y" }}</p>
           <p><strong>Qtd. Apostas:</strong> {{ lucro.quantidade_apostas }}</p>
-          <p><strong>Valor Individual:</strong> R$ {{ lucro.valor_inidividual_aposta }}</p>
-          <p><strong>Valor Total:</strong> R$ {{ lucro.valor_total_apostas }}</p>
+          <p><strong>Valor Total Entradas:</strong> R$ {{ lucro.total_entradas }}</p>
+          <p><strong>Valor Total Retorno:</strong> R$ {{ lucro.total_retorno }}</p>
         </div>
         
         <p class="text-danger">Esta ação não pode ser desfeita. Tem certeza que deseja continuar?</p>

@@ -3,11 +3,29 @@ from django.urls import reverse
 from django.contrib import messages
 from .models import Resultado
 from .forms import LucroForm
+from analytics.models import Entrada
+from django.db.models import Q
 
 def lucros(request):
     """Exibe a lista de registros de lucro."""
-    lucros = Resultado.objects.all()
-    return render(request, 'analytics/lucro/lucros.html', {'lucros': lucros})
+    resultados = Resultado.objects.all()
+    
+    resultado_entradas = []
+    
+    for resultado in resultados:
+        entradas = Entrada.objects.filter(
+            Q(data_jogo__date__gte=resultado.data_inicial) & 
+            Q(data_jogo__date__lte=resultado.data_final)
+        ).filter(opcao_entrada="A")
+        
+        resultado_dict = {
+            'lucro': resultado,
+            'entradas': entradas
+        }
+        
+        resultado_entradas.append(resultado_dict)
+    
+    return render(request, 'analytics/lucro/lucros.html', {'resultado_entradas': resultado_entradas})
 
 def lucro_edit(request, pk=None):
     """Edita um registro de lucro existente ou cria um novo."""
