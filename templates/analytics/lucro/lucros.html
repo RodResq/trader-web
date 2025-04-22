@@ -41,8 +41,8 @@
                 <th>Semana</th>
                 <th>Período</th>
                 <th>Qtd. Entradas</th>
-                <th>Valor Investido (R$)</th>
-                <th>Valor Retornado (R$)</th>
+                <th>Valor Total Entradas (R$)</th>
+                <th>Valor Total Retornado (R$)</th>
                 <th class="text-center">Ações</th>
               </tr>
             </thead>
@@ -84,6 +84,7 @@
                               <th>Odd</th>
                               <th>Home</th>
                               <th>Away</th>
+                              <th>Valor (R$)</th>
                               <th>Data</th>
                             </tr>
                           </thead>
@@ -95,6 +96,7 @@
                               <td>{{ entrada.odd }}</td>
                               <td>{{ entrada.home_actual }}%</td>
                               <td>{{ entrada.away_actual }}%</td>
+                              <td>{{ entrada.valor }}</td>
                               <td>{{ entrada.data_jogo|date:"d/m/Y H:i" }}</td>
                             </tr>
                             {% endfor %}

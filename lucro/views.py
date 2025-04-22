@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import Resultado
 from .forms import LucroForm
 from analytics.models import Entrada
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 def lucros(request):
     """Exibe a lista de registros de lucro."""
@@ -17,6 +17,17 @@ def lucros(request):
             Q(data_jogo__date__gte=resultado.data_inicial) & 
             Q(data_jogo__date__lte=resultado.data_final)
         ).filter(opcao_entrada="A")
+        
+        qtd_total_entradas = entradas.count()
+        valor_total_entradas = entradas.aggregate(
+            total_valor=Sum('valor', default=0)
+        )['total_valor']
+        
+        if qtd_total_entradas > 0:
+            if valor_total_entradas != resultado.total_entradas:
+                resultado.total_entradas = valor_total_entradas
+                resultado.quantidade_apostas = qtd_total_entradas
+                resultado.save()
         
         resultado_dict = {
             'lucro': resultado,
