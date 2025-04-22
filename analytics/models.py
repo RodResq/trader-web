@@ -49,6 +49,11 @@ class Entrada(models.Model):
         ("R", "recusar"),
         ("E", "em_espera")
     ]
+    OPCOES_RESULTADO = [
+        ("G", "green"),
+        ("R", "red"),
+        ("A", "anulado")
+    ]
     id_event = models.IntegerField(primary_key=True)
     id_periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE, null=True, blank=True, related_name="entradas", verbose_name="Período")
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
@@ -60,6 +65,7 @@ class Entrada(models.Model):
     valor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Valor de Entrada")
     is_multipla = models.BooleanField(default=False, verbose_name="[0-simples, 1-multipla]")
     cod_multipla = models.CharField(max_length=20, blank=True, null=True)
+    resultado_entrada = models.CharField(max_length=20, blank=True, null=True, choices=OPCOES_RESULTADO)
             
         
     def __str__(self):
