@@ -100,6 +100,4 @@ class Entrada(models.Model):
         verbose_name = "entrada"
         verbose_name_plural = "Entrada"
         ordering = ["-data_jogo"]
-    
-    
-    
+        
