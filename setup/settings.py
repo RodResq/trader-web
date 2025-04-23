@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'analytics.apps.AnalyticsConfig',
-    'lucro.apps.LucroConfig',
+    'gerencia.apps.GerenciaConfig',
     'eventos.apps.EventosConfig',
     'ciclo.apps.CicloConfig',
 ]

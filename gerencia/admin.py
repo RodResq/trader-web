@@ -1,5 +1,5 @@
 from django.contrib import admin
-from lucro.models import Resultado
+from gerencia.models import Resultado
 
 class ListandoLucro(admin.ModelAdmin):
     list_display = ("semana", "quantidade_apostas", "total_entradas", "total_retorno", "data_inicial", "data_final") 
