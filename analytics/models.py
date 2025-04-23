@@ -1,5 +1,5 @@
 from django.db import models
-from ciclo.models import CicloEntrada
+from ciclo.models import Ciclo
 from django.core.validators import MinValueValidator
 
 # Create your models here.    
@@ -56,7 +56,7 @@ class Entrada(models.Model):
         ("A", "anulado")
     ]
     id_event = models.IntegerField(primary_key=True)
-    id_ciclo_entrada = models.ForeignKey(CicloEntrada, on_delete=models.CASCADE, null=True, blank=True, related_name="entradas", verbose_name="Período")
+    ciclo = models.ForeignKey(Ciclo, db_column="id_ciclo", on_delete=models.CASCADE, null=True, blank=True, related_name="entrada", verbose_name="ciclo")
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd = models.FloatField(blank=False, null=False, default=0.00)
     home_actual = models.IntegerField(blank=False, null=False, default=0)
@@ -86,11 +86,11 @@ class Entrada(models.Model):
         if not self.id_ciclo_entrada and self.data_jogo:
             try:
                 # Find a period that includes the game date
-                self.id_ciclo_entrada = CicloEntrada.objects.filter(
+                self.id_ciclo_entrada = Ciclo.objects.filter(
                     data_inicial__lte=self.data_jogo, 
                     data_final__gte=self.data_jogo
                 ).first()
-            except CicloEntrada.DoesNotExist:
+            except Ciclo.DoesNotExist:
                 pass
             
         return super().save(*args, **kwargs)

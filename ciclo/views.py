@@ -1,18 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
-from .models import CicloEntrada
+from .models import Ciclo
 from .forms import CicloEntradaForm
 
 def ciclos(request):
     """Exibe a lista de ciclos cadastrados."""
-    ciclos = CicloEntrada.objects.all()
+    ciclos = Ciclo.objects.all()
     return render(request, 'analytics/ciclo/ciclos.html', {'ciclos': ciclos})
 
 def ciclo_edit(request, pk=None):
     """Edita um ciclo existente ou cria um novo."""
     if pk:
-        ciclo = get_object_or_404(CicloEntrada, pk=pk)
+        ciclo = get_object_or_404(Ciclo, pk=pk)
     else:
         ciclo = None
         
@@ -35,7 +35,7 @@ def ciclo_edit(request, pk=None):
 
 def ciclo_delete(request, pk):
     """Exclui um período."""
-    ciclo = get_object_or_404(CicloEntrada, pk=pk)
+    ciclo = get_object_or_404(Ciclo, pk=pk)
     
     if request.method == 'POST':
         ciclo.delete()

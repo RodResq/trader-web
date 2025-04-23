@@ -6,13 +6,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from analytics.models import VwConsultaMercadoSf, Entrada
 from analytics.helpers import dump_mercados_para_entrada
 from django.http import JsonResponse
-from ciclo.models import CicloEntrada 
+from ciclo.models import Ciclo 
 
 # Create your views here.
 def index(request):
         dump_mercados_para_entrada()
         entradas = Entrada.objects.all()
-        qtd_ciclos = CicloEntrada.objects.count() 
+        qtd_ciclos = Ciclo.objects.count() 
         qtd_eventos = Entrada.objects.count()
             
         return render(request, 'analytics/index.html', {
@@ -33,7 +33,7 @@ def apostar(request):
     
     try:
         entrada = get_object_or_404(Entrada, id_event=event_id)
-        existe_ciclo = CicloEntrada.objects.filter(data_inicial__lte=entrada.data_jogo, data_final__gte=entrada.data_jogo).exists()
+        existe_ciclo = Ciclo.objects.filter(data_inicial__lte=entrada.data_jogo, data_final__gte=entrada.data_jogo).exists()
         
         if not existe_ciclo:
             return JsonResponse({
@@ -216,7 +216,7 @@ def entrada_multipla(request):
             odd_multipla *= entrada.odd
              
              # Verificar ciclo válido
-            ciclos_validos = CicloEntrada.objects.filter(
+            ciclos_validos = Ciclo.objects.filter(
                 data_inicial__lte=min(entrada.data_jogo for entrada in entradas),
                 data_final__gte=max(entrada.data_jogo for entrada in entradas)
             )

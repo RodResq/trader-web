@@ -1,12 +1,12 @@
 from django import forms
 from django.forms import ModelForm 
-from .models import CicloEntrada
+from .models import Ciclo
 from django.core.exceptions import ValidationError
 
 
 class CicloEntradaForm(forms.ModelForm):
     class Meta:
-        model = CicloEntrada
+        model = Ciclo
         fields = ['categoria', 'saldo_atual', 'valor_disponivel_entrada', 'data_inicial', 'data_final']
         widgets = {
             'categoria': forms.Select(attrs={'class': 'form-control'}),
