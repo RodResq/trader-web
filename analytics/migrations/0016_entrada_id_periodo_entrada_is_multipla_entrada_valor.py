@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('analytics', '0015_rename_aposta_aceita_entrada_opcao_entrada'),
-        ('periodo', '0002_alter_periodo_options_alter_periodo_categoria'),
+        ('ciclo', '0002_alter_periodo_options_alter_periodo_categoria'),
     ]
 
     operations = [

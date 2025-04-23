@@ -4,9 +4,9 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="h3 mb-0 text-gray-800">Gerenciamento de Períodos</h1>
-      <a href="{% url 'periodo:periodo_create' %}" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Novo Período
+      <h1 class="h3 mb-0 text-gray-800">Gerenciamento de Ciclos</h1>
+      <a href="{% url 'ciclo:ciclo_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Novo Ciclo
       </a>
     </div>
     
@@ -20,7 +20,7 @@
     
     <div class="card shadow mb-4">
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Períodos Cadastrados</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Ciclos Cadastrados</h6>
         <div class="dropdown no-arrow">
           <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="bi bi-three-dots-vertical text-gray-400"></i>
@@ -36,29 +36,29 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover" id="periodosTable">
+          <table class="table table-hover" id="ciclosTable">
             <thead>
               <tr>
                 <th>Categoria</th>
-                <th>Período</th>
+                <th>Ciclo</th>
                 <th>Saldo Atual</th>
                 <th>Disponível p/ Entrada</th>
                 <th class="text-center">Ações</th>
               </tr>
             </thead>
             <tbody>
-              {% if periodos %}
-                {% for periodo in periodos %}
+              {% if ciclos %}
+                {% for ciclo in ciclos %}
                 <tr>
-                  <td>{{ periodo.get_categoria_display }}</td>
-                  <td>{{ periodo.data_inicial|date:"d/m/Y" }} a {{ periodo.data_final|date:"d/m/Y" }}</td>
-                  <td>R$ {{ periodo.saldo_atual }}</td>
-                  <td>R$ {{ periodo.disponivel_entrada }}</td>
+                  <td>{{ ciclo.get_categoria_display }}</td>
+                  <td>{{ ciclo.data_inicial|date:"d/m/Y" }} a {{ ciclo.data_final|date:"d/m/Y" }}</td>
+                  <td>R$ {{ ciclo.saldo_atual }}</td>
+                  <td>R$ {{ ciclo.valor_disponivel_entrada }}</td>
                   <td class="text-center">
-                    <a href="{% url 'periodo:periodo_edit' periodo.pk %}" class="btn btn-sm btn-primary" title="Editar">
+                    <a href="{% url 'ciclo:ciclo_edit' ciclo.pk %}" class="btn btn-sm btn-primary" title="Editar">
                       <i class="bi bi-pencil"></i>
                     </a>
-                    <a href="{% url 'periodo:periodo_delete' periodo.pk %}" class="btn btn-sm btn-danger" title="Excluir">
+                    <a href="{% url 'ciclo:ciclo_delete' ciclo.pk %}" class="btn btn-sm btn-danger" title="Excluir">
                       <i class="bi bi-trash"></i>
                     </a>
                   </td>
@@ -66,7 +66,7 @@
                 {% endfor %}
               {% else %}
                 <tr>
-                  <td colspan="5" class="text-center">Nenhum período cadastrado.</td>
+                  <td colspan="5" class="text-center">Nenhum ciclo cadastrado.</td>
                 </tr>
               {% endif %}
             </tbody>

@@ -28,5 +28,5 @@ urlpatterns = [
     path('api/mercados', mercados, name='mercados'),
     path('api/editar_odd', editar_odd, name="editar_odd"),
     path('api/entrada_multipla', entrada_multipla, name="entrada_multipla"),
-    path('periodos/', include('periodo.urls', namespace='periodo'))
+    path('ciclos/', include('ciclo.urls', namespace='ciclo'))
 ]

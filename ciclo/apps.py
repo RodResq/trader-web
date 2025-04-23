@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PeriodoConfig(AppConfig):
+class CicloConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'periodo'
+    name = 'ciclo'

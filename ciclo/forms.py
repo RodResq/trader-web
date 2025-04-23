@@ -1,17 +1,17 @@
 from django import forms
 from django.forms import ModelForm 
-from .models import Periodo
+from .models import CicloEntrada
 from django.core.exceptions import ValidationError
 
 
-class PeriodoForm(forms.ModelForm):
+class CicloEntradaForm(forms.ModelForm):
     class Meta:
-        model = Periodo
-        fields = ['categoria', 'saldo_atual', 'disponivel_entrada', 'data_inicial', 'data_final']
+        model = CicloEntrada
+        fields = ['categoria', 'saldo_atual', 'valor_disponivel_entrada', 'data_inicial', 'data_final']
         widgets = {
             'categoria': forms.Select(attrs={'class': 'form-control'}),
             'saldo_atual': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '0.01'}),
-            'disponivel_entrada': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '0.01'}),
+            'valor_disponivel_entrada': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '0.01'}),
             'data_inicial': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'data_final': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
         }
@@ -33,11 +33,11 @@ class PeriodoForm(forms.ModelForm):
         return saldo_atual
     
     def clean_disponivel_entrada(self):
-        disponivel_entrada = self.cleaned_data.get('disponivel_entrada')
+        valor_disponivel_entrada = self.cleaned_data.get('valor_disponivel_entrada')
         
-        if disponivel_entrada and disponivel_entrada < 0:
+        if valor_disponivel_entrada and valor_disponivel_entrada < 0:
             raise ValidationError(_('O valor disponível para entrada não pode ser negativo.'))
         
-        return disponivel_entrada
+        return valor_disponivel_entrada
             
             

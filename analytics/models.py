@@ -1,5 +1,5 @@
 from django.db import models
-from periodo.models import Periodo
+from ciclo.models import CicloEntrada
 from django.core.validators import MinValueValidator
 
 # Create your models here.    
@@ -56,11 +56,11 @@ class Entrada(models.Model):
         ("A", "anulado")
     ]
     id_event = models.IntegerField(primary_key=True)
-    id_periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE, null=True, blank=True, related_name="entradas", verbose_name="Período")
+    id_ciclo_entrada = models.ForeignKey(CicloEntrada, on_delete=models.CASCADE, null=True, blank=True, related_name="entradas", verbose_name="Período")
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd = models.FloatField(blank=False, null=False, default=0.00)
     home_actual = models.IntegerField(blank=False, null=False, default=0)
-    away_actual = models.IntegerField(blank=False, null=False, default=0)
+    away_actual = models.IntegerField(blank=True, null=True, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
     opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
     valor = models.DecimalField(
@@ -83,14 +83,14 @@ class Entrada(models.Model):
         """
         Automatically assigns the period based on data_jogo if not explicitly set
         """
-        if not self.id_periodo and self.data_jogo:
+        if not self.id_ciclo_entrada and self.data_jogo:
             try:
                 # Find a period that includes the game date
-                self.id_periodo = Periodo.objects.filter(
+                self.id_ciclo_entrada = CicloEntrada.objects.filter(
                     data_inicial__lte=self.data_jogo, 
                     data_final__gte=self.data_jogo
                 ).first()
-            except Periodo.DoesNotExist:
+            except CicloEntrada.DoesNotExist:
                 pass
             
         return super().save(*args, **kwargs)

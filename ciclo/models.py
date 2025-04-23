@@ -1,6 +1,6 @@
 from django.db import models
 
-class Periodo(models.Model):
+class CicloEntrada(models.Model):
     CATEGORIA_CHOICE = [
         ("S", "Semanal"),
         ("Q", "Quinzenal"),
@@ -9,13 +9,13 @@ class Periodo(models.Model):
     
     categoria = models.CharField(max_length=20, blank=False, choices=CATEGORIA_CHOICE, default="S")
     saldo_atual = models.DecimalField(blank=False, max_digits=5, decimal_places=2)
-    disponivel_entrada = models.DecimalField(blank=False, max_digits=5, decimal_places=2)
+    valor_disponivel_entrada = models.DecimalField(blank=False, max_digits=5, decimal_places=2)
     data_inicial = models.DateField(verbose_name="Data Inicial")
     data_final = models.DateField(verbose_name="Data Final")
     
     class Meta:
         managed = True
-        db_table = 'periodo'
-        verbose_name = 'Período'
-        verbose_name_plural = 'Períodos'
+        db_table = 'ciclo_entrada'
+        verbose_name = 'CicloEntrada'
+        verbose_name_plural = 'Ciclo Entrada'
         ordering = ['-data_inicial']

@@ -6,19 +6,19 @@ from django.shortcuts import render, get_object_or_404, redirect
 from analytics.models import VwConsultaMercadoSf, Entrada
 from analytics.helpers import dump_mercados_para_entrada
 from django.http import JsonResponse
-from periodo.models import Periodo 
+from ciclo.models import CicloEntrada 
 
 # Create your views here.
 def index(request):
         dump_mercados_para_entrada()
         entradas = Entrada.objects.all()
-        qtd_periodos = Periodo.objects.count() 
+        qtd_ciclos = CicloEntrada.objects.count() 
         qtd_eventos = Entrada.objects.count()
             
         return render(request, 'analytics/index.html', {
             'mercados': entradas,
             'qtd_eventos': qtd_eventos,
-            'qtd_periodos': qtd_periodos
+            'qtd_ciclos': qtd_ciclos
         })
 
 def apostar(request):
@@ -33,12 +33,12 @@ def apostar(request):
     
     try:
         entrada = get_object_or_404(Entrada, id_event=event_id)
-        existe_periodo = Periodo.objects.filter(data_inicial__lte=entrada.data_jogo, data_final__gte=entrada.data_jogo).exists()
+        existe_ciclo = CicloEntrada.objects.filter(data_inicial__lte=entrada.data_jogo, data_final__gte=entrada.data_jogo).exists()
         
-        if not existe_periodo:
+        if not existe_ciclo:
             return JsonResponse({
                 'sucess': False,
-                'message': f'Não existe período para a entrada.'
+                'message': f'Não existe ciclo para a entrada.'
             }, status=400)
             
         if action == 'aceitar':        
@@ -215,20 +215,20 @@ def entrada_multipla(request):
                      
             odd_multipla *= entrada.odd
              
-             # Verificar período válido
-            periodos_validos = Periodo.objects.filter(
+             # Verificar ciclo válido
+            ciclos_validos = CicloEntrada.objects.filter(
                 data_inicial__lte=min(entrada.data_jogo for entrada in entradas),
                 data_final__gte=max(entrada.data_jogo for entrada in entradas)
             )
              
-            if not periodos_validos.exists():
+            if not ciclos_validos.exists():
                 return JsonResponse({
                     'success': False,
-                    'message': 'Não existe um período válido para esta múltipla.'
+                    'message': 'Não existe um ciclo válido para esta múltipla.'
                 }, status=400)
             
-             # Selecionar o primeiro período válido
-            periodo = periodos_validos.first()
+             # Selecionar o primeiro ciclo válido
+            ciclo = ciclos_validos.first()
             
              # Processar cada entrada
             with transaction.atomic():
@@ -239,7 +239,7 @@ def entrada_multipla(request):
                         entrada.opcao_entrada == "R"
                     entrada.is_multipla = True
                     entrada.cod_multipla = cod_multipla
-                    entrada.id_periodo = periodo
+                    entrada.id_ciclo = ciclo
                     entrada.save()
                      
             return JsonResponse({
@@ -249,7 +249,7 @@ def entrada_multipla(request):
                     'cod_multipla': cod_multipla,
                     'odd_multipla': odd_multipla,
                     'quantidade_eventos': len(event_ids),
-                    'periodo': periodo.id
+                    'ciclo': ciclo.id
                  }
              })
 

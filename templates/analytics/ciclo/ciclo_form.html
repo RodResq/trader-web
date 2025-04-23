@@ -5,14 +5,14 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="h3 mb-0 text-gray-800">{{ titulo }}</h1>
-      <a href="{% url 'periodo:index' %}" class="btn btn-secondary">
+      <a href="{% url 'ciclo:index' %}" class="btn btn-secondary">
         <i class="bi bi-arrow-left"></i> Voltar
       </a>
     </div>
     
     <div class="card shadow mb-4">
       <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Informações do Período</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Informações do Ciclo</h6>
       </div>
       <div class="card-body">
         <form method="post">
@@ -37,9 +37,9 @@
             
             <div class="col-md-4">
               <label for="id_disponivel_entrada" class="form-label">Disponível p/ Entrada (R$)</label>
-              {{ form.disponivel_entrada }}
-              {% if form.disponivel_entrada.errors %}
-                <div class="invalid-feedback d-block">{{ form.disponivel_entrada.errors }}</div>
+              {{ form.valor_disponivel_entrada }}
+              {% if form.valor_disponivel_entrada.errors %}
+                <div class="invalid-feedback d-block">{{ form.valor_disponivel_entrada.errors }}</div>
               {% endif %}
             </div>
           </div>
@@ -74,7 +74,7 @@
             <button type="submit" class="btn btn-primary">
               <i class="bi bi-save"></i> Salvar
             </button>
-            <a href="{% url 'periodo:index' %}" class="btn btn-secondary">
+            <a href="{% url 'ciclo:index' %}" class="btn btn-secondary">
               <i class="bi bi-x"></i> Cancelar
             </a>
           </div>

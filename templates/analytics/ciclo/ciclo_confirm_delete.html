@@ -5,7 +5,7 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="h3 mb-0 text-gray-800">Confirmar Exclusão</h1>
-      <a href="{% url 'periodo:index' %}" class="btn btn-secondary">
+      <a href="{% url 'ciclo:index' %}" class="btn btn-secondary">
         <i class="bi bi-arrow-left"></i> Voltar
       </a>
     </div>
@@ -18,10 +18,10 @@
         <p>Você está prestes a excluir o seguinte período:</p>
         
         <div class="alert alert-warning">
-          <p><strong>Categoria:</strong> {{ periodo.get_categoria_display }}</p>
-          <p><strong>Período:</strong> {{ periodo.data_inicial|date:"d/m/Y" }} a {{ periodo.data_final|date:"d/m/Y" }}</p>
-          <p><strong>Saldo Atual:</strong> R$ {{ periodo.saldo_atual }}</p>
-          <p><strong>Disponível p/ Entrada:</strong> R$ {{ periodo.disponivel_entrada }}</p>
+          <p><strong>Categoria:</strong> {{ ciclo.get_categoria_display }}</p>
+          <p><strong>Período:</strong> {{ ciclo.data_inicial|date:"d/m/Y" }} a {{ ciclo.data_final|date:"d/m/Y" }}</p>
+          <p><strong>Saldo Atual:</strong> R$ {{ ciclo.saldo_atual }}</p>
+          <p><strong>Disponível p/ Entrada:</strong> R$ {{ ciclo.valor_disponivel_entrada }}</p>
         </div>
         
         <p class="text-danger">Esta ação não pode ser desfeita. Tem certeza que deseja continuar?</p>
@@ -32,7 +32,7 @@
             <button type="submit" class="btn btn-danger">
               <i class="bi bi-trash"></i> Sim, Excluir
             </button>
-            <a href="{% url 'periodo:index' %}" class="btn btn-secondary">
+            <a href="{% url 'ciclo:index' %}" class="btn btn-secondary">
               <i class="bi bi-x"></i> Cancelar
             </a>
           </div>

@@ -7,7 +7,7 @@ import { isValidDateFormat } from './utils.js';
  * Inicializa manipuladores e formatadores de tabela
  */
 export function initTableHandlers() {
-    formatDateCells();
+    // formatDateCells();
     checkAcceptedBets();
     checkRejectBets();
     checkDesfazerAcao();
@@ -20,7 +20,7 @@ export function formatDateCells() {
     const table = document.getElementById('marketsTable');
     if (!table) return;
     
-    const dateColumnIndex = 5; // Índice da coluna de data
+    const dateColumnIndex = 6; // Índice da coluna de data
     const rows = table.querySelectorAll('tbody tr');
     
     rows.forEach(row => {
@@ -35,7 +35,7 @@ export function formatDateCells() {
             // Tenta formatar a data para DD/MM/YYYY
             try {
                 const date = new Date(originalDate);
-                if (!isNaN(date.getTime())) { // Verifica se a data é válida
+                if (!isNaN(date.getTime()) && isNaN(Date.parse(originalDate)) === false) { // Verifica se a data é válida
                     const day = date.getDate().toString().padStart(2, '0');
                     const month = (date.getMonth() + 1).toString().padStart(2, '0');
                     const year = date.getFullYear();

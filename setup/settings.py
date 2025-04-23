@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'analytics.apps.AnalyticsConfig',
     'lucro.apps.LucroConfig',
     'eventos.apps.EventosConfig',
-    'periodo.apps.PeriodoConfig',
+    'ciclo.apps.CicloConfig',
 ]
 
 MIDDLEWARE = [
