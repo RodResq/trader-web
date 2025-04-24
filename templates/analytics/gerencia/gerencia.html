@@ -5,9 +5,6 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="h3 mb-0 text-gray-800">Gerência de Entradas</h1>
-      <a href="{% url 'analytics:gerencia:lucro_create' %}" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Novo Registro
-      </a>
     </div>
     {% if messages %}
     <div class="alert alert-success" role="alert">
@@ -38,8 +35,8 @@
           <table class="table table-hover" id="lucroTable">
             <thead>
               <tr>
-                <th>Semana</th>
-                <th>Período</th>
+                <th>Categoria</th>
+                <th>Ciclo</th>
                 <th>Qtd. Entradas</th>
                 <th>Valor Total Entradas (R$)</th>
                 <th>Valor Total Retornado (R$)</th>
@@ -49,28 +46,28 @@
             <tbody>
               {% if resultado_entradas %}
                 {% for resultado in resultado_entradas %}
-                {% with lucro=resultado.lucro entradas=resultado.entradas %}
+                {% with gerencia=resultado.gerencia entradas=resultado.entradas %}
                 <tr>
                   <td>
-                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ lucro.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ lucro.pk }}">
-                    {{ lucro.semana }}
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ gerencia.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ gerencia.pk }}">
+                    {{ gerencia.ciclo.categoria }}
                     <i class="bi bi-chevron-down ms-1"></i>
                     </a>
                   </td>
-                  <td>{{ lucro.data_inicial|date:"d/m/Y" }} a {{ lucro.data_final|date:"d/m/Y" }}</td>
+                  <td>{{ gerencia.ciclo.data_inicial|date:"d/m/Y" }} a {{ gerencia.ciclo.data_final|date:"d/m/Y" }}</td>
                   <td>{{ entradas|length }}</td>
-                  <td>{{ lucro.total_entradas }}</td>
-                  <td>{{ lucro.total_retorno }}</td>
+                  <td>{{ gerencia.valor_total_entrada }}</td>
+                  <td>{{ gerencia.valor_total_retorno }}</td>
                   <td class="text-center">
-                    <a href="{% url 'analytics:gerencia:lucro_edit' lucro.pk %}" class="btn btn-sm btn-primary" title="Editar">
+                    <a href="{% url 'analytics:gerencia:gerencia_edit' gerencia.pk %}" class="btn btn-sm btn-primary" title="Editar">
                       <i class="bi bi-pencil"></i>
                     </a>
-                    <a href="{% url 'analytics:gerencia:lucro_delete' lucro.pk %}" class="btn btn-sm btn-danger" title="Excluir">
+                    <a href="{% url 'analytics:gerencia:gerencia_delete' gerencia.pk %}" class="btn btn-sm btn-danger" title="Excluir">
                       <i class="bi bi-trash"></i>
                     </a>
                   </td>
                 </tr>
-                <tr class="collapse" id="detalhesLucro{{ lucro.pk }}">
+                <tr class="collapse" id="detalhesLucro{{ gerencia.pk }}">
                   <td colspan="6">
                     <div class="card card-body bg-dark">
                       <h6 class="text-primary mb-3">Detalhes das Entradas</h6>

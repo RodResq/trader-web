@@ -1,18 +1,15 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Resultado
+from .models import GerenciaCiclo
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-class LucroForm(forms.ModelForm):
+class GerenciaForm(forms.ModelForm):
     class Meta:
-        model = Resultado
-        fields = ['semana', 'quantidade_apostas', 'total_entradas', 'total_retorno', 'data_inicial', 'data_final']
+        model = GerenciaCiclo
+        fields = ['qtd_total_entrada', 'valor_total_entrada', 'valor_total_retorno']
         widgets = {
-            'data_inicial': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'data_final': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'semana': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
-            'quantidade_apostas': forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
-            'total_entradas': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '0.01'}),
-            'total_retorno': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '0.01'})
+            'qtd_total_entrada': forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
+            'valor_total_entrada': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '0.01'}),
+            'valor_total_retorno': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '0.01'})
         }

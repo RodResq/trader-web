@@ -99,8 +99,8 @@ def evento(request, id_evento):
     return render(request, 'analytics/resultado.html', {'id_evento': id_evento})
 
 
-def lucros(request):
-    return render(request, 'analytics/lucro/lucros.html')
+def gerencia(request):
+    return render(request, 'analytics/gerencia/gerencia.html')
 
 
 def eventos(request):

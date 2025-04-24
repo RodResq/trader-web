@@ -4,8 +4,8 @@ from . import views
 app_name = 'gerencia'
 
 urlpatterns = [
-    path('', views.lucros, name='index'),
-    path('novo/', views.lucro_edit, name='lucro_create'),
-    path('editar/<int:pk>/', views.lucro_edit, name='lucro_edit'),
-    path('excluir/<int:pk>/', views.lucro_delete, name='lucro_delete'),
+    path('', views.gerencia, name='index'),
+    path('novo/', views.gerencia_edit, name='gerencia_create'),
+    path('editar/<int:pk>/', views.gerencia_edit, name='gerencia_edit'),
+    path('excluir/<int:pk>/', views.gerencia_delete, name='gerencia_delete'),
 ]

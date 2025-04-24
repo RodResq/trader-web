@@ -83,10 +83,10 @@ class Entrada(models.Model):
         """
         Automatically assigns the period based on data_jogo if not explicitly set
         """
-        if not self.id_ciclo_entrada and self.data_jogo:
+        if not self.ciclo and self.data_jogo:
             try:
                 # Find a period that includes the game date
-                self.id_ciclo_entrada = Ciclo.objects.filter(
+                self.ciclo = Ciclo.objects.filter(
                     data_inicial__lte=self.data_jogo, 
                     data_final__gte=self.data_jogo
                 ).first()
