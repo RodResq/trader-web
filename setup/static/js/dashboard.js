@@ -13,6 +13,7 @@ import { setupRecusarModal } from './modules/recusarAposta.js';
 import { setupDesfazerAcaoModal } from './modules/desfazerAcao.js';
 import { initChecklist } from './modules/checklist.js';
 import { setupEditarModal } from './modules/editarOdd.js';
+import { setupGerenciaResultado } from './modules/resultado.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa componentes de UI
@@ -31,11 +32,14 @@ document.addEventListener('DOMContentLoaded', function() {
     setupRecusarModal();
 
      // Inicializa modal de desfazer
-    setupDesfazerAcaoModal()
+    setupDesfazerAcaoModal();
 
     // Inicializa modal de editar odd
     setupEditarModal();
 
     // Inicializa checklist
-    initChecklist()
+    initChecklist();
+
+    // Inicializa Gerência de Resultado
+    setupGerenciaResultado();
 });

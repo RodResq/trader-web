@@ -59,10 +59,10 @@
                   <td>{{ gerencia.valor_total_entrada }}</td>
                   <td>{{ gerencia.valor_total_retorno }}</td>
                   <td class="text-center">
-                    <a href="{% url 'analytics:gerencia:gerencia_edit' gerencia.pk %}" class="btn btn-sm btn-primary" title="Editar">
+                    <a href="{% url 'analytics:gerencia:gerencia_edit' gerencia.pk %}" class="btn btn-sm btn-primary editar-gerencia-resultado" title="Editar">
                       <i class="bi bi-pencil"></i>
                     </a>
-                    <a href="{% url 'analytics:gerencia:gerencia_delete' gerencia.pk %}" class="btn btn-sm btn-danger" title="Excluir">
+                    <a href="{% url 'analytics:gerencia:gerencia_delete' gerencia.pk %}" class="btn btn-sm btn-danger excluir-gerencia-resultado" title="Excluir">
                       <i class="bi bi-trash"></i>
                     </a>
                   </td>
