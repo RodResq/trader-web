@@ -13,8 +13,7 @@ def gerencia(request):
     resultado_entradas = []
     
     for gerencia in gerencias:
-        entradas = Entrada.objects.filter(ciclo=gerencia.ciclo
-        ).filter(opcao_entrada="A")
+        entradas = Entrada.objects.filter(ciclo=gerencia.ciclo).filter(opcao_entrada="A")
         
         qtd_total_entradas = entradas.count()
         valor_total_entradas = entradas.aggregate(
