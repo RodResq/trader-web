@@ -27,8 +27,8 @@ class CicloEntradaForm(forms.ModelForm):
     def clean_saldo_atual(self):
         saldo_atual = self.cleaned_data.get('saldo_atual')
         
-        if saldo_atual and saldo_atual < 0:
-            raise ValidationError(_('O saldo atual não pode ser negativo.'))
+        if saldo_atual and saldo_atual <= 0:
+            raise ValidationError('O saldo atual não pode ser negativo.')
         
         return saldo_atual
     

@@ -36,7 +36,7 @@ def ciclo_edit(request, pk=None):
     context = {
         'form': form,
         'ciclo': ciclo,
-        'titulo': 'Editar Período' if ciclo else 'Novo Período'
+        'titulo': 'Editar Período' if ciclo else 'Novo Ciclo'
     }
     
     return render(request, 'analytics/ciclo/ciclo_form.html', context)
