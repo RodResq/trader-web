@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib import messages
 from .models import Ciclo
 from .forms import CicloEntradaForm
+from gerencia.models import GerenciaCiclo
 
 def ciclos(request):
     """Exibe a lista de ciclos cadastrados."""
@@ -18,8 +19,15 @@ def ciclo_edit(request, pk=None):
         
     if request.method == 'POST':
         form = CicloEntradaForm(request.POST, instance=ciclo)
+        
         if form.is_valid():
-                form.save()
+                ciclo = form.save()
+                gerencia_ciclo = GerenciaCiclo(ciclo=ciclo, 
+                              qtd_total_entrada=0, 
+                              valor_total_entrada=0, 
+                              valor_total_retorno=0)
+                gerencia_ciclo.save()
+                
                 messages.success(request, 'Ciclo salvo com sucesso!')
                 return redirect('ciclo:index')
     else:
