@@ -8,7 +8,7 @@ class ListandoCiclo(admin.ModelAdmin):
     
     @admin.display(description="data_inicial")
     def data_inicial_formatada(self, obj):
-        if obj.data_inicial or obj.data_final:
+        if obj.data_inicial:
             return date_format(obj.data_inicial, format='d/m/Y')
         return '-'
     
