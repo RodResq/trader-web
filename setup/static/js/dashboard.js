@@ -14,6 +14,9 @@ import { setupDesfazerAcaoModal } from './modules/desfazerAcao.js';
 import { initChecklist } from './modules/checklist.js';
 import { setupEditarModal } from './modules/editarOdd.js';
 import { setupGerenciaResultado } from './modules/resultado.js';
+import { calcularValorDisponivelEntrada } from './modules/ciclo/calcula_disponivel_entrada.js';
+import { calcularDataFinalCiclo } from './modules/ciclo/calculo_data_final_ciclo.js';
+
 
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa componentes de UI
@@ -42,4 +45,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializa Gerência de Resultado
     setupGerenciaResultado();
+
+    // Incializa o método para calcular o valor diposnivel para a entrada
+    calcularValorDisponivelEntrada();
+
+    //Incializa o cálculo final das datas do ciclo
+    calcularDataFinalCiclo();
 });

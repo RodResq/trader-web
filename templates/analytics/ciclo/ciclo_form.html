@@ -22,6 +22,7 @@
             <div class="col-md-4">
               <label for="id_categoria" class="form-label">Categoria</label>
               {{ form.categoria }}
+              <small class="form-text text-muted">Semanal (7 dias), Quinzenal (15 dias), Mensal (30 dias)</small>
               {% if form.categoria.errors %}
                 <div class="invalid-feedback d-block">{{ form.categoria.errors }}</div>
               {% endif %}
@@ -85,4 +86,5 @@
 </div>
 
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
 {% endblock %}
