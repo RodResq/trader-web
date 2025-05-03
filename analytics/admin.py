@@ -13,7 +13,7 @@ class ListandoLitleFaith(admin.ModelAdmin):
         return '-'
             
     
-    list_display = ("id_event", "mercado", "odd", "home_actual", "away_actual", "data_jogo_formatada", "opcao_entrada", "ciclo") 
+    list_display = ("id_event", "mercado", "odd", "home_actual", "away_actual", "valor", "data_jogo_formatada", "opcao_entrada", "ciclo") 
     list_editable = ("opcao_entrada", "ciclo", )
     list_display_links = ("id_event", "mercado")
     search_fields = ("mercado",)
