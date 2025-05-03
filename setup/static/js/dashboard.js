@@ -7,7 +7,7 @@ import { initUi } from './modules/ui.js';
 import { initTableHandlers } from './modules/table.js';
 import { updateMarketStatus } from './modules/marketStatus.js';
 import { initFilters } from './modules/filters.js';
-import { setupApostaButtons } from './modules/api.js';
+// import { setupApostaButtons } from './modules/api.js';
 import { setupRefreshButton } from './modules/api.js';
 import { setupRecusarModal } from './modules/recusarAposta.js';
 import { setupDesfazerAcaoModal } from './modules/desfazerAcao.js';
@@ -16,6 +16,7 @@ import { setupEditarModal } from './modules/editarOdd.js';
 import { setupGerenciaResultado } from './modules/resultado.js';
 import { calcularValorDisponivelEntrada } from './modules/ciclo/calcula_disponivel_entrada.js';
 import { calcularDataFinalCiclo } from './modules/ciclo/calculo_data_final_ciclo.js';
+import { initAceitarApostaModal } from './modules/aceitarApostaModal.js';
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -28,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Incializa filtros
     initFilters();
     // Inicializa funcionalidades da Api
-    setupApostaButtons();
+    // setupApostaButtons();
+    initAceitarApostaModal();
     setupRefreshButton();
 
     // Inicializa modal de recusa
@@ -51,4 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Incializa o cálculo final das datas do ciclo
     calcularDataFinalCiclo();
+
+    //Inicializa modal aceitar aposta
 });

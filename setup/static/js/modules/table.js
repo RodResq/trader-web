@@ -245,7 +245,7 @@ export function updateMarketsTable(data) {
         
         // Célula de Odd
         const oddCell = document.createElement('td');
-        oddCell.textContent = mercado.odd;
+        oddCell.textContent = parseFloat(mercado.odd);
         row.appendChild(oddCell);
         
         // Célula de Home

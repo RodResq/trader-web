@@ -47,10 +47,7 @@ class CicloEntradaForm(forms.ModelForm):
             
         if saldo_atual:
             cleaned_data['valor_disponivel_entrada'] = round(saldo_atual * Decimal('0.06'), 2)
-            
-            
-        
-            
+     
         return cleaned_data
         
     def clean_saldo_atual(self):

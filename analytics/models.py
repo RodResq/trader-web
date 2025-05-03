@@ -1,6 +1,7 @@
 from django.db import models
 from ciclo.models import Ciclo
 from django.core.validators import MinValueValidator
+from decimal import Decimal
 
 # Create your models here.    
 
@@ -50,15 +51,17 @@ class Entrada(models.Model):
         ("R", "recusar"),
         ("E", "em_espera")
     ]
-    OPCOES_RESULTADO = [
-        ("G", "green"),
-        ("R", "red"),
-        ("A", "anulado")
-    ]
+    
     id_event = models.IntegerField(primary_key=True)
     ciclo = models.ForeignKey(Ciclo, db_column="id_ciclo", on_delete=models.CASCADE, null=True, blank=True, related_name="entrada", verbose_name="ciclo")
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    odd = models.FloatField(blank=False, null=False, default=0.00)
+    odd = models.DecimalField(
+        max_digits=5, 
+        decimal_places=2, 
+        validators=[MinValueValidator(0)], 
+        verbose_name="Odd", 
+        default=0.0
+    )
     home_actual = models.IntegerField(blank=False, null=False, default=0)
     away_actual = models.IntegerField(blank=True, null=True, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
@@ -72,11 +75,10 @@ class Entrada(models.Model):
     )
     is_multipla = models.BooleanField(default=False, verbose_name="[0-simples, 1-multipla]")
     cod_multipla = models.CharField(max_length=20, blank=True, null=True)
-    resultado_entrada = models.CharField(max_length=20, blank=True, null=True, choices=OPCOES_RESULTADO)
             
         
     def __str__(self):
-        return f"Entrada - {self.id_event} - mercado: {self.mercado} - away_actual: {self.away_actual}"    
+        return f"Entrada - {self.id_event} - mercado: {self.mercado} - odd: {self.odd}"    
     
     
     def save(self, *args, **kwargs):
@@ -100,4 +102,59 @@ class Entrada(models.Model):
         verbose_name = "entrada"
         verbose_name_plural = "Entrada"
         ordering = ["-data_jogo"]
+    
         
+class Aposta(models.Model):
+    """
+    Modelo para representar apostas aceitas
+    """
+    RESULTADO_CHOICES = [
+        ("G", "green"),
+        ("R", "red"),
+        ("A", "anulado")
+    ]
+    
+    evento = models.ForeignKey(Entrada, on_delete=models.CASCADE, related_name='apostas')
+    ciclo = models.ForeignKey(Ciclo, on_delete=models.CASCADE, related_name='apostas')
+    valor_entrada = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.01'))]
+    )
+    odd = models.DecimalField(max_digits=5, decimal_places=2)
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    resultado = models.CharField(
+        max_length=1,
+        choices=RESULTADO_CHOICES,
+        default='A'
+    )
+    data_resultado = models.DateTimeField(null=True, blank=True)
+    valor_retorno = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+    
+    class Meta:
+        db_table = 'aposta'
+        verbose_name = 'Aposta'
+        verbose_name_plural = 'Apostas'
+        ordering = ['-data_criacao']
+        
+    def __str__(self):
+        return f"Aposta #{self.id} - {self.evento.mercado}"
+    
+    def calcular_retorno(self):
+        """
+        Calcula o retorno da aposta baseado no resultado
+        """
+        if self.resultado == 'G':
+            # Para apostas ganhas, o lucro é (odd - 1) * valor
+            return (self.odd - 1) * self.valor
+        elif self.resultado == 'R':
+            # Para apostas perdidas, o lucro é negativo igual ao valor apostado
+            return -self.valor
+        else:
+            # Para apostas canceladas ou aguardando, o lucro é zero
+            return Decimal('0.00')

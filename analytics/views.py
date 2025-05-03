@@ -3,10 +3,16 @@ from django.utils import timezone
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from analytics.models import VwConsultaMercadoSf, Entrada
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from analytics.models import VwConsultaMercadoSf, Entrada, Aposta
 from analytics.helpers import dump_mercados_para_entrada
 from django.http import JsonResponse
 from ciclo.models import Ciclo 
+from .forms import AceitarApostaForm
+from eventos.models import Evento
+from decimal import Decimal
+import json
 
 # Create your views here.
 def index(request):
@@ -270,3 +276,73 @@ def entrada_multipla(request):
         'message': 'Método não permitido.'
     }, status=405)
             
+    
+@require_POST
+# @login_required        
+def aceitar_aposta(request):
+    """
+    View para processar a aceitação de uma aposta.
+    Recebe os dados do formulário via AJAX e retorna resposta JSON.
+    """
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            form = AceitarApostaForm(data=data)
+            
+            if form:
+                evento_id = form.data['evento_id']
+                valor_entrada = form.data['valor_entrada']
+                
+                entrada = get_object_or_404(Entrada, id_event=evento_id)
+                ciclo_ativo = Ciclo.objects.filter(
+                    data_inicial__lte=entrada.data_jogo,
+                    data_final__gte=entrada.data_jogo
+                ).first()
+                
+                if not ciclo_ativo:
+                    return JsonResponse({
+                        'sucess': False,
+                        'message': 'Não existe um ciclo ativo para a data deste evento'
+                    }, status=400)
+                    
+                if valor_entrada > ciclo_ativo.valor_disponivel_entrada:
+                    return JsonResponse({
+                        'success': False,
+                        'message': f'Valor excede o disponível (R$ {ciclo_ativo.valor_disponivel_entrada})'
+                    }, status=400)
+                    
+                aposta = Aposta.objects.create(
+                    evento=entrada,
+                    valor_entrada=valor_entrada,
+                    odd=entrada.odd,
+                    ciclo=ciclo_ativo
+                )
+                
+                entrada.opcao_entrada = 'A'
+                entrada.save()
+                
+                ciclo_ativo.valor_disponivel_entrada -= Decimal(valor_entrada)
+                ciclo_ativo.save()
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Aposta aceita com sucesso',
+                    'aposta_id': aposta.id
+                })
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Formulário inválido',
+                    'erros': form.errors
+                })
+                
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': f'Erro ao processar a aposta: {str(e)}'
+            }, status=500)
+            
+    return JsonResponse({
+        'success': False,
+        'message': 'Método não permitido'
+    }, status=405)
