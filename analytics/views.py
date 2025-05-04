@@ -12,6 +12,8 @@ from ciclo.models import Ciclo
 from .forms import AceitarApostaForm
 from eventos.models import Evento
 from decimal import Decimal
+from datetime import datetime
+from django.core.exceptions import ValidationError
 import json
 
 # Create your views here.
@@ -355,3 +357,212 @@ def aceitar_aposta(request):
         'success': False,
         'message': 'Método não permitido'
     }, status=405)
+    
+    
+@require_POST
+def entrada_multipla(request):
+    """
+    View para processamento de entradas múltiplas (aceitar ou recusar)
+    """
+    if request.method == 'POST':
+        try:
+            # Obter dados da requisição
+            data = json.loads(request.body)
+            event_ids = data.get('event_ids', [])
+            action = data.get('action')
+            valor_entrada = Decimal(str(data.get('valor_entrada', 0)))
+            odd_combinada = Decimal(str(data.get('odd_combinada', 1.0)))
+            retorno_esperado = Decimal(str(data.get('retorno_esperado', 0)))
+            
+            # Validar parâmetros
+            if not event_ids or action not in ['aceitar', 'recusar']:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Parâmetros inválidos.'
+                }, status=400)
+            
+            # Recuperar todas as entradas
+            entradas = Entrada.objects.filter(id_event__in=event_ids)
+            
+            # Verificar se todos os eventos foram encontrados
+            if len(entradas) != len(event_ids):
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Alguns eventos não foram encontrados.'
+                }, status=400)
+            
+            # Gerar um código único para a múltipla
+            cod_multipla = f"ML-{timezone.now().strftime('%Y%m%d%H%M%S')}"
+            
+            for entrada in entradas:
+                # Verificar se alguma entrada já está em uma múltipla
+                if entrada.is_multipla:
+                    return JsonResponse({
+                        'success': False,
+                        'message': f'O evento {entrada.id_event} já faz parte de uma múltipla.'
+                    }, status=400)
+            
+            # Verificar ciclo válido
+            ciclos_validos = Ciclo.objects.filter(
+                data_inicial__lte=min(entrada.data_jogo for entrada in entradas),
+                data_final__gte=max(entrada.data_jogo for entrada in entradas)
+            )
+            
+            if not ciclos_validos.exists():
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Não existe um ciclo válido para esta múltipla.'
+                }, status=400)
+            
+            # Selecionar o primeiro ciclo válido
+            ciclo = ciclos_validos.first()
+            
+            # Para aceitar, verificar valor disponível
+            if action == 'aceitar':
+                if valor_entrada <= 0:
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'Valor de entrada inválido.'
+                    }, status=400)
+                
+                if valor_entrada > ciclo.valor_disponivel_entrada:
+                    return JsonResponse({
+                        'success': False,
+                        'message': f'Valor excede o disponível (R$ {ciclo.valor_disponivel_entrada})'
+                    }, status=400)
+            
+            # Processar cada entrada
+            with transaction.atomic():
+                for entrada in entradas:
+                    if action == 'aceitar':
+                        entrada.opcao_entrada = "A"
+                    elif action == 'recusar':
+                        entrada.opcao_entrada = "R"
+                    
+                    entrada.is_multipla = True
+                    entrada.cod_multipla = cod_multipla
+                    entrada.ciclo = ciclo
+                    entrada.save()
+                
+                # Se for aceitar, criar aposta e atualizar saldo do ciclo
+                if action == 'aceitar':
+                    # Criar registro de aposta
+                    aposta = Aposta.objects.create(
+                        evento=entradas[0],  # Associa à primeira entrada
+                        ciclo=ciclo,
+                        valor_entrada=valor_entrada,
+                        odd=odd_combinada,
+                        valor_retorno=retorno_esperado,
+                        # Armazena os IDs das entradas múltiplas em algum campo adicional
+                        # (adicionar um campo na model Aposta para isso)
+                    )
+                    
+                    # Atualizar saldo disponível do ciclo
+                    ciclo.valor_disponivel_entrada -= valor_entrada
+                    ciclo.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': f'Múltipla {"aceita" if action == "aceitar" else "recusada"} com sucesso!',
+                'data': {
+                    'cod_multipla': cod_multipla,
+                    'odd_combinada': float(odd_combinada),
+                    'quantidade_eventos': len(event_ids),
+                    'ciclo': ciclo.id
+                }
+            })
+        
+        except ValueError as e:
+            return JsonResponse({
+                'success': False,
+                'message': f'Valor inválido: {str(e)}'
+            }, status=400)
+        
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'message': 'Corpo da requisição inválido.'
+            }, status=400)
+        
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': f'Erro ao processar múltipla: {str(e)}'
+            }, status=500)
+    
+    return JsonResponse({
+        'success': False,
+        'message': 'Método não permitido.'
+    }, status=405)
+
+
+@require_POST
+def verificar_ciclo(request):
+    """
+    View para verificar se um conjunto de datas pertence a um ciclo válido
+    """
+    try:
+        data = json.loads(request.body)
+        datas = data.get('datas', [])
+        
+        if not datas:
+            return JsonResponse({
+                'success': False,
+                'message': 'Nenhuma data fornecida.'
+            }, status=400)
+        
+        # Converter datas para datetime se necessário
+        datas_formatadas = []
+        
+        for data_str in datas:
+            try:
+                # Tenta converter no formato padrão brasileiro
+                data = datetime.strptime(data_str, '%d/%m/%Y %H:%M:%S')
+            except ValueError:
+                try:
+                    # Tenta formato ISO
+                    data = datetime.fromisoformat(data_str.replace('Z', '+00:00'))
+                except ValueError:
+                    return JsonResponse({
+                        'success': False,
+                        'message': f'Formato de data inválido: {data_str}'
+                    }, status=400)
+            
+            datas_formatadas.append(data)
+        
+        # Encontrar ciclo que engloba todas as datas
+        ciclo = Ciclo.objects.filter(
+            data_inicial__lte=min(datas_formatadas),
+            data_final__gte=max(datas_formatadas)
+        ).first()
+        
+        if not ciclo:
+            return JsonResponse({
+                'success': False,
+                'message': 'Não existe um ciclo válido para todas as datas selecionadas.'
+            })
+        
+        # Retorna informações do ciclo
+        return JsonResponse({
+            'success': True,
+            'ciclo': {
+                'id': ciclo.id,
+                'categoria': ciclo.get_categoria_display(),
+                'data_inicial': ciclo.data_inicial.strftime('%d/%m/%Y'),
+                'data_final': ciclo.data_final.strftime('%d/%m/%Y'),
+                'saldo_atual': float(ciclo.saldo_atual),
+                'valor_disponivel_entrada': float(ciclo.valor_disponivel_entrada)
+            }
+        })
+    
+    except ValidationError as e:
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        }, status=400)
+    
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': f'Erro ao verificar ciclo: {str(e)}'
+        }, status=500)

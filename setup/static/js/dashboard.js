@@ -17,6 +17,8 @@ import { setupGerenciaResultado } from './modules/resultado.js';
 import { calcularValorDisponivelEntrada } from './modules/ciclo/calcula_disponivel_entrada.js';
 import { calcularDataFinalCiclo } from './modules/ciclo/calculo_data_final_ciclo.js';
 import { initAceitarApostaModal } from './modules/aceitarApostaModal.js';
+import { initMultiplasHandlers } from './modules/multiplas.js';
+
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -54,5 +56,12 @@ document.addEventListener('DOMContentLoaded', function() {
     //Incializa o cálculo final das datas do ciclo
     calcularDataFinalCiclo();
 
-    //Inicializa modal aceitar aposta
+    //Inicializa modal mutlipas entradas
+    initMultiplasHandlers();
 });
+
+// Permite o acesso global aos módulos para debugging
+window.modules = {
+    table: { initTableHandlers },
+    multiplas: { initMultiplasHandlers }
+};

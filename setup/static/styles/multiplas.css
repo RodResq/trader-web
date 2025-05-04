@@ -1,0 +1,66 @@
+/* Estilos para o modal de entradas múltiplas */
+
+/* Destaque para as linhas selecionadas na tabela principal */
+#marketsTable tr.table-active {
+    background-color: rgba(13, 110, 253, 0.15) !important;
+  }
+  
+  /* Modal de múltiplas entradas */
+  #entradasMultiplasModal .modal-content {
+    border-radius: 8px;
+  }
+  
+  #entradasMultiplasModal .modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  #entradasMultiplasModal .modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Tabela dentro do modal */
+  #multiplaTable {
+    margin-bottom: 0;
+  }
+  
+  #multiplaTable tfoot {
+    font-weight: bold;
+  }
+  
+  /* Campos de valor e retorno */
+  #valor-entrada-multipla:focus,
+  #retorno-esperado:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+  
+  /* Alerta de ciclo */
+  #ciclo-warning {
+    margin-top: 10px;
+  }
+  
+  /* Botões no modal */
+  #confirmarMultiplaBtn:disabled,
+  #recusarMultiplaBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+  
+  /* Animações */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.3s;
+  }
+  
+  /* Botão de remover itens */
+  .btn-remover-item {
+    transition: all 0.2s ease;
+  }
+  
+  .btn-remover-item:hover {
+    transform: scale(1.1);
+  }

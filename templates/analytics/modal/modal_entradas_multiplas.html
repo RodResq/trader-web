@@ -1,0 +1,79 @@
+{% load static %}
+<div class="modal fade" id="entradasMultiplasModal" tabindex="1" aria-labelledby="entradasMultiplasModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="entradasMultiplasModalLabel">Entradas Múltiplas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info">
+          <i class="bi bi-info-circle"></i> Confirme todos os itens abaixo antes de aceitar as entradas múltiplas.
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table table-striped" id="multiplaTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Mercado</th>
+                <th>Odd</th>
+                <th>Data</th>
+                <th>Remover</th>
+              </tr>
+            </thead>
+            <tbody id="multipla-tbody">
+              <!-- Itens selecionados serão adicionados aqui dinamicamente via JavaScript -->
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" class="text-end fw-bold">Odd combinada:</td>
+                <td id="odd-combinada">1.00</td>
+                <td colspan="2"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        
+        <div class="mt-3">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="valor-entrada-multipla" class="form-label">Valor de entrada (R$):</label>
+                <input type="number" class="form-control" id="valor-entrada-multipla" min="0.01" step="0.01">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="retorno-esperado" class="form-label">Retorno esperado (R$):</label>
+                <input type="text" class="form-control" id="retorno-esperado" readonly>
+              </div>
+            </div>
+          </div>
+          
+          <div class="alert alert-warning d-none" id="ciclo-warning">
+            <i class="bi bi-exclamation-triangle"></i> Atenção: Os eventos selecionados pertencem a períodos diferentes.
+          </div>
+          
+          <div class="d-flex justify-content-between mt-2">
+            <div>
+              <strong>Ciclo:</strong> <span id="ciclo-multipla">Não definido</span>
+            </div>
+            <div>
+              <strong>Disponível para entrada:</strong> R$ <span id="saldo-disponivel">0.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" id="confirmarMultiplaBtn">
+          <i class="bi bi-check-circle"></i> Confirmar Entradas
+        </button>
+        <button type="button" class="btn btn-danger" id="recusarMultiplaBtn">
+          <i class="bi bi-x-circle"></i> Recusar Entradas
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
