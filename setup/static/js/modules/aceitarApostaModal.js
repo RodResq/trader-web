@@ -4,6 +4,7 @@ import { updateEntryOptionIcon } from "./table.js";
 export function initAceitarApostaModal() {
     let currentEventId = null;
     let currentRow = null;
+    let valorOdd = null;
 
     const aceitarButtons = document.querySelectorAll('.apostar-btn');
     const modal = document.getElementById('aceitarApostaModal');
@@ -19,6 +20,8 @@ export function initAceitarApostaModal() {
             currentRow = this.closest('tr');
             const mercado = currentRow.querySelector('td:nth-child(2)').textContent.trim();
             const odd = currentRow.querySelector('td:nth-child(3)').textContent.trim();
+            valorOdd = parseFloat(odd.replace(',', '.'))
+
             
             // Preencher dados no modal
             document.getElementById('aceitar-evento-id').textContent = eventId;
@@ -46,7 +49,7 @@ export function initAceitarApostaModal() {
 
     function atualizarTotal() {
         const valor = parseFloat(valorInput.value) || 0;
-        document.getElementById('valorTotal').textContent = valor.toFixed(2);
+        document.getElementById('valorTotal').textContent = (valor.toFixed(2) * valorOdd.toFixed(2)).toFixed(2);
     }
 
     
@@ -54,6 +57,7 @@ export function initAceitarApostaModal() {
         const eventId = parseInt(document.getElementById('aceitar-evento-id').textContent);
         const mercado = document.getElementById('aceitar-evento-mercado').textContent;
         const odd = parseFloat(document.getElementById('aceitar-evento-odd').textContent.replace(',', '.'));
+        const valorRetorno = parseFloat(document.getElementById('valorTotal').textContent);
         const valor = parseFloat(valorInput.value) || 0;
         
         if (valor <= 0) {
@@ -66,7 +70,8 @@ export function initAceitarApostaModal() {
             evento_id: eventId,
             mercado: mercado,
             odd: odd,
-            valor_entrada: valor
+            valor_entrada: valor,
+            valor_retorno: valorRetorno
         };
         
         // Enviar dados para o backend via AJAX

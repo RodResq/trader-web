@@ -209,7 +209,7 @@ def entrada_multipla(request):
              # Gerar um código único para a múltipla
             cod_multipla = f"ML-{timezone.now().strftime('%Y%m%d%H%M%S')}"
             
-            odd_multipla = 1.0
+            odd_multipla = Decimal('1.0')
              
             for entrada in entradas:
                  # Verificar se alguma entrada já está em uma múltipla
@@ -219,7 +219,7 @@ def entrada_multipla(request):
                         'message':  f'O evento {entrada.id_event} já faz parte de uma múltipla.'
                     }, status=400)
                      
-            odd_multipla *= entrada.odd
+            odd_multipla *= Decimal(entrada.odd)
              
              # Verificar ciclo válido
             ciclos_validos = Ciclo.objects.filter(
@@ -292,6 +292,7 @@ def aceitar_aposta(request):
             if form:
                 evento_id = form.data['evento_id']
                 valor_entrada = form.data['valor_entrada']
+                valor_retorno = form.data['valor_retorno']
                 
                 entrada = get_object_or_404(Entrada, id_event=evento_id)
                 ciclo_ativo = Ciclo.objects.filter(
@@ -311,12 +312,20 @@ def aceitar_aposta(request):
                         'message': f'Valor excede o disponível (R$ {ciclo_ativo.valor_disponivel_entrada})'
                     }, status=400)
                     
-                aposta = Aposta.objects.create(
-                    evento=entrada,
-                    valor_entrada=valor_entrada,
-                    odd=entrada.odd,
-                    ciclo=ciclo_ativo
-                )
+                aposta = Aposta.objects.filter(evento_id=evento_id).first()
+                
+                if aposta:
+                    aposta.valor_entrada = valor_entrada
+                    aposta.valor_retorno = valor_retorno
+                    aposta.save()
+                else:
+                    aposta = Aposta.objects.create(
+                        evento=entrada,
+                        valor_entrada=valor_entrada,
+                        odd=entrada.odd,
+                        ciclo=ciclo_ativo,
+                        valor_retorno=valor_retorno
+                    )
                 
                 entrada.opcao_entrada = 'A'
                 entrada.save()
