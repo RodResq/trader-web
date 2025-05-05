@@ -12,21 +12,21 @@ def ciclos(request):
 
 def ciclo_edit(request, pk=None):
     """Edita um ciclo existente ou cria um novo."""
-    if pk:
-        ciclo = get_object_or_404(Ciclo, pk=pk)
-    else:
-        ciclo = None
+    ciclo = get_object_or_404(Ciclo, pk=pk) if pk else None
+    is_edit = ciclo is not None
         
     if request.method == 'POST':
         form = CicloEntradaForm(request.POST, instance=ciclo)
         
         if form.is_valid():
                 ciclo = form.save()
-                gerencia_ciclo = GerenciaCiclo(ciclo=ciclo, 
-                              qtd_total_entrada=0, 
-                              valor_total_entrada=0, 
-                              valor_total_retorno=0)
-                gerencia_ciclo.save()
+                
+                if not is_edit:
+                    gerencia_ciclo = GerenciaCiclo(ciclo=ciclo, 
+                                qtd_total_entrada=0, 
+                                valor_total_entrada=0, 
+                                valor_total_retorno=0)
+                    gerencia_ciclo.save()
                 
                 messages.success(request, 'Ciclo salvo com sucesso!')
                 return redirect('ciclo:index')

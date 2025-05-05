@@ -28,10 +28,23 @@ class CicloEntradaForm(forms.ModelForm):
         categoria = cleaned_data.get('categoria')
         
         if data_inicial and data_final:
-            existe_ciclo = Ciclo.objects.filter(data_inicial__lte=data_inicial, data_final__gte=data_final).exists()
             
-            if existe_ciclo:
-                raise ValidationError('Ciclo com data inicial e final já existe!') 
+            instance = getattr(self, 'instance', None)
+            
+            # Se estiver editando um ciclo existente e as datas não mudaram, pular a validação de período
+            if instance and instance.pk and instance.data_inicial == data_inicial and instance.data_final == data_final:
+                pass
+            else:
+                query = Ciclo.objects.filter(
+                    data_inicial__lte=data_inicial, 
+                    data_final__gte=data_final).exists()
+                
+                # Se for edição, excluir o próprio ciclo da verificação
+                if instance and instance.pk:
+                    query = query.exclude(pk=instance.pk)
+            
+                if query:
+                    raise ValidationError('Ciclo com data inicial e final já existe!') 
             
             if data_final < data_inicial:
                 raise ValidationError('A data final deve ser posterior à data inicial.')
