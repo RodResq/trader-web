@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializa funcionalidades da tabela
     initTableHandlers();
     // Atualiza indicadores de status do mercado
+    
     updateMarketStatus();
     // Incializa filtros
     initFilters();
@@ -34,19 +35,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // setupApostaButtons();
     initAceitarApostaModal();
     setupRefreshButton();
-
+    
     // Inicializa modal de recusa
     setupRecusarModal();
-
-     // Inicializa modal de desfazer
+    
+    // Inicializa modal de desfazer
     setupDesfazerAcaoModal();
-
+    
     // Inicializa modal de editar odd
     setupEditarModal();
-
+    
     // Inicializa checklist
     initChecklist();
-
+    
     // Inicializa Gerência de Resultado
     setupGerenciaResultado();
 
@@ -55,9 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Incializa o cálculo final das datas do ciclo
     calcularDataFinalCiclo();
-
-    //Inicializa modal mutlipas entradas
-    initMultiplasHandlers();
+    
 });
 
 // Permite o acesso global aos módulos para debugging

@@ -93,7 +93,7 @@ export function initAceitarApostaModal() {
                 
                 // Atualizar a UI para mostrar a aposta como aceita
                 // const row = document.querySelector(`tr td:first-child:contains('${eventId}')`).closest('tr');
-                updateEntryOptionIcon(currentRow, 'A');
+                updateEntryOptionIcon(false, currentRow, 'A');
                 
                 // Desabilitar o botão de aposta
                 const apostarBtn = currentRow.querySelector('.apostar-btn');

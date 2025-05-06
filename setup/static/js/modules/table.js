@@ -53,10 +53,10 @@ export function formatDateCells() {
 /**
  * Atualiza o icone da linha onde a ação foi executada
 */
-export function updateEntryOptionIcon(row, estado="E") {
+export function updateEntryOptionIcon(isMutipla=false, row, estado="E") {
     if (!row) return;
     
-    const mercadoCell = row.querySelector('td:nth-child(2)');
+    const mercadoCell = row.querySelector(isMutipla ? 'td:nth-child(3)': 'td:nth-child(2)');
     
     // Cria elemento de ícone para estado da entrada
     const iconElement = document.createElement('i');

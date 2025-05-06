@@ -646,7 +646,7 @@ function processarMultipla(action) {
                     row.classList.remove('table-active');
                     
                     // Atualiza o ícone de estado da entrada
-                    updateEntryOptionIcon(row, action === 'aceitar' ? 'A' : 'R');
+                    updateEntryOptionIcon(true, row, action === 'aceitar' ? 'A' : 'R');
                     
                     // Desabilitar botões na linha
                     const actionBtns = row.querySelectorAll('.btn');
