@@ -223,6 +223,7 @@ function updateTable(mercados) {
         const editarBtn = document.createElement('a');
         editarBtn.id = 'editar-odd';
         editarBtn.className = 'btn btn-sm btn-info edit-odd-btn';
+        editarBtn.style = "margin-right: 0.2rem;"
         editarBtn.dataset.eventId = mercado.id_event;
         editarBtn.title = 'Editar Odd';
         editarBtn.innerHTML = '<i class="bi bi-pencil"></i>';
@@ -239,7 +240,7 @@ function updateTable(mercados) {
         } else {
             aceitarBtn.className = 'btn btn-sm btn-success apostar-btn';
         }
-        
+        aceitarBtn.style = "margin-right: 0.2rem;"
         aceitarBtn.dataset.eventId = mercado.id_event;
         aceitarBtn.title = 'Aceitar aposta';
         aceitarBtn.innerHTML = '<i class="bi bi-check"></i>';
@@ -257,6 +258,7 @@ function updateTable(mercados) {
             recusarBtn.className = 'btn btn-sm btn-danger recusar-btn';
         }
         
+        recusarBtn.style = "margin-right: 0.2rem;"
         recusarBtn.dataset.eventId = mercado.id_event;
         recusarBtn.title = 'Recusar aposta';
         recusarBtn.innerHTML = '<i class="bi bi-x"></i>';

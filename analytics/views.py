@@ -154,7 +154,7 @@ def mercados(request):
         except ValueError:
             items_per_page = 10
         
-        mercados = Entrada.objects.all().order_by("-home_actual")
+        mercados = Entrada.objects.all()
 
         # Create paginator
         paginator = Paginator(mercados, items_per_page)
