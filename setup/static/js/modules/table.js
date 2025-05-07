@@ -120,7 +120,7 @@ export function checkAcceptedBets() {
         if (iconElement) {
             const apostarBtn = row.querySelector('.apostar-btn');
 
-            if (!apostarBtn.disabled) {
+            if (apostarBtn && !apostarBtn.disabled) {
                 apostarBtn.classList.remove('btn-success');
                 apostarBtn.classList.add('btn-secondary');
                 apostarBtn.innerHTML = '<i class="bi bi-check-all"></i>';
@@ -145,12 +145,12 @@ export function checkRejectBets() {
 
         if (iconElement) {
             const recusarBtn = row.querySelector('.recusar-btn');
-            if (!recusarBtn.disabled) {
+            if (recusarBtn && !recusarBtn.disabled) {
                 recusarBtn.classList.remove('btn-danger');
                 recusarBtn.classList.add('btn-secondary');
                 recusarBtn.innerHTML = '<i class="bi bi-x"></i>';
                 recusarBtn.disabled = true;
-            } else {
+            } else if (recusarBtn && recusarBtn.disabled) {
                 recusarBtn.disabled = false;
             }
         }
@@ -171,6 +171,7 @@ export function checkDesfazerAcao() {
         const iconElement = mercadoCell ? mercadoCell.querySelector('.bi-alarm') : null;
 
         const desfazerBtn = row.querySelector('.desfazer-acao-btn');
+        if (!desfazerBtn) return;
         
         if (iconElement) {
             if (!desfazerBtn.disabled) {
@@ -190,7 +191,10 @@ export function checkDesfazerAcao() {
  * @param {Object} data - Os dados retornados pela API
  */
 export function updateMarketsTable(data) {
-    if (!data.success || !data.mercados) {
+    // Verificar se os dados são um objeto com propriedade mercados ou um array direto
+    const mercados = Array.isArray(data) ? data : (data.success && data.mercados ? data.mercados : null);
+    
+    if (!mercados) {
         return false;
     }
     
@@ -198,6 +202,7 @@ export function updateMarketsTable(data) {
     if (!table) return false;
     
     const tbody = table.querySelector('tbody');
+    if (!tbody) return false;
     
     // Limpar a tabela existente
     tbody.innerHTML = '';
@@ -236,6 +241,7 @@ export function updateMarketsTable(data) {
         const estadoConfig = opcoesEntradaMap[mercado.opcao_entrada] || opcoesEntradaMap['E'];
         iconElement.classList.add('bi', estadoConfig.icon, estadoConfig.color);
         iconElement.style.fontSize = '1rem';
+        iconElement.style.color = estadoConfig.color;
         iconElement.style.marginRight = '5px';
 
         mercadoCell.appendChild(statusSpan);
@@ -277,19 +283,52 @@ export function updateMarketsTable(data) {
             btnAceito.appendChild(iconAceito);
             
             acoesCell.appendChild(btnAceito);
-        } else if (mercado.opcao_entrada == 'R') {
-            // Botão de aceitar aposta
-            const btnRecusar = document.createElement('a');
-            btnRecusar.className = 'btn btn-sm btn-danger disabled';
-            btnRecusar.title = 'Recusada aposta';
-            
-            const iconRecusar = document.createElement('i');
-            iconRecusar.className = 'bi bi-x';
-            btnRecusar.appendChild(iconRecusar);
-            
-            acoesCell.appendChild(btnRecusar);
-        } 
+        } else {
+            aceitarBtn.className = 'btn btn-sm btn-success apostar-btn';
+            aceitarBtn.innerHTML = '<i class="bi bi-check"></i>';
+        }
+        
+        aceitarBtn.dataset.eventId = mercado.id_event;
+        aceitarBtn.title = 'Aceitar aposta';
+        acoesCell.appendChild(aceitarBtn);
+        
+
+        // Botão recusar aposta
+        const recusarBtn = document.createElement('a');
+        recusarBtn.id = 'recusar-aposta';
+        
+        if (mercado.opcao_entrada === 'R') {
+            // Botão desabilitado para apostas já recusadas
+            recusarBtn.className = 'btn btn-sm btn-secondary recusar-btn';
+            recusarBtn.disabled = true;
+        } else {
+            recusarBtn.className = 'btn btn-sm btn-danger recusar-btn';
+        }
+
+        recusarBtn.dataset.eventId = mercado.id_event;
+        recusarBtn.title = 'Recusar aposta';
+        recusarBtn.innerHTML = '<i class="bi bi-x"></i>';
+        acoesCell.appendChild(recusarBtn);
+
+        // Botão desfazer ação
+        const desfazerBtn = document.createElement('a');
+        desfazerBtn.id = 'desfazer-acao';
+
+        // Verificar estado de ação para estilizar o botão de desfazer
+        if (mercado.opcao_entrada === 'E') {
+            desfazerBtn.className = 'btn btn-sm btn-secondary desfazer-acao-btn';
+            desfazerBtn.disabled = true;
+        } else {
+            desfazerBtn.className = 'btn btn-sm btn-warning desfazer-acao-btn';
+        }
+
+        desfazerBtn.dataset.eventId = mercado.id_event;
+        desfazerBtn.title = 'Desfazer ação';
+        desfazerBtn.innerHTML = '<i class="bi bi-arrow-counterclockwise"></i>';
+        acoesCell.appendChild(desfazerBtn);
+        
+        row.appendChild(acoesCell);
+        tbody.appendChild(row);
     });
-    
     return true;
 }

@@ -27,18 +27,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializa funcionalidades da tabela
     initTableHandlers();
     // Atualiza indicadores de status do mercado
-    
     updateMarketStatus();
     // Incializa filtros
     initFilters();
     // Inicializa funcionalidades da Api
     // setupApostaButtons();
     initAceitarApostaModal();
+
     setupRefreshButton();
-    
     // Inicializa modal de recusa
     setupRecusarModal();
-    
+
     // Inicializa modal de desfazer
     setupDesfazerAcaoModal();
     
@@ -56,6 +55,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Incializa o cálculo final das datas do ciclo
     calcularDataFinalCiclo();
+
+    //Inicializa modal mutlipas entradas
+    initMultiplasHandlers();
+
+    // Inicializa componentes de paginação
+    initPagination();
+
+    // Inicializa paginação dinâmica para AJAX
+    initDynamicPagination();
     
 });
 

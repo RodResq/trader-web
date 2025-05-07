@@ -1,0 +1,84 @@
+/* Pagination Component Styles */
+.pagination-container {
+    background-color: #2c2c2c;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    margin-top: 1rem;
+}
+
+.pagination .page-item .page-link {
+    color: #fff;
+    background-color: #444;
+    border-color: #555;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #333;
+    border-color: #444;
+}
+
+.pagination .page-link:hover {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.pagination .page-link:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.page-info {
+    color: #adb5bd;
+}
+
+.items-per-page label {
+    color: #adb5bd;
+}
+
+.items-per-page .form-select {
+    background-color: #333;
+    color: #fff;
+    border-color: #444;
+}
+
+.items-per-page .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Animation for loading state */
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.refresh-btn i.rotate {
+    animation: rotating 1s linear infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pagination-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .items-per-page, .page-info {
+        margin-bottom: 0.5rem;
+    }
+    
+    .pagination {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+}

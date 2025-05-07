@@ -14,19 +14,45 @@ from eventos.models import Evento
 from decimal import Decimal
 from datetime import datetime
 from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 
 # Create your views here.
 def index(request):
         dump_mercados_para_entrada()
+        
+        # Get pagination parameters from request
+        page = request.GET.get('page', 1)
+        items_per_page = request.GET.get('items_per_page', 10)
+        
+        try:
+            items_per_page = int(items_per_page)
+            
+            if (items_per_page > 50):
+                items_per_page = 50    
+        except ValueError:
+            items_per_page = 10
+        
         entradas = Entrada.objects.all()
+        
+        # Create the paginator
+        paginator = Paginator(entradas, items_per_page)
+        
+        try:
+            paginated_entradas = paginator.page(page)
+        except PageNotAnInteger:
+            paginated_entradas = paginator.page(1)
+        except EmptyPage:
+            paginated_entradas = paginator.page(paginator.num_pages)
+        
         qtd_ciclos = Ciclo.objects.count() 
         qtd_eventos = Entrada.objects.count()
             
         return render(request, 'analytics/index.html', {
-            'mercados': entradas,
+            'mercados': paginated_entradas,
             'qtd_eventos': qtd_eventos,
-            'qtd_ciclos': qtd_ciclos
+            'qtd_ciclos': qtd_ciclos,
+            'items_per_page': items_per_page
         })
 
 def apostar(request):
@@ -117,14 +143,35 @@ def eventos(request):
 
 def mercados(request):
     try:
+        # Get pagination parameters
+        page = request.GET.get('page', 1)
+        items_per_page = request.GET.get('items_per_page', 10)
+        
+        try:
+            items_per_page = int(items_per_page)
+            if items_per_page > 50:
+                items_per_page = 50
+        except ValueError:
+            items_per_page = 10
+        
         mercados = Entrada.objects.all().order_by("-home_actual")
+
+        # Create paginator
+        paginator = Paginator(mercados, items_per_page)
+        
+        try:
+            paginator_mercados = paginator.page(page)
+        except PageNotAnInteger:
+            paginator_mercados = paginator.page(1)
+        except EmptyPage:
+            paginator_mercados = paginator.page(paginator.num_pages)
+        
         data = []
-        for mercado in mercados:
-            print(f"Event ID: {mercado.id_event}, Away Actual: {mercado.away_actual}")
+        for mercado in paginator_mercados:
             data.append({
                 'id_event': mercado.id_event,
                 'mercado': mercado.mercado,
-                'odd': float(mercado.odd) if mercado.odd else None,
+                'odd': float(mercado.odd) if mercado.odd else 0,
                 'home_actual': mercado.home_actual,
                 'away_actual': mercado.away_actual,
                 'data_jogo': mercado.data_jogo.strftime('%d/%m/%Y %H:%M:%S') if mercado.data_jogo else None,
@@ -132,7 +179,13 @@ def mercados(request):
             })
         return JsonResponse({
             'success': True,
-            'mercados': data
+            'mercados': data,
+            'pagination': {
+                'current_page': paginator_mercados.number,
+                'total_pages': paginator.num_pages,
+                'items_per_page': items_per_page,
+                'total_items': paginator.count
+            }
         })
     except Exception as e:
         return JsonResponse({

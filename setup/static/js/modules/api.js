@@ -6,7 +6,12 @@ import { updateEntryOptionIcon, updateMarketsTable } from './table.js';
 import { updateMarketStatus } from './marketStatus.js';
 import { setupRecusarModal } from './recusarAposta.js';
 import { desabilitarBtnAceitar } from './utils.js';
+import { loadPageData } from './pagination.js';
 
+
+// Armazenamento de estado de paginação
+let currentPage = 1;
+let itemsPerPage = 10;
 
 /**
  * Configura botões de aposta com manipuladores de eventos
@@ -99,17 +104,23 @@ export function setupRefreshButton() {
         this.classList.add('loading');
         this.disabled = true;
 
-        fetchUpdatedMarkets();
+        loadPageData();
     });
 }
 
 /**
- * Busca dados atualizados de mercados da API
+ * Busca dados atualizados de mercados da API com paginação
+ * @param {number} page - Número da página a ser carregada
+ * @param {number} perPage - Número de itens por página
  */
-function fetchUpdatedMarkets() {
-    const url = '/api/mercados';
+export function fetchUpdatedMarkets(page = 1, perPage = 10) {
+    // Atualizar estado de paginação
+    currentPage = page;
+    itemsPerPage = perPage;
+    
+    const url = `/api/mercados?page=${page}&items_per_page=${perPage}`;
 
-    fetch(url, {
+    return fetch(url, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -123,22 +134,38 @@ function fetchUpdatedMarkets() {
         return response.json();
     })
     .then(data => {
-        const success = updateMarketsTable(data);
-        
-        if (success) {
-            updateMarketStatus();
-            setupApostaButtons();
-            setupRecusarModal();
-            showNotification('Mercados atualizados com sucesso!', 'success');
+        if (data.success) {
+            const success = updateMarketsTable(data.mercados);
+            
+            if (success) {
+                updateMarketStatus();
+                setupApostaButtons();
+                setupRecusarModal();
+                showNotification('Mercados atualizados com sucesso!', 'success');
+                
+                // Retornar informações de paginação para atualizar os controles
+                return {
+                    success: true,
+                    pagination: data.pagination || {
+                        current_page: currentPage,
+                        total_pages: 1,
+                        items_per_page: itemsPerPage,
+                        total_items: data.mercados.length
+                    }
+                };
+            } else {
+                showNotification('Erro ao processar dados dos mercados', 'warning');
+                return { success: false };
+            }
         } else {
-            showNotification('Erro ao processar dados dos mercados', 'warning');
+            showNotification('Erro ao obter dados dos mercados', 'danger');
+            return { success: false };
         }
-        return data;
     })
     .catch(error => {
         console.error('Erro:', error);
         showNotification('Erro ao atualizar mercados. Tente novamente.', 'danger');
-        throw error; // Re-throw para permitir tratamento adicional
+        return { success: false, error: error.message };
     })
     .finally(() => {
         stopRefreshAnimation();
@@ -157,4 +184,31 @@ function stopRefreshAnimation() {
     
     refreshButton.classList.remove('loading');
     refreshButton.disabled = false;
+}
+
+/**
+ * Define a página atual para paginação
+ * @param {number} page - Número da página
+ */
+export function setCurrentPage(page) {
+    currentPage = page;
+}
+
+/**
+ * Define o número de itens por página
+ * @param {number} perPage - Número de itens por página
+ */
+export function setItemsPerPage(perPage) {
+    itemsPerPage = perPage;
+}
+
+/**
+ * Obtém o estado atual de paginação
+ * @returns {Object} Objeto com página atual e itens por página
+ */
+export function getPaginationState() {
+    return {
+        currentPage,
+        itemsPerPage
+    };
 }
