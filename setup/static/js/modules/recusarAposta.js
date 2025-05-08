@@ -108,7 +108,7 @@ export function setupRecusarModal() {
             this.disabled = false;
             this.innerHTML = '<i class="bi bi-x-circle"></i> Confirmar Recusa';
 
-            updateEntryOptionIcon(currentRow, "R");
+            updateEntryOptionIcon(false, currentRow, "R");
             
             // Mostrar notificação
             showNotification('Aposta recusada com sucesso!', 'warning');
