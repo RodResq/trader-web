@@ -2,6 +2,8 @@
  * Módulo de Paginação - Gerencia funcionalidades de paginação
  */
 
+import { restoreToggleState } from './uiEnhanced.js';
+
 let currentPage = 1;
 let itemsPerPage = 10;
 let totalPages = 1;
@@ -24,7 +26,7 @@ export function initPagination() {
         itemsPerPageSelect.addEventListener('change', function() {
             itemsPerPage = parseInt(this.value);
             currentPage = 1; // Resetar para a primeira página
-            navigateToPage(currentPage);
+            navigateToPageEnhanced(currentPage, itemsPerPage);
         });
     }
 
@@ -42,7 +44,7 @@ export function initPagination() {
                 const url = new URL(link.href);
                 const page = parseInt(url.searchParams.get('page')) || 1;
 
-                navigateToPage(page);
+                navigateToPageEnhanced(page, itemsPerPage);
             }
         }
     });
@@ -70,15 +72,25 @@ function setupAjaxPagination() {
  * Navega para a página especificada
  * @param {number} page - Número da página 
  */
-export function navigateToPage(page) {
+export function navigateToPageEnhanced(page, itemsPerPageValue) {
     // Para navegação normal (não-AJAX), simplesmente redirecionar
+    // Manter o estado no localStorage antes de redirecionar
+    const toggleSuperFavoritosHome = document.getElementById('toggleSuperFavoritosHome');
+    if (toggleSuperFavoritosHome) {
+        localStorage.setItem('toggleSuperFavoritosHomeState', toggleSuperFavoritosHome.checked);
+    }
+
     if (!isAjaxTable()) {
-        window.location.href = `?page=${page}&items_per_page=${itemsPerPage}`;
+        window.location.href = `?page=${page}&items_per_page=${itemsPerPage || itemsPerPageValue}`;
         return;
     }
 
     // Para tabelas AJAX, carregar dados via AJAX
     currentPage = page;
+    if (itemsPerPageValue) {
+        itemsPerPage = itemsPerPageValue;
+    }
+
     loadPageData();
 }
 
@@ -92,7 +104,8 @@ function isAjaxTable() {
 }
 
 /**
- * Carrega dados da página atual via AJAX
+ * Versão modificada da função loadPageData
+ * Adiciona chamada para restaurar o estado do checkbox após carregar a página
  */
 export function loadPageData() {
     // Obter o botão de atualização para mostrar indicador de carregamento
@@ -139,6 +152,8 @@ export function loadPageData() {
 
             // Inicializar outros comportamentos necessários na tabela atualizada
             initTableBehaviors();
+
+            restoreToggleState();
         }
     })
     .catch(error => {
@@ -364,7 +379,7 @@ function updatePaginationControls(pagination = null) {
                 if (this.closest('.disabled')) return;
                 
                 const page = parseInt(this.dataset.page);
-                navigateToPage(page);
+                navigateToPageEnhanced(page, itemsPerPage);
             });
         });
     }

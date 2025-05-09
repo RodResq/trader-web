@@ -3,7 +3,7 @@
  * Carrega e inicializa todos os módulos do dashboard
  */
 
-import { initUi } from './modules/ui.js';
+import { initUiEnhanced } from './modules/uiEnhanced.js';
 import { initTableHandlers } from './modules/table.js';
 import { updateMarketStatus } from './modules/marketStatus.js';
 import { initFilters } from './modules/filters.js';
@@ -23,7 +23,7 @@ import { initMultiplasHandlers } from './modules/multiplas.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa componentes de UI
-    initUi();
+    initUiEnhanced();
     // Inicializa funcionalidades da tabela
     initTableHandlers();
     // Atualiza indicadores de status do mercado
