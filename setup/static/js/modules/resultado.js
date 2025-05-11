@@ -28,7 +28,7 @@ export function setupGerenciaResultado() {
 
             currentEventId = eventId;
             //TODO implementar api
-            const url = `/api/gerenciar?event_id=${currentEventId}&action=${valueSelected}`;
+            const url = `/analytics/gerencia/resultado?event_id=${currentEventId}&resultado=${valueSelected}`;
             fetch(url, {
                 method: 'GET',
                 headers: {
@@ -38,6 +38,9 @@ export function setupGerenciaResultado() {
                 if (!response.ok) {
                     throw new Error('Erro ao processar resultado');
                 }
+                //processar retorno resultado
+                currentRow.querySelector('')
+
                 return response.json();
             }).then(response => {
                 showNotification('Resultado da entrada registrado com sucesso!',  'success');

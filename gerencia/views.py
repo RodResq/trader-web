@@ -3,37 +3,37 @@ from django.urls import reverse
 from django.contrib import messages
 from .models import GerenciaCiclo
 from .forms import GerenciaForm
-from analytics.models import Entrada
+from analytics.models import Entrada, Aposta
 from django.db.models import Q, Sum
 
 def gerencia(request):
     """Exibe a lista de registros de lucro."""
     gerencias = GerenciaCiclo.objects.all()
     
-    resultado_entradas = []
+    resultado_apostas = []
     
     for gerencia in gerencias:
-        entradas = Entrada.objects.filter(ciclo=gerencia.ciclo).filter(opcao_entrada="A")
+        apostas = Aposta.objects.filter(ciclo__id=gerencia.ciclo.id).all()
         
-        qtd_total_entradas = entradas.count()
-        valor_total_entradas = entradas.aggregate(
+        quantiade_apostas = apostas.count()
+        valor_total_apostas = apostas.aggregate(
             total_valor=Sum('valor', default=0)
         )['total_valor']
         
-        if qtd_total_entradas > 0:
-            if valor_total_entradas != gerencia.valor_total_entrada:
-                gerencia.valor_total_entrada = valor_total_entradas
-                gerencia.qtd_total_entrada = qtd_total_entradas
+        if quantiade_apostas > 0:
+            if valor_total_apostas != gerencia.valor_total_entrada:
+                gerencia.valor_total_entrada = valor_total_apostas
+                gerencia.qtd_total_entrada = quantiade_apostas
                 gerencia.save()
         
         resultado_dict = {
             'gerencia': gerencia,
-            'entradas': entradas
+            'apostas': apostas
         }
         
-        resultado_entradas.append(resultado_dict)
+        resultado_apostas.append(resultado_dict)
     
-    return render(request, 'analytics/gerencia/gerencia.html', {'resultado_entradas': resultado_entradas})
+    return render(request, 'analytics/gerencia/gerencia.html', {'resultado_apostas': resultado_apostas})
 
 def gerencia_edit(request, pk=None):
     """Edita um registro de lucro existente ou cria um novo."""
@@ -68,3 +68,16 @@ def gerencia_delete(request, pk):
         return redirect('analytics:gerencia:index')
         
     return render(request, 'analytics/gerencia/gerencia_confirm_delete.html', {'gerencia': gerencia})
+
+
+def resultado(request):
+    if "event_id" in request.GET and "resultado" in request.GET:
+        event_id = request.GET['event_id']
+        resultado = request.GET.get('resultado')
+        
+        aposta = Aposta.objects.filter(evento_id=event_id).first()
+        if aposta: 
+            aposta.resultado = resultado
+            aposta.save()
+                
+    return redirect(request, 'analytics/gerencia/gerencia.html', {'resultado': resultado})

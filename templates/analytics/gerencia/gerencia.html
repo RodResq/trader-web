@@ -44,9 +44,9 @@
               </tr>
             </thead>
             <tbody>
-              {% if resultado_entradas %}
-                {% for resultado in resultado_entradas %}
-                {% with gerencia=resultado.gerencia entradas=resultado.entradas %}
+              {% if resultado_apostas %}
+                {% for resultado in resultado_apostas %}
+                {% with gerencia=resultado.gerencia apostas=resultado.apostas %}
                 <tr>
                   <td>
                     <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ gerencia.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ gerencia.pk }}">
@@ -55,7 +55,7 @@
                     </a>
                   </td>
                   <td>{{ gerencia.ciclo.data_inicial|date:"d/m/Y" }} a {{ gerencia.ciclo.data_final|date:"d/m/Y" }}</td>
-                  <td>{{ entradas|length }}</td>
+                  <td>{{ apostas|length }}</td>
                   <td>{{ gerencia.valor_total_entrada }}</td>
                   <td>{{ gerencia.valor_total_retorno }}</td>
                   <td class="text-center">
@@ -71,7 +71,7 @@
                   <td colspan="6">
                     <div class="card card-body bg-dark">
                       <h6 class="text-primary mb-3">Detalhes das Entradas</h6>
-                      {% if entradas %}
+                      {% if apostas %}
                       <div class="table-responsive">
                         <table class="table table-dark table-striped">
                           <thead>
@@ -88,40 +88,40 @@
                             </tr>
                           </thead>
                           <tbody>lucros
-                            {% for entrada in entradas %}
+                            {% for aposta in apostas %}
                             <tr>
-                              <td>{{ entrada.id_event }}</td>
-                              <td>{{ entrada.mercado }}</td>
-                              <td>{{ entrada.odd }}</td>
-                              <td>{{ entrada.home_actual }}%</td>
-                              <td>{{ entrada.away_actual }}%</td>
-                              <td>{{ entrada.valor }}</td>
-                              <td>{{ entrada.data_jogo|date:"d/m/Y H:i" }}</td>
+                              <td>{{ aposta.entrada.id_event }}</td>
+                              <td>{{ aposta.entrada.mercado }}</td>
+                              <td>{{ aposta.entrada.odd }}</td>
+                              <td>{{ aposta.entrada.home_actual }}%</td>
+                              <td>{{ aposta.entrada.away_actual }}%</td>
+                              <td>{{ aposta.valor }}</td>
+                              <td>{{ aposta.entrada.data_jogo|date:"d/m/Y H:i" }}</td>
                               <td class="resultado-container">
                                 <div class="input-group">
                                   <select class="form-select form-select-sm resultado-select" 
-                                          data-event-id="{{ entrada.id_event }}">
+                                          data-event-id="{{ aposta.entrada.id_event }}">
                                     <option value="" 
-                                      {% if not entrada.resultado_entrada %}selected{% endif %}>
+                                      {% if not aposta.resultado %}selected{% endif %}>
                                       Selecione
                                     </option>
                                     <option value="G" 
-                                      {% if entrada.resultado_entrada == 'G' %}selected{% endif %}>
+                                      {% if aposta.resultado == 'G' %}selected{% endif %}>
                                       Green
                                     </option>
                                     <option value="R" 
-                                      {% if entrada.resultado_entrada == 'R' %}selected{% endif %}>
+                                      {% if aposta.resultado == 'R' %}selected{% endif %}>
                                       Red
                                     </option>
                                     <option value="A" 
-                                      {% if entrada.resultado_entrada == 'A' %}selected{% endif %}>
+                                      {% if aposta.resultado == 'A' %}selected{% endif %}>
                                       Anulado
                                     </option>
                                   </select>
                                 </div>
                               </td>
                               <td>
-                                <a class="btn btn-sm btn-primary salvar-resultado" data-event-id="{{ entrada.id_event }}">
+                                <a class="btn btn-sm btn-primary salvar-resultado" data-event-id="{{ aposta.entrada.id_event }}">
                                   <i class="bi bi-save"></i>
                                 </a>
                               </td>

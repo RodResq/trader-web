@@ -345,48 +345,48 @@ def aceitar_aposta(request):
             form = AceitarApostaForm(data=data)
             
             if form:
-                evento_id = form.data['evento_id']
+                id_evento = form.data['evento_id']
                 valor_entrada = form.data['valor_entrada']
                 valor_retorno = form.data['valor_retorno']
                 
-                entrada = get_object_or_404(Entrada, id_event=evento_id)
-                ciclo_ativo = Ciclo.objects.filter(
+                entrada = get_object_or_404(Entrada, id_event=id_evento)
+                ciclo = Ciclo.objects.filter(
                     data_inicial__lte=entrada.data_jogo,
                     data_final__gte=entrada.data_jogo
                 ).first()
                 
-                if not ciclo_ativo:
+                if not ciclo:
                     return JsonResponse({
                         'sucess': False,
                         'message': 'Não existe um ciclo ativo para a data deste evento'
                     }, status=400)
                     
-                if valor_entrada > ciclo_ativo.valor_disponivel_entrada:
+                if valor_entrada > ciclo.valor_disponivel_entrada:
                     return JsonResponse({
                         'success': False,
-                        'message': f'Valor excede o disponível (R$ {ciclo_ativo.valor_disponivel_entrada})'
+                        'message': f'Valor excede o disponível (R$ {ciclo.valor_disponivel_entrada})'
                     }, status=400)
                     
-                aposta = Aposta.objects.filter(evento_id=evento_id).first()
+                aposta = Aposta.objects.filter(entrada__id_event=id_evento).first()
                 
                 if aposta:
-                    aposta.valor_entrada = valor_entrada
-                    aposta.valor_retorno = valor_retorno
+                    aposta.valor = valor_entrada
+                    aposta.retorno = valor_retorno
                     aposta.save()
                 else:
                     aposta = Aposta.objects.create(
-                        evento=entrada,
-                        valor_entrada=valor_entrada,
-                        odd=entrada.odd,
-                        ciclo=ciclo_ativo,
-                        valor_retorno=valor_retorno
+                        entrada=entrada,
+                        ciclo=ciclo,
+                        is_multipla=False,
+                        valor=valor_entrada,
+                        retorno=valor_retorno
                     )
                 
                 entrada.opcao_entrada = 'A'
                 entrada.save()
                 
-                ciclo_ativo.valor_disponivel_entrada -= Decimal(valor_entrada)
-                ciclo_ativo.save()
+                ciclo.valor_disponivel_entrada -= Decimal(valor_entrada)
+                ciclo.save()
                 
                 return JsonResponse({
                     'success': True,

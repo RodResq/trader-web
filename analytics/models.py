@@ -53,7 +53,6 @@ class Entrada(models.Model):
     ]
     
     id_event = models.IntegerField(primary_key=True)
-    ciclo = models.ForeignKey(Ciclo, db_column="id_ciclo", on_delete=models.CASCADE, null=True, blank=True, related_name="entrada", verbose_name="ciclo")
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd = models.DecimalField(
         max_digits=5, 
@@ -66,15 +65,7 @@ class Entrada(models.Model):
     away_actual = models.IntegerField(blank=True, null=True, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
     opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
-    valor = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
-        validators=[MinValueValidator(0)], 
-        verbose_name="Valor de Entrada", 
-        default=0.0
-    )
-    is_multipla = models.BooleanField(default=False, verbose_name="[0-simples, 1-multipla]")
-    cod_multipla = models.CharField(max_length=20, blank=True, null=True)
+    
             
         
     def __str__(self):
@@ -83,12 +74,12 @@ class Entrada(models.Model):
     
     def save(self, *args, **kwargs):
         """
-        Automatically assigns the period based on data_jogo if not explicitly set
+        Garante que entrada só seja atualizada se estiver dentro de um ciclo.
         """
-        if not self.ciclo and self.data_jogo:
+        if self.data_jogo:            
             try:
                 # Find a period that includes the game date
-                self.ciclo = Ciclo.objects.filter(
+                Ciclo.objects.filter(
                     data_inicial__lte=self.data_jogo, 
                     data_final__gte=self.data_jogo
                 ).first()
@@ -114,33 +105,33 @@ class Aposta(models.Model):
         ("A", "anulado")
     ]
     
-    evento = models.ForeignKey(Entrada, on_delete=models.CASCADE, related_name='apostas')
-    ciclo = models.ForeignKey(Ciclo, on_delete=models.CASCADE, related_name='apostas')
-    valor_entrada = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        validators=[MinValueValidator(Decimal('0.01'))]
-    )
-    odd = models.DecimalField(max_digits=5, decimal_places=2)
-    data_criacao = models.DateTimeField(auto_now_add=True)
+    entrada = models.ForeignKey(Entrada, on_delete=models.CASCADE, related_name='apostas')
+    ciclo = models.ForeignKey(Ciclo, db_column="id_ciclo", on_delete=models.CASCADE, null=True, blank=True, related_name="aposta", verbose_name="ciclo")
+    is_multipla = models.BooleanField(default=False, verbose_name="[0-simples, 1-multipla]")
+    cod_multipla = models.CharField(max_length=20, blank=True, null=True)
     resultado = models.CharField(
         max_length=1,
         choices=RESULTADO_CHOICES,
         default='A'
     )
-    data_resultado = models.DateTimeField(null=True, blank=True)
-    valor_retorno = models.DecimalField(
+    valor = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.01'))]
+    )
+    retorno = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         null=True,
         blank=True
     )
+    data_aposta = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         db_table = 'aposta'
         verbose_name = 'Aposta'
         verbose_name_plural = 'Apostas'
-        ordering = ['-data_criacao']
+        ordering = ['-data_aposta']
         
     def __str__(self):
         return f"Aposta #{self.id} - {self.evento.mercado}"
