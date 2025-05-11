@@ -11,7 +11,7 @@ import { initFilters } from './modules/filters.js';
 import { setupRefreshButton } from './modules/api.js';
 import { setupRecusarModal } from './modules/recusarAposta.js';
 import { setupDesfazerAcaoModal } from './modules/desfazerAcao.js';
-import { initChecklist } from './modules/checklist.js';
+import { initEntradasEmLote } from './modules/entradas_em_lote.js';
 import { setupEditarModal } from './modules/editarOdd.js';
 import { setupGerenciaResultado } from './modules/resultado.js';
 import { calcularValorDisponivelEntrada } from './modules/ciclo/calcula_disponivel_entrada.js';
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEditarModal();
     
     // Inicializa checklist
-    initChecklist();
+    initEntradasEmLote();
     
     // Inicializa Gerência de Resultado
     setupGerenciaResultado();

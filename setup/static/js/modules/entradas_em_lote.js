@@ -14,7 +14,7 @@ let selectedItems = new Set();
 /**
  * Inicializa o botão de mostrar checklist
  */
-export function initChecklist() {
+export function initEntradasEmLote() {
     const btnMostrarChecklist = document.getElementById('mostrarCheckList');
     if (!btnMostrarChecklist) return;
     

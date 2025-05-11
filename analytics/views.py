@@ -238,98 +238,6 @@ def editar_odd(request):
                 'message': f'Erro ao atualizar odd: {str(e)}'
             }, status=500)
             
-
-def entrada_multipla(request):
-    if request.method == 'POST':
-        try:
-             # Obter dados da requisição
-            data = json.loads(request.body)
-            event_ids = data.get('event_ids', [])
-            action = data.get('action')
-             
-             # Validar parâmetros
-            if not event_ids or action not in ['aceitar', 'recusar']:
-                return JsonResponse({'sucess': False,'message': 'Parâmetros inválidos.'}, status=400)
-            
-             # Recuperar todas as entradas
-            entradas = Entrada.objects.filter(id_event__in=event_ids)
-            
-             # Verificar se todos os eventos foram encontrados
-            if len(entradas) != len(event_ids):   
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Alguns eventos não foram encontrados.'
-                }, status=400)
-            
-             # Gerar um código único para a múltipla
-            cod_multipla = f"ML-{timezone.now().strftime('%Y%m%d%H%M%S')}"
-            
-            odd_multipla = Decimal('1.0')
-             
-            for entrada in entradas:
-                 # Verificar se alguma entrada já está em uma múltipla
-                if entrada.is_multipla:
-                    return JsonResponse({
-                        'sucess': False,
-                        'message':  f'O evento {entrada.id_event} já faz parte de uma múltipla.'
-                    }, status=400)
-                     
-            odd_multipla *= Decimal(entrada.odd)
-             
-             # Verificar ciclo válido
-            ciclos_validos = Ciclo.objects.filter(
-                data_inicial__lte=min(entrada.data_jogo for entrada in entradas),
-                data_final__gte=max(entrada.data_jogo for entrada in entradas)
-            )
-             
-            if not ciclos_validos.exists():
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Não existe um ciclo válido para esta múltipla.'
-                }, status=400)
-            
-             # Selecionar o primeiro ciclo válido
-            ciclo = ciclos_validos.first()
-            
-             # Processar cada entrada
-            with transaction.atomic():
-                for entrada in entradas:
-                    if action == 'aceitar':
-                        entrada.opcao_entrada = "A"
-                    elif action == 'recusar':
-                        entrada.opcao_entrada == "R"
-                    entrada.is_multipla = True
-                    entrada.cod_multipla = cod_multipla
-                    entrada.id_ciclo = ciclo
-                    entrada.save()
-                     
-            return JsonResponse({
-                 'success': True,
-                 'message': f'Múltipla criada com sucesso!',
-                 'data': {
-                    'cod_multipla': cod_multipla,
-                    'odd_multipla': odd_multipla,
-                    'quantidade_eventos': len(event_ids),
-                    'ciclo': ciclo.id
-                 }
-             })
-
-        except json.JSONDecodeError:
-            return JsonResponse({
-                'success': False,
-                'message': 'Corpo da requisição inválido.'
-            }, status=400)
-            
-        except Exception as e:
-            return JsonResponse({
-                'success': False,
-                'message': f'Erro ao processar múltipla: {str(e)}'
-            }, status=500)
-            
-    return JsonResponse({
-        'success': False,
-        'message': 'Método não permitido.'
-    }, status=405)
             
     
 @require_POST
@@ -449,7 +357,9 @@ def entrada_multipla(request):
             
             for entrada in entradas:
                 # Verificar se alguma entrada já está em uma múltipla
-                if entrada.is_multipla:
+                aposta = Aposta.objects.filter(entrada__id_event=entrada.id_event).first()
+                
+                if aposta and aposta.is_multipla:
                     return JsonResponse({
                         'success': False,
                         'message': f'O evento {entrada.id_event} já faz parte de uma múltipla.'
@@ -489,30 +399,24 @@ def entrada_multipla(request):
                 for entrada in entradas:
                     if action == 'aceitar':
                         entrada.opcao_entrada = "A"
+                        # Criar registro de aposta
+                        aposta = Aposta.objects.create(
+                            entrada=entrada,  # Associa à primeira entrada
+                            ciclo=ciclo,
+                            valor=valor_entrada,
+                            retorno=retorno_esperado,
+                            is_multipla = True,
+                            cod_multipla = cod_multipla
+                        )
                     elif action == 'recusar':
                         entrada.opcao_entrada = "R"
                     
-                    entrada.is_multipla = True
-                    entrada.cod_multipla = cod_multipla
-                    entrada.ciclo = ciclo
                     entrada.save()
-                
-                # Se for aceitar, criar aposta e atualizar saldo do ciclo
-                if action == 'aceitar':
-                    # Criar registro de aposta
-                    aposta = Aposta.objects.create(
-                        evento=entradas[0],  # Associa à primeira entrada
-                        ciclo=ciclo,
-                        valor_entrada=valor_entrada,
-                        odd=odd_combinada,
-                        valor_retorno=retorno_esperado,
-                        # Armazena os IDs das entradas múltiplas em algum campo adicional
-                        # (adicionar um campo na model Aposta para isso)
-                    )
+                    aposta.save()
                     
-                    # Atualizar saldo disponível do ciclo
-                    ciclo.valor_disponivel_entrada -= valor_entrada
-                    ciclo.save()
+                # Atualizar saldo disponível do ciclo
+                ciclo.valor_disponivel_entrada -= valor_entrada
+                ciclo.save()
             
             return JsonResponse({
                 'success': True,
