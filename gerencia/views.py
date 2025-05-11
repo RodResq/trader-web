@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
-from .models import GerenciaCiclo
-from .forms import GerenciaForm
 from analytics.models import Entrada, Aposta
 from django.db.models import Q, Sum
+from django.http import JsonResponse
+from .models import GerenciaCiclo
+from .forms import GerenciaForm
 
 def gerencia(request):
     """Exibe a lista de registros de lucro."""
@@ -70,14 +71,28 @@ def gerencia_delete(request, pk):
     return render(request, 'analytics/gerencia/gerencia_confirm_delete.html', {'gerencia': gerencia})
 
 
-def resultado(request):
+def gerencia_resultado(request):
     if "event_id" in request.GET and "resultado" in request.GET:
         event_id = request.GET['event_id']
         resultado = request.GET.get('resultado')
         
-        aposta = Aposta.objects.filter(evento_id=event_id).first()
-        if aposta: 
-            aposta.resultado = resultado
-            aposta.save()
-                
-    return redirect(request, 'analytics/gerencia/gerencia.html', {'resultado': resultado})
+        aposta = Aposta.objects.filter(entrada__id_event=event_id).first()
+        
+        if not aposta:
+            return JsonResponse({
+                'success': False,
+                'message': f'Não existe aposta registrada'
+            }, status=400)
+        
+
+        aposta.resultado = resultado
+        aposta.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Resultado da aposta registrado',
+            'data': {
+                'id_event': event_id,
+                'resultado': resultado
+            }            
+        })

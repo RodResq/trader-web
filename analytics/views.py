@@ -7,7 +7,6 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from analytics.models import VwConsultaMercadoSf, Entrada, Aposta
 from analytics.helpers import dump_mercados_para_entrada
-from django.http import JsonResponse
 from ciclo.models import Ciclo 
 from .forms import AceitarApostaForm
 from eventos.models import Evento
@@ -71,7 +70,7 @@ def apostar(request):
         
         if not existe_ciclo:
             return JsonResponse({
-                'sucess': False,
+                'success': False,
                 'message': f'Não existe ciclo para a entrada.'
             }, status=400)
             

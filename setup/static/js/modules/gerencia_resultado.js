@@ -23,7 +23,6 @@ export function setupGerenciaResultado() {
             currentRow = salvarResultadoBrn.closest('tr');
 
             const valueSelected = currentRow.querySelector('.resultado-select').value;
-            showNotification(`Id evento: ${eventId}, opção: ${valueSelected}`, 'success')
             if (!currentRow) return;
 
             currentEventId = eventId;
@@ -38,16 +37,14 @@ export function setupGerenciaResultado() {
                 if (!response.ok) {
                     throw new Error('Erro ao processar resultado');
                 }
-                //processar retorno resultado
-                currentRow.querySelector('')
-
                 return response.json();
-            }).then(response => {
-                showNotification('Resultado da entrada registrado com sucesso!',  'success');
-
-                return updateEntryOptionResultado(currentRow, 'G');//TODO IMPLEMENTAR
+            }).then(data => {
+                if (data.success) {
+                    showNotification(`${data.message}. Id evento: ${data.data.id_event}, opção: ${data.data.resultado}`, 'success')
+                }
+                // return updateEntryOptionResultado(currentRow, 'G');//TODO IMPLEMENTAR
             }).catch(error => {
-                console.error('Erro: ', error);
+                console.error('Erro:', error)
                 showNotification('Erro ao registra resultado da entrada. Tente novamente.', 'danger');
             })
         })

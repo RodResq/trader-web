@@ -13,7 +13,7 @@ import { setupRecusarModal } from './modules/recusarAposta.js';
 import { setupDesfazerAcaoModal } from './modules/desfazerAcao.js';
 import { initEntradasEmLote } from './modules/entradas_em_lote.js';
 import { setupEditarModal } from './modules/editarOdd.js';
-import { setupGerenciaResultado } from './modules/resultado.js';
+import { setupGerenciaResultado } from './modules/gerencia_resultado.js';
 import { calcularValorDisponivelEntrada } from './modules/ciclo/calcula_disponivel_entrada.js';
 import { calcularDataFinalCiclo } from './modules/ciclo/calculo_data_final_ciclo.js';
 import { initAceitarApostaModal } from './modules/aceitarApostaModal.js';
