@@ -401,7 +401,7 @@ def entrada_multipla(request):
                         entrada.opcao_entrada = "A"
                         # Criar registro de aposta
                         aposta = Aposta.objects.create(
-                            entrada=entrada,  # Associa à primeira entrada
+                            entrada=entrada,  
                             ciclo=ciclo,
                             valor=valor_entrada,
                             retorno=retorno_esperado,
