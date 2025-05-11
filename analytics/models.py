@@ -102,7 +102,8 @@ class Aposta(models.Model):
     RESULTADO_CHOICES = [
         ("G", "green"),
         ("R", "red"),
-        ("A", "anulado")
+        ("A", "anulado"),
+        ("", "selecione")
     ]
     
     entrada = models.ForeignKey(Entrada, on_delete=models.CASCADE, related_name='apostas')
@@ -112,7 +113,7 @@ class Aposta(models.Model):
     resultado = models.CharField(
         max_length=1,
         choices=RESULTADO_CHOICES,
-        default='A'
+        default=''
     )
     valor = models.DecimalField(
         max_digits=10,
