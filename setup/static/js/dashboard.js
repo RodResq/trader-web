@@ -18,6 +18,7 @@ import { calcularValorDisponivelEntrada } from './modules/ciclo/calcula_disponiv
 import { calcularDataFinalCiclo } from './modules/ciclo/calculo_data_final_ciclo.js';
 import { initAceitarApostaModal } from './modules/aceitarApostaModal.js';
 import { initMultiplasHandlers } from './modules/multiplas.js';
+import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_aposta.js'
 
 
 
@@ -64,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializa paginação dinâmica para AJAX
     initDynamicPagination();
+
+    // atualizaIconeResultado
+    atualizaIconeResultado();
     
 });
 

@@ -1,3 +1,4 @@
+import { atualizaIconeResultado } from "./gerencia_aposta/icone_lista_aposta.js";
 import { showNotification } from "./notifications.js";
 
 export function setupGerenciaResultado() {
@@ -42,7 +43,7 @@ export function setupGerenciaResultado() {
                 if (data.success) {
                     showNotification(`${data.message}. Id evento: ${data.data.id_event}, opção: ${data.data.resultado}`, 'success')
                 }
-                // return updateEntryOptionResultado(currentRow, 'G');//TODO IMPLEMENTAR
+                return atualizaIconeResultado(currentRow, data.data.resultado);
             }).catch(error => {
                 console.error('Erro:', error)
                 showNotification('Erro ao registra resultado da entrada. Tente novamente.', 'danger');

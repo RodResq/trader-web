@@ -91,7 +91,15 @@
                             {% for aposta in apostas %}
                             <tr>
                               <td>{{ aposta.entrada.id_event }}</td>
-                              <td>{{ aposta.entrada.mercado }}</td>
+                              <td><i {% if aposta.resultado == 'G' %}
+                                    class="bi bi-check-circle" style="font-size: 1rem; color: white; background-color: green; border-color: green; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                    {% elif  aposta.resultado == 'R' %}
+                                    class="bi bi-x-circle-fill" style="font-size: 1rem; color: red; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                    {% else %}
+                                    class="bi bi-stopwatch-fill" style="font-size: 1rem; color: cornflowerblue; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                  {% endif %}></i>
+                                {{ aposta.entrada.mercado }}
+                              </td>
                               <td>{{ aposta.entrada.odd }}</td>
                               <td>{{ aposta.entrada.home_actual }}%</td>
                               <td>{{ aposta.entrada.away_actual }}%</td>
