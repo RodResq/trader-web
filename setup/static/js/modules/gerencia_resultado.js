@@ -41,7 +41,7 @@ export function setupGerenciaResultado() {
                 return response.json();
             }).then(data => {
                 if (data.success) {
-                    showNotification(`${data.message}. Id evento: ${data.data.id_event}, opção: ${data.data.resultado}`, 'success')
+                    showNotification(`${data.message}. Id evento: ${data.data.id_event}, opção: ${data.data.resultado}, valor total retorno: ${data.data.valor_total_retorno}`, 'success')
                 }
                 return atualizaIconeResultado(currentRow, data.data.resultado);
             }).catch(error => {
