@@ -99,6 +99,9 @@
                                     class="bi bi-stopwatch-fill" style="font-size: 1rem; color: cornflowerblue; border-radius: 100%; margin-right:5px; vertical-align: middle;"
                                   {% endif %}></i>
                                 {{ aposta.entrada.mercado }}
+                                {% if aposta.is_multipla %}
+                                <span> ({{ aposta.cod_multipla }})</span>
+                                {% endif %}
                               </td>
                               <td>{{ aposta.entrada.odd }}</td>
                               <td>{{ aposta.entrada.home_actual }}%</td>
