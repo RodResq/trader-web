@@ -1,6 +1,6 @@
 /**
  * Módulo para gráficos de desempenho na gerência de apostas
- * Versão otimizada com uso de API e melhor integração com o Django
+ * Versão refatorada para mostrar todos os ciclos corretamente
  */
 
 /**
@@ -11,13 +11,13 @@ export function initGerenciaGraficos() {
     if (!document.getElementById('lucroTable')) return;
     
     // Inicializa os gráficos
-    inicializarGraficoSemanal();
+    inicializarGraficoDesempenho();
 }
 
 /**
- * Inicializa o gráfico de desempenho semanal usando a API
+ * Inicializa o gráfico de desempenho usando a API
  */
-function inicializarGraficoSemanal() {
+function inicializarGraficoDesempenho() {
     const chartContainer = document.getElementById('graficoDesempenhoSemanal');
     if (!chartContainer) return;
     
@@ -28,39 +28,36 @@ function inicializarGraficoSemanal() {
     // Exibir loader enquanto carrega
     chartContainer.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>';
     
-    // Primeiro vamos tentar obter dados da API
+    // Primeiro tentamos obter dados da API
     fetch('/analytics/gerencia/api/desempenho-semanal/')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erro ao buscar dados de desempenho semanal');
+                throw new Error('Erro ao buscar dados de desempenho');
             }
             return response.json();
         })
         .then(data => {
             if (data.success && data.dados && data.dados.length > 0) {
-                renderizarGraficoSemanal(chartContainer, data.dados, data.analise);
+                renderizarGraficoDesempenho(chartContainer, data.dados, data.analise);
             } else {
                 // Se a API não retornar dados, extraímos dados da tabela
-                const dados = extrairDadosTabela('S');
-                renderizarGraficoSemanal(chartContainer, dados);
+                const dados = extrairTodosDadosTabela();
+                renderizarGraficoDesempenho(chartContainer, dados);
             }
         })
         .catch(error => {
-            console.error('Erro ao carregar dados do gráfico semanal:', error);
+            console.error('Erro ao carregar dados do gráfico:', error);
             // Fallback para extração de dados da tabela
-            const dados = extrairDadosTabela('S');
-            renderizarGraficoSemanal(chartContainer, dados);
+            const dados = extrairTodosDadosTabela();
+            renderizarGraficoDesempenho(chartContainer, dados);
         });
 }
 
-
-
 /**
- * Extrai dados da tabela para os gráficos
- * @param {string} categoria - Categoria de ciclo ('S' para semanal, 'M' para mensal)
+ * Extrai dados de todos os ciclos da tabela
  * @returns {Array} Array de objetos com os dados extraídos
  */
-function extrairDadosTabela(categoria) {
+function extrairTodosDadosTabela() {
     const tabela = document.getElementById('lucroTable');
     if (!tabela) return [];
     
@@ -72,26 +69,31 @@ function extrairDadosTabela(categoria) {
         if (linha.classList.contains('collapse') || linha.children.length < 5) return;
         
         try {
-            // Determinar categoria do ciclo
+            // Obter detalhes do ciclo
             const categoriaTd = linha.querySelector('td:nth-child(1) a');
-            let categoriaTexto = '';
-            
-            if (categoriaTd) {
-                categoriaTexto = categoriaTd.textContent.trim();
-            }
-            
-            // Filtrar pela categoria solicitada
-            let categoriaCiclo = '';
-            if (categoriaTexto.includes('Semanal')) categoriaCiclo = 'S';
-            else if (categoriaTexto.includes('Quinzenal')) categoriaCiclo = 'Q';
-            else if (categoriaTexto.includes('Mensal')) categoriaCiclo = 'M';
-            
-            // Se não for a categoria solicitada, pular
-            if (categoria && categoriaCiclo !== categoria) return;
+            const categoriaTexto = categoriaTd ? categoriaTd.textContent.trim() : '';
             
             // Extrair período
             const periodoTd = linha.querySelector('td:nth-child(2)');
             let periodo = periodoTd ? periodoTd.textContent.trim() : '';
+            
+            // Tentar extrair datas do período (formato: "De DD/MM/YYYY à DD/MM/YYYY")
+            let dataInicial = '';
+            let dataFinal = '';
+            if (periodo) {
+                const match = periodo.match(/De\s+(\d{2}\/\d{2}\/\d{4})\s+à\s+(\d{2}\/\d{2}\/\d{4})/i);
+                if (match && match.length >= 3) {
+                    dataInicial = match[1];
+                    dataFinal = match[2];
+                    periodo = `${dataInicial} a ${dataFinal}`;
+                }
+            }
+            
+            // Determinar categoria do ciclo
+            let categoriaCiclo = '';
+            if (categoriaTexto.includes('S')) categoriaCiclo = 'Semanal';
+            else if (categoriaTexto.includes('Q')) categoriaCiclo = 'Quinzenal';
+            else if (categoriaTexto.includes('M')) categoriaCiclo = 'Mensal';
             
             // Extrair quantidade de entradas
             const qtdEntradasTd = linha.querySelector('td:nth-child(3)');
@@ -113,7 +115,10 @@ function extrairDadosTabela(categoria) {
             
             // Adicionar dados ao array
             dados.push({
+                categoria: categoriaCiclo,
                 periodo: periodo,
+                dataInicial: dataInicial,
+                dataFinal: dataFinal,
                 qtdEntradas: qtdEntradas,
                 valorEntrada: valorEntrada,
                 valorRetorno: valorRetorno,
@@ -124,8 +129,7 @@ function extrairDadosTabela(categoria) {
         }
     });
     
-
-    // Ordenar dados por data inicial
+    // Ordenar dados por data inicial se disponível
     dados.sort((a, b) => {
         if (!a.dataInicial || !b.dataInicial) return 0;
         
@@ -141,68 +145,57 @@ function extrairDadosTabela(categoria) {
         return dateA - dateB;
     });
     
-    // Se foi especificada uma categoria, filtrar por ela
-    // Caso contrário, retornar todos os dados
-    if (categoria) {
-        return dados.filter(item => item.categoria === categoria);
-    }
-
-
     return dados;
 }
 
 /**
- * Renderiza o gráfico de desempenho semanal
+ * Renderiza o gráfico de desempenho
  * @param {HTMLElement} container - Elemento onde o gráfico será renderizado
- * @param {Array} dados - Dados do desempenho semanal
+ * @param {Array} dados - Dados do desempenho
  * @param {Object} analise - Dados de análise geral (opcional)
  */
-function renderizarGraficoSemanal(container, dados, analise = null) {
+function renderizarGraficoDesempenho(container, dados, analise = null) {
     // Limpar container
     container.innerHTML = '';
     
     if (!dados || dados.length === 0) {
-        container.innerHTML = '<div class="alert alert-info">Não há dados de desempenho semanal disponíveis.</div>';
+        container.innerHTML = '<div class="alert alert-info">Não há dados de desempenho disponíveis.</div>';
         return;
     }
 
-    // Verificar a largura do container e ajustar o layout
-    const containerWidth = container.offsetWidth;
-    const isSmallScreen = containerWidth < 500;
-    
-    // Criar canvas para o gráfico principal em um container próprio para melhor alinhamento
+    // Criar canvas para o gráfico principal em um container próprio
     const mainChartContainer = document.createElement('div');
     mainChartContainer.style.width = '100%';
     mainChartContainer.style.height = '200px';
     mainChartContainer.style.position = 'relative';
     container.appendChild(mainChartContainer);
 
-
     const canvas = document.createElement('canvas');
-    canvas.id = 'mainChartSemanal';
+    canvas.id = 'mainChartDesempenho';
     mainChartContainer.appendChild(canvas);
     
     // Preparar dados para o gráfico
     const labels = dados.map(item => {
-        // Usar primeiro item antes do "a" se possível para evitar labels muito longos
-        if (item.periodo && item.periodo.includes('a')) {
-            return item.periodo.split('a')[0].trim();
+        // Mostrar apenas o mês e ano para evitar labels muito longos
+        if (item.dataInicial) {
+            const parts = item.dataInicial.split('/');
+            if (parts.length === 3) {
+                return `${parts[1]}/${parts[2].substr(2, 2)}`;
+            }
         }
-        return item.periodo;
+        return item.periodo.split('a')[0].trim();
     });
     
     const valorRetornos = dados.map(item => item.valorRetorno);
     const valorEntradas = dados.map(item => item.valorEntrada);
     const lucratividades = dados.map(item => item.lucratividade);
+    const categorias = dados.map(item => item.categoria || '');
 
-    // Configurações de cores e estilo baseadas no tema atual
-    const theme = getComputedStyle(document.documentElement);
+    // Verificar o tema atual
     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-    
-    const gridColor = isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
     const textColor = isDarkTheme ? '#cccccc' : '#666666';
     
-    // Criar o gráfico
+    // Criar o gráfico principal (valores)
     const ctx = canvas.getContext('2d');
     
     // Configuração do Chart.js
@@ -243,9 +236,6 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                title: {
-                    display: false
-                },
                 tooltip: {
                     mode: 'index',
                     intersect: false,
@@ -260,11 +250,15 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
                             }
                             return label;
                         },
-                        // Adicionar lucratividade no tooltip
                         afterBody: function(tooltipItems) {
                             const index = tooltipItems[0].dataIndex;
                             const lucro = lucratividades[index];
-                            return `Lucratividade: ${lucro.toFixed(2)}%`;
+                            const categoria = categorias[index];
+                            
+                            return [
+                                `Categoria: ${categoria}`,
+                                `Lucratividade: ${lucro.toFixed(2)}%`
+                            ];
                         }
                     }
                 },
@@ -273,7 +267,8 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
                     labels: {
                         boxWidth: 10,
                         usePointStyle: true,
-                        padding: 15
+                        padding: 15,
+                        color: textColor
                     }
                 }
             },
@@ -282,17 +277,25 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Valor (R$)'
+                        text: 'Valor (R$)',
+                        color: textColor
                     },
                     ticks: {
                         callback: function(value) {
                             return 'R$ ' + value.toFixed(2);
-                        }
+                        },
+                        color: textColor
+                    },
+                    grid: {
+                        color: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                     }
                 },
                 x: {
                     grid: {
                         display: false
+                    },
+                    ticks: {
+                        color: textColor
                     }
                 }
             }
@@ -304,7 +307,7 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
     spacer.style.height = '20px';
     container.appendChild(spacer);
     
-    // Adicionar um gráfico de barras para lucratividade abaixo do gráfico principal
+    // Adicionar um gráfico de barras para lucratividade
     const lucratividadeContainer = document.createElement('div');
     lucratividadeContainer.style.width = '100%';
     lucratividadeContainer.style.height = '100px';
@@ -312,7 +315,7 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
     container.appendChild(lucratividadeContainer);
     
     const lucratividadeCanvas = document.createElement('canvas');
-    lucratividadeCanvas.id = 'lucratividadeChartSemanal';
+    lucratividadeCanvas.id = 'lucratividadeChart';
     lucratividadeContainer.appendChild(lucratividadeCanvas);
     
     // Cores das barras com base nos valores (positivo/negativo)
@@ -324,6 +327,7 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
         valor >= 0 ? 'rgba(40, 167, 69, 1)' : 'rgba(220, 53, 69, 1)'
     );
     
+    // Criar gráfico de lucratividade
     new Chart(lucratividadeCanvas, {
         type: 'bar',
         data: {
@@ -342,12 +346,19 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'top'
+                    position: 'top',
+                    labels: {
+                        color: textColor
+                    }
                 },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
                             return `Lucratividade: ${context.parsed.y.toFixed(2)}%`;
+                        },
+                        afterLabel: function(context) {
+                            const index = context.dataIndex;
+                            return `Categoria: ${categorias[index]}`;
                         }
                     }
                 }
@@ -356,22 +367,32 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
                 y: {
                     title: {
                         display: true,
-                        text: 'Lucratividade (%)'
+                        text: 'Lucratividade (%)',
+                        color: textColor
                     },
                     ticks: {
                         callback: function(value) {
                             return value + '%';
-                        }
+                        },
+                        color: textColor
+                    },
+                    grid: {
+                        color: isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                     }
                 },
                 x: {
-                    display: false
+                    ticks: {
+                        display: false
+                    },
+                    grid: {
+                        display: false
+                    }
                 }
             }
         }
     });
     
-    // Se tivermos dados de análise, exibir resumo estatístico
+    // Exibir resumo estatístico
     if (analise) {
         const resumoDiv = document.createElement('div');
         resumoDiv.className = 'mt-3 text-center';
@@ -380,7 +401,7 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
         `;
         container.appendChild(resumoDiv);
     } else {
-        // Calcular e exibir a lucratividade média
+        // Calcular estatísticas básicas
         const totalEntradas = valorEntradas.reduce((sum, value) => sum + value, 0);
         const totalRetornos = valorRetornos.reduce((sum, value) => sum + value, 0);
         let lucratividadeMedia = 0;
@@ -389,10 +410,13 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
             lucratividadeMedia = ((totalRetornos - totalEntradas) / totalEntradas) * 100;
         }
         
+        // Mostrar resumo
         const resumoDiv = document.createElement('div');
         resumoDiv.className = 'mt-3 text-center';
         resumoDiv.innerHTML = `
-            <p class="mb-0"><small>Lucratividade média: <strong>${lucratividadeMedia.toFixed(2)}%</strong></small></p>
+            <p class="mb-0"><small>Lucratividade média: <strong>${lucratividadeMedia.toFixed(2)}%</strong> | 
+            Total investido: <strong>R$ ${totalEntradas.toFixed(2)}</strong> | 
+            Total retornado: <strong>R$ ${totalRetornos.toFixed(2)}</strong></small></p>
         `;
         container.appendChild(resumoDiv);
     }

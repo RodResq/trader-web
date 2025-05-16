@@ -10,6 +10,8 @@ from django.db.models import Sum, F, Case, When, Value, IntegerField, FloatField
 from .models import GerenciaCiclo
 from .forms import GerenciaForm
 from ciclo.models import Ciclo
+from decimal import Decimal
+from datetime import datetime
 
 def gerencia(request):
     """Exibe a lista de registros de lucro."""
@@ -135,64 +137,130 @@ def gerencia_resultado(request):
         
 def desempenho_semanal_json(request):
     """
-    Retorna dados de desempenho semanal em formato JSON para uso em gráficos.
+    Retorna dados de desempenho de todos os ciclos em formato JSON para uso em gráficos.
+    Inclui todos os tipos de ciclos (Semanal, Quinzenal, Mensal) para permitir comparações.
     """
     try:
-        # Obter ciclos semanais
-        ciclos_semanais = Ciclo.objects.filter(categoria='S').order_by('data_inicial')
+        # Obter todos os ciclos com suas gerências
+        ciclos_gerenciados = GerenciaCiclo.objects.select_related('ciclo').all().order_by('ciclo__data_inicial')
         
         # Preparar dados para o gráfico
         dados = []
         
-        for ciclo in ciclos_semanais:
-            # Obter gerência do ciclo
-            gerencia = GerenciaCiclo.objects.filter(ciclo=ciclo).first()
-             
-            if gerencia:
-                # Calcular lucratividade
-                lucratividade = 0
-                if gerencia.valor_total_entrada and gerencia.valor_total_entrada > 0:
-                    lucratividade = float(((gerencia.valor_total_retorno - gerencia.valor_total_entrada) / gerencia.valor_total_entrada) * 100)
-                
-                data_inicial = ciclo.data_inicial.strftime('%d/%m/%Y')
-                data_final = ciclo.data_final.strftime('%d/%m/%Y')
-                
-                # Adicionar dados do ciclo
-                dados.append({
-                    'periodo': f"{data_inicial} a {data_final}",
-                    'data_inicial': data_inicial,
-                    'data_final': data_final,
-                    'valor_entrada': float(gerencia.valor_total_entrada),
-                    'valor_retorno': float(gerencia.valor_total_retorno),
-                    'lucratividade': round(lucratividade, 2),
-                    'qtd_entradas': gerencia.qtd_total_entrada
-                })
-                
-            # Análise de desempenho
-            analise = {}
-            if dados:
-                total_entradas = sum(item['valor_entrada'] for item in dados)
-                total_retornos = sum(item['valor_retorno'] for item in dados)
-                
-                if total_entradas > 0:
-                    lucro_total = total_retornos - total_entradas
-                    lucratividade_media = (lucro_total / total_entradas) * 100
-                    
-                    analise = {
-                        'total_entradas': round(total_entradas, 2),
-                        'total_retornos': round(total_retornos, 2),
-                        'lucro_total': round(lucro_total, 2),
-                        'lucratividade_media': round(lucratividade_media, 2),
-                        'melhor_resultado': max(dados, key=lambda x: x['lucratividade']) if dados else None,
-                        'pior_resultado': min(dados, key=lambda x: x['lucratividade']) if dados else None
-                    }
+        for gerencia in ciclos_gerenciados:
+            ciclo = gerencia.ciclo
             
-            return JsonResponse({
-                'success': True,
-                'dados': dados,
-                'analise': analise
+            if not ciclo:
+                continue
+                
+            # Obter categoria do ciclo
+            categoria_display = ciclo.get_categoria_display()
+            
+            # Obter dados de apostas para este ciclo
+            apostas_ciclo = Aposta.objects.filter(ciclo=ciclo)
+            qtd_apostas = apostas_ciclo.count()
+            
+            # Determinar valores acumulados
+            valor_total_entrada = gerencia.valor_total_entrada or Decimal('0.00')
+            valor_total_retorno = gerencia.valor_total_retorno or Decimal('0.00')
+            
+            # Calcular lucratividade
+            lucratividade = 0
+            if valor_total_entrada and valor_total_entrada > 0:
+                lucratividade = float(((valor_total_retorno - valor_total_entrada) / valor_total_entrada) * 100)
+            
+            # Formatar datas para exibição
+            data_inicial = ciclo.data_inicial.strftime('%d/%m/%Y')
+            data_final = ciclo.data_final.strftime('%d/%m/%Y')
+            
+            # Adicionar dados do ciclo
+            dados.append({
+                'categoria': categoria_display,
+                'periodo': f"{data_inicial} a {data_final}",
+                'data_inicial': data_inicial,
+                'data_final': data_final,
+                'valor_entrada': float(valor_total_entrada),
+                'valor_retorno': float(valor_total_retorno),
+                'lucratividade': round(lucratividade, 2),
+                'qtd_entradas': qtd_apostas
             })
+        
+        # Ordenar por data inicial
+        dados = sorted(dados, key=lambda x: datetime.strptime(x['data_inicial'], '%d/%m/%Y'))
+        
+        # Análise de desempenho
+        analise = {}
+        if dados:
+            # Dados gerais
+            total_entradas = sum(item['valor_entrada'] for item in dados)
+            total_retornos = sum(item['valor_retorno'] for item in dados)
+            total_apostas = sum(item['qtd_entradas'] for item in dados)
+            
+            # Lucratividade
+            lucro_total = total_retornos - total_entradas
+            lucratividade_media = 0
+            if total_entradas > 0:
+                lucratividade_media = (lucro_total / total_entradas) * 100
+            
+            # Encontrar melhores e piores resultados
+            melhor_resultado = max(dados, key=lambda x: x['lucratividade']) if dados else None
+            pior_resultado = min(dados, key=lambda x: x['lucratividade']) if dados else None
+            
+            # Análises por categoria
+            categorias = {}
+            for item in dados:
+                categoria = item['categoria']
+                if categoria not in categorias:
+                    categorias[categoria] = {
+                        'total_entrada': 0,
+                        'total_retorno': 0,
+                        'qtd_ciclos': 0,
+                        'ciclos': []
+                    }
+                
+                categorias[categoria]['total_entrada'] += item['valor_entrada']
+                categorias[categoria]['total_retorno'] += item['valor_retorno']
+                categorias[categoria]['qtd_ciclos'] += 1
+                categorias[categoria]['ciclos'].append({
+                    'periodo': item['periodo'],
+                    'lucratividade': item['lucratividade']
+                })
+            
+            # Calcular lucratividade por categoria
+            for cat, dados_cat in categorias.items():
+                if dados_cat['total_entrada'] > 0:
+                    dados_cat['lucratividade'] = ((dados_cat['total_retorno'] - dados_cat['total_entrada']) / 
+                                                dados_cat['total_entrada']) * 100
+                else:
+                    dados_cat['lucratividade'] = 0
+                
+                # Arredondar valores para exibição
+                dados_cat['total_entrada'] = round(dados_cat['total_entrada'], 2)
+                dados_cat['total_retorno'] = round(dados_cat['total_retorno'], 2)
+                dados_cat['lucratividade'] = round(dados_cat['lucratividade'], 2)
+            
+            # Preencher objeto de análise
+            analise = {
+                'total_entradas': round(total_entradas, 2),
+                'total_retornos': round(total_retornos, 2),
+                'lucro_total': round(lucro_total, 2),
+                'lucratividade_media': round(lucratividade_media, 2),
+                'total_apostas': total_apostas,
+                'melhor_resultado': melhor_resultado,
+                'pior_resultado': pior_resultado,
+                'categorias': categorias
+            }
+        
+        return JsonResponse({
+            'success': True,
+            'dados': dados,
+            'analise': analise
+        })
+    
     except Exception as e:
+        import traceback
+        traceback.print_exc()
+        
         return JsonResponse({
             'success': False,
             'error': str(e)
