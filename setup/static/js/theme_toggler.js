@@ -32,8 +32,19 @@ export function initThemeToggler() {
      * @param {string} theme - O tema a ser aplicado ('dark' ou 'light')
      */
     function setTheme(theme) {
+      // Atualizar atributos de tema do documento
       html.setAttribute('data-bs-theme', theme);
       document.body.setAttribute('data-bs-theme', theme);
+      
+      // Limpar classes de tema existentes
+      document.body.classList.remove('theme-light', 'theme-dark');
+      
+      // Adicionar classe apropriada ao body
+      if (theme === 'light') {
+        document.body.classList.add('theme-light');
+      } else {
+        document.body.classList.add('theme-dark');
+      }
       
       // Atualizar o ícone do botão
       if (themeIcon) {
@@ -44,13 +55,7 @@ export function initThemeToggler() {
         themeToggler.setAttribute('title', theme === 'dark' ? 'Mudar para tema claro' : 'Mudar para tema escuro');
       }
       
-      // Adicionar ou remover a classe para estilização adicional
-      if (theme === 'light') {
-        document.body.classList.add('theme-light');
-        document.body.classList.remove('theme-dark');
-      } else {
-        document.body.classList.add('theme-dark');
-        document.body.classList.remove('theme-light');
-      }
+      // Forçar reflow para garantir que todas as mudanças de estilo sejam aplicadas
+      void document.body.offsetHeight;
     }
   }

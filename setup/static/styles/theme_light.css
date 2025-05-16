@@ -27,8 +27,14 @@
   
   /* ===== Base ===== */
   body.theme-light {
-    background-color: var(--bs-body-bg);
-    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
+  }
+  
+  /* ===== Main Content ===== */
+  body.theme-light .main-content {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
   }
   
   /* ===== Navbar ===== */
@@ -68,33 +74,38 @@
   
   /* ===== Sidebar ===== */
   body.theme-light .sidebar {
-    background-color: #ffffff;
+    background-color: #ffffff !important;
     border-right: 1px solid var(--bs-border-color);
-    color: var(--bs-body-color);
+    color: var(--bs-body-color) !important;
   }
   
   body.theme-light .sidebar .nav-link {
-    color: var(--bs-body-color);
+    color: var(--bs-body-color) !important;
   }
   
   body.theme-light .sidebar .nav-link:hover,
   body.theme-light .sidebar .nav-link.active {
-    color: var(--bet365-green);
+    color: var(--bet365-green) !important;
     background-color: var(--bet365-light-gray);
   }
   
-  body.theme-light .sidebar-heading {
-    color: var(--bs-text-muted);
+  body.theme-light .sidebar .sidebar-heading {
+    color: var(--bs-text-muted) !important;
+  }
+  
+  body.theme-light .sidebar hr {
+    border-color: var(--bs-border-color) !important;
   }
   
   /* ===== Cards ===== */
   body.theme-light .card {
-    background-color: white;
+    background-color: white !important;
     border: 1px solid var(--bs-border-color);
+    color: var(--bs-body-color) !important;
   }
   
   body.theme-light .card-header {
-    background-color: #f8f9fa;
+    background-color: #f8f9fa !important;
     border-bottom: 1px solid var(--bs-border-color);
   }
   
@@ -118,127 +129,150 @@
     border-left: 0.25rem solid var(--bs-warning) !important;
   }
   
+  /* ===== Gráficos e áreas de visualização ===== */
+  body.theme-light .chart-area {
+    background-color: white !important;
+    color: var(--bs-body-color) !important;
+  }
+  
+  body.theme-light .chart-area > div {
+    background-color: #f8f9fa !important;
+    border: 1px solid var(--bs-border-color) !important;
+  }
+  
+  body.theme-light .chart-area .text-muted {
+    color: var(--bs-text-muted) !important;
+  }
+  
   /* ===== Tabelas ===== */
   body.theme-light .table {
-    --bs-table-bg: white;
-    --bs-table-striped-bg: var(--bet365-light-gray);
-    --bs-table-striped-color: var(--bs-body-color);
-    --bs-table-active-bg: var(--bet365-light-gray);
-    --bs-table-active-color: var(--bs-body-color);
-    --bs-table-hover-bg: #f3f8f5;
-    --bs-table-hover-color: var(--bs-body-color);
-    border-color: var(--bs-border-color);
-    color: var(--bs-body-color);
+    --bs-table-bg: white !important;
+    --bs-table-striped-bg: var(--bet365-light-gray) !important;
+    --bs-table-striped-color: var(--bs-body-color) !important;
+    --bs-table-active-bg: var(--bet365-light-gray) !important;
+    --bs-table-active-color: var(--bs-body-color) !important;
+    --bs-table-hover-bg: #f3f8f5 !important;
+    --bs-table-hover-color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+    color: var(--bs-body-color) !important;
   }
   
   body.theme-light .table-dark {
-    --bs-table-bg: var(--bet365-darker-gray);
-    --bs-table-striped-bg: #444;
-    --bs-table-striped-color: white;
+    --bs-table-bg: var(--bet365-darker-gray) !important;
+    --bs-table-striped-bg: #444 !important;
+    --bs-table-striped-color: white !important;
   }
   
   body.theme-light .table thead th {
-    background-color: #f0f0f0;
-    color: var(--bs-body-color);
-    border-bottom: 2px solid var(--bet365-green);
+    background-color: #f0f0f0 !important;
+    color: var(--bs-body-color) !important;
+    border-bottom: 2px solid var(--bet365-green) !important;
   }
   
   /* ===== Botões ===== */
   body.theme-light .btn-primary {
-    background-color: var(--bet365-green);
-    border-color: var(--bet365-green);
+    background-color: var(--bet365-green) !important;
+    border-color: var(--bet365-green) !important;
   }
   
   body.theme-light .btn-primary:hover,
   body.theme-light .btn-primary:focus {
-    background-color: var(--bet365-dark-green);
-    border-color: var(--bet365-dark-green);
+    background-color: var(--bet365-dark-green) !important;
+    border-color: var(--bet365-dark-green) !important;
   }
   
   body.theme-light .btn-success {
-    background-color: var(--bs-success);
-    border-color: var(--bs-success);
+    background-color: var(--bs-success) !important;
+    border-color: var(--bs-success) !important;
   }
   
   body.theme-light .btn-info {
-    background-color: var(--bs-info);
-    border-color: var(--bs-info);
-    color: white;
+    background-color: var(--bs-info) !important;
+    border-color: var(--bs-info) !important;
+    color: white !important;
   }
   
   body.theme-light .btn-outline-primary {
-    border-color: var(--bet365-green);
-    color: var(--bet365-green);
+    border-color: var(--bet365-green) !important;
+    color: var(--bet365-green) !important;
   }
   
   body.theme-light .btn-outline-primary:hover {
-    background-color: var(--bet365-green);
-    color: white;
+    background-color: var(--bet365-green) !important;
+    color: white !important;
   }
   
   /* ===== Formulários ===== */
   body.theme-light .form-control,
   body.theme-light .form-select {
-    background-color: white;
-    border: 1px solid #ced4da;
-    color: var(--bs-body-color);
+    background-color: white !important;
+    border: 1px solid #ced4da !important;
+    color: var(--bs-body-color) !important;
   }
   
   body.theme-light .form-control:focus,
   body.theme-light .form-select:focus {
-    border-color: var(--bet365-green);
-    box-shadow: 0 0 0 0.25rem rgba(2, 110, 64, 0.25);
+    border-color: var(--bet365-green) !important;
+    box-shadow: 0 0 0 0.25rem rgba(2, 110, 64, 0.25) !important;
   }
   
   /* ===== Paginação ===== */
   body.theme-light .pagination-container {
-    background-color: white;
+    background-color: white !important;
   }
   
   body.theme-light .pagination .page-link {
-    color: var(--bet365-green);
-    background-color: white;
-    border-color: #dee2e6;
+    color: var(--bet365-green) !important;
+    background-color: white !important;
+    border-color: #dee2e6 !important;
   }
   
   body.theme-light .pagination .page-item.active .page-link {
-    background-color: var(--bet365-green);
-    border-color: var(--bet365-green);
-    color: white;
+    background-color: var(--bet365-green) !important;
+    border-color: var(--bet365-green) !important;
+    color: white !important;
   }
   
   body.theme-light .pagination .page-item.disabled .page-link {
-    color: var(--bs-secondary);
-    background-color: #f8f9fa;
+    color: var(--bs-secondary) !important;
+    background-color: #f8f9fa !important;
   }
   
   body.theme-light .page-info {
-    color: var(--bs-text-muted);
+    color: var(--bs-text-muted) !important;
   }
   
   body.theme-light .items-per-page .form-select {
-    background-color: white;
-    color: var(--bs-body-color);
+    background-color: white !important;
+    color: var(--bs-body-color) !important;
+  }
+  
+  body.theme-light .items-per-page label {
+    color: var(--bs-body-color) !important;
   }
   
   /* ===== Footer ===== */
   body.theme-light .footer {
-    background-color: white;
-    border-top: 1px solid var(--bs-border-color);
+    background-color: white !important;
+    border-top: 1px solid var(--bs-border-color) !important;
+  }
+  
+  body.theme-light .footer .text-muted {
+    color: var(--bs-text-muted) !important;
   }
   
   /* ===== Modais ===== */
   body.theme-light .modal-content {
-    background-color: white;
-    color: var(--bs-body-color);
+    background-color: white !important;
+    color: var(--bs-body-color) !important;
   }
   
   body.theme-light .modal-header {
-    border-bottom: 1px solid var(--bs-border-color);
+    border-bottom: 1px solid var(--bs-border-color) !important;
   }
   
   body.theme-light .modal-footer {
-    border-top: 1px solid var(--bs-border-color);
+    border-top: 1px solid var(--bs-border-color) !important;
   }
   
   /* ===== Detalhes específicos ===== */
@@ -264,27 +298,27 @@
   }
   
   body.theme-light .alert-info {
-    background-color: #e3f2fd;
-    border-color: #bee5eb;
-    color: #0c5460;
+    background-color: #e3f2fd !important;
+    border-color: #bee5eb !important;
+    color: #0c5460 !important;
   }
   
   body.theme-light .alert-warning {
-    background-color: #fff3cd;
-    border-color: #ffeeba;
-    color: #856404;
+    background-color: #fff3cd !important;
+    border-color: #ffeeba !important;
+    color: #856404 !important;
   }
   
   body.theme-light .alert-danger {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
+    background-color: #f8d7da !important;
+    border-color: #f5c6cb !important;
+    color: #721c24 !important;
   }
   
   body.theme-light .alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
+    background-color: #d4edda !important;
+    border-color: #c3e6cb !important;
+    color: #155724 !important;
   }
   
   /* ===== Ícones ===== */
@@ -307,7 +341,7 @@
   /* ===== Ajustes Responsivos ===== */
   @media (max-width: 992px) {
     body.theme-light .sidebar {
-      background-color: white;
+      background-color: white !important;
     }
   }
   
