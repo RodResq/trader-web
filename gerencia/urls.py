@@ -11,5 +11,4 @@ urlpatterns = [
     path('resultado/', views.gerencia_resultado, name="gerencia_resultado"),
      # APIs para gráficos
     path('api/desempenho-semanal/', views.desempenho_semanal_json, name="api_desempenho_semanal"),
-    path('api/desempenho-mensal/', views.desempenho_mensal_json, name="api_desempenho_mensal"),
 ]
