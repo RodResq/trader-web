@@ -21,6 +21,10 @@ function inicializarGraficoSemanal() {
     const chartContainer = document.getElementById('graficoDesempenhoSemanal');
     if (!chartContainer) return;
     
+    // Configurar o container para ter uma altura fixa adequada
+    chartContainer.style.height = '350px';
+    chartContainer.style.overflow = 'hidden';
+
     // Exibir loader enquanto carrega
     chartContainer.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>';
     
@@ -120,6 +124,30 @@ function extrairDadosTabela(categoria) {
         }
     });
     
+
+    // Ordenar dados por data inicial
+    dados.sort((a, b) => {
+        if (!a.dataInicial || !b.dataInicial) return 0;
+        
+        // Converter datas de formato DD/MM/YYYY para objetos Date para comparação
+        const partsA = a.dataInicial.split('/');
+        const partsB = b.dataInicial.split('/');
+        
+        if (partsA.length !== 3 || partsB.length !== 3) return 0;
+        
+        const dateA = new Date(partsA[2], partsA[1] - 1, partsA[0]);
+        const dateB = new Date(partsB[2], partsB[1] - 1, partsB[0]);
+        
+        return dateA - dateB;
+    });
+    
+    // Se foi especificada uma categoria, filtrar por ela
+    // Caso contrário, retornar todos os dados
+    if (categoria) {
+        return dados.filter(item => item.categoria === categoria);
+    }
+
+
     return dados;
 }
 
@@ -137,11 +165,22 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
         container.innerHTML = '<div class="alert alert-info">Não há dados de desempenho semanal disponíveis.</div>';
         return;
     }
+
+    // Verificar a largura do container e ajustar o layout
+    const containerWidth = container.offsetWidth;
+    const isSmallScreen = containerWidth < 500;
     
-    // Criar canvas para o gráfico
+    // Criar canvas para o gráfico principal em um container próprio para melhor alinhamento
+    const mainChartContainer = document.createElement('div');
+    mainChartContainer.style.width = '100%';
+    mainChartContainer.style.height = '200px';
+    mainChartContainer.style.position = 'relative';
+    container.appendChild(mainChartContainer);
+
+
     const canvas = document.createElement('canvas');
-    canvas.style.height = '250px';
-    container.appendChild(canvas);
+    canvas.id = 'mainChartSemanal';
+    mainChartContainer.appendChild(canvas);
     
     // Preparar dados para o gráfico
     const labels = dados.map(item => {
@@ -155,6 +194,13 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
     const valorRetornos = dados.map(item => item.valorRetorno);
     const valorEntradas = dados.map(item => item.valorEntrada);
     const lucratividades = dados.map(item => item.lucratividade);
+
+    // Configurações de cores e estilo baseadas no tema atual
+    const theme = getComputedStyle(document.documentElement);
+    const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    
+    const gridColor = isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+    const textColor = isDarkTheme ? '#cccccc' : '#666666';
     
     // Criar o gráfico
     const ctx = canvas.getContext('2d');
@@ -252,15 +298,22 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
             }
         }
     });
+
+    // Adicionar espaço entre os gráficos
+    const spacer = document.createElement('div');
+    spacer.style.height = '20px';
+    container.appendChild(spacer);
     
     // Adicionar um gráfico de barras para lucratividade abaixo do gráfico principal
-    const lucratividadeDiv = document.createElement('div');
-    lucratividadeDiv.style.marginTop = '20px';
-    lucratividadeDiv.style.height = '100px';
-    container.appendChild(lucratividadeDiv);
+    const lucratividadeContainer = document.createElement('div');
+    lucratividadeContainer.style.width = '100%';
+    lucratividadeContainer.style.height = '100px';
+    lucratividadeContainer.style.position = 'relative';
+    container.appendChild(lucratividadeContainer);
     
     const lucratividadeCanvas = document.createElement('canvas');
-    lucratividadeDiv.appendChild(lucratividadeCanvas);
+    lucratividadeCanvas.id = 'lucratividadeChartSemanal';
+    lucratividadeContainer.appendChild(lucratividadeCanvas);
     
     // Cores das barras com base nos valores (positivo/negativo)
     const backgroundColors = lucratividades.map(valor => 
@@ -324,6 +377,22 @@ function renderizarGraficoSemanal(container, dados, analise = null) {
         resumoDiv.className = 'mt-3 text-center';
         resumoDiv.innerHTML = `
             <p class="mb-0"><small>Lucratividade média: <strong>${analise.lucratividade_media?.toFixed(2) || 0}%</strong></small></p>
+        `;
+        container.appendChild(resumoDiv);
+    } else {
+        // Calcular e exibir a lucratividade média
+        const totalEntradas = valorEntradas.reduce((sum, value) => sum + value, 0);
+        const totalRetornos = valorRetornos.reduce((sum, value) => sum + value, 0);
+        let lucratividadeMedia = 0;
+        
+        if (totalEntradas > 0) {
+            lucratividadeMedia = ((totalRetornos - totalEntradas) / totalEntradas) * 100;
+        }
+        
+        const resumoDiv = document.createElement('div');
+        resumoDiv.className = 'mt-3 text-center';
+        resumoDiv.innerHTML = `
+            <p class="mb-0"><small>Lucratividade média: <strong>${lucratividadeMedia.toFixed(2)}%</strong></small></p>
         `;
         container.appendChild(resumoDiv);
     }
