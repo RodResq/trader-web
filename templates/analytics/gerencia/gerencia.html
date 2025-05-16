@@ -40,7 +40,7 @@
                 <th>Qtd. Entradas</th>
                 <th>Valor Total Entradas (R$)</th>
                 <th>Valor Total Retornado (R$)</th>
-                <th class="text-center">Ações</th>
+                {% comment %} <th class="text-center">Ações</th> {% endcomment %}
               </tr>
             </thead>
             <tbody>
@@ -54,18 +54,18 @@
                     <i class="bi bi-chevron-down ms-1"></i>
                     </a>
                   </td>
-                  <td>{{ gerencia.ciclo.data_inicial|date:"d/m/Y" }} a {{ gerencia.ciclo.data_final|date:"d/m/Y" }}</td>
+                  <td>De {{ gerencia.ciclo.data_inicial|date:"d/m/Y" }} à {{ gerencia.ciclo.data_final|date:"d/m/Y" }}</td>
                   <td>{{ apostas|length }}</td>
                   <td>{{ gerencia.valor_total_entrada }}</td>
                   <td>{{ gerencia.valor_total_retorno }}</td>
-                  <td class="text-center">
+                  {% comment %} <td class="text-center">
                     <a href="{% url 'analytics:gerencia:gerencia_edit' gerencia.pk %}" class="btn btn-sm btn-primary editar-gerencia-resultado" title="Editar">
                       <i class="bi bi-pencil"></i>
                     </a>
                     <a href="{% url 'analytics:gerencia:gerencia_delete' gerencia.pk %}" class="btn btn-sm btn-danger excluir-gerencia-resultado" title="Excluir">
                       <i class="bi bi-trash"></i>
                     </a>
-                  </td>
+                  </td> {% endcomment %}
                 </tr>
                 <tr class="collapse" id="detalhesLucro{{ gerencia.pk }}">
                   <td colspan="6">
@@ -180,30 +180,16 @@
             <h6 class="m-0 font-weight-bold text-primary">Desempenho Semanal</h6>
           </div>
           <div class="card-body">
-            <div class="chart-area">
-              <div style="height: 300px; background-color: #2c2c2c; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
-                <p class="text-center text-muted">Gráfico de Resultado em desenvolvimento</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="col-lg-6">
-        <div class="card shadow mb-4">
-          <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Desempenho Mensal</h6>
-          </div>
-          <div class="card-body">
-            <div class="chart-area">
-              <div style="height: 300px; background-color: #2c2c2c; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
-                <p class="text-center text-muted">Gráfico de Resultado em desenvolvimento</p>
-              </div>
-            </div>
+            <div class="chart-area" id="graficoDesempenhoSemanal" style="height: 300px;">
+              <!-- O gráfico será renderizado aqui via JavaScript -->
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<!-- Adicionar Chart.js antes dos scripts do dashboard -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/modules/gerencia_aposta/gerencia_graficos_principal.js' %}" type="module"></script>
 {% endblock %}
