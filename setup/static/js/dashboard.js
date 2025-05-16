@@ -18,11 +18,14 @@ import { calcularValorDisponivelEntrada } from './modules/ciclo/calcula_disponiv
 import { calcularDataFinalCiclo } from './modules/ciclo/calculo_data_final_ciclo.js';
 import { initAceitarApostaModal } from './modules/aceitarApostaModal.js';
 import { initMultiplasHandlers } from './modules/multiplas.js';
-import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_aposta.js'
+import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_aposta.js';
+import { initThemeToggler } from './theme_toggler.js';
 
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializa o alternador de temas (deve ser inicializado primeiro)
+    initThemeToggler();
     // Inicializa componentes de UI
     initUiEnhanced();
     // Inicializa funcionalidades da tabela

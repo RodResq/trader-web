@@ -1,0 +1,313 @@
+/* Tema Claro - Inspirado no bet365 */
+
+/* Variáveis de cores */
+:root[data-bs-theme="light"] {
+    --bs-body-bg: #f0f0f0;
+    --bs-body-color: #333;
+    --bs-primary: #026e40;
+    --bs-primary-rgb: 2, 110, 64;
+    --bs-secondary: #666666;
+    --bs-success: #028946;
+    --bs-danger: #e74c3c;
+    --bs-warning: #f39c12;
+    --bs-info: #3498db;
+    --bs-light: #f8f9fa;
+    --bs-dark: #343a40;
+    --bs-text-muted: #666;
+    --bs-border-color: #dee2e6;
+  
+    /* Cores específicas do bet365 */
+    --bet365-green: #026e40;
+    --bet365-dark-green: #025c36;
+    --bet365-yellow: #FFDF1B;
+    --bet365-gray: #666666;
+    --bet365-light-gray: #e8e8e8;
+    --bet365-darker-gray: #333333;
+  }
+  
+  /* ===== Base ===== */
+  body.theme-light {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+  
+  /* ===== Navbar ===== */
+  body.theme-light .navbar {
+    background-color: var(--bet365-green) !important;
+    border-bottom: 2px solid var(--bet365-yellow);
+  }
+  
+  body.theme-light .navbar-brand,
+  body.theme-light .nav-link,
+  body.theme-light .navbar-nav .nav-link.active {
+    color: white !important;
+  }
+  
+  body.theme-light .navbar .dropdown-menu {
+    background-color: white;
+    border: 1px solid var(--bs-border-color);
+  }
+  
+  body.theme-light .navbar .dropdown-item {
+    color: var(--bs-body-color);
+  }
+  
+  body.theme-light .navbar .dropdown-item:hover {
+    background-color: var(--bet365-light-gray);
+  }
+  
+  body.theme-light .btn-outline-light {
+    color: white;
+    border-color: white;
+  }
+  
+  body.theme-light .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  
+  /* ===== Sidebar ===== */
+  body.theme-light .sidebar {
+    background-color: #ffffff;
+    border-right: 1px solid var(--bs-border-color);
+    color: var(--bs-body-color);
+  }
+  
+  body.theme-light .sidebar .nav-link {
+    color: var(--bs-body-color);
+  }
+  
+  body.theme-light .sidebar .nav-link:hover,
+  body.theme-light .sidebar .nav-link.active {
+    color: var(--bet365-green);
+    background-color: var(--bet365-light-gray);
+  }
+  
+  body.theme-light .sidebar-heading {
+    color: var(--bs-text-muted);
+  }
+  
+  /* ===== Cards ===== */
+  body.theme-light .card {
+    background-color: white;
+    border: 1px solid var(--bs-border-color);
+  }
+  
+  body.theme-light .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+  
+  body.theme-light .card-header .text-primary {
+    color: var(--bet365-green) !important;
+  }
+  
+  body.theme-light .border-left-primary {
+    border-left: 0.25rem solid var(--bet365-green) !important;
+  }
+  
+  body.theme-light .border-left-success {
+    border-left: 0.25rem solid var(--bs-success) !important;
+  }
+  
+  body.theme-light .border-left-info {
+    border-left: 0.25rem solid var(--bs-info) !important;
+  }
+  
+  body.theme-light .border-left-warning {
+    border-left: 0.25rem solid var(--bs-warning) !important;
+  }
+  
+  /* ===== Tabelas ===== */
+  body.theme-light .table {
+    --bs-table-bg: white;
+    --bs-table-striped-bg: var(--bet365-light-gray);
+    --bs-table-striped-color: var(--bs-body-color);
+    --bs-table-active-bg: var(--bet365-light-gray);
+    --bs-table-active-color: var(--bs-body-color);
+    --bs-table-hover-bg: #f3f8f5;
+    --bs-table-hover-color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+    color: var(--bs-body-color);
+  }
+  
+  body.theme-light .table-dark {
+    --bs-table-bg: var(--bet365-darker-gray);
+    --bs-table-striped-bg: #444;
+    --bs-table-striped-color: white;
+  }
+  
+  body.theme-light .table thead th {
+    background-color: #f0f0f0;
+    color: var(--bs-body-color);
+    border-bottom: 2px solid var(--bet365-green);
+  }
+  
+  /* ===== Botões ===== */
+  body.theme-light .btn-primary {
+    background-color: var(--bet365-green);
+    border-color: var(--bet365-green);
+  }
+  
+  body.theme-light .btn-primary:hover,
+  body.theme-light .btn-primary:focus {
+    background-color: var(--bet365-dark-green);
+    border-color: var(--bet365-dark-green);
+  }
+  
+  body.theme-light .btn-success {
+    background-color: var(--bs-success);
+    border-color: var(--bs-success);
+  }
+  
+  body.theme-light .btn-info {
+    background-color: var(--bs-info);
+    border-color: var(--bs-info);
+    color: white;
+  }
+  
+  body.theme-light .btn-outline-primary {
+    border-color: var(--bet365-green);
+    color: var(--bet365-green);
+  }
+  
+  body.theme-light .btn-outline-primary:hover {
+    background-color: var(--bet365-green);
+    color: white;
+  }
+  
+  /* ===== Formulários ===== */
+  body.theme-light .form-control,
+  body.theme-light .form-select {
+    background-color: white;
+    border: 1px solid #ced4da;
+    color: var(--bs-body-color);
+  }
+  
+  body.theme-light .form-control:focus,
+  body.theme-light .form-select:focus {
+    border-color: var(--bet365-green);
+    box-shadow: 0 0 0 0.25rem rgba(2, 110, 64, 0.25);
+  }
+  
+  /* ===== Paginação ===== */
+  body.theme-light .pagination-container {
+    background-color: white;
+  }
+  
+  body.theme-light .pagination .page-link {
+    color: var(--bet365-green);
+    background-color: white;
+    border-color: #dee2e6;
+  }
+  
+  body.theme-light .pagination .page-item.active .page-link {
+    background-color: var(--bet365-green);
+    border-color: var(--bet365-green);
+    color: white;
+  }
+  
+  body.theme-light .pagination .page-item.disabled .page-link {
+    color: var(--bs-secondary);
+    background-color: #f8f9fa;
+  }
+  
+  body.theme-light .page-info {
+    color: var(--bs-text-muted);
+  }
+  
+  body.theme-light .items-per-page .form-select {
+    background-color: white;
+    color: var(--bs-body-color);
+  }
+  
+  /* ===== Footer ===== */
+  body.theme-light .footer {
+    background-color: white;
+    border-top: 1px solid var(--bs-border-color);
+  }
+  
+  /* ===== Modais ===== */
+  body.theme-light .modal-content {
+    background-color: white;
+    color: var(--bs-body-color);
+  }
+  
+  body.theme-light .modal-header {
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+  
+  body.theme-light .modal-footer {
+    border-top: 1px solid var(--bs-border-color);
+  }
+  
+  /* ===== Detalhes específicos ===== */
+  body.theme-light .text-gray-800 {
+    color: var(--bs-body-color) !important;
+  }
+  
+  body.theme-light .text-gray-300 {
+    color: var(--bs-text-muted) !important;
+  }
+  
+  body.theme-light .text-primary {
+    color: var(--bet365-green) !important;
+  }
+  
+  body.theme-light .font-weight-bold {
+    font-weight: 600 !important;
+  }
+  
+  /* ===== Badges e alertas ===== */
+  body.theme-light .badge.bg-primary {
+    background-color: var(--bet365-green) !important;
+  }
+  
+  body.theme-light .alert-info {
+    background-color: #e3f2fd;
+    border-color: #bee5eb;
+    color: #0c5460;
+  }
+  
+  body.theme-light .alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+  }
+  
+  body.theme-light .alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+  }
+  
+  body.theme-light .alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+  }
+  
+  /* ===== Ícones ===== */
+  body.theme-light .bi {
+    color: inherit;
+  }
+  
+  body.theme-light .status-open {
+    color: var(--bs-success) !important;
+  }
+  
+  body.theme-light .status-warning {
+    color: var(--bs-warning) !important;
+  }
+  
+  body.theme-light .status-close {
+    color: var(--bs-danger) !important;
+  }
+  
+  /* ===== Ajustes Responsivos ===== */
+  @media (max-width: 992px) {
+    body.theme-light .sidebar {
+      background-color: white;
+    }
+  }
+  
