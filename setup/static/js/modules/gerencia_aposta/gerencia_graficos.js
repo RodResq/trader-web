@@ -523,7 +523,7 @@ function renderizarGraficoDesempenho(container, dados) {
     
     // Criar um elemento para o resumo
     const resumoDiv = document.createElement('div');
-    resumoDiv.className = 'mt-3 text-center bg-light p-2 rounded';
+    resumoDiv.className = 'mt-3 text-center p-2 rounded';
     resumoDiv.innerHTML = `
         <p class="mb-0">Total investido: <strong>R$ ${formattedTotalEntradas}</strong> | Total retornado: <strong>R$ ${formattedTotalRetornos}</strong></p>
     `;
@@ -536,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(initGerenciaGraficos, 300);
     
     // Adicionar botão de atualização manual (opcional)
-    const chartContainer = document.getElementById('graficoDesempenhoSemanal');
+    const chartContainer = document.getElementById('graficoDesempenhoSemanalCardHeader');
     if (chartContainer) {
         const refreshButton = document.createElement('button');
         refreshButton.className = 'btn btn-sm btn-outline-primary position-absolute';

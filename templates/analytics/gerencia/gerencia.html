@@ -176,7 +176,7 @@
     <div class="row">
       <div class="col-lg-6">
         <div class="card shadow mb-4">
-          <div class="card-header py-3">
+          <div class="card-header py-3" id="graficoDesempenhoSemanalCardHeader">
             <h6 class="m-0 font-weight-bold text-primary">Desempenho Semanal</h6>
           </div>
           <div class="card-body">
@@ -190,6 +190,6 @@
 </div>
 <!-- Adicionar Chart.js antes dos scripts do dashboard -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% comment %} <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script> {% endcomment %}
 <script src="{% static 'js/modules/gerencia_aposta/gerencia_graficos_principal.js' %}" type="module"></script>
 {% endblock %}
