@@ -1,0 +1,14 @@
+<!-- Previne o flash de tema incorreto aplicando o tema salvo antes de carregar os estilos -->
+<script>
+    (function() {
+      // Obter tema do localStorage ou usar o padrão 'dark'
+      var savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-bs-theme', savedTheme);
+      document.documentElement.classList.add('theme-' + savedTheme);
+      // Adicionar também ao body assim que ele estiver disponível
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.setAttribute('data-bs-theme', savedTheme);
+        document.body.classList.add('theme-' + savedTheme);
+      });
+    })();
+  </script>

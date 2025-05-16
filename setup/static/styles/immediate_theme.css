@@ -1,0 +1,12 @@
+/* Garantir aplicação imediata do tema ao HTML e BODY */
+html[data-bs-theme="light"],
+html.theme-light {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+html[data-bs-theme="dark"],
+html.theme-dark {
+  background-color: #121212;
+  color: #fff;
+}
