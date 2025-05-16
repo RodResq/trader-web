@@ -14,6 +14,7 @@ import { setupDesfazerAcaoModal } from './modules/desfazerAcao.js';
 import { initEntradasEmLote } from './modules/entradas_em_lote.js';
 import { setupEditarModal } from './modules/editarOdd.js';
 import { setupGerenciaResultado } from './modules/gerencia_aposta/gerencia_resultado.js';
+import { initGerenciaCollapses } from './modules/gerencia_aposta/collapse.js';
 import { calcularValorDisponivelEntrada } from './modules/ciclo/calcula_disponivel_entrada.js';
 import { calcularDataFinalCiclo } from './modules/ciclo/calculo_data_final_ciclo.js';
 import { initAceitarApostaModal } from './modules/aceitarApostaModal.js';
@@ -24,6 +25,14 @@ import { initThemeToggler } from './theme_toggler.js';
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar collapses do Bootstrap (especialmente importante com o tema personalizado)
+    const collapseElementList = document.querySelectorAll('.collapse');
+    if (collapseElementList.length && typeof bootstrap !== 'undefined') {
+        collapseElementList.forEach(collapseEl => {
+            // Não inicializar - apenas garantir que o Bootstrap está disponível
+            // new bootstrap.Collapse(collapseEl, { toggle: false });
+        });
+    }
     // Inicializa o alternador de temas (deve ser inicializado primeiro)
     initThemeToggler();
     // Inicializa componentes de UI
@@ -54,6 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializa Gerência de Resultado
     setupGerenciaResultado();
 
+    // Inicializa os collapses na tela de gerência de apostas
+    initGerenciaCollapses();
+
     // Incializa o método para calcular o valor diposnivel para a entrada
     calcularValorDisponivelEntrada();
 
@@ -64,13 +76,19 @@ document.addEventListener('DOMContentLoaded', function() {
     initMultiplasHandlers();
 
     // Inicializa componentes de paginação
-    initPagination();
+    if (typeof initPagination === "function") {
+        initPagination();
+    }
 
     // Inicializa paginação dinâmica para AJAX
-    initDynamicPagination();
+    if (typeof initDynamicPagination === "function") {
+        initDynamicPagination();
+    }
 
     // atualizaIconeResultado
-    atualizaIconeResultado();
+    if (typeof atualizaIconeResultado === "function") {
+        atualizaIconeResultado();
+    }
     
 });
 
