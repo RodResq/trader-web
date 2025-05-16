@@ -610,6 +610,10 @@ function processarMultipla(action) {
     
     btnAtual.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
     btnAtual.disabled = true;
+
+    //Cálcula o valor entrada rateado pelo número de entradas
+    const valorMultiplaRateado = valorEntrada / eventIds.length;
+    const retornoMultiplaRateado = parseFloat((retornoEsperado / eventIds.length).toFixed(2));
     
     if (action === 'aceitar') {
         recusarBtn.disabled = true;
@@ -626,9 +630,9 @@ function processarMultipla(action) {
         body: JSON.stringify({
             event_ids: eventIds,
             action: action,
-            valor_entrada: valorEntrada,
+            valor_entrada: valorMultiplaRateado,
             odd_combinada: oddCombinada,
-            retorno_esperado: retornoEsperado
+            retorno_esperado: retornoMultiplaRateado
         })
     }))
     .then(response => response.json())

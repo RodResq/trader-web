@@ -409,7 +409,7 @@ def entrada_multipla(request):
                         )
                     elif action == 'recusar':
                         entrada.opcao_entrada = "R"
-                    
+                        
                     entrada.save()
                     aposta.save()
                     

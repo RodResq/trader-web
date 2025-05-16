@@ -1,5 +1,5 @@
-import { atualizaIconeResultado } from "./gerencia_aposta/icone_lista_aposta.js";
-import { showNotification } from "./notifications.js";
+import { atualizaIconeResultado } from "./icone_lista_aposta.js";
+import { showNotification } from "../notifications.js";
 
 export function setupGerenciaResultado() {
     const btnSalvarResultado = document.querySelectorAll('.salvar-resultado');
@@ -58,14 +58,15 @@ export function setupGerenciaResultado() {
                     // Atualizar o ícone de resultado
                     atualizaIconeResultado(currentRow, data.data.resultado);
                     
-                    // Se o resultado for Green (G), atualizar o valor total retornado na tabela principal
-                    if (valueSelected === 'G' && data.data  && data.data.valor_total_retorno) {
-                        updateValorTotalRetornado(currentRow, data.data.valor_total_retorno);
+                    // Se o resultado for Green (G) or (R), atualizar o valor total retornado na tabela principal
+                    if ((valueSelected === 'G' || valueSelected === 'R') && data.data  && data.data.valor_total_retorno) {
+                        updateValorTotalRetornado(currentRow, data.data.valor_total_retorno, valueSelected);
                     }
     
                     showNotification('Resultado registrado com sucesso!', 'success');
                 } else {
                     showNotification(data.message || 'Erro ao atualizar resultado', 'danger');
+                    return;
                 }
 
             }).catch(error => {
@@ -90,7 +91,7 @@ export function setupGerenciaResultado() {
  * @param {number} valorTotalRetorno - O novo valor total retornado
  */
 
-function updateValorTotalRetornado(row, valorTotalRetorno) {
+function updateValorTotalRetornado(row, valorTotalRetorno, valorSelecionado) {
     // Encontrar a seção de collapse que contém esta linha
     const collapseSection = row.closest(".collapse");
     if (!collapseSection) return;
@@ -108,7 +109,7 @@ function updateValorTotalRetornado(row, valorTotalRetorno) {
 
     // Destacar visualmente a célula atualizada para chamar atenção
     valorRetornoCell.style.transition = 'background-color 0.5s';
-    valorRetornoCell.style.backgroundColor = '#28a745';
+    valorRetornoCell.style.backgroundColor = valorSelecionado === 'G'? '#28a745': '#CC0000';
     valorRetornoCell.style.color = 'white';
 
     // Remover o destaque após 1 segundo

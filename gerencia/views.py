@@ -85,6 +85,18 @@ def gerencia_resultado(request):
                 'success': False,
                 'message': f'Não existe aposta registrada'
             }, status=400)
+            
+        if "G" == aposta.resultado and aposta.resultado == resultado:
+            return JsonResponse({
+                'success': False,
+                'message': f'Retorno já adicionado ao valor principal'
+            }, status=200)
+            
+        if "R" == aposta.resultado and aposta.resultado == resultado:
+            return JsonResponse({
+                'success': False,
+                'message': f'Retorno já excluído do valor principal'
+            }, status=200)
         
         with transaction.atomic():
             aposta.resultado = resultado
@@ -100,6 +112,11 @@ def gerencia_resultado(request):
                 
             if "G" == aposta.resultado:
                 gerencia_ciclo.valor_total_retorno += aposta.retorno;
+                valor_total_retorno = gerencia_ciclo.valor_total_retorno
+                gerencia_ciclo.save()
+                
+            if "R" == aposta.resultado:
+                gerencia_ciclo.valor_total_retorno -= aposta.retorno;
                 valor_total_retorno = gerencia_ciclo.valor_total_retorno
                 gerencia_ciclo.save()
         

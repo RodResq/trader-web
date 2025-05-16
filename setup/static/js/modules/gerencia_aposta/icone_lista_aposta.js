@@ -28,7 +28,7 @@ export function atualizaIconeResultado(row, resultado="A") {
         },
         'R': {
             icon: 'bi-x-circle-fill', 
-            color: 'red',
+            color: '#e94949',
         },
         'A': {
             icon: 'bi-stopwatch-fill', 

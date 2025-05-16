@@ -78,10 +78,12 @@
                             <tr>
                               <th>ID Evento</th>
                               <th>Mercado</th>
+                              <th>Múltipla</th>
                               <th>Odd</th>
                               <th>Home</th>
                               <th>Away</th>
                               <th>Valor (R$)</th>
+                              <th>Retorno (R$)</th>
                               <th>Data</th>
                               <th>Resultado</th>
                               <th>Ação</th>
@@ -91,22 +93,33 @@
                             {% for aposta in apostas %}
                             <tr>
                               <td>{{ aposta.entrada.id_event }}</td>
-                              <td><i {% if aposta.resultado == 'G' %}
+                              <td>
+                                <i style="font-size: 1rem; vertical-align: middle;" 
+                                  {% if aposta.is_multipla %}
+                                  class="bi bi-list-ol" 
+                                  {% else %}
+                                  class="bi bi-universal-access"
+                                  {% endif %}>
+                                </i>
+                                <i {% if aposta.resultado == 'G' %}
                                     class="bi bi-check-circle" style="font-size: 1rem; color: white; background-color: green; border-color: green; border-radius: 100%; margin-right:5px; vertical-align: middle;"
                                     {% elif  aposta.resultado == 'R' %}
-                                    class="bi bi-x-circle-fill" style="font-size: 1rem; color: red; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                    class="bi bi-x-circle" style="font-size: 1rem; color: white;  background-color: #e94949; border-radius: 100%; margin-right:5px; vertical-align: middle;"
                                     {% else %}
                                     class="bi bi-stopwatch-fill" style="font-size: 1rem; color: cornflowerblue; border-radius: 100%; margin-right:5px; vertical-align: middle;"
                                   {% endif %}></i>
                                 {{ aposta.entrada.mercado }}
+                              </td>
+                              <td>
                                 {% if aposta.is_multipla %}
-                                <span> ({{ aposta.cod_multipla }})</span>
+                                  <span>{{ aposta.cod_multipla }}</span>
                                 {% endif %}
                               </td>
                               <td>{{ aposta.entrada.odd }}</td>
                               <td>{{ aposta.entrada.home_actual }}%</td>
                               <td>{{ aposta.entrada.away_actual }}%</td>
                               <td>{{ aposta.valor }}</td>
+                              <td>{{ aposta.retorno }}</td>
                               <td>{{ aposta.entrada.data_jogo|date:"d/m/Y H:i" }}</td>
                               <td class="resultado-container">
                                 <div class="input-group">
