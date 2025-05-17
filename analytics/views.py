@@ -14,6 +14,8 @@ from decimal import Decimal
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Sum
+from gerencia.models import GerenciaCiclo
 import json
 
 # Create your views here.
@@ -34,6 +36,8 @@ def index(request):
         
         entradas = Entrada.objects.all()
         
+        soma_retorno = GerenciaCiclo.objects.aggregate(total=Sum('valor_total_retorno'))
+        
         # Create the paginator
         paginator = Paginator(entradas, items_per_page)
         
@@ -51,6 +55,7 @@ def index(request):
             'mercados': paginated_entradas,
             'qtd_eventos': qtd_eventos,
             'qtd_ciclos': qtd_ciclos,
+            'soma_total_retorno': soma_retorno['total'],
             'items_per_page': items_per_page
         })
 
