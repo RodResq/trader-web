@@ -1,0 +1,45 @@
+/* Footer Styles */
+.footer {
+    margin-left: 250px;
+    padding: 15px 20px;
+    background-color: #1e1e1e;
+    border-top: 1px solid #333;
+    transition: all 0.3s;
+    color: #888;
+    width: auto;
+    position: relative;
+    bottom: 0;
+  }
+  
+  /* Quando a sidebar estiver recolhida */
+  body.sidebar-collapsed .footer {
+    margin-left: 0;
+  }
+  
+  /* Ajustes para dispositivos móveis */
+  @media (max-width: 768px) {
+    .footer {
+      margin-left: 0;
+    }
+  
+    body.sidebar-active .footer {
+      margin-left: 250px;
+    }
+  }
+  
+  /* Ajustes para tema claro */
+  body.theme-light .footer {
+    background-color: white !important;
+    border-top: 1px solid var(--bs-border-color) !important;
+  }
+  
+  body.theme-light .footer .text-muted {
+    color: var(--bs-text-muted) !important;
+  }
+  
+  /* Garantir que o conteúdo principal tenha altura mínima para o footer sempre aparecer no fundo */
+  .main-content {
+    min-height: calc(100vh - 107px); /* Altura do viewport - (altura do navbar + altura do footer) */
+    padding-bottom: 20px;
+  }
+  

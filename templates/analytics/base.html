@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="{% static 'styles/multiplas.css' %}" >
   <link rel="stylesheet" href="{% static 'styles/pagination.css' %}" >
   <link rel="stylesheet" href="{% static 'styles/theme_light.css' %}" >
+  <link rel="stylesheet" href="{% static 'styles/footer.css' %}" >
 </head>
 <body data-bs-theme="dark">
   <!-- Navbar -->
@@ -57,6 +58,7 @@
     {% include 'analytics/partials/_footer.html' %}
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/footer_position.js' %}"></script>
     <script type="module" src="{% static 'js/dashboard.js' %}"></script> 
 </body>
 </html>

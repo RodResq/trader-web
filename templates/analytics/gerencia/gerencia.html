@@ -89,7 +89,7 @@
                               <th>Ação</th>
                             </tr>
                           </thead>
-                          <tbody>lucros
+                          <tbody>
                             {% for aposta in apostas %}
                             <tr>
                               <td>{{ aposta.entrada.id_event }}</td>
@@ -182,6 +182,7 @@
           <div class="card-body">
             <div class="chart-area" id="graficoDesempenhoSemanal" style="height: 300px;">
               <!-- O gráfico será renderizado aqui via JavaScript -->
+            </div>
           </div>
         </div>
       </div>
@@ -190,6 +191,5 @@
 </div>
 <!-- Adicionar Chart.js antes dos scripts do dashboard -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-{% comment %} <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script> {% endcomment %}
 <script src="{% static 'js/modules/gerencia_aposta/gerencia_graficos_principal.js' %}" type="module"></script>
 {% endblock %}
