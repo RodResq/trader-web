@@ -1,0 +1,76 @@
+/* navbar.css - Estilos para a barra de navegação */
+
+/* Estilos da navbar - sempre com fundo verde independente do tema */
+.navbar {
+    background-color: #004d40 !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 1rem;
+  }
+  
+  /* Garantir que o tema escuro não altere a cor da navbar */
+  [data-bs-theme="dark"] .navbar,
+  .theme-dark .navbar,
+  html[data-bs-theme="dark"] .navbar,
+  body.theme-dark .navbar {
+    background-color: #004d40 !important;
+  }
+  
+  /* Estilo do logo */
+  .navbar-brand {
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+    padding: 8px 0;
+  }
+  
+  /* Parte "trader" em branco */
+  .trader-text {
+    color: #ffffff;
+  }
+  
+  /* Parte "Analytics" em amarelo */
+  .analytics-text {
+    color: #ffdf1b;
+  }
+  
+  /* Outros ajustes de navbar */
+  .navbar .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500;
+  }
+  
+  .navbar .nav-link:hover, 
+  .navbar .nav-link.active {
+    color: #ffffff !important;
+  }
+  
+  .navbar .dropdown-menu {
+    background-color: #00352c;
+    border-color: #004d40;
+  }
+  
+  .navbar .dropdown-item {
+    color: rgba(255, 255, 255, 0.85);
+  }
+  
+  .navbar .dropdown-item:hover {
+    background-color: #005d4f;
+    color: #ffffff;
+  }
+  
+  /* Estilo do botão de toggle do sidebar */
+  #sidebarToggle {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  #sidebarToggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Ajustes responsivos */
+  @media (max-width: 768px) {
+    .navbar-brand {
+      font-size: 20px;
+    }
+  }
+  
