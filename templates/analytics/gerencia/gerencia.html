@@ -40,6 +40,7 @@
                 <th>Qtd. Entradas</th>
                 <th>Valor Total Entradas (R$)</th>
                 <th>Valor Total Retornado (R$)</th>
+                <th>Performace</th>
                 {% comment %} <th class="text-center">Ações</th> {% endcomment %}
               </tr>
             </thead>
@@ -58,6 +59,7 @@
                   <td>{{ apostas|length }}</td>
                   <td>{{ gerencia.valor_total_entrada }}</td>
                   <td>{{ gerencia.valor_total_retorno }}</td>
+                  <td>Em Desenvolvimento</td>
                   {% comment %} <td class="text-center">
                     <a href="{% url 'analytics:gerencia:gerencia_edit' gerencia.pk %}" class="btn btn-sm btn-primary editar-gerencia-resultado" title="Editar">
                       <i class="bi bi-pencil"></i>
