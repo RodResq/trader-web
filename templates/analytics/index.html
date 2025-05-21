@@ -94,7 +94,7 @@
       </div>
 
       <div class="row">
-        <div class="col-lg-8 mb-1">
+        <div class="col-lg-8 mb-4">
           <div class="card shadow mb-3">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Lives</h6>
@@ -127,14 +127,6 @@
                         </label>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center flex-grow-1">
-                      <div class="form-check ms-auto">
-                        <input class="form-check-input" type="checkbox" value="" id="toggleSuperFavoritosHomeOnwerBall">
-                        <label class="form-check-label" for="toggleSuperFavoritosHomeOnwerBall">
-                          Super Favoritos Home - Onwer Ball
-                        </label>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 
@@ -146,14 +138,6 @@
                         <input class="form-check-input" type="checkbox" value="" id="task2">
                         <label class="form-check-label" for="task2">
                           Favoritos Home
-                        </label>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-grow-1">
-                      <div class="form-check ms-auto">
-                        <input class="form-check-input" type="checkbox" value="" id="task2OnwerBall">
-                        <label class="form-check-label" for="task2OnwerBall">
-                          Favoritos Home - Onwer Ball
                         </label>
                       </div>
                     </div>
@@ -171,14 +155,6 @@
                         </label>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center flex-grow-1">
-                      <div class="form-check ms-auto">
-                        <input class="form-check-input" type="checkbox" value="" id="task3OnwerBall">
-                        <label class="form-check-label" for="task3OnwerBall">
-                          Super Favoritos Away - Onwer Ball
-                        </label>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 
@@ -190,14 +166,6 @@
                         <input class="form-check-input" type="checkbox" value="" id="task4">
                         <label class="form-check-label" for="task4">
                           Favoritos Away
-                        </label>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-grow-1">
-                      <div class="form-check ms-auto">
-                        <input class="form-check-input" type="checkbox" value="" id="task4OnwerBall">
-                        <label class="form-check-label" for="task4OnwerBall">
-                          Favoritos Away - Onwer Ball
                         </label>
                       </div>
                     </div>
@@ -215,14 +183,6 @@
                         </label>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center flex-grow-1">
-                      <div class="form-check ms-auto">
-                        <input class="form-check-input" type="checkbox" value="" id="task5OnwerBall">
-                        <label class="form-check-label" for="task5OnwerBall">
-                          Over 1.5 - Onwer Ball
-                        </label>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -232,8 +192,9 @@
       
 
         <!-- Novo card para listar mercados -->
-         <div id="marketsCard">
-          <div class="card shadow col-lg-8 mb-4">
+      <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow h-100" id="marketsCard">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Lista de Mercados</h6>
               <div class="d-flex align-items-center">
@@ -404,7 +365,181 @@
             </div>
           </div>
         </div>
+        <!-- Card Owner Ball (coluna da direita) -->
+        <div class="col-lg-4 mb-4">
+          <div class="card shadow" id="ownerBallMarketsCard">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Mercados Owner Ball</h6>
+              <div class="d-flex align-items-center">
+                <div class="form-check form-switch me-2">
+                  <input class="form-check-input" type="checkbox" id="toggleAllOwnerBall">
+                  <label class="form-check-label" for="toggleAllOwnerBall">Selecionar todos</label>
+                </div>
+                <button id="refreshOwnerBallBtn" class="btn btn-sm btn-success refresh-btn" title="Atualizar mercados Owner Ball">
+                  <i class="bi bi-arrow-repeat"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <!-- Primeira coluna -->
+                  <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="form-check">
+                        <input class="form-check-input ownerball-check" type="checkbox" id="obSuperFavoritosHome">
+                        <label class="form-check-label" for="obSuperFavoritosHome">
+                          <span class="market-status status-open"></span>
+                          Super Favoritos Home OB
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="form-check">
+                        <input class="form-check-input ownerball-check" type="checkbox" id="obFavoritosHome">
+                        <label class="form-check-label" for="obFavoritosHome">
+                          <span class="market-status status-open"></span>
+                          Favoritos Home OB
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="form-check">
+                        <input class="form-check-input ownerball-check" type="checkbox" id="obOver15Home">
+                        <label class="form-check-label" for="obOver15Home">
+                          <span class="market-status status-open"></span>
+                          Over 1.5 Home OB
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="form-check">
+                        <input class="form-check-input ownerball-check" type="checkbox" id="obDNB1">
+                        <label class="form-check-label" for="obDNB1">
+                          <span class="market-status status-open"></span>
+                          DNB 1 OB
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <!-- Segunda coluna -->
+                  <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="form-check">
+                        <input class="form-check-input ownerball-check" type="checkbox" id="obSuperFavoritosAway">
+                        <label class="form-check-label" for="obSuperFavoritosAway">
+                          <span class="market-status status-open"></span>
+                          Super Favoritos Away OB
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="form-check">
+                        <input class="form-check-input ownerball-check" type="checkbox" id="obFavoritosAway">
+                        <label class="form-check-label" for="obFavoritosAway">
+                          <span class="market-status status-open"></span>
+                          Favoritos Away OB
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="form-check">
+                        <input class="form-check-input ownerball-check" type="checkbox" id="obOver15Away">
+                        <label class="form-check-label" for="obOver15Away">
+                          <span class="market-status status-open"></span>
+                          Over 1.5 Away OB
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="form-check">
+                        <input class="form-check-input ownerball-check" type="checkbox" id="obDNB2">
+                        <label class="form-check-label" for="obDNB2">
+                          <span class="market-status status-open"></span>
+                          DNB 2 OB
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Status dos mercados Owner Ball -->
+              <div class="mt-3 pt-3 border-top">
+                <div class="d-flex justify-content-between">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="market-status status-open me-2"></span>
+                    <span>Aberto</span>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="market-status status-warning me-2"></span>
+                    <span>Atenção</span>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="market-status status-close me-2"></span>
+                    <span>Fechado</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filtros adicionais -->
+              <div class="mt-3 pt-3 border-top">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="ownerBallOddsFilter" class="form-label">Filtrar por Odds:</label>
+                      <div class="d-flex">
+                        <input type="number" class="form-control form-control-sm me-2" id="ownerBallMinOdd" placeholder="Mín" min="1.01" step="0.01">
+                        <input type="number" class="form-control form-control-sm" id="ownerBallMaxOdd" placeholder="Máx" min="1.01" step="0.01">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="ownerBallProbabilityFilter" class="form-label">Filtrar por Probabilidade (%):</label>
+                      <div class="d-flex">
+                        <input type="number" class="form-control form-control-sm me-2" id="ownerBallMinProb" placeholder="Mín" min="0" max="100">
+                        <input type="number" class="form-control form-control-sm" id="ownerBallMaxProb" placeholder="Máx" min="0" max="100">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end mt-2">
+                  <button id="applyOwnerBallFilters" class="btn btn-primary btn-sm">Aplicar Filtros</button>
+                  <button id="resetOwnerBallFilters" class="btn btn-outline-secondary btn-sm ms-2">Resetar</button>
+                </div>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+
+</div>
+
       
       
     </div>
