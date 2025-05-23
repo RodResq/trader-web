@@ -527,3 +527,46 @@ def verificar_ciclo(request):
             'success': False,
             'message': f'Erro ao verificar ciclo: {str(e)}'
         }, status=500)
+        
+    
+def listar_owner_ball_sf(request):
+    page = request.GET.get('page', 1)
+    items_per_page = request.GET.get('items_per_page', 10)
+    
+    try:
+        items_per_page = int(items_per_page)
+        if items_per_page > 50:
+            items_per_page = 50
+    except ValueError:
+        items_per_page = 10
+    
+    sfs_owner_ball = VwMercadoOwnerBallSfHome.objects().all()
+    
+    # Create paginator
+    paginator = Paginator(sfs_owner_ball, items_per_page)
+    
+    try:
+        paginator_sf_ob = paginator.page(page)
+    except PageNotAnInteger:
+        paginator_sf_ob = paginator.page(1)
+    except EmptyPage:
+        paginator_sf_ob = paginator.page(paginator.num_pages)
+    
+    data = []
+    for sf in paginator_sf_ob:
+        data.append({
+                'mercado': sf.entrada_mercado,
+                'odd': sf.odd,
+                'data_jogo': sf.data_jogo
+            })
+        
+    return JsonResponse({
+            'success': True,
+            'mercados': data,
+            'pagination': {
+                'current_page': paginator_sf_ob.number,
+                'total_pages': paginator.num_pages,
+                'items_per_page': items_per_page,
+                'total_items': paginator.count
+            }
+        })
