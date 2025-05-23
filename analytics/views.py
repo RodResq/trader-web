@@ -540,9 +540,8 @@ def listar_owner_ball_sf(request):
     except ValueError:
         items_per_page = 10
     
-    sfs_owner_ball = VwMercadoOwnerBallSfHome.objects().all()
+    sfs_owner_ball = VwMercadoOwnerBallSfHome.objects.all()
     
-    # Create paginator
     paginator = Paginator(sfs_owner_ball, items_per_page)
     
     try:
@@ -557,7 +556,7 @@ def listar_owner_ball_sf(request):
         data.append({
                 'mercado': sf.entrada_mercado,
                 'odd': sf.odd,
-                'data_jogo': sf.data_jogo
+                'data_jogo': sf.data_jogo.strftime('%Y-%m-%d %H:%M:%S') if sf.data_jogo else None
             })
         
     return JsonResponse({

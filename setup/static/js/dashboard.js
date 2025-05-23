@@ -19,6 +19,7 @@ import { initAceitarApostaModal } from './modules/aceitarApostaModal.js';
 import { initMultiplasHandlers } from './modules/multiplas.js';
 import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_aposta.js';
 import { initThemeToggler } from './theme_toggler.js';
+import { setupApiOwnerBall } from './modules/api_owner_ball.js';
 
 
 
@@ -53,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializa Gerência de Resultado
     setupGerenciaResultado();
 
+    // Inicializa API Owner Ball
+    setupApiOwnerBall();
+
     // Incializa o método para calcular o valor diposnivel para a entrada
     calcularValorDisponivelEntrada();
 
@@ -82,5 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // Permite o acesso global aos módulos para debugging
 window.modules = {
     table: { initTableHandlers },
-    multiplas: { initMultiplasHandlers }
+    multiplas: { initMultiplasHandlers },
+    ownerBall: { setupApiOwnerBall }
 };
