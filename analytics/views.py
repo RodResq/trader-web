@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from analytics.models import VwConsultaMercadoSf, Entrada, Aposta
+from analytics.models import VwConsultaMercadoSf, Entrada, Aposta, VwMercadoOwnerBallSfHome
 from analytics.helpers import dump_mercados_para_entrada
 from ciclo.models import Ciclo 
 from .forms import AceitarApostaForm
