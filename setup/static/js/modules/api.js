@@ -9,13 +9,10 @@ import { desabilitarBtnAceitar } from './utils.js';
 import { loadPageData } from './pagination.js';
 
 
-// Armazenamento de estado de paginação
 let currentPage = 1;
 let itemsPerPage = 10;
 
-/**
- * Configura botões de aposta com manipuladores de eventos
- */
+
 export function setupApostaButtons() {
     const modal = document.getElementById('aceitarApostaModal');
     const aceitarBtn = document.querySelectorAll('#aceitar-aposta');
@@ -44,11 +41,16 @@ export function setupApostaButtons() {
 
             if (!currentRow) return;
 
-            const mercado = currentRow.querySelector('td:nth-child(2)').textContent;
+            const mercadoCell = currentRow.querySelector('td:nth-child(2)');
+
+            if (mercadoCell && !mercadoCell.classList.contains('mercado-column')) {
+                mercadoCell.classList.add('mercado-column');
+            }
+
+            const mercado = mercadoCell.textContent;
             const odd = currentRow.querySelector('td:nth-child(3)').textContent;
             currentEventId = eventId;
 
-            // Atualizar dados no modal
             document.getElementById('aceitar-evento-id').textContent = eventId;
             document.getElementById('aceitar-evento-mercado').textContent = mercado;
             document.getElementById('aceitar-evento-odd').textContent = odd;
@@ -88,9 +90,7 @@ export function setupApostaButtons() {
     })
 }
 
-/**
- * Configura o botão de atualização com manipulador de eventos
- */
+
 export function setupRefreshButton() {
     const refreshButton = document.getElementById('updateMarkets');
     if (!refreshButton) return;
@@ -98,7 +98,6 @@ export function setupRefreshButton() {
     refreshButton.addEventListener('click', function(e) {
         e.preventDefault();
 
-        // Adiciona classes de animação
         const icon = this.querySelector('i');
         icon.classList.add('rotate');
         this.classList.add('loading');
@@ -108,13 +107,8 @@ export function setupRefreshButton() {
     });
 }
 
-/**
- * Busca dados atualizados de mercados da API com paginação
- * @param {number} page - Número da página a ser carregada
- * @param {number} perPage - Número de itens por página
- */
+
 export function fetchUpdatedMarkets(page = 1, perPage = 10) {
-    // Atualizar estado de paginação
     currentPage = page;
     itemsPerPage = perPage;
     
@@ -138,12 +132,13 @@ export function fetchUpdatedMarkets(page = 1, perPage = 10) {
             const success = updateMarketsTable(data.mercados);
             
             if (success) {
+                aplicarMercadoColumnClasse();
+
                 updateMarketStatus();
                 setupApostaButtons();
                 setupRecusarModal();
                 showNotification('Mercados atualizados com sucesso!', 'success');
                 
-                // Retornar informações de paginação para atualizar os controles
                 return {
                     success: true,
                     pagination: data.pagination || {
@@ -172,9 +167,19 @@ export function fetchUpdatedMarkets(page = 1, perPage = 10) {
     });
 }
 
-/**
- * Para a animação do botão de atualização
- */
+function aplicarMercadoColumnClasse() {
+    const table = document.getElementById('marketsTable');
+    if (!table) return;
+
+    const mercadoCells = table.querySelectorAll('tbody tr td:nth-child(2)');
+    mercadoCells.forEach(cell => {
+        if (!cell.classList.contains('mercado-column')) {
+            cell.classList.add('mercado-column');
+        }
+    })
+}
+
+
 function stopRefreshAnimation() {
     const refreshButton = document.getElementById('updateMarkets');
     if (!refreshButton) return;
@@ -186,26 +191,17 @@ function stopRefreshAnimation() {
     refreshButton.disabled = false;
 }
 
-/**
- * Define a página atual para paginação
- * @param {number} page - Número da página
- */
+
 export function setCurrentPage(page) {
     currentPage = page;
 }
 
-/**
- * Define o número de itens por página
- * @param {number} perPage - Número de itens por página
- */
+
 export function setItemsPerPage(perPage) {
     itemsPerPage = perPage;
 }
 
-/**
- * Obtém o estado atual de paginação
- * @returns {Object} Objeto com página atual e itens por página
- */
+
 export function getPaginationState() {
     return {
         currentPage,
