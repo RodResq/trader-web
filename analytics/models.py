@@ -41,7 +41,7 @@ class VwMercadoOwnerBallSfHome(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'vw_mercado_owner_boll_sf_home' 
+        db_table = 'vw_mercado_owner_boll_sf_home_v2' 
         
     def __str__(self):
         return f"VwMercadoOwnerBallSfHome[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"

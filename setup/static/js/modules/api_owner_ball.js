@@ -99,10 +99,8 @@ function updateOwnerBallTable(mercados) {
 
         return `
             <tr>
-                <td>
-                    <i class="bi bi-circle-fill" style="font-size: 0.8rem; color: cornflowerblue; margin-right:5px; vertical-align: middle;"></i>
-                    ${mercado.mercado || 'N/A'}
-                </td>
+                <td>${mercado.id}</td>
+                <td>${mercado.mercado || 'N/A'}</td>
                 <td>${mercado.odd || 'N/A'}</td>
                 <td>${dataFormatada}</td>
                 <td>
