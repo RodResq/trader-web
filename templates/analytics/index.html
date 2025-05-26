@@ -238,7 +238,7 @@
                     {% for mercado in mercados %}
                     <tr>
                       <td>{{ mercado.id_event }}</td>
-                      <td><i {% if mercado.opcao_entrada == "A" %}
+                      <td class="mercado-column"><i {% if mercado.opcao_entrada == "A" %}
                             class="bi-check" style="font-size: 1rem; color: green;"
                             {% elif  mercado.opcao_entrada == "R" %}
                             class="bi bi-x" style="font-size: 1rem; color: red;"
