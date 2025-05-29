@@ -247,7 +247,16 @@
                           {% endif %}></i>
                         {{ mercado.mercado }}
                       </td>
-                      <td>{{ mercado.odd }}</td>
+                      <td>
+                        <i {% if mercado.odd_change == 'P' %}
+                          class="bi bi-stop" style="1rem; color: yellow; vertical-align: middle;" 
+                          {% elif mercado.odd_change == 'S' %}
+                          class="bi bi-arrow-up-short" style="color: green; vertical-align: middle;"
+                          {% elif mercado.odd_change == 'D' %}
+                          class="bi bi-arrow-down-short" style="color: red; vertical-align: middle;"
+                          {% endif %}></i>
+                        {{ mercado.odd }}
+                      </td>
                       <td>{{ mercado.home_actual }}%</td>
                       <td>{{ mercado.away_actual }}%</td>
                       <td>{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>

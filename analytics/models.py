@@ -65,8 +65,15 @@ class Entrada(models.Model):
         ("E", "em_espera")
     ]
     
+    ODD_CHANGE = [
+        ('S', 'subiu'),
+        ('D', 'desceu'),
+        ('P', 'parada')
+    ]
+    
     id_event = models.IntegerField(primary_key=True)
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    odd_change = models.CharField(max_length=5, blank=True, choices=ODD_CHANGE, default='P')
     odd = models.DecimalField(
         max_digits=5, 
         decimal_places=2, 
@@ -163,3 +170,20 @@ class Aposta(models.Model):
         else:
             # Para apostas canceladas ou aguardando, o lucro é zero
             return Decimal('0.00')
+        
+        
+class OddChange(models.Model):
+    id_event = models.BigIntegerField(null=False)
+    home_fractional_value = models.FloatField(blank=True, null=True)
+    home_change_from_initial = models.FloatField(blank=True, null=True)
+    home_change_from_last = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'odd_change' 
+        
+    def __str__(self):
+        return f"OddChange[id_event={self.id_event}, \
+            home_fractional_value={self.home_fractional_value}, \
+            home_change_from_initial={self.home_change_from_initial}, \
+            home_change_from_last={self.home_change_from_last}]"

@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from analytics.models import VwConsultaMercadoSf, Entrada, Aposta, VwMercadoOwnerBallSfHome
+from analytics.models import VwConsultaMercadoSf, Entrada, Aposta, VwMercadoOwnerBallSfHome, OddChange
 from analytics.helpers import dump_mercados_para_entrada
 from ciclo.models import Ciclo 
 from .forms import AceitarApostaForm
@@ -36,9 +36,10 @@ def index(request):
         
         entradas = Entrada.objects.all()
         
+        _verificar_mudanca_odd(entradas)
+        
         soma_retorno = GerenciaCiclo.objects.aggregate(total=Sum('valor_total_retorno'))
         
-        # Create the paginator
         paginator = Paginator(entradas, items_per_page)
         
         try:
@@ -570,3 +571,19 @@ def listar_owner_ball_sf(request):
                 'total_items': paginator.count
             }
         })
+    
+# TODO melhorar logica para mudança de odd
+def _verificar_mudanca_odd(entradas):
+    for entrada in entradas:
+        odds_change = OddChange.objects.filter(id_event=entrada.id_event).all()
+        print(type(odds_change))
+        if odds_change:
+            for odd_change in odds_change:
+                mudanca_rel_last = odd_change.home_change_from_last
+                if mudanca_rel_last == 0 or mudanca_rel_last is None:
+                    entrada.odd_change = 'P'
+                elif mudanca_rel_last > 0:
+                    entrada.odd_change = 'S'
+                elif mudanca_rel_last < 0:
+                    entrada.odd_change = 'D'
+                entrada.save()
