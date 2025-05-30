@@ -17,6 +17,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Sum
 from gerencia.models import GerenciaCiclo
 import json
+import asyncio
+import aiohttp
+import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 def index(request):
@@ -146,9 +152,19 @@ def eventos(request):
     return render(request, 'analytics/eventos/eventos.html')
 
 
+async def buscar_odd_change(id_events):
+    async with aiohttp.ClientSession as session:
+        tasks = []
+        for id_event in id_events:
+            task = asyncio.create_task(
+                session.get(f"http://127.0.0.1:8080/odd-change/{id_event}")
+            )
+            tasks.append(task)
+        await asyncio.gather(*tasks, return_exceptions=True)
+
+
 def mercados(request):
     try:
-        # Get pagination parameters
         page = request.GET.get('page', 1)
         items_per_page = request.GET.get('items_per_page', 10)
         
@@ -158,9 +174,29 @@ def mercados(request):
                 items_per_page = 50
         except ValueError:
             items_per_page = 10
-        
+            
+        try:
+            eventos_ids = Entrada.objects.values_list('id_event', flat=True).distinct()
+            api_base_url = "http://127.0.0.1:8080"
+            
+            for evento_id in eventos_ids:
+                if evento_id == 13292666:
+                    try:
+                        response = requests.get(
+                            f'{api_base_url}/odd-change/{evento_id}',
+                            timeout=5
+                        )
+                        if response.status_code == 200:
+                            pass # TODO Verificar Lógica ao 
+                    except requests.exceptions.RequestException as e:
+                        logger.error(f"Erro de conexão ao buscar odd-change para evento {evento_id}: {str(e)}")
+                        continue
+    
+        except Exception as e:
+            logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}")         
+                    
         mercados = Entrada.objects.all()
-
+        
         # Create paginator
         paginator = Paginator(mercados, items_per_page)
         
