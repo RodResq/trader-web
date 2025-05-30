@@ -240,8 +240,24 @@ export function updateMarketsTable(data) {
         mercadoCell.appendChild(document.createTextNode(mercado.mercado));
         row.appendChild(mercadoCell);
         
-        // Célula de Odd
+        
+
         const oddCell = document.createElement('td');
+        const iconElementChangeOdd = document.createElement('i');
+
+        if (mercado.odd_change === 'P') {
+            iconElementChangeOdd.className = 'bi bi-stop';
+            iconElementChangeOdd.style = '1rem; color: yellow; vertical-align: middle;'
+        } else if (mercado.odd_change === 'S') {
+            iconElementChangeOdd.className = 'bi bi-arrow-up-short';
+            iconElementChangeOdd.style = 'color: green; vertical-align: middle;'
+        } else if (mercado.odd_change === 'D') {
+            iconElementChangeOdd.className = 'bi bi-arrow-down-short';
+            iconElementChangeOdd.style = 'color: red; vertical-align: middle;'
+        }
+
+        oddCell.appendChild(iconElementChangeOdd);
+        oddCell.appendChild(document.createTextNode(' ' + mercado.odd))
         oddCell.textContent = parseFloat(mercado.odd);
         row.appendChild(oddCell);
         

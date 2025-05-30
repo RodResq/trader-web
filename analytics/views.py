@@ -176,6 +176,7 @@ def mercados(request):
             data.append({
                 'id_event': mercado.id_event,
                 'mercado': mercado.mercado,
+                'odd_change': mercado.odd_change,
                 'odd': float(mercado.odd) if mercado.odd else 0,
                 'home_actual': mercado.home_actual,
                 'away_actual': mercado.away_actual,

@@ -103,12 +103,8 @@ function isAjaxTable() {
     return !!document.getElementById('updateMarkets');
 }
 
-/**
- * Versão modificada da função loadPageData
- * Adiciona chamada para restaurar o estado do checkbox após carregar a página
- */
+
 export function loadPageData() {
-    // Obter o botão de atualização para mostrar indicador de carregamento
     const refreshButton = document.getElementById('updateMarkets');
 
     if (!refreshButton) return;
@@ -137,7 +133,6 @@ export function loadPageData() {
     })
     .then(data => {
         if (data.success) {
-             // Atualizar a tabela com os novos dados
              updateTable(data.mercados);
 
             // Atualizar informações de paginação
@@ -195,7 +190,6 @@ function updateTable(mercados) {
         const mercadoCell = document.createElement('td');
         const iconElement = document.createElement('i');
         
-        // Definir classe do ícone baseado no status da entrada
         if (mercado.opcao_entrada === 'A') {
             iconElement.className = 'bi bi-check';
             iconElement.style = 'font-size: 1rem; color: green;';
@@ -213,7 +207,21 @@ function updateTable(mercados) {
         
         // Odd
         const oddCell = document.createElement('td');
-        oddCell.textContent = mercado.odd;
+        const iconElementChangeOdd = document.createElement('i');
+
+        if (mercado.odd_change === 'P') {
+            iconElementChangeOdd.className = 'bi bi-stop';
+            iconElementChangeOdd.style = '1rem; color: yellow; vertical-align: middle;'
+        } else if (mercado.odd_change === 'S') {
+            iconElementChangeOdd.className = 'bi bi-arrow-up-short';
+            iconElementChangeOdd.style = 'color: green; vertical-align: middle;'
+        } else if (mercado.odd_change === 'D') {
+            iconElementChangeOdd.className = 'bi bi-arrow-down-short';
+            iconElementChangeOdd.style = 'color: red; vertical-align: middle;'
+        }
+
+        oddCell.appendChild(iconElementChangeOdd);
+        oddCell.appendChild(document.createTextNode(' ' + mercado.odd))
         row.appendChild(oddCell);
         
         // Home
