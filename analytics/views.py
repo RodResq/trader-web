@@ -624,3 +624,27 @@ def _verificar_mudanca_odd(entradas):
                 elif mudanca_rel_last < 0:
                     entrada.odd_change = 'D'
                 entrada.save()
+                
+                
+def atualizar_odd_change(request, id_evento):
+    try:
+        api_base_url = "http://127.0.0.1:8080"
+        try:
+            response = requests.get(
+                f'{api_base_url}/odd-change/{id_evento}',
+                timeout=5
+            )
+            if response.status_code == 200:
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Atualizaçao de odd recuperada com sucesso',
+                    'data': {
+                        'oddChange': response.json()
+                    }
+                }, status=200)
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Erro de conexão ao buscar odd-change para evento {id_evento}: {str(e)}")
+            
+    except Exception as e:
+            logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 

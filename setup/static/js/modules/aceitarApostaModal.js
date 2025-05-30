@@ -11,7 +11,6 @@ export function initAceitarApostaModal() {
     const confirmarBtn = document.getElementById('confirmarAceiteBtn');
     const valorInput = document.querySelector('#aceitar-evento-valor-input input');
 
-    // Mostrar o modal quando o botão de aposta é clicado
     aceitarButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
@@ -74,7 +73,7 @@ export function initAceitarApostaModal() {
             valor_retorno: valorRetorno
         };
         
-        // Enviar dados para o backend via AJAX
+  
         fetch('/analytics/apostas/aceitar/', {
             method: 'POST',
             headers: {

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import eventos, aceitar_aposta, verificar_ciclo, listar_owner_ball_sf
+from .views import eventos, aceitar_aposta, verificar_ciclo, atualizar_odd_change
 
 app_name = 'analytics'
 

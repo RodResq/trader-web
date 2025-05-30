@@ -20,6 +20,7 @@ import { initMultiplasHandlers } from './modules/multiplas.js';
 import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_aposta.js';
 import { initThemeToggler } from './theme_toggler.js';
 import { setupApiOwnerBall } from './modules/api_owner_ball.js';
+import { setupUpdateOddChange } from './modules/update_odd_change.js';
 
 
 
@@ -56,6 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializa API Owner Ball
     setupApiOwnerBall();
+    
+    //Incializa funcão ayncrona para atualizar odd
+    setupUpdateOddChange()
 
     // Incializa o método para calcular o valor diposnivel para a entrada
     calcularValorDisponivelEntrada();
