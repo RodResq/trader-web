@@ -86,6 +86,7 @@ export function updateEntryOptionIcon(isMutipla=false, row, estado="E") {
     iconElement.classList.add('bi', estadoConfig.icon, estadoConfig.color);
     iconElement.style.fontSize = '1rem';
     iconElement.style.marginRight = '5px';
+    iconElement.style.verticalAlign
     
     mercadoCell.textContent = mercadoText.replace(/\[\w\]\s*/, '').trim();
     mercadoCell.insertBefore(iconElement, mercadoCell.firstChild);

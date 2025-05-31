@@ -638,9 +638,7 @@ def atualizar_odd_change(request, id_evento):
                 return JsonResponse({
                     'success': True,
                     'message': 'Atualizaçao de odd recuperada com sucesso',
-                    'data': {
-                        'oddChange': response.json()
-                    }
+                    'oddChange': response.json()
                 }, status=200)
             
         except requests.exceptions.RequestException as e:
