@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from analytics.views import index, evento, apostar, mercados, editar_odd, entrada_multipla, listar_owner_ball_sf, atualizar_odd_change
+from analytics.views import index, evento, apostar, mercados, editar_odd, entrada_multipla, listar_owner_ball_sf, atualizar_odd_change, atualizar_odd_status
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +31,5 @@ urlpatterns = [
     path('api/entrada_multipla', entrada_multipla, name="entrada_multipla"),
     path('ciclos/', include('ciclo.urls', namespace='ciclo')),
     path('api/odd_change/<int:id_evento>', atualizar_odd_change, name='atualizar_odd_change'),
+    path('api/update_odd', atualizar_odd_status, name='atualizar_odd_status')
 ]

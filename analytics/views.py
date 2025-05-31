@@ -635,6 +635,8 @@ def atualizar_odd_change(request, id_evento):
                 timeout=5
             )
             if response.status_code == 200:
+                
+                
                 return JsonResponse({
                     'success': True,
                     'message': 'Atualizaçao de odd recuperada com sucesso',
@@ -646,3 +648,39 @@ def atualizar_odd_change(request, id_evento):
             
     except Exception as e:
             logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 
+            
+
+@require_POST          
+def atualizar_odd_status(request):
+    try:
+        data = json.loads(request.body)
+        
+        if not data:
+            return JsonResponse({
+                'success': False,
+                'message': 'Nenhuma dado fornecido.'
+            }, status=400)
+        
+        entrada = Entrada.objects.filter(id_event=data.get('event_id')).first()
+        
+        if not entrada:
+            return JsonResponse({
+                'sucess': False,
+                'message': 'Entrada não encontrada'
+            }, status=400)
+            
+        entrada.odd = data.get('odd_value')
+        entrada.odd_change = data.get('odd_change')
+        entrada.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Valor e status da odd atualizada com sucesso'
+        }, status=200)          
+            
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': f'Erro ao atualizar odd change: {str(e)}'
+        }, status=500)
+    
