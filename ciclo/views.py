@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
-from .models import Ciclo
+from django.db import transaction, IntegrityError
+from .models import Ciclo 
 from .forms import CicloEntradaForm
-from gerencia.models import GerenciaCiclo
+from gerencia.models import GerenciaCiclo, EvolucaoSaldoAtual
+from datetime import date, timedelta
 
 def ciclos(request):
     """Exibe a lista de ciclos cadastrados."""
@@ -19,7 +21,15 @@ def ciclo_edit(request, pk=None):
         form = CicloEntradaForm(request.POST, instance=ciclo)
         
         if form.is_valid():
-                ciclo = form.save()
+            try:
+                with transaction.atomic():
+                    ciclo = form.save()
+                    
+                    evolucao_saldo_atual = EvolucaoSaldoAtual()
+                    evolucao_saldo_atual.id_ciclo = ciclo
+                    evolucao_saldo_atual.saldo = ciclo.saldo_atual
+                    evolucao_saldo_atual.disponivel_entrada = ciclo.valor_disponivel_entrada
+                    evolucao_saldo_atual.save()
                 
                 if not is_edit:
                     gerencia_ciclo = GerenciaCiclo(ciclo=ciclo, 
@@ -29,6 +39,9 @@ def ciclo_edit(request, pk=None):
                     gerencia_ciclo.save()
                 
                 messages.success(request, 'Ciclo salvo com sucesso!')
+                return redirect('ciclo:index')
+            except IntegrityError as e:
+                messages.error(request, 'Não é possivel editar mais de uma vez o saldo no mesmo dia. Contate o Administrador')
                 return redirect('ciclo:index')
     else:
         form = CicloEntradaForm(instance=ciclo)
