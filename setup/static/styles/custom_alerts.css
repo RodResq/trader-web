@@ -1,0 +1,106 @@
+/* Estilos customizados para alertas */
+.alert {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    animation: slideInDown 0.3s ease-out;
+}
+
+/* Animação de entrada */
+@keyframes slideInDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Alertas de sucesso */
+.alert-success {
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+
+.alert-success .bi {
+    color: #28a745;
+}
+
+/* Alertas de erro */
+.alert-error,
+.alert-danger {
+    background-color: #f8d7da;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+}
+
+.alert-error .bi,
+.alert-danger .bi {
+    color: #dc3545;
+}
+
+/* Alertas de aviso */
+.alert-warning {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    color: #856404;
+}
+
+.alert-warning .bi {
+    color: #ffc107;
+}
+
+/* Alertas de informação */
+.alert-info {
+    background-color: #d1ecf1;
+    border-left: 4px solid #17a2b8;
+    color: #0c5460;
+}
+
+.alert-info .bi {
+    color: #17a2b8;
+}
+
+/* Botão de fechar */
+.alert .btn-close {
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.alert .btn-close:hover {
+    opacity: 1;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .alert {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+/* Para temas escuros */
+body.theme-dark .alert-success {
+    background-color: #1e3a1e;
+    color: #7ac87a;
+}
+
+body.theme-dark .alert-error,
+body.theme-dark .alert-danger {
+    background-color: #3a1e1e;
+    color: #f87a7a;
+}
+
+body.theme-dark .alert-warning {
+    background-color: #3a331e;
+    color: #f8c857;
+}
+
+body.theme-dark .alert-info {
+    background-color: #1e2d3a;
+    color: #7ac8e8;
+}

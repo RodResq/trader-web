@@ -41,8 +41,21 @@ def ciclo_edit(request, pk=None):
                 messages.success(request, 'Ciclo salvo com sucesso!')
                 return redirect('ciclo:index')
             except IntegrityError as e:
-                messages.error(request, 'Não é possivel editar mais de uma vez o saldo no mesmo dia. Contate o Administrador')
-                return redirect('ciclo:index')
+                messages.error(
+                    request, 
+                    'Não é possivel editar mais de uma vez o saldo no mesmo dia.' 
+                    'Contate o Administrador')
+            except Exception as e:
+                messages.error(
+                    request,
+                    f'Erro inesperado ao salvar o ciclo: {str(e)}. '
+                    'Contate o Administrador'
+                )
+        else:
+           messages.error(
+                request, 
+                'Por favor, corrija os erros abaixo antes de continuar.'
+            ) 
     else:
         form = CicloEntradaForm(instance=ciclo)
         
