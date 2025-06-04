@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
 from django.db import transaction, IntegrityError
+from django.http import JsonResponse
 from .models import Ciclo 
 from .forms import CicloEntradaForm
 from gerencia.models import GerenciaCiclo, EvolucaoSaldoAtual
@@ -77,3 +78,81 @@ def ciclo_delete(request, pk):
         return redirect('ciclo:index')
     
     return render(request, 'analytics/ciclo/ciclo_confirm_delete.html', {'ciclo': ciclo})
+
+
+def evolucao_saldo_json(request, ciclo_id):
+    try:
+        ciclo = get_object_or_404(Ciclo, pk=ciclo_id)
+        evolucoes = EvolucaoSaldoAtual.objects.filter(id_ciclo=ciclo).order_by('data')
+        dados = []
+        
+        for evolucao in evolucoes:
+            dados.append({
+                'data': evolucao.data.strftime('%d/%m/%Y'),
+                'saldo': float(evolucao.saldo),
+                'disponivel_entrada': float(evolucao.disponivel_entrada),
+                'data_iso': evolucao.data.isoformat()
+            })
+            
+        analise = {}
+        if dados:
+            saldo_inicial = dados[0]['saldo'] if dados else 0
+            saldo_final = dados[0]['saldo'] if dados else 0
+            variacao_total = saldo_final - saldo_inicial
+            variacao_percentual = 0
+            
+            if saldo_inicial > 0:
+                variacao_percentual = (variacao_total/ saldo_inicial) * 100
+                
+            maior_saldo = max(dados, key=lambda x: x['saldo'] if dados else None)
+            menor_saldo = min(dados, key=lambda x: x['saldo'] if dados else None)
+            
+            maior_disponivel = max(dados, key=lambda x: x['disponivel_entrada']) if dados else None
+            menor_disponivel = min(dados, key=lambda x: x['disponivel_entrada']) if dados else None
+            
+            analise = {
+                'saldo_inicial': round(saldo_inicial, 2),
+                'saldo_final': round(saldo_final, 2),
+                'variacao_total': round(variacao_total, 2),
+                'variacao_percentual': round(variacao_percentual, 2),
+                'maior_saldo': {
+                    'valor': round(maior_saldo['saldo'], 2),
+                    'data': maior_saldo['data']
+                } if maior_saldo else None,
+                'menor_saldo': {
+                    'valor': round(menor_saldo['saldo'], 2),
+                    'data': menor_saldo['data']
+                } if menor_saldo else None,
+                'maior_disponivel': {
+                    'valor': round(maior_disponivel['disponivel_entrada'], 2),
+                    'data': maior_disponivel['data']
+                } if maior_disponivel else None,
+                'menor_disponivel': {
+                    'valor': round(menor_disponivel['disponivel_entrada'], 2),
+                    'data': menor_disponivel['data']
+                } if menor_disponivel else None,
+                'total_registros': len(dados)
+            } 
+            
+        return JsonResponse({
+            'success': True,
+            'ciclo': {
+                'id': ciclo.id,
+                'categoria': ciclo.get_categoria_display(),
+                'data_inicial': ciclo.data_inicial.strftime('%d/%m/%Y'),
+                'data_final': ciclo.data_final.strftime('%d/%m/%Y'),
+                'saldo_atual': float(ciclo.saldo_atual),
+                'valor_disponivel_entrada': float(ciclo.valor_disponivel_entrada)
+            },
+            'dados': dados,
+            'analise': analise
+        })
+           
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)

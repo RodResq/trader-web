@@ -21,6 +21,7 @@ import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_ap
 import { initThemeToggler } from './theme_toggler.js';
 import { setupApiOwnerBall } from './modules/api_owner_ball.js';
 import { setupUpdateOddChange } from './modules/update_odd_change.js';
+import { setupEvolucaoSaldoModal } from './modules/ciclo/evolucao_saldo.js'
 
 
 
@@ -55,20 +56,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializa Gerência de Resultado
     setupGerenciaResultado();
 
+    setupEvolucaoSaldoModal();
+   
     // Inicializa API Owner Ball
-    setupApiOwnerBall();
+    // setupApiOwnerBall();
     
     //Incializa funcão ayncrona para atualizar odd
     setupUpdateOddChange()
 
     // Incializa o método para calcular o valor diposnivel para a entrada
-    calcularValorDisponivelEntrada();
+    // calcularValorDisponivelEntrada();
 
     //Incializa o cálculo final das datas do ciclo
     calcularDataFinalCiclo();
 
     //Inicializa modal mutlipas entradas
     initMultiplasHandlers();
+
 
     // Inicializa componentes de paginação
     if (typeof initPagination === "function") {

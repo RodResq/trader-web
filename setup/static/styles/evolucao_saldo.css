@@ -1,0 +1,214 @@
+/* Estilos para o modal de evolução do saldo */
+
+#evolucaoSaldoModal .modal-dialog {
+    max-width: 90%;
+}
+
+#evolucaoSaldoModal .modal-content {
+    border-radius: 8px;
+}
+
+#evolucaoSaldoModal .modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+#evolucaoSaldoModal .modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* Cards de estatísticas */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-danger,
+.card.bg-info,
+.card.bg-warning,
+.card.bg-secondary {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.bg-primary:hover,
+.card.bg-success:hover,
+.card.bg-danger:hover,
+.card.bg-info:hover,
+.card.bg-warning:hover,
+.card.bg-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Gráfico container */
+#graficoEvolucaoSaldo {
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Botão de evolução do saldo */
+.btn-evolucao-saldo {
+    border: 1px solid #17a2b8;
+    transition: all 0.2s ease;
+}
+
+.btn-evolucao-saldo:hover {
+    background-color: #17a2b8;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#evolucaoSaldoContent {
+    animation: fadeIn 0.5s ease-out;
+}
+
+#evolucaoSaldoModal .row .card {
+    animation: slideInFromTop 0.6s ease-out;
+}
+
+#evolucaoSaldoModal .row .col-md-3:nth-child(1) .card {
+    animation-delay: 0.1s;
+}
+
+#evolucaoSaldoModal .row .col-md-3:nth-child(2) .card {
+    animation-delay: 0.2s;
+}
+
+#evolucaoSaldoModal .row .col-md-3:nth-child(3) .card {
+    animation-delay: 0.3s;
+}
+
+#evolucaoSaldoModal .row .col-md-3:nth-child(4) .card {
+    animation-delay: 0.4s;
+}
+
+/* Loading spinner customizado */
+#evolucaoSaldoLoading {
+    animation: fadeIn 0.3s ease-out;
+}
+
+#evolucaoSaldoLoading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Error state */
+#evolucaoSaldoError {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #evolucaoSaldoModal .modal-dialog {
+        max-width: 95%;
+        margin: 10px;
+    }
+    
+    #evolucaoSaldoModal .row .col-md-3 {
+        margin-bottom: 1rem;
+    }
+    
+    #graficoEvolucaoSaldo {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    #evolucaoSaldoModal .modal-dialog {
+        max-width: 100%;
+        margin: 5px;
+    }
+    
+    #evolucaoSaldoModal .card h4 {
+        font-size: 1.2rem;
+    }
+    
+    #evolucaoSaldoModal .card h6 {
+        font-size: 0.9rem;
+    }
+}
+
+/* Tema claro */
+body.theme-light #evolucaoSaldoModal .modal-content {
+    background-color: white;
+    color: #333;
+}
+
+body.theme-light #evolucaoSaldoModal .modal-header {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    border-bottom: 1px solid #dee2e6;
+}
+
+body.theme-light #evolucaoSaldoModal .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Tema escuro */
+body.theme-dark #evolucaoSaldoModal .modal-content {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+}
+
+body.theme-dark #evolucaoSaldoModal .card {
+    background-color: #3c3c3c !important;
+    border-color: #555;
+}
+
+body.theme-dark #evolucaoSaldoModal .card:not(.bg-primary):not(.bg-success):not(.bg-danger):not(.bg-info):not(.bg-warning):not(.bg-secondary) {
+    background-color: #3c3c3c;
+    color: #e0e0e0;
+}
+
+/* Efeitos visuais adicionais */
+.btn-evolucao-saldo {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-evolucao-saldo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+    z-index: 0;
+}
+
+.btn-evolucao-saldo:hover::before {
+    width: 100px;
+    height: 100px;
+}
+
+.btn-evolucao-saldo i {
+    position: relative;
+    z-index: 1;
+}

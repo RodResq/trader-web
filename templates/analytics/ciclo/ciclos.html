@@ -52,7 +52,17 @@
                 <tr>
                   <td>{{ ciclo.get_categoria_display }}</td>
                   <td>{{ ciclo.data_inicial|date:"d/m/Y" }} a {{ ciclo.data_final|date:"d/m/Y" }}</td>
-                  <td>R$ {{ ciclo.saldo_atual }}</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="me-2">R$ {{ ciclo.saldo_atual|floatformat:2 }}</span>
+                      <button class="btn btn-sm btn-outline-info btn-evolucao-saldo" 
+                              data-ciclo-id="{{ ciclo.id }}"
+                              data-ciclo-categoria="{{ ciclo.get_categoria_display }}"
+                              data-ciclo-periodo="{{ ciclo.data_inicial|date:'d/m/Y' }} à {{ ciclo.data_final|date:'d/m/Y' }}"
+                              title="Ver evolução do saldo">
+                        <i class="bi bi-graph-up"></i>
+                      </button>
+                  </td>
                   <td>R$ {{ ciclo.valor_disponivel_entrada }}</td>
                   <td class="text-center">
                     <a href="{% url 'ciclo:ciclo_edit' ciclo.pk %}" class="btn btn-sm btn-primary" title="Editar">
