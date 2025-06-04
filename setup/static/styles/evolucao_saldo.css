@@ -6,38 +6,80 @@
 
 #evolucaoSaldoModal .modal-content {
     border-radius: 8px;
+    border: none;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 #evolucaoSaldoModal .modal-header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    padding: 1.5rem;
 }
 
 #evolucaoSaldoModal .modal-header .btn-close {
     filter: invert(1);
+    opacity: 0.8;
+}
+
+#evolucaoSaldoModal .modal-header .btn-close:hover {
+    opacity: 1;
+}
+
+#evolucaoSaldoModal .modal-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+#evolucaoSaldoModal .modal-body {
+    padding: 2rem;
+}
+
+#evolucaoSaldoModal .modal-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem;
 }
 
 /* Cards de estatísticas */
-.card.bg-primary,
-.card.bg-success,
-.card.bg-danger,
-.card.bg-info,
-.card.bg-warning,
-.card.bg-secondary {
+#evolucaoSaldoModal .card.bg-primary,
+#evolucaoSaldoModal .card.bg-success,
+#evolucaoSaldoModal .card.bg-danger,
+#evolucaoSaldoModal .card.bg-info,
+#evolucaoSaldoModal .card.bg-warning,
+#evolucaoSaldoModal .card.bg-secondary {
     border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
 }
 
-.card.bg-primary:hover,
-.card.bg-success:hover,
-.card.bg-danger:hover,
-.card.bg-info:hover,
-.card.bg-warning:hover,
-.card.bg-secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+#evolucaoSaldoModal .card.bg-primary:hover,
+#evolucaoSaldoModal .card.bg-success:hover,
+#evolucaoSaldoModal .card.bg-danger:hover,
+#evolucaoSaldoModal .card.bg-info:hover,
+#evolucaoSaldoModal .card.bg-warning:hover,
+#evolucaoSaldoModal .card.bg-secondary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+#evolucaoSaldoModal .card-body {
+    padding: 1.5rem;
+}
+
+#evolucaoSaldoModal .card h4 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+#evolucaoSaldoModal .card h6 {
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Gráfico container */
@@ -47,16 +89,75 @@
     padding: 10px;
 }
 
+.chart-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.chart-card .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px 8px 0 0;
+}
+
 /* Botão de evolução do saldo */
 .btn-evolucao-saldo {
     border: 1px solid #17a2b8;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+    color: #17a2b8;
 }
 
 .btn-evolucao-saldo:hover {
     background-color: #17a2b8;
     color: white;
     transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+}
+
+.btn-evolucao-saldo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+    z-index: 0;
+}
+
+.btn-evolucao-saldo:hover::before {
+    width: 100px;
+    height: 100px;
+}
+
+.btn-evolucao-saldo i {
+    position: relative;
+    z-index: 1;
+}
+
+/* Loading spinner */
+#evolucaoSaldoLoading {
+    animation: fadeIn 0.3s ease-out;
+}
+
+#evolucaoSaldoLoading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3em;
+}
+
+/* Error state */
+#evolucaoSaldoError {
+    animation: fadeIn 0.5s ease-out;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
 }
 
 /* Animações */
@@ -79,6 +180,18 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(78, 115, 223, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(78, 115, 223, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(78, 115, 223, 0.5);
     }
 }
 
@@ -106,19 +219,17 @@
     animation-delay: 0.4s;
 }
 
-/* Loading spinner customizado */
-#evolucaoSaldoLoading {
-    animation: fadeIn 0.3s ease-out;
+/* Botões do footer */
+#evolucaoSaldoModal .modal-footer .btn {
+    border-radius: 6px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-#evolucaoSaldoLoading .spinner-border {
-    width: 3rem;
-    height: 3rem;
-}
-
-/* Error state */
-#evolucaoSaldoError {
-    animation: fadeIn 0.5s ease-out;
+#evolucaoSaldoModal .modal-footer .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Responsividade */
@@ -128,12 +239,24 @@
         margin: 10px;
     }
     
+    #evolucaoSaldoModal .modal-body {
+        padding: 1rem;
+    }
+    
+    #evolucaoSaldoModal .modal-footer {
+        padding: 1rem;
+    }
+    
     #evolucaoSaldoModal .row .col-md-3 {
         margin-bottom: 1rem;
     }
     
     #graficoEvolucaoSaldo {
         height: 300px !important;
+    }
+    
+    #evolucaoSaldoModal .card h4 {
+        font-size: 1.4rem;
     }
 }
 
@@ -143,12 +266,20 @@
         margin: 5px;
     }
     
+    #evolucaoSaldoModal .modal-header {
+        padding: 1rem;
+    }
+    
+    #evolucaoSaldoModal .modal-title {
+        font-size: 1.1rem;
+    }
+    
     #evolucaoSaldoModal .card h4 {
         font-size: 1.2rem;
     }
     
     #evolucaoSaldoModal .card h6 {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -164,7 +295,18 @@ body.theme-light #evolucaoSaldoModal .modal-header {
 }
 
 body.theme-light #evolucaoSaldoModal .card {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.theme-light #evolucaoSaldoModal .card:not(.bg-primary):not(.bg-success):not(.bg-danger):not(.bg-info):not(.bg-warning):not(.bg-secondary) {
+    background-color: white;
+    color: #333;
+    border: 1px solid #dee2e6;
+}
+
+body.theme-light #evolucaoSaldoModal .chart-card .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: #495057;
 }
 
 /* Tema escuro */
@@ -173,42 +315,74 @@ body.theme-dark #evolucaoSaldoModal .modal-content {
     color: #e0e0e0;
 }
 
-body.theme-dark #evolucaoSaldoModal .card {
-    background-color: #3c3c3c !important;
-    border-color: #555;
-}
-
 body.theme-dark #evolucaoSaldoModal .card:not(.bg-primary):not(.bg-success):not(.bg-danger):not(.bg-info):not(.bg-warning):not(.bg-secondary) {
     background-color: #3c3c3c;
     color: #e0e0e0;
+    border: 1px solid #555;
 }
 
-/* Efeitos visuais adicionais */
-.btn-evolucao-saldo {
-    position: relative;
-    overflow: hidden;
+body.theme-dark #evolucaoSaldoModal .chart-card .card-header {
+    background: linear-gradient(135deg, #3c3c3c 0%, #4a4a4a 100%);
+    color: #e0e0e0;
+    border-bottom: 1px solid #555;
 }
 
-.btn-evolucao-saldo::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease;
-    z-index: 0;
+body.theme-dark #evolucaoSaldoModal .modal-footer {
+    border-top: 1px solid #555;
 }
 
-.btn-evolucao-saldo:hover::before {
-    width: 100px;
-    height: 100px;
+/* Efeitos especiais para as estatísticas */
+#evolucaoSaldoModal .card.bg-primary {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%) !important;
 }
 
-.btn-evolucao-saldo i {
-    position: relative;
-    z-index: 1;
+#evolucaoSaldoModal .card.bg-success {
+    background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%) !important;
+}
+
+#evolucaoSaldoModal .card.bg-danger {
+    background: linear-gradient(135deg, #e74a3b 0%, #c0392b 100%) !important;
+}
+
+#evolucaoSaldoModal .card.bg-info {
+    background: linear-gradient(135deg, #36b9cc 0%, #258391 100%) !important;
+}
+
+#evolucaoSaldoModal .card.bg-warning {
+    background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%) !important;
+}
+
+#evolucaoSaldoModal .card.bg-secondary {
+    background: linear-gradient(135deg, #858796 0%, #60616f 100%) !important;
+}
+
+/* Efeito hover para destacar informações importantes */
+#evolucaoSaldoModal .card[id*="variacao-card"]:hover {
+    animation: pulseGlow 2s infinite;
+}
+
+/* Melhorias para o canvas do gráfico */
+#evolucaoSaldoModal canvas {
+    border-radius: 4px;
+}
+
+/* Loading state melhorado */
+#evolucaoSaldoLoading p {
+    color: #6c757d;
+    font-weight: 500;
+    margin-top: 1rem;
+}
+
+/* Alert personalizado para "sem dados" */
+.alert-info.text-center {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    border: none;
+    border-radius: 8px;
+    color: #0c5460;
+    font-weight: 500;
+}
+
+body.theme-dark .alert-info.text-center {
+    background: linear-gradient(135deg, #1e3a3a 0%, #2d4a4a 100%);
+    color: #7ac8e8;
 }

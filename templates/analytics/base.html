@@ -52,6 +52,9 @@
     <!-- Modal de entradas múltiplas -->
     {% include 'analytics/modal/modal_entradas_multiplas.html' %}
 
+    <!-- Modal gráfico evoluçao saldo -->
+    {% include 'analytics/modal/modal_evolucao_saldo.html' %}
+
     <!-- Sidebar -->
     {% include 'analytics/partials/_sidebar.html' %}
     <!-- Conteúdo Principal -->
@@ -62,5 +65,6 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/footer_position.js' %}"></script>
     <script type="module" src="{% static 'js/dashboard.js' %}"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,127 @@
+<!-- Modal de Evolução do Saldo -->
+<div class="modal fade" id="evolucaoSaldoModal" tabindex="-1" aria-labelledby="evolucaoSaldoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="evolucaoSaldoModalLabel">
+            <i class="bi bi-graph-up me-2"></i>
+            Evolução do Saldo - <span id="modalCicloInfo"></span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Loading State -->
+          <div id="evolucaoSaldoLoading" class="text-center py-5" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+            <p class="mt-3">Carregando dados da evolução do saldo...</p>
+          </div>
+  
+          <!-- Error State -->
+          <div id="evolucaoSaldoError" class="alert alert-danger" style="display: none;">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Erro ao carregar os dados. Tente novamente mais tarde.
+          </div>
+  
+          <!-- Content -->
+          <div id="evolucaoSaldoContent" style="display: none;">
+            <!-- Estatísticas Resumidas -->
+            <div class="row mb-4">
+              <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                  <div class="card-body text-center">
+                    <h4 id="saldoInicial">R$ 0,00</h4>
+                    <h6>Saldo Inicial</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-success text-white">
+                  <div class="card-body text-center">
+                    <h4 id="saldoFinal">R$ 0,00</h4>
+                    <h6>Saldo Final</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-white" id="variacao-card">
+                  <div class="card-body text-center">
+                    <h4 id="variacao">R$ 0,00</h4>
+                    <h6>Variação</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-info text-white">
+                  <div class="card-body text-center">
+                    <h4 id="totalRegistros">0</h4>
+                    <h6>Total de Registros</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Gráfico -->
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h6 class="card-title mb-0">
+                      <i class="bi bi-graph-up me-2"></i>
+                      Evolução do Saldo ao Longo do Tempo
+                    </h6>
+                  </div>
+                  <div class="card-body">
+                    <div style="height: 400px; position: relative;">
+                      <canvas id="graficoEvolucaoSaldo"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Detalhes Adicionais -->
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h6 class="card-title mb-0">
+                      <i class="bi bi-arrow-up-circle text-success me-2"></i>
+                      Maior Saldo
+                    </h6>
+                  </div>
+                  <div class="card-body">
+                    <h4 class="text-success" id="maiorSaldoValor">-</h4>
+                    <p class="text-muted mb-0">Data: <span id="maiorSaldoData">-</span></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h6 class="card-title mb-0">
+                      <i class="bi bi-arrow-down-circle text-danger me-2"></i>
+                      Menor Saldo
+                    </h6>
+                  </div>
+                  <div class="card-body">
+                    <h4 class="text-danger" id="menorSaldoValor">-</h4>
+                    <p class="text-muted mb-0">Data: <span id="menorSaldoData">-</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-2"></i>Fechar
+          </button>
+          <button type="button" class="btn btn-primary" id="exportarDados">
+            <i class="bi bi-download me-2"></i>Exportar Dados
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

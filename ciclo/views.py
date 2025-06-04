@@ -81,6 +81,9 @@ def ciclo_delete(request, pk):
 
 
 def evolucao_saldo_json(request, ciclo_id):
+    """
+    API endpoint para retornar dados de evolução do saldo de um ciclo específico
+    """
     try:
         ciclo = get_object_or_404(Ciclo, pk=ciclo_id)
         evolucoes = EvolucaoSaldoAtual.objects.filter(id_ciclo=ciclo).order_by('data')
@@ -97,15 +100,15 @@ def evolucao_saldo_json(request, ciclo_id):
         analise = {}
         if dados:
             saldo_inicial = dados[0]['saldo'] if dados else 0
-            saldo_final = dados[0]['saldo'] if dados else 0
+            saldo_final = dados[-1]['saldo'] if dados else 0  # Corrigido: usar último item
             variacao_total = saldo_final - saldo_inicial
             variacao_percentual = 0
             
             if saldo_inicial > 0:
-                variacao_percentual = (variacao_total/ saldo_inicial) * 100
+                variacao_percentual = (variacao_total / saldo_inicial) * 100
                 
-            maior_saldo = max(dados, key=lambda x: x['saldo'] if dados else None)
-            menor_saldo = min(dados, key=lambda x: x['saldo'] if dados else None)
+            maior_saldo = max(dados, key=lambda x: x['saldo']) if dados else None
+            menor_saldo = min(dados, key=lambda x: x['saldo']) if dados else None
             
             maior_disponivel = max(dados, key=lambda x: x['disponivel_entrada']) if dados else None
             menor_disponivel = min(dados, key=lambda x: x['disponivel_entrada']) if dados else None
