@@ -1,7 +1,5 @@
-/* Estilos para o modal de evolução do saldo */
-
 #evolucaoSaldoModal .modal-dialog {
-    max-width: 90%;
+    max-width: 60%;
 }
 
 #evolucaoSaldoModal .modal-content {

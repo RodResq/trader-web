@@ -7,32 +7,26 @@ export function setupEvolucaoSaldoModal() {
 
     if (!modal || botoesEvolucao.length === 0) return;
 
-    // Inicializar instância do modal Bootstrap
     modalInstance = new bootstrap.Modal(modal);
 
-    // Configurar event listeners para os botões
     botoesEvolucao.forEach(botao => {
         botao.addEventListener('click', function() {
             const cicloId = this.dataset.cicloId;
             const cicloCategoria = this.dataset.cicloCategoria;
             const cicloPeriodo = this.dataset.cicloPeriodo;
 
-            // Atualizar título do modal
             document.getElementById('modalCicloInfo').textContent = 
                 `${cicloCategoria} - ${cicloPeriodo}`;
 
-            // Mostrar modal e carregar dados
             modalInstance.show();
             carregarDadosEvolucao(cicloId);
         });
     });
 
-    // Limpar modal quando fechado
     modal.addEventListener('hidden.bs.modal', function() {
         limparModal();
     });
 
-    // Configurar botão de exportar
     const btnExportar = document.getElementById('exportarDados');
     if (btnExportar) {
         btnExportar.addEventListener('click', exportarDados);
@@ -44,7 +38,6 @@ async function carregarDadosEvolucao(cicloId) {
     const contentElement = document.getElementById('evolucaoSaldoContent');
     const errorElement = document.getElementById('evolucaoSaldoError');
 
-    // Mostrar loading
     mostrarElemento(loadingElement);
     ocultarElemento(contentElement);
     ocultarElemento(errorElement);
@@ -68,7 +61,6 @@ async function carregarDadosEvolucao(cicloId) {
         console.error('Erro ao carregar dados de evolução:', error);
         mostrarElemento(errorElement);
         
-        // Atualizar mensagem de erro
         const errorMsg = errorElement.querySelector('i').nextSibling;
         if (errorMsg) {
             errorMsg.textContent = ` ${error.message}`;
@@ -81,22 +73,18 @@ async function carregarDadosEvolucao(cicloId) {
 function renderizarDados(data) {
     const { ciclo, dados, analise } = data;
     
-    // Atualizar estatísticas
     atualizarEstatisticas(analise);
     
-    // Renderizar gráfico
     if (dados && dados.length > 0) {
         renderizarGrafico(dados);
     } else {
         mostrarGraficoVazio();
     }
     
-    // Atualizar detalhes
     atualizarDetalhes(analise);
 }
 
 function atualizarEstatisticas(analise) {
-    // Saldo inicial e final
     document.getElementById('saldoInicial').textContent = 
         `R$ ${(analise.saldo_inicial || 0).toFixed(2).replace('.', ',')}`;
     
@@ -110,7 +98,6 @@ function atualizarEstatisticas(analise) {
     
     variacaoElement.textContent = `R$ ${Math.abs(variacao).toFixed(2).replace('.', ',')}`;
     
-    // Definir cor do card baseado na variação
     variacaoCard.className = 'card text-white';
     if (variacao > 0) {
         variacaoCard.classList.add('bg-success');
@@ -122,7 +109,6 @@ function atualizarEstatisticas(analise) {
         variacaoCard.classList.add('bg-secondary');
     }
     
-    // Total de registros
     document.getElementById('totalRegistros').textContent = analise.total_registros || 0;
 }
 
@@ -140,24 +126,20 @@ function renderizarGrafico(dados) {
         graficoEvolucao = null;
     }
 
-    // Verificar se Chart.js está disponível
     if (typeof Chart === 'undefined') {
         console.error('Chart.js não está carregado');
         ctx.parentElement.innerHTML = '<div class="alert alert-warning">Chart.js não está disponível</div>';
         return;
     }
 
-    // Verificar tema atual
     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
     const textColor = isDarkTheme ? '#cccccc' : '#666666';
     const gridColor = isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
 
-    // Preparar dados para o gráfico
     const labels = dados.map(item => item.data);
     const saldos = dados.map(item => parseFloat(item.saldo) || 0);
     const disponiveis = dados.map(item => parseFloat(item.disponivel_entrada) || 0);
 
-    // Configurar gráfico
     graficoEvolucao = new Chart(ctx, {
         type: 'line',
         data: {
@@ -318,7 +300,6 @@ function mostrarGraficoVazio() {
 }
 
 function atualizarDetalhes(analise) {
-    // Maior saldo
     if (analise.maior_saldo) {
         document.getElementById('maiorSaldoValor').textContent = 
             `R$ ${analise.maior_saldo.valor.toFixed(2).replace('.', ',')}`;
@@ -329,7 +310,6 @@ function atualizarDetalhes(analise) {
         document.getElementById('maiorSaldoData').textContent = 'N/A';
     }
 
-    // Menor saldo
     if (analise.menor_saldo) {
         document.getElementById('menorSaldoValor').textContent = 
             `R$ ${analise.menor_saldo.valor.toFixed(2).replace('.', ',')}`;
@@ -342,10 +322,8 @@ function atualizarDetalhes(analise) {
 }
 
 function exportarDados() {
-    // Implementação futura para exportar os dados
     console.log('Exportar dados - funcionalidade em desenvolvimento');
     
-    // Placeholder para futura implementação
     const notification = document.createElement('div');
     notification.className = 'alert alert-info alert-dismissible fade show';
     notification.innerHTML = `
@@ -357,7 +335,6 @@ function exportarDados() {
     const modalBody = document.querySelector('#evolucaoSaldoModal .modal-body');
     modalBody.insertBefore(notification, modalBody.firstChild);
     
-    // Auto remover após 3 segundos
     setTimeout(() => {
         if (notification.parentNode) {
             notification.remove();
@@ -366,32 +343,26 @@ function exportarDados() {
 }
 
 function limparModal() {
-    // Destruir gráfico
     if (graficoEvolucao) {
         graficoEvolucao.destroy();
         graficoEvolucao = null;
     }
 
-    // Limpar título
     document.getElementById('modalCicloInfo').textContent = '';
     
-    // Resetar estatísticas
     document.getElementById('saldoInicial').textContent = 'R$ 0,00';
     document.getElementById('saldoFinal').textContent = 'R$ 0,00';
     document.getElementById('variacao').textContent = 'R$ 0,00';
     document.getElementById('totalRegistros').textContent = '0';
     
-    // Resetar detalhes
     document.getElementById('maiorSaldoValor').textContent = '-';
     document.getElementById('maiorSaldoData').textContent = '-';
     document.getElementById('menorSaldoValor').textContent = '-';
     document.getElementById('menorSaldoData').textContent = '-';
     
-    // Resetar card de variação
     const variacaoCard = document.getElementById('variacao-card');
     variacaoCard.className = 'card text-white bg-secondary';
     
-    // Ocultar todos os elementos
     ocultarElemento(document.getElementById('evolucaoSaldoLoading'));
     ocultarElemento(document.getElementById('evolucaoSaldoContent'));
     ocultarElemento(document.getElementById('evolucaoSaldoError'));
@@ -409,5 +380,4 @@ function ocultarElemento(element) {
     }
 }
 
-// Exportar função para uso global se necessário
 window.setupEvolucaoSaldoModal = setupEvolucaoSaldoModal;
