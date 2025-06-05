@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupUpdateOddChange()
 
     // Incializa o método para calcular o valor diposnivel para a entrada
-    // calcularValorDisponivelEntrada();
+    calcularValorDisponivelEntrada();
 
     //Incializa o cálculo final das datas do ciclo
     calcularDataFinalCiclo();
