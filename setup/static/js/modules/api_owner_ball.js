@@ -10,10 +10,8 @@ let isLoading = false;
 export function setupApiOwnerBall() {
     console.log('Inicializando API Owner Ball...');
 
-    // Carregar dados iniciais
     loadOwnerBallMarkets();
 
-    // Configurar event listeners
     setupOwnerBallEventListeners();
 }
 
@@ -59,11 +57,13 @@ function loadOwnerBallMarkets(showLoader = true) {
             updateOwnerBallPagination(data.pagination);
         } else {
             showOwnerBallError('Erro ao carregar mercados owner ball');
+            isLoading = false;
         }
     })
     .catch(error => {
         console.error('Erro ao carregar página: ', error);
         showOwnerBallError('Erro ao carregar dados. Tente novamente.')
+        isLoading = false;
     })
     .finally(() => {
         isLoading = false;
@@ -153,13 +153,9 @@ function updateOwnerBallPagination(pagination) {
 }
 
 
-/**
-* Gera o HTML da paginação
-*/
 function generateOwnerBallPaginationHTML() {
     let html = '';
 
-    // Botão Primeira página
     html += `
         <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="goToOwnerBallPage(1)" aria-label="First">
@@ -168,7 +164,6 @@ function generateOwnerBallPaginationHTML() {
         </li>
     `;
 
-    // Botão Página anterior
     html += `
         <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="goToOwnerBallPage(${currentPage - 1})" aria-label="Previous">
@@ -177,7 +172,6 @@ function generateOwnerBallPaginationHTML() {
         </li>
     `;
 
-    // Páginas numeradas
     const startPage = Math.max(1, currentPage - 2);
     const endPage = Math.min(totalPages, currentPage + 2);
     
@@ -189,7 +183,6 @@ function generateOwnerBallPaginationHTML() {
         `;
     }
 
-    // Botão Próxima página
     html += `
         <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="goToOwnerBallPage(${currentPage + 1})" aria-label="Next">
@@ -198,7 +191,6 @@ function generateOwnerBallPaginationHTML() {
         </li>
     `;
     
-    // Botão Última página
     html += `
         <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="goToOwnerBallPage(${totalPages})" aria-label="Last">
@@ -210,11 +202,8 @@ function generateOwnerBallPaginationHTML() {
     return html;
 }
 
-/**
- * Configura os event listeners
- */
+
 function setupOwnerBallEventListeners() {
-    // Botão de atualizar
     const btnAtualizar = document.getElementById('atualizarMercadosOwnerBall');
     if (btnAtualizar) {
         btnAtualizar.addEventListener('click', function(e) {
@@ -223,7 +212,6 @@ function setupOwnerBallEventListeners() {
         });
     }
 
-    // Select de items por página
     const itemsPorPaginaSelecionado = document.getElementById('ownerBallItemsPerPageSelect');
     if (itemsPorPaginaSelecionado) {
         itemsPorPaginaSelecionado.addEventListener('change', function() {
@@ -233,7 +221,6 @@ function setupOwnerBallEventListeners() {
         });
     }
 
-    // Filtro de data
     const filtroDeData = document.getElementById('ownerBallDateFilter');
     if (filtroDeData) {
         filtroDeData.addEventListener('input', function() {
@@ -241,7 +228,6 @@ function setupOwnerBallEventListeners() {
         })
     }
 
-    // Botão limpar filtro
     const btnLimparFiltro = document.getElementById('clearOwnerBallDateFilter');
     if (btnLimparFiltro) {
         btnLimparFiltro.addEventListener('click', function() {
@@ -253,7 +239,6 @@ function setupOwnerBallEventListeners() {
         })
     }
 
-    // Botão de múltiplas
     const checklistBtn = document.getElementById('mostrarCheckListOwnerBall');
     if (checklistBtn) {
         checklistBtn.addEventListener('click', function(e) {
@@ -264,9 +249,7 @@ function setupOwnerBallEventListeners() {
     }
 }
 
-/**
- * Navega para uma página específica
- */
+
 function goToOwnerBallPage(page) {
     if (page < 1 || page > totalPages || page === currentPage) return;
 
@@ -275,9 +258,6 @@ function goToOwnerBallPage(page) {
 }
 
 
-/**
- * Atualiza os mercados com animação no botão
- */
 function refreshOwnerBallMarkets() {
     const btnAtualizar = document.getElementById('updateOwnerBallMarkets');
     const icon = btnAtualizar?.querySelector('i');
@@ -288,7 +268,6 @@ function refreshOwnerBallMarkets() {
 
     loadOwnerBallMarkets(true);
 
-    // Remove a animação após um tempo
     setTimeout(() => {
         if (icon) {
             icon.classList.remove('rotate');
@@ -297,9 +276,6 @@ function refreshOwnerBallMarkets() {
 }
 
 
-/**
- * Mostra erro na tabela
- */
 function showOwnerBallError(message) {
     const tableBody = document.getElementById('ownerBallTableBody');
     if (tableBody) {
@@ -315,9 +291,7 @@ function showOwnerBallError(message) {
 }
 
 
-/**
- * Funções para ações dos botões (implementar conforme necessário)
- */
+
 window.viewOwnerBallDetails = function(mercado) {
     console.log('Ver detalhes:', mercado);
     // Implementar visualização de detalhes
