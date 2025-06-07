@@ -331,3 +331,10 @@ a .card {
   text-overflow: ellipsis;
   position: relative;
 }
+
+
+.sidebar-cards-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
