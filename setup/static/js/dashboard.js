@@ -59,13 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEvolucaoSaldoModal();
    
     // Inicializa API Owner Ball
-    // setupApiOwnerBall();
+    setupApiOwnerBall();
     
     //Incializa funcão ayncrona para atualizar odd
     setupUpdateOddChange()
 
     // Incializa o método para calcular o valor diposnivel para a entrada
-    // calcularValorDisponivelEntrada();
+    calcularValorDisponivelEntrada();
 
     //Incializa o cálculo final das datas do ciclo
     calcularDataFinalCiclo();
