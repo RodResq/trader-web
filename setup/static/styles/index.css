@@ -338,3 +338,36 @@ a .card {
     display: flex;
     flex-direction: column;
   }
+
+/* Container de scroll para os cards principais */
+.main-cards-scroll-container {
+  max-height: calc(100vh - 120px); /* Altura máxima considerando navbar e padding */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px; /* Espaço para a scrollbar */
+}
+
+/* Estilização da scrollbar para tema dark */
+.main-cards-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-track {
+  background: #2c2c2c;
+  border-radius: 4px;
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+/* Para Firefox */
+.main-cards-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #555 #2c2c2c;
+}

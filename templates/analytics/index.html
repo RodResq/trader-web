@@ -10,434 +10,435 @@
     <div class="row mt-2 mb-4">
       <!-- Cards principais (8 colunas) -->
       <div class="col-lg-8">
-        <div class="row g-3">
-          <!-- Card Gerência Apostas -->
-          <div class="col-xl-6 col-md-6">
-            <a href="{% url 'analytics:gerencia:index' %}" class="text-decoration-none">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Gerência Apostas
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        R$ {{ soma_total_retorno }}
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="bi bi-cash-coin fs-2 text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <!-- Card Quantidade Eventos -->
-          <div class="col-xl-6 col-md-6">
-            <a href="{% url 'analytics:eventos' %}" class="text-decoration-none">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        Qtd. Eventos
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        {{ qtd_eventos }}
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="bi bi-box2 fs-2 text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <!-- Card Performance -->
-          <div class="col-xl-6 col-md-6">
-            <a href="#" class="text-decoration-none">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        Performance
-                      </div>
-                      <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+        <div class="main-cards-scroll-container">
+          <div class="row g-3">
+            <!-- Card Gerência Apostas -->
+            <div class="col-xl-6 col-md-6">
+              <a href="{% url 'analytics:gerencia:index' %}" class="text-decoration-none">
+                <div class="card border-left-primary shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                          Gerência Apostas
                         </div>
-                        <div class="col">
-                          <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%"></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          R$ {{ soma_total_retorno }}
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="bi bi-cash-coin fs-2 text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <!-- Card Quantidade Eventos -->
+            <div class="col-xl-6 col-md-6">
+              <a href="{% url 'analytics:eventos' %}" class="text-decoration-none">
+                <div class="card border-left-success shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                          Qtd. Eventos
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          {{ qtd_eventos }}
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="bi bi-box2 fs-2 text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <!-- Card Performance -->
+            <div class="col-xl-6 col-md-6">
+              <a href="#" class="text-decoration-none">
+                <div class="card border-left-info shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                          Performance
+                        </div>
+                        <div class="row no-gutters align-items-center">
+                          <div class="col-auto">
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                          </div>
+                          <div class="col">
+                            <div class="progress progress-sm mr-2">
+                              <div class="progress-bar bg-info" role="progressbar" style="width: 50%"></div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="bi bi-graph-up-arrow fs-2 text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <!-- Card Ciclos -->
-          <div class="col-xl-6 col-md-6">
-            <a href="{% url 'ciclo:index' %}" class="text-decoration-none">
-              <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        Ciclos
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        {{ qtd_ciclos }}
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="bi bi-bell fs-2 text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <!-- Segunda linha: Lista de Mercados -->
-          <div class="mt-4">
-            <div class="col-lg-12">
-              <div class="card shadow h-100 mb-4" id="marketsCard">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Lista de Mercados</h6>
-                  <div class="d-flex align-items-center">
-                    <div class="input-group date-filter">
-                      <input type="text" 
-                            id="mercadosDateFilter" 
-                            class="form-control form-control-sm" 
-                            placeholder="dd/mm/yyyy"
-                            maxlength="10"
-                            autocomplete="off"
-                            data-input-type="text"
-                            pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
-                      <div class="input-group-append me-2">
-                        <button id="clearDateFilter" class="btn btn-sm btn-outline-secondary" type="button">Limpar</button>
-                      </div>
-                      <div class="input-group-append me-2">
-                        <a id="updateMarkets" class="btn btn-sm btn-success refresh-btn" title="atualizar mercados"><i class="bi bi-arrow-repeat"></i></a>
-                      </div>
-                      <div class="input-group-append">
-                        <a id="mostrarCheckList" class="btn btn-sm btn-primary" title="Múltiplas"><i class="bi bi-list-check"></i></a>
+                      <div class="col-auto">
+                        <i class="bi bi-graph-up-arrow fs-2 text-gray-300"></i>
                       </div>
                     </div>
                   </div>
                 </div>
-            
-             
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-hover" id="marketsTable">
-                      <thead>
-                        <tr>
-                          <th class="col-id">ID</th>
-                          <th class="col-mercado">Mercado</th>
-                          <th class="col-odd">Odd</th>
-                          <th class="col-home">Home</th>
-                          <th class="col-away">Away</th>
-                          <th class="col-data">Data</th>
-                          <th class="col-acoes">Ações</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% if mercados %}
-                          {% for mercado in mercados %}
-                          <tr>
-                            <td>{{ mercado.id_event }}</td>
-                            <td class="mercado-column"><i {% if mercado.opcao_entrada == "A" %}
-                                class="bi-check" style="font-size: 1rem; color: green;"
-                                {% elif  mercado.opcao_entrada == "R" %}
-                                class="bi bi-x" style="font-size: 1rem; color: red;"
-                                {% else %}
-                                class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"
-                              {% endif %}></i>
-                              {{ mercado.mercado }}
-                            </td>
-                            <td>
-                              <i {% if mercado.odd_change == 'P' %}
-                                class="bi bi-stop" style="1rem; color: yellow; vertical-align: middle;" 
-                                {% elif mercado.odd_change == 'S' %}
-                                class="bi bi-arrow-up-short" style="color: green; vertical-align: middle;"
-                                {% elif mercado.odd_change == 'D' %}
-                                class="bi bi-arrow-down-short" style="color: red; vertical-align: middle;"
-                                {% endif %}></i>
-                              {{ mercado.odd }}
-                              <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="{{ mercado.id_event }}" title="Editar Odd">
-                                <i class="bi bi-arrow-clockwise"></i>
-                              </a>
-                            </td>
-                            <td>{{ mercado.home_actual }}%</td>
-                            <td>{{ mercado.away_actual }}%</td>
-                            <td>{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
-                            <td>
-                              <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id="{{ mercado.id_event }}" title="Editar Odd">
-                                <i class="bi bi-pencil"></i>
-                              </a>
-                              <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id="{{ mercado.id_event }}" title="Aceitar aposta">
-                                <i class="bi bi-check"></i>
-                              </a>
-                              <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id="{{ mercado.id_event }}" title="Recusar aposta">
-                                <i class="bi bi-x"></i>
-                              </a>
-                              <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id="{{ mercado.id_event }}" title="Desfazer ação">
-                                <i class="bi bi-arrow-counterclockwise"></i>
-                              </a>
-                            </td>
-                          </tr>
-                          {% endfor %}
-                          {% endif %}
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- Componente de Paginação -->
-                  <div class="pagination-container mt-3 d-flex justify-content-between align-items-center">
-                    <div class="items-per-page">
-                        <label class="me-2">Items por página:</label>
-                        <select id="itemsPerPageSelect" class="form-select form-select-sm" style="width: auto; display: inline-block;">
-                            <option value="10" {% if items_per_page == 10 %}selected{% endif %}>10</option>
-                            <option value="20" {% if items_per_page == 20 %}selected{% endif %}>20</option>
-                            <option value="30" {% if items_per_page == 30 %}selected{% endif %}>30</option>
-                            <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
-                        </select>
-                    </div>
-
-                    <div class="pagination">
-                      <ul class="pagination mb-0">
-                          {% if mercados.has_previous %}
-                              <li class="page-item">
-                                  <a class="page-link" href="?page=1&items_per_page={{ items_per_page }}" aria-label="First">
-                                      <span aria-hidden="true">&laquo;&laquo;</span>
-                                  </a>
-                              </li>
-                              <li class="page-item">
-                                  <a class="page-link" href="?page={{ mercados.previous_page_number }}&items_per_page={{ items_per_page }}" aria-label="Previous">
-                                      <span aria-hidden="true">&laquo;</span>
-                                  </a>
-                              </li>
-                          {% else %}
-                              <li class="page-item disabled">
-                                  <a class="page-link" href="#" aria-label="First">
-                                      <span aria-hidden="true">&laquo;&laquo;</span>
-                                  </a>
-                              </li>
-                              <li class="page-item disabled">
-                                  <a class="page-link" href="#" aria-label="Previous">
-                                      <span aria-hidden="true">&laquo;</span>
-                                  </a>
-                              </li>
-                          {% endif %}
-                          
-                          {% if mercados.paginator.num_pages <= 10 %}
-                              {% for i in mercados.paginator.page_range %}
-                                  <li class="page-item {% if mercados.number == i %}active{% endif %}">
-                                      <a class="page-link" href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
-                                  </li>
-                              {% endfor %}
-                          {% else %}
-                              {% for i in mercados.paginator.page_range %}
-                                  {% if mercados.number == i %}
-                                      <li class="page-item active">
-                                          <span class="page-link">{{ i }}</span>
-                                      </li>
-                                  {% elif i > mercados.number|add:"-3" and i < mercados.number|add:"3" %}
-                                      <li class="page-item">
-                                          <a class="page-link" href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
-                                      </li>
-                                  {% endif %}
-                              {% endfor %}
-                          {% endif %}
-                          
-                          {% if mercados.has_next %}
-                              <li class="page-item">
-                                  <a class="page-link" href="?page={{ mercados.next_page_number }}&items_per_page={{ items_per_page }}" aria-label="Next">
-                                      <span aria-hidden="true">&raquo;</span>
-                                  </a>
-                              </li>
-                              <li class="page-item">
-                                  <a class="page-link" href="?page={{ mercados.paginator.num_pages }}&items_per_page={{ items_per_page }}" aria-label="Last">
-                                      <span aria-hidden="true">&raquo;&raquo;</span>
-                                  </a>
-                              </li>
-                          {% else %}
-                              <li class="page-item disabled">
-                                  <a class="page-link" href="#" aria-label="Next">
-                                      <span aria-hidden="true">&raquo;</span>
-                                  </a>
-                              </li>
-                              <li class="page-item disabled">
-                                  <a class="page-link" href="#" aria-label="Last">
-                                      <span aria-hidden="true">&raquo;&raquo;</span>
-                                  </a>
-                              </li>
-                          {% endif %}
-                        </ul>
-                    </div>
-                    <div class="page-info">
-                        <span>Página {{ mercados.number }} de {{ mercados.paginator.num_pages }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>  
-          </div>
-          </div>
-          <div class="mt-4">
-            {% include 'analytics/components/owner_ball_mercados.html' %}
-          </div>
-        </div>
-
-        <!-- Coluna direita: Mercados SF e OB (4 colunas) -->
-        <div class="col-lg-4">
-          <div class="sidebar-cards-container">
-            
-            <!-- Card Mercados SF -->
-            <div class="card shadow mb-3">
-              <div class="card-header py-2">
-                <h6 class="m-0 font-weight-bold text-primary">Mercados SF</h6>
-              </div>
-              <div class="card-body p-2 markets-scroll-container">
-                <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="toggleSuperFavoritosHome">
-                  <label class="form-check-label" for="toggleSuperFavoritosHome">
-                    Super Favoritos Home
-                  </label>
-                </div>
-                
-                <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="favoritosHome">
-                  <label class="form-check-label" for="favoritosHome">
-                    Favoritos Home
-                  </label>
-                </div>
-                
-                <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="superFavoritosAway">
-                  <label class="form-check-label" for="superFavoritosAway">
-                    Super Favoritos Away
-                  </label>
-                </div>
-                
-                <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="favoritosAway">
-                  <label class="form-check-label" for="favoritosAway">
-                    Favoritos Away
-                  </label>
-                </div>
-                
-                <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="over15">
-                  <label class="form-check-label" for="over15">
-                    Over 1.5
-                  </label>
-                </div>
-
-                <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="zebras">
-                  <label class="form-check-label" for="zebras">
-                    Zebras
-                  </label>
-                </div>
-
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="checkbox" id="empates">
-                  <label class="form-check-label" for="empates">
-                    Empates
-                  </label>
-                </div>
-              </div>
+              </a>
             </div>
 
-            <!-- Card Mercados OB -->
-            <div class="card shadow mb-3">
-              <div class="card-header py-2 d-flex align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Mercados OB</h6>
-                <div class="d-flex align-items-center">
-                  <div class="form-check form-switch me-2">
-                    <input class="form-check-input" type="checkbox" id="toggleAllOwnerBall">
-                    <label class="form-check-label" for="toggleAllOwnerBall">
-                      <small>Todos</small>
+            <!-- Card Ciclos -->
+            <div class="col-xl-6 col-md-6">
+              <a href="{% url 'ciclo:index' %}" class="text-decoration-none">
+                <div class="card border-left-warning shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                          Ciclos
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          {{ qtd_ciclos }}
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="bi bi-bell fs-2 text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <!-- Segunda linha: Lista de Mercados -->
+            <div class="mt-4">
+              <div class="col-lg-12">
+                <div class="card shadow h-100 mb-4" id="marketsCard">
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Lista de Mercados</h6>
+                    <div class="d-flex align-items-center">
+                      <div class="input-group date-filter">
+                        <input type="text" 
+                              id="mercadosDateFilter" 
+                              class="form-control form-control-sm" 
+                              placeholder="dd/mm/yyyy"
+                              maxlength="10"
+                              autocomplete="off"
+                              data-input-type="text"
+                              pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
+                        <div class="input-group-append me-2">
+                          <button id="clearDateFilter" class="btn btn-sm btn-outline-secondary" type="button">Limpar</button>
+                        </div>
+                        <div class="input-group-append me-2">
+                          <a id="updateMarkets" class="btn btn-sm btn-success refresh-btn" title="atualizar mercados"><i class="bi bi-arrow-repeat"></i></a>
+                        </div>
+                        <div class="input-group-append">
+                          <a id="mostrarCheckList" class="btn btn-sm btn-primary" title="Múltiplas"><i class="bi bi-list-check"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              
+               
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-hover" id="marketsTable">
+                        <thead>
+                          <tr>
+                            <th class="col-id">ID</th>
+                            <th class="col-mercado">Mercado</th>
+                            <th class="col-odd">Odd</th>
+                            <th class="col-home">Home</th>
+                            <th class="col-away">Away</th>
+                            <th class="col-data">Data</th>
+                            <th class="col-acoes">Ações</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if mercados %}
+                            {% for mercado in mercados %}
+                            <tr>
+                              <td>{{ mercado.id_event }}</td>
+                              <td class="mercado-column"><i {% if mercado.opcao_entrada == "A" %}
+                                  class="bi-check" style="font-size: 1rem; color: green;"
+                                  {% elif  mercado.opcao_entrada == "R" %}
+                                  class="bi bi-x" style="font-size: 1rem; color: red;"
+                                  {% else %}
+                                  class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"
+                                {% endif %}></i>
+                                {{ mercado.mercado }}
+                              </td>
+                              <td>
+                                <i {% if mercado.odd_change == 'P' %}
+                                  class="bi bi-stop" style="1rem; color: yellow; vertical-align: middle;" 
+                                  {% elif mercado.odd_change == 'S' %}
+                                  class="bi bi-arrow-up-short" style="color: green; vertical-align: middle;"
+                                  {% elif mercado.odd_change == 'D' %}
+                                  class="bi bi-arrow-down-short" style="color: red; vertical-align: middle;"
+                                  {% endif %}></i>
+                                {{ mercado.odd }}
+                                <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="{{ mercado.id_event }}" title="Editar Odd">
+                                  <i class="bi bi-arrow-clockwise"></i>
+                                </a>
+                              </td>
+                              <td>{{ mercado.home_actual }}%</td>
+                              <td>{{ mercado.away_actual }}%</td>
+                              <td>{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
+                              <td>
+                                <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id="{{ mercado.id_event }}" title="Editar Odd">
+                                  <i class="bi bi-pencil"></i>
+                                </a>
+                                <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id="{{ mercado.id_event }}" title="Aceitar aposta">
+                                  <i class="bi bi-check"></i>
+                                </a>
+                                <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id="{{ mercado.id_event }}" title="Recusar aposta">
+                                  <i class="bi bi-x"></i>
+                                </a>
+                                <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id="{{ mercado.id_event }}" title="Desfazer ação">
+                                  <i class="bi bi-arrow-counterclockwise"></i>
+                                </a>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- Componente de Paginação -->
+                    <div class="pagination-container mt-3 d-flex justify-content-between align-items-center">
+                      <div class="items-per-page">
+                          <label class="me-2">Items por página:</label>
+                          <select id="itemsPerPageSelect" class="form-select form-select-sm" style="width: auto; display: inline-block;">
+                              <option value="10" {% if items_per_page == 10 %}selected{% endif %}>10</option>
+                              <option value="20" {% if items_per_page == 20 %}selected{% endif %}>20</option>
+                              <option value="30" {% if items_per_page == 30 %}selected{% endif %}>30</option>
+                              <option value="50" {% if items_per_page == 50 %}selected{% endif %}>50</option>
+                          </select>
+                      </div>
+
+                      <div class="pagination">
+                        <ul class="pagination mb-0">
+                            {% if mercados.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1&items_per_page={{ items_per_page }}" aria-label="First">
+                                        <span aria-hidden="true">&laquo;&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ mercados.previous_page_number }}&items_per_page={{ items_per_page }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="First">
+                                        <span aria-hidden="true">&laquo;&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            
+                            {% if mercados.paginator.num_pages <= 10 %}
+                                {% for i in mercados.paginator.page_range %}
+                                    <li class="page-item {% if mercados.number == i %}active{% endif %}">
+                                        <a class="page-link" href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                {% for i in mercados.paginator.page_range %}
+                                    {% if mercados.number == i %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ i }}</span>
+                                        </li>
+                                    {% elif i > mercados.number|add:"-3" and i < mercados.number|add:"3" %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ i }}&items_per_page={{ items_per_page }}">{{ i }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            
+                            {% if mercados.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ mercados.next_page_number }}&items_per_page={{ items_per_page }}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ mercados.paginator.num_pages }}&items_per_page={{ items_per_page }}" aria-label="Last">
+                                        <span aria-hidden="true">&raquo;&raquo;</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Last">
+                                        <span aria-hidden="true">&raquo;&raquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                          </ul>
+                      </div>
+                      <div class="page-info">
+                          <span>Página {{ mercados.number }} de {{ mercados.paginator.num_pages }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+            </div>
+            <div class="mt-4">
+              {% include 'analytics/components/owner_ball_mercados.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna direita: Mercados SF e OB (4 colunas) -->
+      <div class="col-lg-4">
+        <div class="sidebar-cards-container">
+          
+          <!-- Card Mercados SF -->
+          <div class="card shadow mb-3">
+            <div class="card-header py-2">
+              <h6 class="m-0 font-weight-bold text-primary">Mercados SF</h6>
+            </div>
+            <div class="card-body p-2 markets-scroll-container">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="toggleSuperFavoritosHome">
+                <label class="form-check-label" for="toggleSuperFavoritosHome">
+                  Super Favoritos Home
+                </label>
+              </div>
+              
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="favoritosHome">
+                <label class="form-check-label" for="favoritosHome">
+                  Favoritos Home
+                </label>
+              </div>
+              
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="superFavoritosAway">
+                <label class="form-check-label" for="superFavoritosAway">
+                  Super Favoritos Away
+                </label>
+              </div>
+              
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="favoritosAway">
+                <label class="form-check-label" for="favoritosAway">
+                  Favoritos Away
+                </label>
+              </div>
+              
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="over15">
+                <label class="form-check-label" for="over15">
+                  Over 1.5
+                </label>
+              </div>
+
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="zebras">
+                <label class="form-check-label" for="zebras">
+                  Zebras
+                </label>
+              </div>
+
+              <div class="form-check mb-1">
+                <input class="form-check-input" type="checkbox" id="empates">
+                <label class="form-check-label" for="empates">
+                  Empates
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Mercados OB -->
+          <div class="card shadow mb-3">
+            <div class="card-header py-2 d-flex align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Mercados OB</h6>
+              <div class="d-flex align-items-center">
+                <div class="form-check form-switch me-2">
+                  <input class="form-check-input" type="checkbox" id="toggleAllOwnerBall">
+                  <label class="form-check-label" for="toggleAllOwnerBall">
+                    <small>Todos</small>
+                  </label>
+                </div>
+                <button id="refreshOwnerBallBtn" class="btn btn-sm btn-success" title="Atualizar">
+                  <i class="bi bi-arrow-repeat"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body p-2 markets-scroll-container">
+              <div class="row g-1">
+                <div class="col-6">
+                  <div class="form-check mb-2">
+                    <input class="form-check-input ownerball-check" type="checkbox" id="obSuperFavHome">
+                    <label class="form-check-label" for="obSuperFavHome">
+                      <small>Super Fav. Home</small>
                     </label>
                   </div>
-                  <button id="refreshOwnerBallBtn" class="btn btn-sm btn-success" title="Atualizar">
-                    <i class="bi bi-arrow-repeat"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body p-2 markets-scroll-container">
-                <div class="row g-1">
-                  <div class="col-6">
-                    <div class="form-check mb-2">
-                      <input class="form-check-input ownerball-check" type="checkbox" id="obSuperFavHome">
-                      <label class="form-check-label" for="obSuperFavHome">
-                        <small>Super Fav. Home</small>
-                      </label>
-                    </div>
-                    
-                    <div class="form-check mb-2">
-                      <input class="form-check-input ownerball-check" type="checkbox" id="obFavHome">
-                      <label class="form-check-label" for="obFavHome">
-                        <small>Fav. Home</small>
-                      </label>
-                    </div>
-                    
-                    <div class="form-check mb-2">
-                      <input class="form-check-input ownerball-check" type="checkbox" id="obOver15Home">
-                      <label class="form-check-label" for="obOver15Home">
-                        <small>Over 1.5 Home</small>
-                      </label>
-                    </div>
-                    
-                    <div class="form-check mb-1">
-                      <input class="form-check-input ownerball-check" type="checkbox" id="obDNB1">
-                      <label class="form-check-label" for="obDNB1">
-                        <small>DNB 1</small>
-                      </label>
-                    </div>
+                  
+                  <div class="form-check mb-2">
+                    <input class="form-check-input ownerball-check" type="checkbox" id="obFavHome">
+                    <label class="form-check-label" for="obFavHome">
+                      <small>Fav. Home</small>
+                    </label>
                   </div>
                   
-                  <div class="col-6">
-                    <div class="form-check mb-2">
-                      <input class="form-check-input ownerball-check" type="checkbox" id="obSuperFavAway">
-                      <label class="form-check-label" for="obSuperFavAway">
-                        <small>Super Fav. Away</small>
-                      </label>
-                    </div>
-                    
-                    <div class="form-check mb-2">
-                      <input class="form-check-input ownerball-check" type="checkbox" id="obFavAway">
-                      <label class="form-check-label" for="obFavAway">
-                        <small>Fav. Away</small>
-                      </label>
-                    </div>
-                    
-                    <div class="form-check mb-2">
-                      <input class="form-check-input ownerball-check" type="checkbox" id="obOver15Away">
-                      <label class="form-check-label" for="obOver15Away">
-                        <small>Over 1.5 Away</small>
-                      </label>
-                    </div>
-                    
-                    <div class="form-check mb-1">
-                      <input class="form-check-input ownerball-check" type="checkbox" id="obDNB2">
-                      <label class="form-check-label" for="obDNB2">
-                        <small>DNB 2</small>
-                      </label>
-                    </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input ownerball-check" type="checkbox" id="obOver15Home">
+                    <label class="form-check-label" for="obOver15Home">
+                      <small>Over 1.5 Home</small>
+                    </label>
+                  </div>
+                  
+                  <div class="form-check mb-1">
+                    <input class="form-check-input ownerball-check" type="checkbox" id="obDNB1">
+                    <label class="form-check-label" for="obDNB1">
+                      <small>DNB 1</small>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="col-6">
+                  <div class="form-check mb-2">
+                    <input class="form-check-input ownerball-check" type="checkbox" id="obSuperFavAway">
+                    <label class="form-check-label" for="obSuperFavAway">
+                      <small>Super Fav. Away</small>
+                    </label>
+                  </div>
+                  
+                  <div class="form-check mb-2">
+                    <input class="form-check-input ownerball-check" type="checkbox" id="obFavAway">
+                    <label class="form-check-label" for="obFavAway">
+                      <small>Fav. Away</small>
+                    </label>
+                  </div>
+                  
+                  <div class="form-check mb-2">
+                    <input class="form-check-input ownerball-check" type="checkbox" id="obOver15Away">
+                    <label class="form-check-label" for="obOver15Away">
+                      <small>Over 1.5 Away</small>
+                    </label>
+                  </div>
+                  
+                  <div class="form-check mb-1">
+                    <input class="form-check-input ownerball-check" type="checkbox" id="obDNB2">
+                    <label class="form-check-label" for="obDNB2">
+                      <small>DNB 2</small>
+                    </label>
                   </div>
                 </div>
               </div>
@@ -445,9 +446,7 @@
           </div>
         </div>
       </div>
-
-    
-    
+    </div>
 
   </div>
 </div>
