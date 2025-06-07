@@ -331,3 +331,237 @@ a .card {
   text-overflow: ellipsis;
   position: relative;
 }
+
+
+.sidebar-cards-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+/* Container de scroll para os cards principais */
+.main-cards-scroll-container {
+  max-height: calc(100vh - 120px); /* Altura máxima considerando navbar e padding */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px; /* Espaço para a scrollbar */
+}
+
+/* Estilização da scrollbar para tema dark */
+.main-cards-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-track {
+  background: #2c2c2c;
+  border-radius: 4px;
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+/* Para Firefox */
+.main-cards-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #555 #2c2c2c;
+}
+
+/* ===== SCROLLBAR TEMA LIGHT ===== */
+/* Estilização da scrollbar para tema claro */
+body.theme-light .main-cards-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+body.theme-light .main-cards-scroll-container::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+body.theme-light .main-cards-scroll-container::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 4px;
+  border: 1px solid #b0b0b0;
+}
+
+body.theme-light .main-cards-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+  border-color: #909090;
+}
+
+/* Para Firefox - tema claro */
+body.theme-light .main-cards-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #c0c0c0 #f0f0f0;
+}
+
+
+/* ===== SCROLL CONTAINER - APRIMORAMENTOS DE TEMA ===== */
+
+/* Container base do scroll */
+.main-cards-scroll-container {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+  transition: all 0.3s ease; /* Transição suave entre temas */
+}
+
+/* ===== TEMA ESCURO (Dark) ===== */
+/* Scrollbar WebKit (Chrome, Safari, Edge) */
+.main-cards-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-track {
+  background: #2c2c2c;
+  border-radius: 4px;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #666 0%, #555 50%, #444 100%);
+  border-radius: 4px;
+  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #777 0%, #666 50%, #555 100%);
+}
+
+.main-cards-scroll-container::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #888 0%, #777 50%, #666 100%);
+}
+
+/* Firefox - tema dark */
+.main-cards-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #555 #2c2c2c;
+}
+
+/* ===== TEMA CLARO (Light) ===== */
+/* Scrollbar WebKit para tema claro */
+body.theme-light .main-cards-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+body.theme-light .main-cards-scroll-container::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light .main-cards-scroll-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #026e40 0%, #025c36 50%, #024d2e 100%);
+  border-radius: 4px;
+  border: 1px solid #025c36;
+  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+body.theme-light .main-cards-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #028946 0%, #026e40 50%, #025c36 100%);
+  border-color: #026e40;
+}
+
+body.theme-light .main-cards-scroll-container::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #03a352 0%, #028946 50%, #026e40 100%);
+  border-color: #028946;
+}
+
+/* Firefox - tema claro */
+body.theme-light .main-cards-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #026e40 #f8f9fa;
+}
+
+/* ===== COMPATIBILIDADE COM OUTROS NAVEGADORES ===== */
+/* Edge Legacy e outros */
+@supports not selector(::-webkit-scrollbar) {
+  .main-cards-scroll-container {
+    scrollbar-width: thin;
+  }
+  
+  /* Tema escuro para navegadores não WebKit */
+  body:not(.theme-light) .main-cards-scroll-container {
+    scrollbar-color: #555 #2c2c2c;
+  }
+  
+  /* Tema claro para navegadores não WebKit */
+  body.theme-light .main-cards-scroll-container {
+    scrollbar-color: #026e40 #f8f9fa;
+  }
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+/* Ajustes para dispositivos móveis */
+@media (max-width: 768px) {
+  .main-cards-scroll-container {
+    max-height: calc(100vh - 100px); /* Menos espaço em mobile */
+    padding-right: 3px; /* Scrollbar menor em mobile */
+  }
+  
+  .main-cards-scroll-container::-webkit-scrollbar {
+    width: 6px; /* Scrollbar mais fina em mobile */
+  }
+  
+  body.theme-light .main-cards-scroll-container::-webkit-scrollbar {
+    width: 6px;
+  }
+}
+
+/* ===== ESTADOS ESPECIAIS ===== */
+/* Quando o scroll está inativo (sem conteúdo suficiente) */
+.main-cards-scroll-container:not(:hover) {
+  scrollbar-width: thin;
+}
+
+/* Feedback visual melhorado quando há scroll */
+.main-cards-scroll-container:hover {
+  /* Tema escuro */
+  scrollbar-color: #666 #2c2c2c;
+}
+
+body.theme-light .main-cards-scroll-container:hover {
+  /* Tema claro */
+  scrollbar-color: #028946 #f8f9fa;
+}
+
+/* ===== ACESSIBILIDADE ===== */
+/* Para usuários que preferem menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .main-cards-scroll-container {
+    transition: none;
+  }
+}
+
+/* Para usuários com preferência por alto contraste */
+@media (prefers-contrast: high) {
+  /* Tema escuro com alto contraste */
+  .main-cards-scroll-container::-webkit-scrollbar-thumb {
+    background: #ffffff;
+    border: 1px solid #000000;
+  }
+  
+  .main-cards-scroll-container::-webkit-scrollbar-track {
+    background: #000000;
+    border: 1px solid #ffffff;
+  }
+  
+  /* Tema claro com alto contraste */
+  body.theme-light .main-cards-scroll-container::-webkit-scrollbar-thumb {
+    background: #000000;
+    border: 1px solid #ffffff;
+  }
+  
+  body.theme-light .main-cards-scroll-container::-webkit-scrollbar-track {
+    background: #ffffff;
+    border: 1px solid #000000;
+  }
+}

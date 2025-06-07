@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEvolucaoSaldoModal();
    
     // Inicializa API Owner Ball
-    // setupApiOwnerBall();
+    setupApiOwnerBall();
     
     //Incializa funcão ayncrona para atualizar odd
     setupUpdateOddChange()
