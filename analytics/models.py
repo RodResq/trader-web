@@ -187,3 +187,16 @@ class OddChange(models.Model):
             home_fractional_value={self.home_fractional_value}, \
             home_change_from_initial={self.home_change_from_initial}, \
             home_change_from_last={self.home_change_from_last}]"
+            
+            
+class VwMercadoOwnerBallFavoritoHome(models.Model):
+    entrada_mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    odd = models.FloatField(blank=True, null=True)
+    data_jogo = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'vw_mercado_owner_ball_favorito_home' 
+        
+    def __str__(self):
+        return f"VwMercadoOwnerBallFavoritoHome[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"

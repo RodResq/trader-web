@@ -299,6 +299,9 @@
             <div class="mt-4">
               {% include 'analytics/components/owner_ball_mercados.html' %}
             </div>
+            <div class="mt-4">
+              {% include 'analytics/components/owner_ball_favorito_home.html' %}
+            </div>
           </div>
         </div>
       </div>
@@ -348,13 +351,6 @@
                 </label>
               </div>
 
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" id="zebras">
-                <label class="form-check-label" for="zebras">
-                  Zebras
-                </label>
-              </div>
-
               <div class="form-check mb-1">
                 <input class="form-check-input" type="checkbox" id="empates">
                 <label class="form-check-label" for="empates">
@@ -384,8 +380,8 @@
               <div class="row g-1">
                 <div class="col-6">
                   <div class="form-check mb-2">
-                    <input class="form-check-input ownerball-check" type="checkbox" id="obSuperFavHome">
-                    <label class="form-check-label" for="obSuperFavHome">
+                    <input class="form-check-input ownerball-check" type="checkbox" id="toggleOwnerBallSuperFavoritoHome">
+                    <label class="form-check-label" for="toggleOwnerBallSuperFavoritoHome">
                       <small>Super Fav. Home</small>
                     </label>
                   </div>
