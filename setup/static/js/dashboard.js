@@ -21,6 +21,7 @@ import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_ap
 import { initThemeToggler } from './theme_toggler.js';
 import { setupApiOwnerBall } from './modules/api_owner_ball.js';
 import { setupApiOwnerBallFavoritoHome } from './modules/owner_ball/api_owner_ball _favorito_home.js'
+import { setupApiOwnerBallUnder25 } from './modules/owner_ball/api_owner_ball _under_2_5.js'
 import { setupUpdateOddChange } from './modules/update_odd_change.js';
 import { setupEvolucaoSaldoModal } from './modules/ciclo/evolucao_saldo.js'
 
@@ -64,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializa API Owner Ball Favorito Home
     setupApiOwnerBallFavoritoHome();
+
+    // Incializa API Owner Ball Under 2,5
+    setupApiOwnerBallUnder25();
     
     //Incializa funcão ayncrona para atualizar odd
     setupUpdateOddChange()

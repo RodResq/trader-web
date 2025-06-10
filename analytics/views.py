@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from analytics.models import VwConsultaMercadoSf, Entrada, Aposta, VwMercadoOwnerBallSfHome, OddChange, VwMercadoOwnerBallFavoritoHome
+from analytics.models import VwConsultaMercadoSf, Entrada, Aposta, VwMercadoOwnerBallSfHome, OddChange, VwMercadoOwnerBallFavoritoHome, VwMercadoOwnerBallUnder2_5
 from analytics.helpers import dump_mercados_para_entrada
 from ciclo.models import Ciclo 
 from .forms import AceitarApostaForm
@@ -721,6 +721,49 @@ def listar_owner_ball_favorito_home(request):
             'mercados': data,
             'pagination': {
                 'current_page': paginator_sf_ob.number,
+                'total_pages': paginator.num_pages,
+                'items_per_page': items_per_page,
+                'total_items': paginator.count
+            }
+        })
+    
+    
+def listar_owner_ball_under_2_5(request):
+    page = request.GET.get('page', 1)
+    items_per_page = request.GET.get('items_per_page', 10)
+    
+    try:
+        items_per_page = int(items_per_page)
+        if items_per_page > 50:
+            items_per_page = 50
+    except ValueError:
+        items_per_page = 10
+    
+    under_2_5 = VwMercadoOwnerBallUnder2_5.objects.all()
+    
+    paginator = Paginator(under_2_5, items_per_page)
+    
+    try:
+        paginator_under_2_5_ob = paginator.page(page)
+    except PageNotAnInteger:
+        paginator_under_2_5_ob = paginator.page(1)
+    except EmptyPage:
+        paginator_under_2_5_ob = paginator.page(paginator.num_pages)
+    
+    data = []
+    for under_2_5 in paginator_under_2_5_ob:
+        data.append({
+                'id': under_2_5.id,
+                'mercado': under_2_5.entrada_mercado,
+                'odd': under_2_5.odd,
+                'data_jogo': under_2_5.data_jogo.strftime('%Y-%m-%d %H:%M:%S') if under_2_5.data_jogo else None
+            })
+        
+    return JsonResponse({
+            'success': True,
+            'mercados': data,
+            'pagination': {
+                'current_page': paginator_under_2_5_ob.number,
                 'total_pages': paginator.num_pages,
                 'items_per_page': items_per_page,
                 'total_items': paginator.count

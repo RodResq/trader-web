@@ -41,7 +41,7 @@ class VwMercadoOwnerBallSfHome(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'vw_mercado_owner_boll_sf_home_v2' 
+        db_table = 'vw_mercado_owner_boll_super_favorito_home' 
         
     def __str__(self):
         return f"VwMercadoOwnerBallSfHome[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"
@@ -200,3 +200,16 @@ class VwMercadoOwnerBallFavoritoHome(models.Model):
         
     def __str__(self):
         return f"VwMercadoOwnerBallFavoritoHome[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"
+    
+
+class VwMercadoOwnerBallUnder2_5(models.Model):
+    entrada_mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    odd = models.FloatField(blank=True, null=True)
+    data_jogo = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'vw_mercado_owner_ball_under_2_5' 
+        
+    def __str__(self):
+        return f"VwMercadoOwnerBallUnder2_5[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"

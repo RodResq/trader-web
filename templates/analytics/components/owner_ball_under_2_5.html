@@ -1,0 +1,83 @@
+{% load static %}
+<!-- Card de Mercados Owner Ball -->
+<div class="row">
+    <div class="col-lg-12 mb-4">
+      <div class="card shadow h-100" id="ownerBallUnder25MarketsCard">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Lista Owner Ball Under 2,5</h6>
+          <div class="d-flex align-items-center">
+            <div class="input-group date-filter">
+              <input type="text" 
+                     id="ownerBallUnder25DateFilter" 
+                     class="form-control form-control-sm me-2" 
+                     placeholder="dd/mm/yyyy"
+                     maxlength="10"
+                     autocomplete="off"
+                     data-input-type="text"
+                     pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
+              <div class="input-group-append me-2">
+                <button id="clearOwnerBallUnder25DateFilter" class="btn btn-sm btn-outline-secondary" type="button">Limpar</button>
+              </div>
+              <div class="input-group-append me-2">
+                <a id="atualizarMercadosOwnerBallUnder25" class="btn btn-sm btn-success refresh-btn" title="atualizar mercados Owner Ball"><i class="bi bi-arrow-repeat"></i></a>
+              </div>
+              <div class="input-group-append">
+                <a id="mostrarCheckListOwnerBallUnder25" class="btn btn-sm btn-primary" title="Múltiplas Owner Ball"><i class="bi bi-list-check"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover" id="ownerBallFavoritosHomeMarketsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Mercado</th>
+                  <th>Odd</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="ownerBallUnder25TableBody">
+                <!-- Dados serão carregados via JavaScript -->
+                <tr>
+                  <td colspan="4" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Carregando...</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Componente de Paginação para Owner Ball -->
+          <div class="pagination-container mt-3 d-flex justify-content-between align-items-center" id="ownerBallUnder25PaginationContainer">
+            <div class="items-per-page">
+                <label class="me-2">Items por página:</label>
+                <select id="ownerBallUnder25ItemsPerPageSelect" class="form-select form-select-sm" style="width: auto; display: inline-block;">
+                    <option value="5">5</option>  
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+            
+            <div class="pagination">
+                <ul class="pagination mb-0" id="ownerBallUnder25PaginationList">
+                    <!-- Paginação será gerada via JavaScript -->
+                </ul>
+            </div>
+            
+            <div class="page-info" id="ownerBallUnder25PageInfo">
+                <span>Carregando...</span>
+            </div>
+          </div>
+          <!-- Fim do Componente de Paginação -->
+          
+        </div>
+      </div>
+    </div>
+  </div>
