@@ -2,7 +2,7 @@
  * Módulo de Paginação - Gerencia funcionalidades de paginação
  */
 
-import { restoreToggleState, restoreToggleStateOwnerBallFavoritoHome } from './uiEnhanced.js';
+import { restoreToggleState, restoreToggleStateOwnerBallFavoritoHome, restoreToggleStateOwnerBallSuperFavoritoHome, restoreToggleStateOwnerBallUnder25 } from './uiEnhanced.js';
 
 let currentPage = 1;
 let itemsPerPage = 10;
@@ -150,7 +150,11 @@ export function loadPageData() {
 
             restoreToggleState();
 
+            restoreToggleStateOwnerBallSuperFavoritoHome();
+
             restoreToggleStateOwnerBallFavoritoHome();
+
+            restoreToggleStateOwnerBallUnder25();
         }
     })
     .catch(error => {

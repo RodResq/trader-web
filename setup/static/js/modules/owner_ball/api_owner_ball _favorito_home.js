@@ -27,7 +27,7 @@ async function loadOwnerBallFavoritoHomeMarkets(showLoader = true) {
     if (showLoader && tableBody) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center">
+                <td colspan="5" class="text-center">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Carregando...</span>
                     </div>
@@ -84,7 +84,7 @@ function updateOwnerBallFavoritoHomeTable(mercados) {
     if (!mercados || mercados.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center text-muted">
+                <td colspan="5" class="text-center text-muted">
                     Nenhum mercado Owner Ball encontrado.
                 </td>
             </tr>
@@ -244,7 +244,6 @@ function setupOwnerBallFavoritoHomeEventListeners() {
         checklistBtn.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('Múltiplas Owner Ball - Em desenvolvimento');
-            // Implementar funcionalidade de múltiplas se necessário
         });
     }
 }
@@ -281,7 +280,7 @@ function showOwnerBallFavoritoHomeError(message) {
     if (tableBody) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center text-danger">
+                <td colspan="5" class="text-center text-danger">
                     <i class="bi bi-exclamation-triangle me-2"></i>
                     ${message}
                 </td>

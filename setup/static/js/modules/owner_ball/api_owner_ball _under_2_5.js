@@ -27,7 +27,7 @@ async function loadOwnerBallUnder25Markets(showLoader = true) {
     if (showLoader && tableBody) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center">
+                <td colspan="5" class="text-center">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Carregando...</span>
                     </div>
@@ -84,7 +84,7 @@ function updateOwnerBallUnder25Table(mercados) {
     if (!mercados || mercados.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center text-muted">
+                <td colspan="5" class="text-center text-muted">
                     Nenhum mercado Owner Ball encontrado.
                 </td>
             </tr>
@@ -281,7 +281,7 @@ function showOwnerBallUnder25Error(message) {
     if (tableBody) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center text-danger">
+                <td colspan="5" class="text-center text-danger">
                     <i class="bi bi-exclamation-triangle me-2"></i>
                     ${message}
                 </td>
