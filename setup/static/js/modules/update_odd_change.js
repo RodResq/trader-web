@@ -55,7 +55,7 @@ export async function setupUpdateOddChange() {
     });
 }
 
-async function atualizarIconeOdd(row, oddChangeData) {
+async function atualizarIconeOdd(row, oddChangeData, oddValueEdited=null) {
     const oddCell = row.querySelector('td:nth-child(3)');
 
     if (!oddCell) {
@@ -66,8 +66,11 @@ async function atualizarIconeOdd(row, oddChangeData) {
     const currentOddText = oddCell.textContent.trim();
     const currentOddValue = parseFloat(currentOddText.replace(/[^\d.,]/g, '').replace(',', '.'));
 
-    const newOddValue = parseFloat(oddChangeData.home_fractional_value);
-
+    let newOddValue = parseFloat(oddChangeData.home_fractional_value);
+    if (oddValueEdited) {
+        newOddValue = oddValueEdited;
+    } 
+    
     if (isNaN(currentOddValue) || isNaN(newOddValue)) {
         console.error('Valores de odd inválidos:', { current: currentOddValue, new: newOddValue });
         return;
@@ -185,3 +188,38 @@ function getCsrfToken() {
     return null;
 }
 
+
+export async function atualizarCellOddAposEditar(eventId, currentRow, oddValueEdited) {
+
+    if (!eventId && !currentRow) return;
+
+    try {
+        const url = `/api/odd_change/${eventId}`
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json' 
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`)
+        }
+
+        const data = await response.json();
+        console.log('Dados recebidos da API:', data);
+
+        if (data.success && data.oddChange) {
+            atualizarIconeOdd(currentRow,  data.oddChange, oddValueEdited);
+        } else {
+            console.warn('Dados de odd change não encontrados na resposta');
+        }
+                        
+        return data;
+
+    } catch(error) {
+        console.error('Erro ao buscar dados: ', error);
+        throw error;
+    } 
+
+}

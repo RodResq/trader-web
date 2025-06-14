@@ -14,7 +14,7 @@ from decimal import Decimal
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Sum
+from django.db.models import Sum, Max
 from gerencia.models import GerenciaCiclo
 import json
 import asyncio
@@ -56,12 +56,15 @@ def index(request):
             paginated_entradas = paginator.page(paginator.num_pages)
         
         qtd_ciclos = Ciclo.objects.count() 
+        ciclo_atual = Ciclo.objects.order_by('-id').first()
         qtd_eventos = Entrada.objects.count()
             
         return render(request, 'analytics/index.html', {
             'mercados': paginated_entradas,
             'qtd_eventos': qtd_eventos,
             'qtd_ciclos': qtd_ciclos,
+            'ciclo_atual': ciclo_atual.id,
+            'ciclo_atual_disponivel': ciclo_atual.valor_disponivel_entrada,
             'soma_total_retorno': soma_retorno['total'],
             'items_per_page': items_per_page
         })

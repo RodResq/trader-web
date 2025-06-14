@@ -94,12 +94,28 @@
                 <div class="card border-left-warning shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
+                      <div class="col mr-1">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                           Ciclos
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                           {{ qtd_ciclos }}
+                        </div>
+                      </div>
+                      <div class="col mr-1">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                          Último Ciclo
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          {{ ciclo_atual }}
+                        </div>
+                      </div>
+                      <div class="col mr-1">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                          Disponível
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          R$ {{ ciclo_atual_disponivel }}
                         </div>
                       </div>
                       <div class="col-auto">

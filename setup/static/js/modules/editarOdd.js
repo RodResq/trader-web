@@ -1,4 +1,5 @@
 import { showNotification } from './notifications.js';
+import { atualizarCellOddAposEditar } from './update_odd_change.js'
 
 /**
  * Configura componentes de edição de odd
@@ -47,10 +48,10 @@ export function setupEditarModal() {
             modalInstance.hide();
             return;
         }
+        
+        const novaOdd = parseFloat(novaOddInput.value.trim().replace(/[^\d.,]/g, '').replace(',', '.'));
 
-        const novaOdd = novaOddInput.value.trim();
-
-        if (!novaOdd || isNaN(parseFloat(novaOdd)) || parseFloat(novaOdd) < 1.01) {
+        if (!novaOdd || isNaN(novaOdd) || novaOdd < 1.01) {
             showNotification('Por favor, insira uma odd válida (mínimo 1.01)', 'warning');
             return;
         }
@@ -72,7 +73,9 @@ export function setupEditarModal() {
         }).then(data => {
             const oddCell = currentRow.querySelector('td:nth-child(3)');
             if (oddCell) {
-                oddCell.textContent = novaOdd;
+                // oddCell.textContent = novaOdd;
+                console.log('Logica atualizar os icones de odd_change');
+                atualizarCellOddAposEditar(currentEventId, currentRow, novaOdd);
             }
 
             modalInstance.hide();
