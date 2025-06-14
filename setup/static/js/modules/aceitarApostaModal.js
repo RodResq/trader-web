@@ -22,33 +22,35 @@ export function initAceitarApostaModal() {
             valorOdd = parseFloat(odd.replace(',', '.'))
 
             
-            // Preencher dados no modal
             document.getElementById('aceitar-evento-id').textContent = eventId;
             document.getElementById('aceitar-evento-mercado').textContent = mercado;
             document.getElementById('aceitar-evento-odd').textContent = odd;
             
-            // Limpar o valor de entrada
             valorInput.value = '';
             
-            // Calcular e mostrar o total (será atualizado quando o usuário inserir o valor)
             atualizarTotal();
             
-            // Abrir o modal usando o Bootstrap
             const modalInstance = new bootstrap.Modal(modal);
             modalInstance.show();
         });
     });
 
-    // Atualizar o valor total quando o valor da entrada mudar
     valorInput.addEventListener('input', atualizarTotal);
 
-    // Confirmar a aposta quando o botão for clicado
     confirmarBtn.addEventListener('click', enviarAposta);
 
 
     function atualizarTotal() {
         const valor = parseFloat(valorInput.value) || 0;
         document.getElementById('valorTotal').textContent = (valor.toFixed(2) * valorOdd.toFixed(2)).toFixed(2);
+    }
+
+    function atualizarTotalDisponivel() {
+        const valor = parseFloat(valorInput.value) || 0;
+        const elValorTotalDisponivel = document.getElementById('valor-total-disponivel');
+        const valorTotalDisponivel = parseFloat(elValorTotalDisponivel.textContent).toFixed(2);
+
+        elValorTotalDisponivel.textContent = valorTotalDisponivel - valor;
     }
 
     
@@ -86,12 +88,13 @@ export function initAceitarApostaModal() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Fechar o modal
                 const modalInstance = bootstrap.Modal.getInstance(modal);
                 modalInstance.hide();
+
+                atualizarTotal()
+
+                atualizarTotalDisponivel();
                 
-                // Atualizar a UI para mostrar a aposta como aceita
-                // const row = document.querySelector(`tr td:first-child:contains('${eventId}')`).closest('tr');
                 updateEntryOptionIcon(false, currentRow, 'A');
                 
                 // Desabilitar o botão de aposta
@@ -101,10 +104,8 @@ export function initAceitarApostaModal() {
                 apostarBtn.innerHTML = '<i class="bi bi-check-all"></i>';
                 apostarBtn.disabled = true;
                 
-                // Mostrar mensagem de sucesso
                 exibirMensagem('Aposta aceita com sucesso!', 'success');
             } else {
-                // Mostrar mensagem de erro
                 exibirMensagem(`Erro: ${data.message}`, 'danger');
             }
         })
@@ -115,7 +116,6 @@ export function initAceitarApostaModal() {
     }
     
     function getCSRFToken() {
-        // Obter o token CSRF dos cookies
         return document.cookie
             .split('; ')
             .find(row => row.startsWith('csrftoken='))
@@ -123,7 +123,6 @@ export function initAceitarApostaModal() {
     }
     
     function exibirMensagem(texto, tipo) {
-        // Criar elemento de alerta
         const alerta = document.createElement('div');
         alerta.className = `alert alert-${tipo} alert-dismissible fade show`;
         alerta.role = 'alert';
@@ -132,11 +131,9 @@ export function initAceitarApostaModal() {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
         `;
         
-        // Adicionar ao topo da página
         const container = document.querySelector('.container-fluid');
         container.insertBefore(alerta, container.firstChild);
         
-        // Configurar para desaparecer após alguns segundos
         setTimeout(() => {
             alerta.classList.remove('show');
             setTimeout(() => alerta.remove(), 300);
