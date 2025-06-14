@@ -1,58 +1,57 @@
 
 export async function setupUpdateOddChange() {
-    const btnsOddChange = document.querySelectorAll('.odd-change-btn');
 
-    if (!btnsOddChange || btnsOddChange.length === 0) return;
+    document.addEventListener('click', async function(e) {
 
-    btnsOddChange.forEach(button => {
-        button.addEventListener('click', async function(e) {
-            e.preventDefault();
+        if (!e.target.closest('.odd-change-btn')) return;
+
+        e.preventDefault();
+
+        const btnOddChange = e.target.closest('.odd-change-btn');
+        const eventId = btnOddChange.dataset.eventId;
+        const currentRow = btnOddChange.closest('tr');
+
+        if (!eventId || !currentRow) {
+            console.error('Event ID ou linha não encontrados');
+            return;
+        }
+
+        const originalIcon = btnOddChange.innerHTML;
+        btnOddChange.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+        btnOddChange.disabled = true;
+
+        try {
+            const url = `/api/odd_change/${eventId}`
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json' 
+                }
+            });
     
-            const eventId = this.dataset.eventId;
-            const currentRow = this.closest('tr');
-
-            if (!eventId || !currentRow) {
-                console.error('Event ID ou linha não encontrados');
-                return;
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`)
             }
+    
+            const data = await response.json();
+            console.log('Dados recebidos da API:', data);
 
-            const originalIcon = this.innerHTML;
-            this.innerHTML = '<i class="bi bi-hourglass-split"></i>';
-            this.disabled = true;
-
-            try {
-                const url = `/api/odd_change/${eventId}`
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                       'Accept': 'application/json' 
-                    }
-                });
-        
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`)
-                }
-        
-                const data = await response.json();
-                console.log('Dados recebidos da API:', data);
-
-                if (data.success && data.oddChange) {
-                    await atualizarIconeOdd(currentRow, data.oddChange);
-                } else {
-                    console.warn('Dados de odd change não encontrados na resposta');
-                }
-                                
-                return data;
-        
-            } catch(error) {
-                console.error('Erro ao buscar dados: ', error);
-                throw error;
-            } finally {
-                this.innerHTML = originalIcon;
-                this.disabled = false;
+            if (data.success && data.oddChange) {
+                await atualizarIconeOdd(currentRow, data.oddChange);
+            } else {
+                console.warn('Dados de odd change não encontrados na resposta');
             }
-            
-        });
+                            
+            return data;
+    
+        } catch(error) {
+            console.error('Erro ao buscar dados: ', error);
+            throw error;
+        } finally {
+            btnOddChange.innerHTML = originalIcon;
+            btnOddChange.disabled = false;
+        }
+        
     });
 }
 

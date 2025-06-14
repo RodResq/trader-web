@@ -99,7 +99,6 @@ export function navigateToPageEnhanced(page, itemsPerPageValue) {
  * @returns {boolean} True se estiver usando AJAX para paginação
  */
 function isAjaxTable() {
-    // Verificar se o botão de atualização AJAX existe, o que indica uma tabela AJAX
     return !!document.getElementById('updateMarkets');
 }
 
@@ -109,13 +108,11 @@ export function loadPageData() {
 
     if (!refreshButton) return;
 
-    // Adiciona classes de animação para indicar carregamento
     const icon = refreshButton.querySelector('i');
     if (icon) icon.classList.add('rotate');
     refreshButton.classList.add('loading');
     refreshButton.disabled = true;
 
-    // URL da API com parâmetros de paginação
     const url = `/api/mercados?page=${currentPage}&items_per_page=${itemsPerPage}`;
     
     fetch(url, {
@@ -135,17 +132,14 @@ export function loadPageData() {
         if (data.success) {
              updateTable(data.mercados);
 
-            // Atualizar informações de paginação
             if (data.pagination) {
                 totalPages = data.pagination.total_pages;
                 currentPage = data.pagination.current_page;
                 itemsPerPage = data.pagination.items_per_page;
 
-                // Atualizar controles de paginação
                 updatePaginationControls(data.pagination);
             }
 
-            // Inicializar outros comportamentos necessários na tabela atualizada
             initTableBehaviors();
 
             restoreToggleState();
@@ -169,10 +163,7 @@ export function loadPageData() {
     });
 }
 
-/**
- * Atualiza a tabela com novos dados
- * @param {Array} mercados - Array de dados de mercados
- */
+
 function updateTable(mercados) {
     const table = document.getElementById('marketsTable');
     if (!table) return;
@@ -180,10 +171,8 @@ function updateTable(mercados) {
     const tbody = table.querySelector('tbody');
     if (!tbody) return;
     
-    // Limpar tabela atual
     tbody.innerHTML = '';
     
-    // Adicionar novas linhas
     mercados.forEach(mercado => {
         const row = document.createElement('tr');
         
@@ -192,7 +181,6 @@ function updateTable(mercados) {
         idCell.textContent = mercado.id_event;
         row.appendChild(idCell);
         
-        // Mercado com ícone de status
         const mercadoCell = document.createElement('td');
         const iconElement = document.createElement('i');
         
@@ -211,7 +199,6 @@ function updateTable(mercados) {
         mercadoCell.appendChild(document.createTextNode(' ' + mercado.mercado));
         row.appendChild(mercadoCell);
         
-        // Odd
         const oddCell = document.createElement('td');
         const iconElementChangeOdd = document.createElement('i');
 
@@ -226,8 +213,16 @@ function updateTable(mercados) {
             iconElementChangeOdd.style = 'color: red; vertical-align: middle;'
         }
 
+        const btnOddChange = document.createElement('a');
+        btnOddChange.id = 'atualizar-odd-change';
+        btnOddChange.classList.add('btn', 'btn-sm', 'odd-change-btn')
+        btnOddChange.dataset.eventId = mercado.id_event;
+        btnOddChange.title = 'Atualizar odd change';
+        btnOddChange.innerHTML = '<i class="bi bi-arrow-clockwise"></i>';
+
         oddCell.appendChild(iconElementChangeOdd);
         oddCell.appendChild(document.createTextNode(' ' + mercado.odd))
+        oddCell.appendChild(btnOddChange);
         row.appendChild(oddCell);
         
         // Home
