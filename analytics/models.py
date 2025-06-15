@@ -152,7 +152,7 @@ class Aposta(models.Model):
         db_table = 'aposta'
         verbose_name = 'Aposta'
         verbose_name_plural = 'Apostas'
-        ordering = ['-data_aposta']
+        ordering = ['-id']
         
     def __str__(self):
         return f"Aposta #{self.id} - {self.evento.mercado}"

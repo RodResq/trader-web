@@ -1,13 +1,13 @@
 import { atualizaIconeResultado } from "./icone_lista_aposta.js";
 import { showNotification } from "../notifications.js";
 
+
 export function setupGerenciaResultado() {
     const btnSalvarResultado = document.querySelectorAll('.salvar-resultado');
 
     if (!btnSalvarResultado || btnSalvarResultado.length === 0) return;
 
     btnSalvarResultado.forEach(btn => {
-        // Remover o event listener anterior (se existir) clonando o botão
         const newBtn = btn.cloneNode(true);
         btn.parentNode.replaceChild(newBtn, btn); 
 
@@ -31,17 +31,14 @@ export function setupGerenciaResultado() {
                 return;
             }
 
-            // Confirmar a ação
             if (!confirm(`Confirmar resultado: ${valueSelected === 'G' ? 'Green (Ganhou)' : valueSelected === 'R' ? 'Red (Perdeu)' : 'Anulado'}?`)) {
                 return;
             }
 
-            // Mostrar indicador de carregamento
             this.disabled = true;
             const originalHTML = this.innerHTML;
             this.innerHTML = '<i class="bi bi-hourglass-split"></i>';
 
-            // Fazer a requisição para a API
             const url = `/analytics/gerencia/resultado?event_id=${eventId}&resultado=${valueSelected}`;
             fetch(url, {
                 method: 'GET',
@@ -55,10 +52,8 @@ export function setupGerenciaResultado() {
                 return response.json();
             }).then(data => {
                 if (data.success) {
-                    // Atualizar o ícone de resultado
                     atualizaIconeResultado(currentRow, data.data.resultado);
                     
-                    // Se o resultado for Green (G) or (R), atualizar o valor total retornado na tabela principal
                     if ((valueSelected === 'G' || valueSelected === 'R') && data.data  && data.data.valor_total_retorno) {
                         updateValorTotalRetornado(currentRow, data.data.valor_total_retorno, valueSelected);
                     }
@@ -73,46 +68,33 @@ export function setupGerenciaResultado() {
                 console.error('Erro:', error)
                 showNotification('Erro ao registra resultado da entrada. Tente novamente.', 'danger');
             }).finally(() => {
-                // Restaurar o botão
                 this.disabled = false;
                 this.innerHTML = originalHTML;
             });
         });
     });
 
-  // Adicionar listener para inicializar botões em conteúdo carregado dinamicamente
   setupDynamicContentListener();
 
 }
 
-/**
- * Atualiza o valor total retornado na tabela principal
- * @param {HTMLElement} row - A linha da tabela com a aposta
- * @param {number} valorTotalRetorno - O novo valor total retornado
- */
 
 function updateValorTotalRetornado(row, valorTotalRetorno, valorSelecionado) {
-    // Encontrar a seção de collapse que contém esta linha
     const collapseSection = row.closest(".collapse");
     if (!collapseSection) return;
 
-    // Obter a linha principal do ciclo (tr anterior ao collapse)
     const cicloRow = collapseSection.previousElementSibling;
     if (!cicloRow) return;
 
-    // Encontrar a célula que contém o valor total retornado (5a coluna)
     const valorRetornoCell = cicloRow.querySelector('td:nth-child(5)');
     if (!valorRetornoCell) return;
 
-    // Atualizar o valor formatado
     valorRetornoCell.textContent = parseFloat(valorTotalRetorno).toFixed(2);
 
-    // Destacar visualmente a célula atualizada para chamar atenção
     valorRetornoCell.style.transition = 'background-color 0.5s';
     valorRetornoCell.style.backgroundColor = valorSelecionado === 'G'? '#28a745': '#CC0000';
     valorRetornoCell.style.color = 'white';
 
-    // Remover o destaque após 1 segundo
     setTimeout(() => {
         valorRetornoCell.style.backgroundColor = '';
         valorRetornoCell.style.color = '';
@@ -120,22 +102,13 @@ function updateValorTotalRetornado(row, valorTotalRetorno, valorSelecionado) {
 }
 
 
-/**
- * Configura um listener para inicializar botões em conteúdo carregado dinamicamente
- */
 function setupDynamicContentListener() {
-    // Remover listener existente para evitar duplicação
     document.removeEventListener('click', dynamicContentHandler);
-    
-    // Adicionar novo listener
     document.addEventListener('click', dynamicContentHandler);
 }
 
 
-/**
- * Manipulador de eventos para inicializar botões em conteúdo carregado dinamicamente
- * @param {Event} e - O evento de clique
- */
+
 function dynamicContentHandler(e) {
     const trigger = e.target.closest('[data-bs-toggle="collapse"]');
     if (!trigger) return;
@@ -143,12 +116,10 @@ function dynamicContentHandler(e) {
     const targetId = trigger.getAttribute('href') || trigger.getAttribute('data-bs-target');
     if (!targetId || !targetId.startsWith('#detalhesLucro')) return;
     
-    // Usar setTimeout para garantir que o DOM seja atualizado
     setTimeout(() => {
         const targetElement = document.querySelector(targetId);
         if (!targetElement || !targetElement.classList.contains('show')) return;
         
-        // Inicializar os botões dentro do conteúdo expandido
         const buttons = targetElement.querySelectorAll('.salvar-resultado');
         if (!buttons || buttons.length === 0) return;
         
