@@ -1,36 +1,48 @@
 let graficoPerformaceSemanal = null;
 
 export function setupGraficoPerformaceSemanal() {
-
     inicializarGraficoPerformaceSemanal();
-
 }
 
 function inicializarGraficoPerformaceSemanal() {
     const chartContainer = document.getElementById('graficoPerformaceSemanal');
     if (!chartContainer) return;
     
-    // Configurar o container para ter uma altura fixa adequada
     chartContainer.style.height = '350px';
     chartContainer.style.overflow = 'hidden';
 
-    // Exibir loader enquanto carrega
     chartContainer.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>';
     
-    // Extrair dados diretamente das linhas principais da tabela
-    const dados =  [65, 59, 80, 81, 56, 55, 40];
+    carregarDadosGraficoPerformaceSemanal(chartContainer);
     
-    if (dados && dados.length > 0) {
-        renderizarDados(chartContainer, dados);
-    } else {
-        chartContainer.innerHTML = '<div class="alert alert-info">Não foi possível extrair dados dos ciclos. Verifique se a tabela está carregada corretamente.</div>';
+}
+
+
+async function carregarDadosGraficoPerformaceSemanal(chartContainer) {
+    let dados = null;
+    try {
+        const response = await fetch(`/api/grafico-performace-semanal`);
+        if (!response.ok) {
+            throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        dados = await response.json();
+        if (dados.success) {
+           renderizarDados(chartContainer, dados);
+        } else {
+            chartContainer.innerHTML = '<div class="alert alert-info">Não foi possível extrair dados dos ciclos. Verifique se a tabela está carregada corretamente.</div>';
+            throw new Error(data.error || 'Erro desconhecido ao carregar dados');
+        }
+    
+    } catch (error) {
+        console.error('Erro ao carregar dados de evolução:', error);
+    } finally {
+        console.log('Finaly grafico performace');
     }
 }
 
 
-
 function renderizarDados(container, dados) {
-    // const { ciclo, dados, analise } = data;
     container.innerHTML = '';
     
     if (!dados || dados.length === 0) {
@@ -38,18 +50,16 @@ function renderizarDados(container, dados) {
         return;
     }
     
-    // Destruir gráfico existente se houver
     const existingChart = window.graficoDesempenho;
     if (existingChart && existingChart.destroy) {
         existingChart.destroy();
     }
     
-    if (dados && dados.length > 0) {
-        renderizarGrafico(dados);
+    if (dados.dados && dados.dados.length > 0) {
+        renderizarGrafico(container, dados.dados);
     } else {
         mostrarGraficoVazio();
     }
-    
     // atualizarDetalhes(analise);
 }
 
@@ -62,7 +72,6 @@ function renderizarGrafico(container, dados) {
         return;
     }
 
-    // Destruir gráfico existente
     if (graficoPerformaceSemanal) {
         graficoPerformaceSemanal.destroy();
         graficoPerformaceSemanal = null;
@@ -74,10 +83,9 @@ function renderizarGrafico(container, dados) {
         return;
     }
 
-    // Criar canvas para o gráfico principal em um container próprio
     const mainChartContainer = document.createElement('div');
-    mainChartContainer.style.width = '100%';
-    mainChartContainer.style.height = '300px';
+    mainChartContainer.style.width = '90%';
+    mainChartContainer.style.height = '90%';
     mainChartContainer.style.position = 'relative';
     containerGrafico.appendChild(mainChartContainer);
 
@@ -85,42 +93,53 @@ function renderizarGrafico(container, dados) {
     canvas.id = 'mainChartDesempenho';
     mainChartContainer.appendChild(canvas);
     
-    // Extrair valores de retorno e entrada diretamente
-    
-    // Verificar o tema atual
     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
     const textColor = isDarkTheme ? '#cccccc' : '#666666';
     
-    // Determinar o valor máximo para configurar a escala Y corretamente
-    
-    // Verificar se Chart.js está disponível
     if (typeof Chart === 'undefined') {
         container.innerHTML = '<div class="alert alert-danger">Chart.js não está disponível. Não foi possível renderizar o gráfico.</div>';
         console.error('Chart.js não está disponível');
         return;
     }
     
+    const labes = dados.map(item => item.periodo);
+    const valores_retorno = dados.map(item => parseFloat(item.valor_retorno) || 0);
 
     const ctx = canvas.getContext('2d');
     graficoPerformaceSemanal = new Chart(ctx, {
         type: 'bar',
         data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: labes,
         datasets: [{
-            label: '# of Votes',
-            data: [12, 15, 3, 5, 2, 3],
+            label: 'Performace Valores Totais Disponíveis',
+            data: valores_retorno,
+            backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)'
+            ],
+            borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)'
+            ],
             borderWidth: 1
         }]
         },
         options: {
-        scales: {
-            y: {
-            beginAtZero: true
+            scales: {
+                y: {
+                beginAtZero: true
+                }
             }
         }
-        }
     });
-
 
     window.graficoPerformaceSemanal = graficoPerformaceSemanal;
 }

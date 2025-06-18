@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from analytics.views import index, evento, apostar, mercados, editar_odd, entrada_multipla, listar_owner_ball_sf, atualizar_odd_change, atualizar_odd_status, listar_owner_ball_favorito_home, listar_owner_ball_under_2_5
+from gerencia.views import grafico_performace_semanal
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +33,7 @@ urlpatterns = [
     path('api/editar_odd', editar_odd, name="editar_odd"),
     path('api/entrada_multipla', entrada_multipla, name="entrada_multipla"),
     path('ciclos/', include('ciclo.urls', namespace='ciclo')),
+    path('api/grafico-performace-semanal/', grafico_performace_semanal, name="grafico_performace_semanal"),
     path('api/odd_change/<int:id_evento>', atualizar_odd_change, name='atualizar_odd_change'),
     path('api/update_odd', atualizar_odd_status, name='atualizar_odd_status')
 ]

@@ -265,3 +265,37 @@ def desempenho_semanal_json(request):
             'success': False,
             'error': str(e)
         }, status=500)
+
+
+def grafico_performace_semanal(request):
+    try:
+        ciclos_gerenciados = GerenciaCiclo.objects.select_related('ciclo').all().order_by('ciclo__data_inicial')
+        
+        dados = []
+        
+        for gerencia in ciclos_gerenciados:
+            data_inicial = gerencia.ciclo.data_inicial.strftime('%d/%m/%Y')
+            data_final = gerencia.ciclo.data_final.strftime('%d/%m/%Y')
+            valor_total_retorno = gerencia.valor_total_retorno or Decimal('0.00')
+                
+            
+            dados.append({
+                'periodo': f"{data_inicial} a {data_final}",
+                'valor_retorno': float(valor_total_retorno),
+            })
+        
+        # dados = sorted(dados, key=lambda x: datetime.strptime(x['data_inicial'], '%d/%m/%Y'))
+            
+        return JsonResponse({
+                'success': True,
+                'dados': dados
+        })
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
