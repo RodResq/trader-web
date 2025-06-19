@@ -1,16 +1,15 @@
-/**
- * Módulo de Paginação - Gerencia funcionalidades de paginação
- */
-
-import { restoreToggleState, restoreToggleStateOwnerBallFavoritoHome, restoreToggleStateOwnerBallSuperFavoritoHome, restoreToggleStateOwnerBallUnder25 } from './uiEnhanced.js';
+import { 
+    restoreToggleState, 
+    restoreToggleStateFavoritoHome, 
+    restoreToggleStateOwnerBallFavoritoHome,
+    restoreToggleStateOwnerBallSuperFavoritoHome, 
+    restoreToggleStateOwnerBallUnder25 } from './uiEnhanced.js';
 
 let currentPage = 1;
 let itemsPerPage = 10;
 let totalPages = 1;
 
-/**
- * Inicializa os controles de paginação
- */
+
 export function initPagination() {
     const itemsPerPageSelect = document.getElementById('itemsPerPageSelect');
 
@@ -149,6 +148,8 @@ export function loadPageData() {
             restoreToggleStateOwnerBallFavoritoHome();
 
             restoreToggleStateOwnerBallUnder25();
+
+            restoreToggleStateFavoritoHome();
         }
     })
     .catch(error => {

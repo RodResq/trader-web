@@ -284,8 +284,6 @@ def grafico_performace_semanal(request):
                 'valor_retorno': float(valor_total_retorno),
             })
         
-        # dados = sorted(dados, key=lambda x: datetime.strptime(x['data_inicial'], '%d/%m/%Y'))
-            
         return JsonResponse({
                 'success': True,
                 'dados': dados

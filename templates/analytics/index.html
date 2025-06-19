@@ -313,6 +313,9 @@
               </div>  
             </div>
             <div class="mt-4">
+              {% include 'analytics/components/favorito_home.html' %}
+            </div>
+            <div class="mt-4">
               {% include 'analytics/components/owner_ball_mercados.html' %}
             </div>
             <div class="mt-4">
@@ -343,8 +346,8 @@
               </div>
               
               <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" id="favoritosHome">
-                <label class="form-check-label" for="favoritosHome">
+                <input class="form-check-input" type="checkbox" id="toggleFavoritosHome">
+                <label class="form-check-label" for="toggleFavoritosHome">
                   Favoritos Home
                 </label>
               </div>
