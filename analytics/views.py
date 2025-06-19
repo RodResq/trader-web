@@ -637,13 +637,15 @@ def atualizar_odd_change(request, id_evento):
                 f'{api_base_url}/odd-change/{id_evento}',
                 timeout=5
             )
+            
+            resultado_estatistica = atualizar_statistica_overall(request, id_evento) # TODO REFATORAR
+            
             if response.status_code == 200:
-                
-                
                 return JsonResponse({
                     'success': True,
                     'message': 'Atualizaçao de odd recuperada com sucesso',
-                    'oddChange': response.json()
+                    'oddChange': response.json(),
+                    'statisticOverall': resultado_estatistica
                 }, status=200)
             
         except requests.exceptions.RequestException as e:
@@ -651,6 +653,8 @@ def atualizar_odd_change(request, id_evento):
             
     except Exception as e:
             logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 
+    finally:
+        atualizar_statistica_overall(request, id_evento)
             
 
 @require_POST          
@@ -773,3 +777,25 @@ def listar_owner_ball_under_2_5(request):
             }
         })
     
+def atualizar_statistica_overall(request, id_evento):
+    try:
+        api_base_url = "http://127.0.0.1:8080"
+        try:
+            response = requests.get(
+                f'{api_base_url}/statistic-overall/{id_evento}',
+                timeout=5
+            )
+            if response.status_code == 200:
+                data = response.json()
+                resultado_bool = data['resultado'] == 1
+                entrada = Entrada.objects.filter(id_event=id_evento).first()
+                entrada.resultado_estatistica = resultado_bool
+                entrada.save()
+                
+                return entrada.resultado_estatistica
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Erro de conexão ao buscar odd-change para evento {id_evento}: {str(e)}")
+            
+    except Exception as e:
+            logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 

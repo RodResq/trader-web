@@ -175,7 +175,16 @@
                           {% if mercados %}
                             {% for mercado in mercados %}
                             <tr>
-                              <td>{{ mercado.id_event }}</td>
+                              <td>
+                                {% comment %} TODO REFATORAR {% endcomment %}
+                                <span {% if mercado.resultado_estatistica %} 
+                                  style="vertical-align: middle; color: white; border-radius: 50px; font-size: 1rem; background-color:rgb(26, 78, 6); border-color:rgb(11, 75, 38); padding: 3px"
+                                  {% else %}
+                                  style="vertical-align: middle; color: white; border-radius: 50px; font-size: 1rem; background-color: #dc3545; border-color: #dc3545; padding: 3px"
+                                {% endif %}>
+                                  <span>{{ mercado.id_event }}</span>
+                                </span>
+                              </td>
                               <td class="mercado-column"><i {% if mercado.opcao_entrada == "A" %}
                                   class="bi-check" style="font-size: 1rem; color: green;"
                                   {% elif  mercado.opcao_entrada == "R" %}

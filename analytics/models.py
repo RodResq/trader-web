@@ -17,6 +17,7 @@ class VwAnalyticsMercadoV2(models.Model):
         managed = False
         db_table = 'vw_analytics_mercado_v2'
         
+        
 
 class VwConsultaMercadoSf(models.Model):
     id_event = models.BigIntegerField(null=False)
@@ -85,8 +86,7 @@ class Entrada(models.Model):
     away_actual = models.IntegerField(blank=True, null=True, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
     opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
-    
-            
+    resultado_estatistica = models.BooleanField(default=0)    
         
     def __str__(self):
         return f"Entrada - {self.id_event} - mercado: {self.mercado} - odd: {self.odd}"    
