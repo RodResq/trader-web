@@ -168,7 +168,7 @@ function updateSelectedMarkets(checkbox) {
  */
 function abrirModalMultiplas() {
     if (window.selectedMarkets.length === 0) {
-        // alert('Selecione pelo menos um mercado para continuar.');
+        alert('Selecione pelo menos um mercado para continuar.');
         return;
     }
     
@@ -404,7 +404,7 @@ function atualizarUIAposProcessamentoMultipla(action) {
         const idEvent = row.querySelector('td:first-child').textContent.trim();
         
         // Atualiza o ícone de status
-        updateEntryOptionIcon(true, row, action === 'aceitar' ? 'A' : 'R');
+        updateEntryOptionIcon(row, action === 'aceitar' ? 'A' : 'R');
     });
 }
 
