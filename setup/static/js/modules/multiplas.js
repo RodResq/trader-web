@@ -163,29 +163,19 @@ function updateSelectedMarkets(checkbox) {
     }
 }
 
-/**
- * Abre o modal de entradas múltiplas com os mercados selecionados
- */
+
 function abrirModalMultiplas() {
     if (window.selectedMarkets.length === 0) {
-        alert('Selecione pelo menos um mercado para continuar.');
         return;
     }
     
-    // Preenche a tabela no modal
     preencherTabelaMultiplas();
-    
-    // Verifica o ciclo
-    // verificarCiclo();
-    
-    // Exibe o modal
+
     const multiplaModal = new bootstrap.Modal(document.getElementById('entradasMultiplasModal'));
     multiplaModal.show();
 }
 
-/**
- * Preenche a tabela de mercados no modal de múltiplas
- */
+
 function preencherTabelaMultiplas() {
     const tbody = document.getElementById('multipla-tbody');
     tbody.innerHTML = '';

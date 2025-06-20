@@ -48,9 +48,9 @@ export function initAceitarApostaModal() {
     function atualizarTotalDisponivel() {
         const valor = parseFloat(valorInput.value) || 0;
         const elValorTotalDisponivel = document.getElementById('valor-total-disponivel');
-        const valorTotalDisponivel = parseFloat(elValorTotalDisponivel.textContent).toFixed(2);
+        const valorTotalDisponivel = parseFloat(elValorTotalDisponivel.textContent.replace(',', '.')).toFixed(2);
 
-        elValorTotalDisponivel.textContent = valorTotalDisponivel - valor;
+        elValorTotalDisponivel.textContent = parseFloat(valorTotalDisponivel - valor).toFixed(2);
     }
 
     
