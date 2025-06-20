@@ -66,7 +66,6 @@ export function initAceitarApostaModal() {
             return;
         }
         
-        // Preparar dados para envio
         const dados = {
             evento_id: eventId,
             mercado: mercado,
@@ -92,12 +91,9 @@ export function initAceitarApostaModal() {
                 modalInstance.hide();
 
                 atualizarTotal()
-
                 atualizarTotalDisponivel();
-                
                 updateEntryOptionIcon(false, currentRow, 'A');
                 
-                // Desabilitar o botão de aposta
                 const apostarBtn = currentRow.querySelector('.apostar-btn');
                 apostarBtn.classList.remove('btn-success');
                 apostarBtn.classList.add('btn-secondary');

@@ -373,36 +373,31 @@ def entrada_multipla(request):
     """
     if request.method == 'POST':
         try:
-            # Obter dados da requisição
             data = json.loads(request.body)
             event_ids = data.get('event_ids', [])
             action = data.get('action')
-            valor_entrada = Decimal(str(data.get('valor_entrada', 0)))
+            valor_entrada_total = Decimal(str(data.get('valor_entrada_total', 0)))
+            valor_entrada_rateado = Decimal(str(data.get('valor_entrada_rateado', 0)))
             odd_combinada = Decimal(str(data.get('odd_combinada', 1.0)))
             retorno_esperado = Decimal(str(data.get('retorno_esperado', 0)))
             
-            # Validar parâmetros
             if not event_ids or action not in ['aceitar', 'recusar']:
                 return JsonResponse({
                     'success': False,
                     'message': 'Parâmetros inválidos.'
                 }, status=400)
             
-            # Recuperar todas as entradas
             entradas = Entrada.objects.filter(id_event__in=event_ids)
             
-            # Verificar se todos os eventos foram encontrados
             if len(entradas) != len(event_ids):
                 return JsonResponse({
                     'success': False,
                     'message': 'Alguns eventos não foram encontrados.'
                 }, status=400)
             
-            # Gerar um código único para a múltipla
             cod_multipla = f"ML-{timezone.now().strftime('%Y%m%d%H%M%S')}"
             
             for entrada in entradas:
-                # Verificar se alguma entrada já está em uma múltipla
                 aposta = Aposta.objects.filter(entrada__id_event=entrada.id_event).first()
                 
                 if aposta and aposta.is_multipla:
@@ -411,7 +406,6 @@ def entrada_multipla(request):
                         'message': f'O evento {entrada.id_event} já faz parte de uma múltipla.'
                     }, status=400)
             
-            # Verificar ciclo válido
             ciclos_validos = Ciclo.objects.filter(
                 data_inicial__lte=min(entrada.data_jogo for entrada in entradas),
                 data_final__gte=max(entrada.data_jogo for entrada in entradas)
@@ -423,18 +417,16 @@ def entrada_multipla(request):
                     'message': 'Não existe um ciclo válido para esta múltipla.'
                 }, status=400)
             
-            # Selecionar o primeiro ciclo válido
             ciclo = ciclos_validos.first()
             
-            # Para aceitar, verificar valor disponível
             if action == 'aceitar':
-                if valor_entrada <= 0:
+                if valor_entrada_total <= 0:
                     return JsonResponse({
                         'success': False,
                         'message': 'Valor de entrada inválido.'
                     }, status=400)
                 
-                if valor_entrada > ciclo.valor_disponivel_entrada:
+                if valor_entrada_total > ciclo.valor_disponivel_entrada:
                     return JsonResponse({
                         'success': False,
                         'message': f'Valor excede o disponível (R$ {ciclo.valor_disponivel_entrada})'
@@ -449,7 +441,7 @@ def entrada_multipla(request):
                         aposta = Aposta.objects.create(
                             entrada=entrada,  
                             ciclo=ciclo,
-                            valor=valor_entrada,
+                            valor=valor_entrada_rateado,
                             retorno=retorno_esperado,
                             is_multipla = True,
                             cod_multipla = cod_multipla
@@ -461,7 +453,7 @@ def entrada_multipla(request):
                     aposta.save()
                     
                 # Atualizar saldo disponível do ciclo
-                ciclo.valor_disponivel_entrada -= valor_entrada
+                ciclo.valor_disponivel_entrada -= valor_entrada_total
                 ciclo.save()
             
             return JsonResponse({

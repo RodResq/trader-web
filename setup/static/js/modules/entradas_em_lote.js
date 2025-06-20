@@ -1,19 +1,11 @@
-/**
- * Módulo de Checklist - Gerencia funcionalidades de checklist para mercados
- */
 import { showNotification } from './notifications.js';
 import { updateEntryOptionIcon } from './table.js';
 import { addCSRFToken } from './token.js';
 
-/**
- * Estado da aplicação para as checkboxes
- */
 let checklistVisible = false;
 let selectedItems = new Set();
 
-/**
- * Inicializa o botão de mostrar checklist
- */
+
 export function initEntradasEmLote() {
     const btnMostrarChecklist = document.getElementById('mostrarCheckList');
     if (!btnMostrarChecklist) return;
@@ -23,12 +15,9 @@ export function initEntradasEmLote() {
         toggleChecklist();
     });
     
-    // Adicionar um observador de eventos para atualizar checkboxes quando a tabela for atualizada
-    // setupTableObserver();
-    
-    // Inicializar handlers para o modal de múltiplas entradas
     initMultiplaModalHandlers();
 }
+
 
 function getCSRFToken() {
     // Obter o token CSRF dos cookies
@@ -38,11 +27,8 @@ function getCSRFToken() {
         ?.split('=')[1];
 }
 
-/**
- * Inicializa handlers para o modal de múltiplas entradas
- */
+
 function initMultiplaModalHandlers() {
-    // Configurar handlers para o modal de múltiplas entradas
     const confirmarMultiplaBtn = document.getElementById('confirmarMultiplaBtn');
     const recusarMultiplaBtn = document.getElementById('recusarMultiplaBtn');
     const valorEntradaInput = document.getElementById('valor-entrada-multipla');
@@ -64,9 +50,7 @@ function initMultiplaModalHandlers() {
     }
 }
 
-/**
- * Alterna a visibilidade das checkboxes na tabela
- */
+
 function toggleChecklist() {
     checklistVisible = !checklistVisible;
     updateBtnMostrarChecklist();
@@ -579,29 +563,23 @@ function verificarCiclo() {
     });
 }
 
-/**
- * Processa uma múltipla (aceitar ou recusar)
- */
+
 function processarMultipla(action) {
-    // Verificar se há items selecionados
     if (selectedItems.size === 0) {
         showNotification('Selecione pelo menos um item para executar esta ação.', 'warning');
         return;
     }
     
-    // Se for aceitar, verificar valor de entrada
     const valorEntrada = parseFloat(document.getElementById('valor-entrada-multipla').value) || 0;
     if (action === 'aceitar' && valorEntrada <= 0) {
         showNotification('Informe um valor de entrada válido.', 'warning');
         return;
     }
     
-    // Preparar dados para envio
     const eventIds = Array.from(selectedItems);
     const oddCombinada = parseFloat(document.getElementById('odd-combinada').textContent);
     const retornoEsperado = parseFloat(document.getElementById('retorno-esperado').value) || 0;
     
-    // Desabilitar botões durante o processamento
     const confirmarBtn = document.getElementById('confirmarMultiplaBtn');
     const recusarBtn = document.getElementById('recusarMultiplaBtn');
     
@@ -611,7 +589,6 @@ function processarMultipla(action) {
     btnAtual.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
     btnAtual.disabled = true;
 
-    //Cálcula o valor entrada rateado pelo número de entradas
     const valorMultiplaRateado = valorEntrada / eventIds.length;
     const retornoMultiplaRateado = parseFloat((retornoEsperado / eventIds.length).toFixed(2));
     
@@ -621,7 +598,6 @@ function processarMultipla(action) {
         confirmarBtn.disabled = true;
     }
     
-    // Enviar requisição
     fetch('/api/entrada_multipla', addCSRFToken({
         method: 'POST',
         headers: {
@@ -630,7 +606,8 @@ function processarMultipla(action) {
         body: JSON.stringify({
             event_ids: eventIds,
             action: action,
-            valor_entrada: valorMultiplaRateado,
+            valor_entrada_total: valorEntrada,
+            valor_entrada_rateado: valorMultiplaRateado,
             odd_combinada: oddCombinada,
             retorno_esperado: retornoMultiplaRateado
         })
@@ -640,8 +617,9 @@ function processarMultipla(action) {
         if (data.success) {
             // Fechar o modal
             bootstrap.Modal.getInstance(document.getElementById('entradasMultiplasModal')).hide();
+
+            atualizarValorDisponivel(valorEntrada);
             
-            // Atualizar a UI
             const checkboxes = document.querySelectorAll('.market-checkbox:checked');
             
             checkboxes.forEach(checkbox => {
@@ -649,10 +627,8 @@ function processarMultipla(action) {
                 if (row) {
                     row.classList.remove('table-active');
                     
-                    // Atualiza o ícone de estado da entrada
                     updateEntryOptionIcon(true, row, action === 'aceitar' ? 'A' : 'R');
                     
-                    // Desabilitar botões na linha
                     const actionBtns = row.querySelectorAll('.btn');
                     actionBtns.forEach(btn => {
                         if (btn.classList.contains('apostar-btn') || btn.classList.contains('recusar-btn')) {
@@ -706,4 +682,12 @@ function processarMultipla(action) {
         
         showNotification('Erro ao processar apostas', 'danger')
     });
+}
+
+
+function atualizarValorDisponivel(valorEntrada) {
+    const elValorTotalDisponivel = document.getElementById('valor-total-disponivel');
+    const valorTotalDisponivel = parseFloat(elValorTotalDisponivel.textContent.replace(',', '.')).toFixed(2);
+
+    elValorTotalDisponivel.textContent = parseFloat(valorTotalDisponivel - valorEntrada).toFixed(2);
 }

@@ -1,6 +1,3 @@
-/**
- * Módulo para gerenciamento de entradas múltiplas
- */
 import { updateEntryOptionIcon } from './table.js';
 
 export function initMultiplasHandlers() {
@@ -10,41 +7,33 @@ export function initMultiplasHandlers() {
     
     if (!multiplaModal || !mostrarCheckListBtn || !marketsTable) return;
     
-    // Inicializar armazenamento de mercados selecionados
     window.selectedMarkets = [];
     console.log('Inicializando selectedMarkets:', window.selectedMarkets);
     
-    // Adicionar handler para o botão de mostrar checklist
     mostrarCheckListBtn.addEventListener('click', toggleCheckboxes);
     
-    // Configurar handlers para o modal
-    if (document.getElementById('aceitarMultiplaBtn') != null) {
-        document.getElementById('aceitarMultiplaBtn').addEventListener('click', () => processarMultipla('aceitar'));
-    }
+    const btnAceitarMultipla = document.getElementById('aceitarMultiplaBtn');
+    const btnRecusarMultipla = document.getElementById('recusarMultiplaBtn');
 
-    if (document.getElementById('recusarMultiplaBtn') != null) {
-        document.getElementById('recusarMultiplaBtn').addEventListener('click', () => processarMultipla('recusar'));
-    }
-    
-    // Configurar o handler para o valor de entrada para calcular o retorno
+    if (!btnAceitarMultipla || !btnRecusarMultipla) return;
+   
+    btnAceitarMultipla.addEventListener('click', () => processarMultipla('aceitar'));
+    btnRecusarMultipla.addEventListener('click', () => processarMultipla('recusar'));    
+   
     document.getElementById('valor-entrada-multipla').addEventListener('input', calcularRetornoEsperado);
 
     abrirModalMultiplas();
 }
 
-/**
- * Alterna a exibição das checkboxes na tabela de mercados
- */
+
 function toggleCheckboxes() {
     const marketsTable = document.getElementById('marketsTable');
     const tbody = marketsTable.querySelector('tbody');
     const rows = tbody.querySelectorAll('tr');
     
-    // Verifica se já existem checkboxes
     const hasCheckboxes = marketsTable.classList.contains('has-checkboxes');
     
     if (hasCheckboxes) {
-        // Remove as checkboxes
         rows.forEach(row => {
             const checkboxCell = row.querySelector('td.checkbox-cell');
             if (checkboxCell) {
@@ -52,29 +41,24 @@ function toggleCheckboxes() {
             }
         });
         
-        // Atualiza estado da tabela
         marketsTable.classList.remove('has-checkboxes');
         document.getElementById('mostrarCheckList').classList.remove('active');
         
-        // Oculta botão de abrir modal
         const btnAbrirModal = document.getElementById('abrirModalMultiplas');
         if (btnAbrirModal) {
             btnAbrirModal.remove();
         }
         
-        // Limpa seleções
         window.selectedMarkets = [];
     } else {
-        // Adiciona as checkboxes
         rows.forEach(row => {
-            // Pula linhas que já foram aceitas ou recusadas
             const mercadoCell = row.querySelector('td:nth-child(2)');
             const iconElement = mercadoCell ? mercadoCell.querySelector('.bi-check, .bi-x') : null;
             
-            if (iconElement) return; // Pula mercados já processados
+            if (iconElement) return; 
             
             const idEvent = row.querySelector('td:first-child').textContent.trim();
-            const mercado = row.querySelector('td:nth-child(2)').textContent.trim();
+            // const mercado = undefined;
             const odd = parseFloat(row.querySelector('td:nth-child(3)').textContent.trim());
             const dataJogo = row.querySelector('td:nth-child(6)').textContent.trim();
             
@@ -354,16 +338,12 @@ function processarMultipla(action) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Fecha o modal
             bootstrap.Modal.getInstance(document.getElementById('entradasMultiplasModal')).hide();
             
-            // Atualiza a UI
             atualizarUIAposProcessamentoMultipla(action);
             
-            // Exibe mensagem de sucesso
             alert(data.message);
             
-            // Recarrega a tabela de mercados
             atualizarTabelaMercados();
         } else {
             alert(`Erro: ${data.message}`);
