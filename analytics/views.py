@@ -220,7 +220,8 @@ def mercados(request):
                 'home_actual': mercado.home_actual,
                 'away_actual': mercado.away_actual,
                 'data_jogo': mercado.data_jogo.strftime('%d/%m/%Y %H:%M:%S') if mercado.data_jogo else None,
-                'opcao_entrada': mercado.opcao_entrada
+                'opcao_entrada': mercado.opcao_entrada,
+                'resultado_estatistica': mercado.resultado_estatistica
             })
         return JsonResponse({
             'success': True,

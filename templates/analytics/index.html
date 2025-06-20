@@ -178,11 +178,11 @@
                               <td>
                                 {% comment %} TODO REFATORAR {% endcomment %}
                                 <span {% if mercado.resultado_estatistica %} 
-                                  style="vertical-align: middle; color: white; border-radius: 50px; font-size: 1rem; background-color:rgb(26, 78, 6); border-color:rgb(11, 75, 38); padding: 3px"
+                                  class="btn-sucess resultado-statistic-overall-home"
                                   {% else %}
-                                  style="vertical-align: middle; color: white; border-radius: 50px; font-size: 1rem; background-color: #dc3545; border-color: #dc3545; padding: 3px"
-                                {% endif %}>
-                                  <span>{{ mercado.id_event }}</span>
+                                  class="resultado-statistic-overall-away"
+                                  {% endif %}>
+                                  {{ mercado.id_event }}
                                 </span>
                               </td>
                               <td class="mercado-column"><i {% if mercado.opcao_entrada == "A" %}

@@ -574,3 +574,25 @@ body.theme-light .main-cards-scroll-container:hover {
     border: 1px solid #000000;
   }
 }
+
+.resultado-statistic-overall-home {
+    vertical-align: middle;
+    font-size: small; 
+    color: #ffffff; 
+    border: 1px solid;
+    border-radius: 50px; 
+    background-color: #198754;
+    border-color: #198754;
+    padding: 5px
+}
+
+.resultado-statistic-overall-away {
+    vertical-align: middle; 
+    font-size: small;
+    color: #ffffff; 
+    border: 1px solid;
+    border-radius: 50px; 
+    background-color: #dc3545;
+    border-color: #dc3545;
+    padding: 5px
+}

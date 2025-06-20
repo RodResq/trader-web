@@ -177,9 +177,11 @@ function updateTable(mercados) {
     mercados.forEach(mercado => {
         const row = document.createElement('tr');
         
-        // ID
         const idCell = document.createElement('td');
-        idCell.textContent = mercado.id_event;
+        const spanElement = document.createElement('span');
+        spanElement.className = mercado.resultado_estatistica ? 'resultado-statistic-overall-home' : 'resultado-statistic-overall-away'
+        spanElement.textContent = mercado.id_event;
+        idCell.appendChild(spanElement);
         row.appendChild(idCell);
         
         const mercadoCell = document.createElement('td');
