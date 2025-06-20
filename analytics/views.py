@@ -641,7 +641,7 @@ def atualizar_odd_change(request, id_evento):
             
             resultado_estatistica = atualizar_statistica_overall(request, id_evento) # TODO REFATORAR
             
-            if response.status_code == 200:
+            if response.status_code == 200 or resultado_estatistica:
                 return JsonResponse({
                     'success': True,
                     'message': 'Atualizaçao de odd recuperada com sucesso',
@@ -654,8 +654,6 @@ def atualizar_odd_change(request, id_evento):
             
     except Exception as e:
             logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 
-    finally:
-        atualizar_statistica_overall(request, id_evento)
             
 
 @require_POST          
@@ -777,6 +775,7 @@ def listar_owner_ball_under_2_5(request):
                 'total_items': paginator.count
             }
         })
+ 
     
 def atualizar_statistica_overall(request, id_evento):
     try:

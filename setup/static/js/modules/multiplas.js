@@ -18,8 +18,13 @@ export function initMultiplasHandlers() {
     mostrarCheckListBtn.addEventListener('click', toggleCheckboxes);
     
     // Configurar handlers para o modal
-    document.getElementById('aceitarMultiplaBtn').addEventListener('click', () => processarMultipla('aceitar'));
-    document.getElementById('recusarMultiplaBtn').addEventListener('click', () => processarMultipla('recusar'));
+    if (document.getElementById('aceitarMultiplaBtn') != null) {
+        document.getElementById('aceitarMultiplaBtn').addEventListener('click', () => processarMultipla('aceitar'));
+    }
+
+    if (document.getElementById('recusarMultiplaBtn') != null) {
+        document.getElementById('recusarMultiplaBtn').addEventListener('click', () => processarMultipla('recusar'));
+    }
     
     // Configurar o handler para o valor de entrada para calcular o retorno
     document.getElementById('valor-entrada-multipla').addEventListener('input', calcularRetornoEsperado);
@@ -163,7 +168,7 @@ function updateSelectedMarkets(checkbox) {
  */
 function abrirModalMultiplas() {
     if (window.selectedMarkets.length === 0) {
-        alert('Selecione pelo menos um mercado para continuar.');
+        // alert('Selecione pelo menos um mercado para continuar.');
         return;
     }
     
@@ -399,7 +404,7 @@ function atualizarUIAposProcessamentoMultipla(action) {
         const idEvent = row.querySelector('td:first-child').textContent.trim();
         
         // Atualiza o ícone de status
-        updateEntryOptionIcon(row, action === 'aceitar' ? 'A' : 'R');
+        updateEntryOptionIcon(true, row, action === 'aceitar' ? 'A' : 'R');
     });
 }
 

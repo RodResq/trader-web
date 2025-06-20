@@ -25,10 +25,17 @@ export function calcularDataFinalCiclo() {
         dataFinalInput.value = `${ano}-${mes}-${dia}`;
 
     }
-    categoriaSelect.addEventListener('change', calculoDataFinal);
-    dataIniciaInput.addEventListener('change', calculoDataFinal);
 
-    if (dataIniciaInput.value) {
-        calculoDataFinal();
+    if (categoriaSelect != null) {
+        categoriaSelect.addEventListener('change', calculoDataFinal);
     }
+
+    if (dataIniciaInput != null) {
+        dataIniciaInput.addEventListener('change', calculoDataFinal);
+        
+        if (dataIniciaInput.value) {
+            calculoDataFinal();
+        }
+    }
+
 };
