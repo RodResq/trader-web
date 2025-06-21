@@ -26,6 +26,7 @@ import { setupUpdateOddChange } from './modules/update_odd_change.js';
 import { setupEvolucaoSaldoModal } from './modules/ciclo/evolucao_saldo.js'
 import { setupGraficoPerformaceSemanal } from './modules/ciclo/grafico_performace_semanal.js';
 import { setupGraficoResultadoAposta } from './modules/gerencia_aposta/grafico_resultado_aposta.js';
+import { setupTemporizadorProximoEvento } from './modules/temporizadorProximoEvento.js';
 
 
 
@@ -88,6 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Inicializa modal mutlipas entradas
     initMultiplasHandlers();
+
+
+    //Incializa temporizador para o próximo evento
+    setupTemporizadorProximoEvento();
 
 
     // Inicializa componentes de paginação

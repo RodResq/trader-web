@@ -89,6 +89,7 @@ function renderizarGrafico(container, dados) {
 
     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
     const textColor = isDarkTheme ? '#cccccc' : '#666666';
+    const borderColor = isDarkTheme ? '#444444' : '#ffffff';
 
     if (typeof Chart === 'undefined') {
         container.innerHTML = '<div class="alert alert-danger">Chart.js não está disponível. Não foi possível renderizar o gráfico.</div>';
@@ -112,6 +113,7 @@ function renderizarGrafico(container, dados) {
                 'rgb(25, 135, 84)',
                 'rgb(54, 162, 235)',
                 ],
+                borderColor: borderColor,
                 hoverOffset: 4
             }]
         }

@@ -45,17 +45,35 @@
                 <div class="card border-left-success shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
+                      <div class="col mr-4">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                           Qtd. Eventos
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          <sapn class="fs-2 text-gray-300">{{ qtd_eventos }}</span>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800 d-flex">
+                          <span class="bi bi-box2 fs-2 text-gray-300"></span>
+                          <span class="fs-2 text-gray-300">{{ qtd_eventos }}</span>
+                        </div>
+                        <div class="row">
+                          <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mt-1">
+                              Próximo Evento
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                              <span class="fs-2 text-gray-300">13522925</span>
+                            </div>
+                          </div>
+                          <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mt-1">
+                              Tempo Restante
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                              <span class="bi bi-clock fs-2 text-gray-300"></span>
+                              <span class="fs-2 text-gray-300" id="temporizador">HH:MM:SS</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div class="col-auto">
-                        <i class="bi bi-box2 fs-2 text-gray-300"></i>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -74,7 +92,9 @@
                         </div>
                         <div class="row no-gutters align-items-center">
                           <div class="col-auto">
-                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                              <span class="text-gray-300">50%</span>
+                            </div>
                           </div>
                           <div class="col">
                             <div class="progress progress-sm mr-2">
@@ -103,7 +123,7 @@
                           Ciclos
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          {{ qtd_ciclos }}
+                          <span class="text-gray-300">{{ qtd_ciclos }}</span>
                         </div>
                       </div>
                       <div class="col mr-1">
@@ -111,7 +131,7 @@
                           Último Ciclo
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          {{ ciclo_atual }}
+                          <span class="text-gray-300">{{ ciclo_atual }}</span>
                         </div>
                       </div>
                       <div class="col mr-1">
@@ -119,7 +139,7 @@
                           Disponível
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          R$ <span id="valor-total-disponivel">{{ ciclo_atual_disponivel }}</span>
+                         <span class="text-gray-300" id="valor-total-disponivel"> R$ {{ ciclo_atual_disponivel }}</span>
                         </div>
                       </div>
                       <div class="col-auto">
