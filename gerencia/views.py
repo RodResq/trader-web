@@ -297,3 +297,35 @@ def grafico_performace_semanal(request):
             'success': False,
             'error': str(e)
         }, status=500)
+        
+        
+def grafico_resultado_aposta(request):
+    try:
+        dados = []
+        resultado_contagem = Aposta.objects.values('resultado').annotate(total=Count('resultado')).order_by('resultado')
+        
+        RESULTADO_DICT = dict(Aposta.RESULTADO_CHOICES)
+        
+        for item in resultado_contagem:
+            codigo = item['resultado']
+            nome = RESULTADO_DICT.get(codigo, 'Não definido')
+            dados.append({
+                'resultado': nome,
+                'total': item['total']
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'dados': dados
+        }, status=200)
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+        
+    

@@ -25,6 +25,7 @@ import { setupApiOwnerBallUnder25 } from './modules/owner_ball/api_owner_ball _u
 import { setupUpdateOddChange } from './modules/update_odd_change.js';
 import { setupEvolucaoSaldoModal } from './modules/ciclo/evolucao_saldo.js'
 import { setupGraficoPerformaceSemanal } from './modules/ciclo/grafico_performace_semanal.js';
+import { setupGraficoResultadoAposta } from './modules/gerencia_aposta/grafico_resultado_aposta.js';
 
 
 
@@ -63,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Incializa gráfico de performace semanal
     setupGraficoPerformaceSemanal();
+
+    // Incializa gráfico de resultado aposta
+    setupGraficoResultadoAposta();
    
     // Inicializa API Owner Ball
     setupApiOwnerBall();
