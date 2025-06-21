@@ -43,10 +43,10 @@ function atualizarTemporizador() {
     const totalMinutos = Math.floor(diferenca / (1000 * 60));
 
     if (totalMinutos <= 5) {
-        elementoTempo.className = 'fs-2 text-danger';
+        elementoTempo.className = 'fs-4 text-danger';
     } else if (totalMinutos <= 30) {
-        elementoTempo.className = 'fs-2 text-warning';
+        elementoTempo.className = 'fs-4 text-warning';
     } else {
-        elementoTempo.className = 'fs-2 text-gray-300';
+        elementoTempo.className = 'fs-4 text-gray-300';
     }
 }

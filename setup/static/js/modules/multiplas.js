@@ -214,43 +214,31 @@ function preencherTabelaMultiplas() {
     document.getElementById('retorno-esperado').value = '';
 }
 
-/**
- * Remove um mercado da seleção múltipla
- */
+
 function removerMercadoMultipla(idEvent) {
-    // Remove da lista interna
     window.selectedMarkets = window.selectedMarkets.filter(m => m.idEvent !== idEvent);
     
-    // Desmarca o checkbox na tabela principal
     const checkbox = document.querySelector(`.market-checkbox[data-id-event="${idEvent}"]`);
     if (checkbox) {
         checkbox.checked = false;
     }
     
-    // Atualiza a tabela no modal
     preencherTabelaMultiplas();
-    
-    // Atualiza o contador
     updateSelectionCounter();
     
-    // Verifica se ainda há mercados selecionados
     if (window.selectedMarkets.length === 0) {
         bootstrap.Modal.getInstance(document.getElementById('entradasMultiplasModal')).hide();
     } else {
-        // Re-verifica o ciclo
         verificarCiclo();
     }
 }
 
-/**
- * Verifica se todos os eventos pertencem ao mesmo ciclo
- */
+
 function verificarCiclo() {
     const cicloWarning = document.getElementById('ciclo-warning');
     const cicloMultipla = document.getElementById('ciclo-multipla');
     const saldoDisponivel = document.getElementById('saldo-disponivel');
     
-    // Faz uma requisição para verificar o ciclo
     if (window.selectedMarkets.length === 0) {
         cicloWarning.classList.add('d-none');
         cicloMultipla.textContent = 'Não definido';
@@ -258,7 +246,6 @@ function verificarCiclo() {
         return;
     }
     
-    // Mapeia as datas de jogo para verificar o ciclo
     const datasJogo = window.selectedMarkets.map(m => m.dataJogo);
     
     // Faz uma requisição para obter informações do ciclo

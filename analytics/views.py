@@ -14,7 +14,7 @@ from decimal import Decimal
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Sum, Max
+from django.db.models import Sum, Q
 from gerencia.models import GerenciaCiclo
 import json
 import asyncio
@@ -45,6 +45,7 @@ def index(request):
         _verificar_mudanca_odd(entradas)
         
         soma_retorno = GerenciaCiclo.objects.aggregate(total=Sum('valor_total_retorno'))
+        retorno_atual = GerenciaCiclo.objects.exclude(valor_total_retorno=0).order_by('-id').first()
         
         paginator = Paginator(entradas, items_per_page)
         
@@ -66,6 +67,7 @@ def index(request):
             'ciclo_atual': ciclo_atual.id,
             'ciclo_atual_disponivel': ciclo_atual.valor_disponivel_entrada,
             'soma_total_retorno': soma_retorno['total'],
+            'retorno_atual': retorno_atual.valor_total_retorno,
             'items_per_page': items_per_page
         })
 
@@ -407,8 +409,8 @@ def entrada_multipla(request):
                     }, status=400)
             
             ciclos_validos = Ciclo.objects.filter(
-                data_inicial__lte=min(entrada.data_jogo for entrada in entradas),
-                data_final__gte=max(entrada.data_jogo for entrada in entradas)
+                Q(data_inicial__gte=min(entrada.data_jogo for entrada in entradas)) |
+                Q(data_final__lte=max(entrada.data_jogo for entrada in entradas))
             )
             
             if not ciclos_validos.exists():
@@ -506,16 +508,13 @@ def verificar_ciclo(request):
                 'message': 'Nenhuma data fornecida.'
             }, status=400)
         
-        # Converter datas para datetime se necessário
         datas_formatadas = []
         
         for data_str in datas:
             try:
-                # Tenta converter no formato padrão brasileiro
                 data = datetime.strptime(data_str, '%d/%m/%Y %H:%M:%S')
             except ValueError:
                 try:
-                    # Tenta formato ISO
                     data = datetime.fromisoformat(data_str.replace('Z', '+00:00'))
                 except ValueError:
                     return JsonResponse({
@@ -525,10 +524,9 @@ def verificar_ciclo(request):
             
             datas_formatadas.append(data)
         
-        # Encontrar ciclo que engloba todas as datas
         ciclo = Ciclo.objects.filter(
-            data_inicial__lte=min(datas_formatadas),
-            data_final__gte=max(datas_formatadas)
+            Q(data_inicial__gte=min(datas_formatadas)) |
+            Q(data_final__lte=max(datas_formatadas))
         ).first()
         
         if not ciclo:

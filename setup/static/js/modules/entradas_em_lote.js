@@ -467,9 +467,7 @@ function removerItemMultipla(eventId) {
     }
 }
 
-/**
- * Calcula o retorno esperado com base no valor de entrada
- */
+
 function calcularRetornoEsperado() {
     const valorEntrada = parseFloat(document.getElementById('valor-entrada-multipla').value) || 0;
     const oddCombinada = parseFloat(document.getElementById('odd-combinada').textContent);
@@ -478,9 +476,7 @@ function calcularRetornoEsperado() {
     document.getElementById('retorno-esperado').value = retornoEsperado.toFixed(2);
 }
 
-/**
- * Verifica o ciclo para os eventos selecionados
- */
+
 function verificarCiclo() {
     const cicloWarning = document.getElementById('ciclo-warning');
     const cicloMultipla = document.getElementById('ciclo-multipla');
@@ -496,7 +492,6 @@ function verificarCiclo() {
         return;
     }
     
-    // Obter as datas dos eventos selecionados
     const datas = [];
     const checkboxes = document.querySelectorAll('.market-checkbox:checked');
     
@@ -506,18 +501,18 @@ function verificarCiclo() {
             datas.push(dataJogo);
         }
     });
+
+    const datasOrdenadas = datas.reverse();
     
-    // Exibir indicador de carregamento
     cicloMultipla.innerHTML = '<i class="bi bi-hourglass-split"></i> Verificando...';
     
-    // Fazer requisição para verificar o ciclo
     fetch('/analytics/verificar_ciclo/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCSRFToken()
         },
-        body: JSON.stringify({ datas: datas })
+        body: JSON.stringify({ datas: datasOrdenadas })
     })
     .then(response => response.json())
     .then(data => {
@@ -527,10 +522,8 @@ function verificarCiclo() {
                                       `${data.ciclo.data_inicial} a ${data.ciclo.data_final}`;
             saldoDisponivel.textContent = data.ciclo.valor_disponivel_entrada.toFixed(2);
             
-            // Habilita o botão de confirmar
             document.getElementById('confirmarMultiplaBtn').disabled = false;
             
-            // Define um valor de entrada sugerido (10% do disponível)
             const valorEntradaInput = document.getElementById('valor-entrada-multipla');
             if (!valorEntradaInput.value) {
                 const valorSugerido = Math.min(
@@ -547,7 +540,6 @@ function verificarCiclo() {
             cicloMultipla.textContent = 'Não definido';
             saldoDisponivel.textContent = '0.00';
             
-            // Desabilita o botão de confirmar
             document.getElementById('confirmarMultiplaBtn').disabled = true;
         }
     })
