@@ -586,9 +586,11 @@ def listar_owner_ball_sf(request):
     data = []
     for sf in paginator_sf_ob:
         data.append({
-                'id': sf.id,
-                'mercado': sf.entrada_mercado,
+                'id_event': sf.id_event,
+                'mercado': sf.mercado,
                 'odd': sf.odd,
+                'home_actual': sf.home_actual,
+                'away_actual': sf.away_actual,
                 'data_jogo': sf.data_jogo.strftime('%Y-%m-%d %H:%M:%S') if sf.data_jogo else None
             })
         

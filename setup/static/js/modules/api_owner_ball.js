@@ -70,9 +70,7 @@ function loadOwnerBallMarkets(showLoader = true) {
     })
 }
 
-/**
- * Atualiza a tabela com os dados dos mercados Owner Ball
- */
+
 function updateOwnerBallTable(mercados) {
     const tableBody = document.getElementById('ownerBallTableBody');
 
@@ -99,20 +97,25 @@ function updateOwnerBallTable(mercados) {
 
         return `
             <tr>
-                <td>${mercado.id}</td>
-                <td>${mercado.mercado || 'N/A'}</td>
-                <td>${mercado.odd || 'N/A'}</td>
-                <td>${dataFormatada}</td>
+                <td>${mercado.id_event || 'N/A'}</td>
+                <td>${mercado.mercado}</td>
+                <td>${mercado.odd}</td>
+                <td>${mercado.home_actual}%</td>
+                <td>${mercado.away_actual}%</td>
+                <td>${dataFormatada || 'N/A'}</td>
                 <td>
-                    <button class="btn btn-sm btn-info" title="Ver detalhes" onclick="viewOwnerBallDetails('${mercado.mercado}')">
-                        <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-success" title="Aceitar" onclick="acceptOwnerBallMarket('${mercado.mercado}')">
+                    <a id="editar-odd-owner-ball" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${mercado.id_event} title="Editar Odd">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${mercado.id_event} title="Aceitar aposta">
                         <i class="bi bi-check"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" title="Recusar" onclick="rejectOwnerBallMarket('${mercado.mercado}')">
+                    </a>
+                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${mercado.id_event} title="Recusar aposta">
                         <i class="bi bi-x"></i>
-                    </button>
+                    </a>
+                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${mercado.id_event} title="Desfazer ação">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
                 </td>
             </tr>
         `;
