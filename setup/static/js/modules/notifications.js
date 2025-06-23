@@ -46,7 +46,9 @@ export function showNotification(message, type) {
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
-            notificationContainer.removeChild(notification);
+            if (notification.parentNode) {
+                notification.remove();
+            }
         }, 300);
     }, 5000);
     

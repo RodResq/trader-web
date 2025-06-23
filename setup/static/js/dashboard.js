@@ -20,8 +20,8 @@ import { initMultiplasHandlers } from './modules/multiplas.js';
 import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_aposta.js';
 import { initThemeToggler } from './theme_toggler.js';
 import { setupApiOwnerBall } from './modules/api_owner_ball.js';
-import { setupApiOwnerBallFavoritoHome } from './modules/owner_ball/api_owner_ball _favorito_home.js'
-import { setupApiOwnerBallUnder25 } from './modules/owner_ball/api_owner_ball _under_2_5.js'
+import { setupApiOwnerBallFavoritoHome } from './modules/owner_ball/api_owner_ball _favorito_home.js';
+import { setupApiOwnerBallUnder25 } from './modules/owner_ball/api_owner_ball _under_2_5.js';
 import { setupUpdateOddChange } from './modules/update_odd_change.js';
 import { setupEvolucaoSaldoModal } from './modules/ciclo/evolucao_saldo.js'
 import { setupGraficoPerformaceSemanal } from './modules/ciclo/grafico_performace_semanal.js';

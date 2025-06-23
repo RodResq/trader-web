@@ -1,6 +1,4 @@
-/**
- * Módulo para gerenciar a API de mercados Owner Ball
- */
+import { setupEditarModalOwnerBall } from "./owner_ball/super-favorito/editar_odd_owner_ball.js";
 
 let currentPage = 1;
 let itemsPerPage = 10;
@@ -9,15 +7,11 @@ let isLoading = false;
 
 export function setupApiOwnerBall() {
     console.log('Inicializando API Owner Ball...');
-
     loadOwnerBallMarkets();
 
-    setupOwnerBallEventListeners();
 }
 
-/**
- * Carrega os mercados Owner Ball da API
- */
+
 function loadOwnerBallMarkets(showLoader = true) {
     if (isLoading) return;
 
@@ -55,6 +49,8 @@ function loadOwnerBallMarkets(showLoader = true) {
         if (data.success) {
             updateOwnerBallTable(data.mercados);
             updateOwnerBallPagination(data.pagination);
+            setupOwnerBallEventListeners();
+
         } else {
             showOwnerBallError('Erro ao carregar mercados owner ball');
             isLoading = false;
@@ -104,16 +100,16 @@ function updateOwnerBallTable(mercados) {
                 <td>${mercado.away_actual}%</td>
                 <td>${dataFormatada || 'N/A'}</td>
                 <td>
-                    <a id="editar-odd-owner-ball" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${mercado.id_event} title="Editar Odd">
+                    <a id="editar-odd-owner-ball" class="btn btn-sm btn-info edit-odd-btn-owner-ball" data-event-id=${mercado.id_event} title="Editar Odd">
                         <i class="bi bi-pencil"></i>
                     </a>
-                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${mercado.id_event} title="Aceitar aposta">
+                    <a id="aceitar-aposta-owner-ball" class="btn btn-sm btn-success apostar-btn-owner-ball" data-event-id=${mercado.id_event} title="Aceitar aposta">
                         <i class="bi bi-check"></i>
                     </a>
-                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${mercado.id_event} title="Recusar aposta">
+                    <a id="recusar-aposta-owner-ball" class="btn btn-sm btn-danger recusar-btn-owner-ball" data-event-id=${mercado.id_event} title="Recusar aposta">
                         <i class="bi bi-x"></i>
                     </a>
-                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${mercado.id_event} title="Desfazer ação">
+                    <a id="desfazer-acao-owner-ball" class="btn btn-sm btn-warning desfazer-acao-btn-owner-ball" data-event-id=${mercado.id_event} title="Desfazer ação">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </a>
                 </td>
@@ -124,9 +120,7 @@ function updateOwnerBallTable(mercados) {
     tableBody.innerHTML = rows;
 }
 
-/**
- * Atualiza a paginação
- */
+
 function updateOwnerBallPagination(pagination) {
     if (!pagination) return;
 
@@ -134,19 +128,16 @@ function updateOwnerBallPagination(pagination) {
     totalPages = pagination.total_pages;
     itemsPerPage = pagination.items_per_page;
 
-    // Atualizar informações da página
     const pageInfo = document.getElementById('ownerBallPageInfo');
     if (pageInfo) {
         pageInfo.innerHTML = `<span>Página ${currentPage} de ${totalPages}</span>`
     }
 
-    // Atualizar lista de paginação
     const paginationList = document.getElementById('ownerBallPaginationList');
     if (paginationList) {
         paginationList.innerHTML = generateOwnerBallPaginationHTML();
     }
 
-    // Atualizar select de items por página
     const itemsSelect = document.getElementById('ownerBallItemsPerPageSelect');
     if (itemsSelect) {
         itemsSelect.value = itemsPerPage;
@@ -250,6 +241,8 @@ function setupOwnerBallEventListeners() {
             // Implementar funcionalidade de múltiplas se necessário
         });
     }
+
+    setupEditarModalOwnerBall()
 }
 
 

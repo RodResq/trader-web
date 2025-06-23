@@ -187,8 +187,8 @@
   }
   
   body.theme-light .btn-info {
-    background-color: var(--bs-info) !important;
-    border-color: var(--bs-info) !important;
+    background-color: #36A2EB !important;
+    border-color: #36A2EB !important;
     color: white !important;
   }
   
