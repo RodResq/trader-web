@@ -1,12 +1,12 @@
-let graficoResultadoAposta = null;
+let graficoMelhorDia = null;
 
-export function setupGraficoResultadoAposta() {
-    inicializarGraficoResultadoAposta();
+export function setupGraficoMelhorDia() {
+    inicializarGraficoMelhorDia();
 }
 
 
-function inicializarGraficoResultadoAposta() {
-    const chartContainer = document.getElementById('graficoResultadoAposta');
+function inicializarGraficoMelhorDia() {
+    const chartContainer = document.getElementById('graficoMelhorDia');
     if (!chartContainer) return;
 
     chartContainer.style.height = '150px';
@@ -14,13 +14,13 @@ function inicializarGraficoResultadoAposta() {
 
     chartContainer.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>';
     
-    carregarDadosGraficoResultadoAposta(chartContainer);
+    carregarDadosGraficoMelhorDia(chartContainer);
 }
 
-async function carregarDadosGraficoResultadoAposta(chartContainer) {
+async function carregarDadosGraficoMelhorDia(chartContainer) {
     let dados = null;
     try {
-        const response = await fetch('/api/grafico-resultado-aposta');
+        const response = await fetch('/api/grafico-melhor-dia');
         if (!response.ok) {
             throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
         }
@@ -46,7 +46,7 @@ function renderizarDados(container, dados) {
         return;
     }
 
-    const existingChart = window.graficoResultadoAposta;
+    const existingChart = window.graficoMelhorDia;
     if (existingChart && existingChart.destroy) {
         existingChart.destroy();
     }
@@ -59,16 +59,16 @@ function renderizarDados(container, dados) {
 }
 
 function renderizarGrafico(container, dados) {
-    const containerGrafico = document.getElementById('graficoResultadoAposta');
+    const containerGrafico = document.getElementById('graficoMelhorDia');
 
     if (!container) {
         console.error('Canvas do gráfico não encontrado');
         return;
     }
 
-    if (graficoResultadoAposta) {
-        graficoResultadoAposta.destroy();
-        graficoResultadoAposta = null;
+    if (graficoMelhorDia) {
+        graficoMelhorDia.destroy();
+        graficoMelhorDia = null;
     }
 
     if (typeof Chart === 'undefined') {
@@ -78,7 +78,7 @@ function renderizarGrafico(container, dados) {
     }
 
     const mainChartContainer = document.createElement('div');
-    mainChartContainer.style.width = '30%';
+    mainChartContainer.style.width = '60%';
     mainChartContainer.style.height = '50%';
     mainChartContainer.style.position = 'absolute';
     containerGrafico.appendChild(mainChartContainer);
@@ -97,25 +97,52 @@ function renderizarGrafico(container, dados) {
         return;
     }
 
-    const labels = dados.map(item => item.resultado);
-    const totais = dados.map(item => Number(item.total)) || 0;
+    const labels = dados.map(item => item.dia_aposta);
+    const totais = dados.map(item => Number(item.total_retorno)) || 0;
 
     const ctx = canvas.getContext('2d');
-    graficoResultadoAposta = new Chart(ctx, {
-        type: 'doughnut',
+    graficoMelhorDia = new Chart(ctx, {
+        type: 'bar',
         data: {
-            // labels: labels,
+            labels: labels,
             datasets: [{
-                label: 'My First Dataset',
+                label: 'Melhor dia da semana',
+                axis: 'y',
+                fill: false,
                 data: totais,
                 backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
                 'rgb(54, 162, 235)',
-                'rgb(25, 135, 84)',
-                'rgb(220, 53, 69)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
                 ],
-                borderColor: borderColor,
-                hoverOffset: 4
+                borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+                ],
+               borderWidth: 1
             }]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    stacked: false,
+
+                },
+                y: {
+                    stacked: false,
+                }
+
+            }
         }
     })
 

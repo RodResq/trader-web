@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from analytics.views import index, evento, apostar, mercados, editar_odd, entrada_multipla, listar_owner_ball_sf, atualizar_odd_change, atualizar_odd_status, listar_owner_ball_favorito_home, listar_owner_ball_under_2_5, atualizar_statistica_overall 
 from gerencia.views import grafico_performace_semanal, grafico_resultado_aposta
+from eventos.views import grafico_melhor_dia
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,4 +39,5 @@ urlpatterns = [
     path('api/update_odd', atualizar_odd_status, name='atualizar_odd_status'),
     path('api/atualizar-statistic-overall/<int:id_evento>', atualizar_statistica_overall, name='atualizar_statistica_overall'),
     path('api/grafico-resultado-aposta/', grafico_resultado_aposta, name="grafico_resultado_apostas"),
+    path('api/grafico-melhor-dia', grafico_melhor_dia, name="grafico_melhor_dia")
 ]

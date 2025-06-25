@@ -26,6 +26,7 @@ import { setupUpdateOddChange } from './modules/update_odd_change.js';
 import { setupEvolucaoSaldoModal } from './modules/ciclo/evolucao_saldo.js'
 import { setupGraficoPerformaceSemanal } from './modules/ciclo/grafico_performace_semanal.js';
 import { setupGraficoResultadoAposta } from './modules/gerencia_aposta/grafico_resultado_aposta.js';
+import { setupGraficoMelhorDia } from './modules/evento/grafico_melhor_dia.js'
 import { setupTemporizadorProximoEvento } from './modules/temporizadorProximoEvento.js';
 
 
@@ -68,6 +69,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Incializa gráfico de resultado aposta
     setupGraficoResultadoAposta();
+
+    // Incializa gráfico de melhor dia semana
+    setupGraficoMelhorDia();
    
     // Inicializa API Owner Ball
     setupApiOwnerBall();
@@ -92,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     //Incializa temporizador para o próximo evento
-    setupTemporizadorProximoEvento();
+    // setupTemporizadorProximoEvento();
 
 
     // Inicializa componentes de paginação

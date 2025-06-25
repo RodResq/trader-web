@@ -585,6 +585,7 @@ def listar_owner_ball_sf(request):
     
     data = []
     for sf in paginator_sf_ob:
+        # TODO IMPLEMENTAR CHAMADA A API http://127.0.0.1:8080/statistic-overall PARA ATUALIAR O VALOR NA TELA
         data.append({
                 'id_event': sf.id_event,
                 'mercado': sf.mercado,

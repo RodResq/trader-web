@@ -39,7 +39,6 @@
                           <!-- O gráfico será renderizado aqui via JavaScript -->
                         </div>
                       </div>
-                      
                     </div>
                   </div>
                 </div>
@@ -51,8 +50,8 @@
               <a href="{% url 'analytics:eventos' %}" class="text-decoration-none">
                 <div class="card border-left-success shadow h-100 py-2">
                   <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-4">
+                    <div class="row no-gutters">
+                      <div class="col-md-4">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                           Qtd. Eventos
                         </div>
@@ -60,24 +59,16 @@
                           <span class="bi bi-box2 fs-3 text-gray-300"></span>
                           <span class="fs-4 text-gray-300">{{ qtd_eventos }}</span>
                         </div>
-                        <div class="row">
-                          <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mt-1">
-                              Próximo Evento
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                              <span class="fs-4 text-gray-300">13522925</span>
-                            </div>
-                          </div>
-                          <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mt-1">
-                              Tempo Restante
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                              <span class="bi bi-clock fs-3 text-gray-300"></span>
-                              <span class="fs-4 text-gray-300" id="temporizador">HH:MM:SS</span>
-                            </div>
-                          </div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mt-1">
+                          Próximo Evento
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          <span class="fs-4 text-gray-300">13522925</span>
+                        </div>
+                      </div>
+                      <div class="col md-2">
+                        <div id="graficoMelhorDia">
+                          <!-- O gráfico será renderizado aqui via JavaScript -->
                         </div>
                       </div>
                       
@@ -375,8 +366,19 @@
           
           <!-- Card Mercados SF -->
           <div class="card shadow mb-3">
-            <div class="card-header py-2">
+            <div class="card-header py-2 d-flex align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Mercados SF</h6>
+              <div class="d-flex align-items-center">
+                <div class="form-check form-switch me-2">
+                  <input class="form-check-input" type="checkbox" id="toggleAllSF">
+                  <label class="form-check-label" for="toggleAllSF">
+                    <small>Todos</small>
+                  </label>
+                </div>
+                <button id="refreshOwnerBallBtn" class="btn btn-sm btn-success" title="Atualizar">
+                  <i class="bi bi-arrow-repeat"></i>
+                </button>
+              </div>
             </div>
             <div class="card-body p-2 markets-scroll-container">
               <div class="form-check mb-2">
