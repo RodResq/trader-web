@@ -93,9 +93,22 @@ function updateOwnerBallTable(mercados) {
 
         return `
             <tr>
-                <td>${mercado.id_event || 'N/A'}</td>
+                <td>
+                    <span {% if mercado.resultado_estatistica %} 
+                        class="btn-sucess resultado-statistic-overall-home"
+                        {% else %}
+                        class="resultado-statistic-overall-away"
+                        {% endif %}>
+                        ${mercado.id_event || 'N/A'}
+                    </span>
+                </td>
                 <td>${mercado.mercado}</td>
-                <td>${mercado.odd}</td>
+                <td>
+                    ${mercado.odd}
+                    <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="${mercado.id_event}" title="Atualizar odd change">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </a>
+                </td>
                 <td>${mercado.home_actual}%</td>
                 <td>${mercado.away_actual}%</td>
                 <td>${dataFormatada || 'N/A'}</td>
