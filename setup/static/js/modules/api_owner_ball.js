@@ -102,7 +102,7 @@ function updateOwnerBallTable(mercados) {
                         ${mercado.id_event || 'N/A'}
                     </span>
                 </td>
-                <td>${mercado.mercado}</td>
+                <td class="mercado-column">${mercado.mercado}</td>
                 <td>
                     ${mercado.odd}
                     <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="${mercado.id_event}" title="Atualizar odd change">

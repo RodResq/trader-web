@@ -5,10 +5,11 @@ def dump_mercados_para_entrada() -> bool:
     mercados = VwConsultaMercadoSf.objects.all()
     mercados_owner_ball = VwMercadoOwnerBallSfHome.objects.all()
     
-    mercados_result = mercados.union(mercados_owner_ball)
+    mercados_owner_ball_unicos = mercados_owner_ball.exclude(id_event__in=mercados.values_list('id_event', flat=True))
+    
+    mercados_result = mercados.union(mercados_owner_ball_unicos)
     
     id_existents = Entrada.objects.values_list('id_event', flat=True)
-    
     contador_inseridos = 0
     contador_ignorados = 0
     
