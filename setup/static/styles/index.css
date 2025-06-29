@@ -334,7 +334,7 @@ a .card {
 }
 
 .mercado-column {
-  max-width: 400px;
+  max-width: 300px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -583,7 +583,7 @@ body.theme-light .main-cards-scroll-container:hover {
     border-radius: 50px; 
     background-color: #198754;
     border-color: #198754;
-    padding: 5px
+    padding: 3px
 }
 
 .resultado-statistic-overall-away {
@@ -594,5 +594,5 @@ body.theme-light .main-cards-scroll-container:hover {
     border-radius: 50px; 
     background-color: #dc3545;
     border-color: #dc3545;
-    padding: 5px
+    padding: 3px
 }

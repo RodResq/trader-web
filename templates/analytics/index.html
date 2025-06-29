@@ -200,6 +200,13 @@
                             <tr>
                               <td>
                                 {% comment %} TODO REFATORAR {% endcomment %}
+                                {% if mercado.resultado_estatistica %}
+                                  <i style="color:#198754; vertical-align: middle;" class="bi bi-bar-chart-line-fill"></i>
+                                  <i style="color:#198754; vertical-align: middle;" class="bi bi-tv-fill"></i>
+                                {% else %}
+                                  <i style="color:#dc3545; vertical-align: middle;" class="bi bi-bar-chart-line-fill"></i>
+                                  <i class="bi bi-tv"></i>
+                                {% endif %}
                                 <span {% if mercado.resultado_estatistica %} 
                                   class="btn-sucess resultado-statistic-overall-home"
                                   {% else %}
