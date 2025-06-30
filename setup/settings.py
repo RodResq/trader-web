@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'gerencia.apps.GerenciaConfig',
     'eventos.apps.EventosConfig',
     'ciclo.apps.CicloConfig',
+    'performace.apps.PerformaceConfig',
 ]
 
 MIDDLEWARE = [
