@@ -7,6 +7,7 @@ urlpatterns = [
     path('gerencia/', include('gerencia.urls')),
     path('eventos/', eventos, name='eventos'),
     path('ciclos/', include('ciclo.urls')),
+    path('performace/', include('performace.urls')),
     path('apostas/aceitar/', aceitar_aposta, name='aceitar_aposta'),
     path('verificar_ciclo/', verificar_ciclo, name='verificar_ciclo'),
 ]
