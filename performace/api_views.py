@@ -9,13 +9,15 @@ class PerformaceAPIView(View):
     def get(self, request):
         resultado = Aposta.objects.aggregate(
             total_registros=Count('id'),
-            total_green=Count(Case(When(resultado='Green', then=1))),
+            total_green=Count(Case(When(resultado='G', then=1))),
             percentual_green=Cast(
-                Count(Case(When(resultado='Green', then=1))) * 100.0 / Count('id'),
+                Count(Case(When(resultado='G', then=1))) * 100.0 / Count('id'),
                 FloatField()
             )
         )
-        return JsonResponse({
-            'total': resultado['total_registros'],
-            'percentual_green': f"{resultado['percentual_green']:.2f}"
+        if resultado:
+            return JsonResponse({
+                'success': True,
+                'total': resultado['total_registros'],
+                'percentual_green': f"{resultado['percentual_green']:.2f}"
             })
