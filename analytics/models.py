@@ -36,12 +36,12 @@ class VwConsultaMercadoSf(models.Model):
     
     
 class VwMercadoOwnerBallSfHome(models.Model):
-    id_event = models.BigIntegerField(null=False)
-    mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    home_actual = models.IntegerField(blank=True, null=True)
-    away_actual = models.IntegerField(blank=True, null=True)
-    odd = models.FloatField(blank=True, null=True)
-    data_jogo = models.DateTimeField(blank=True, null=True)
+    id_event = models.BigIntegerField(null=False, name='id_event')
+    mercado = models.CharField(max_length=200, name='mercado', db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    odd = models.FloatField(blank=True, name='odd', null=True)
+    home_actual = models.IntegerField(blank=True, name='home_actual', null=True)
+    away_actual = models.IntegerField(blank=True, name='away_actual', null=True)
+    data_jogo = models.DateTimeField(blank=True, name='data_jogo', null=True)
 
 
     class Meta:
