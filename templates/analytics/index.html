@@ -23,15 +23,15 @@
                           Gerência Apostas
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
-                          <span class="bi bi-cash-coin fs-3 text-gray-300 me-2"></span>
-                          <span class="fs-4 text-gray-300" style="margin-top: -15px;">R$ {{ soma_total_retorno }}</span>
+                          <span class="bi bi-cash-coin text-gray-300 me-2"></span>
+                          <span class="text-gray-300" style="margin-top: -15px;">R$ {{ soma_total_retorno }}</span>
                         </div>
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 mt-1">
                           Retorno Atual
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
-                          <span class="bi bi-cash-coin fs-3 text-gray-300 me-2"></span>
-                          <span class="fs-4 text-gray-300" style="margin-top: -15px;">R$ {{ retorno_atual }}</span>
+                          <span class="bi bi-cash-coin text-gray-300 me-2"></span>
+                          <span class="text-gray-300" style="margin-top: -15px;">R$ {{ retorno_atual }}</span>
                         </div>
                       </div>
                       <div class="col mr-2">
@@ -47,7 +47,7 @@
 
             <!-- Card Quantidade Eventos -->
             <div class="col-xl-6 col-md-6">
-              <a href="{% url 'analytics:eventos' %}" class="text-decoration-none">
+              <a class="text-decoration-none">
                 <div class="card border-left-success shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters">
@@ -56,14 +56,19 @@
                           Qtd. Eventos
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800 d-flex">
-                          <span class="bi bi-box2 fs-3 text-gray-300"></span>
-                          <span class="fs-4 text-gray-300">{{ qtd_eventos }}</span>
+                          <span class="text-gray-300"> <span class="bi bi-box2 text-gray-300"></span> {{ qtd_eventos }}</span>
                         </div>
                         <div class="text-xs font-weight-bold text-success text-uppercase mt-1">
                           Próximo Evento
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          <span class="fs-4 text-gray-300">13522925</span>
+                          <span class="fs-4 text-gray-300" id="proximoEvento"></span>
+                        </div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mt-1">
+                          Tempo Restando
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          <span class="fs-4 text-gray-300" id="tempoRestando"></span>
                         </div>
                       </div>
                       <div class="col md-2">

@@ -9,7 +9,7 @@ from analytics.models import VwConsultaMercadoSf, Entrada, Aposta, VwMercadoOwne
 from analytics.helpers import dump_mercados_para_entrada
 from ciclo.models import Ciclo 
 from .forms import AceitarApostaForm
-from eventos.models import Evento
+from evento.models import Evento
 from decimal import Decimal
 from datetime import datetime
 from django.core.exceptions import ValidationError
@@ -24,11 +24,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Create your views here.
 def index(request):
         dump_mercados_para_entrada()
         
-        # Get pagination parameters from request
         page = request.GET.get('page', 1)
         items_per_page = request.GET.get('items_per_page', 10)
         
@@ -70,6 +68,7 @@ def index(request):
             'retorno_atual': retorno_atual.valor_total_retorno,
             'items_per_page': items_per_page
         })
+
 
 def apostar(request):
     event_id = request.GET.get('event_id')

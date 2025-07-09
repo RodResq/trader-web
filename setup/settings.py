@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'analytics.apps.AnalyticsConfig',
     'gerencia.apps.GerenciaConfig',
-    'eventos.apps.EventosConfig',
+    'evento.apps.EventoConfig',
     'ciclo.apps.CicloConfig',
     'performace.apps.PerformaceConfig',
 ]

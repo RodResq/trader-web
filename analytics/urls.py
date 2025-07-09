@@ -5,7 +5,7 @@ app_name = 'analytics'
 
 urlpatterns = [
     path('gerencia/', include('gerencia.urls')),
-    path('eventos/', eventos, name='eventos'),
+    path('evento/', include('evento.urls')),
     path('ciclos/', include('ciclo.urls')),
     path('performace/', include('performace.urls')),
     path('apostas/aceitar/', aceitar_aposta, name='aceitar_aposta'),

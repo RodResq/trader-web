@@ -29,6 +29,7 @@ import { setupGraficoResultadoAposta } from './modules/gerencia_aposta/grafico_r
 import { setupGraficoMelhorDia } from './modules/evento/grafico_melhor_dia.js'
 import { setupTemporizadorProximoEvento } from './modules/temporizadorProximoEvento.js';
 import { setupProgressPerformace } from './modules/performace/grafico_performace.js';
+import { setupProximoEvento } from './modules/evento/proximo_evento.js'
 
 
 
@@ -73,6 +74,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializa barra de progresso de performace
     setupProgressPerformace();
+
+    // Inicializa API Próximo Evento
+    setupProximoEvento();
 
     // Incializa gráfico de melhor dia semana
     setupGraficoMelhorDia();
