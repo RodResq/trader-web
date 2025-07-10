@@ -78,7 +78,7 @@ function updateOwnerBallTable(mercados) {
     if (!mercados || mercados.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center text-muted">
+                <td colspan="7" class="text-center text-muted">
                     Nenhum mercado Owner Ball encontrado.
                 </td>
             </tr>

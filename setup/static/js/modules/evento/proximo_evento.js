@@ -15,13 +15,13 @@ async function inicializarProximoEvento() {
         if (dados.success) {
             renderizarProximoEvento(dados);
         } else {
-            showNotification('Erro ao recuperar o próximo evento');
-            throw new Error(data.error || 'Erro desconhecido ao carregar dados');
+            removeParenteNode();
+            showNotification('Sem Próximos Eventos', 'warning');
         }
     } catch (error) {
         console.error('Erro ao carregar dados de resutltado das apostas:', error);
     } finally {
-        console.log('Finaly grafico performace');
+        console.log('Finaly próximo evento');
     }
 }
 
@@ -32,6 +32,10 @@ function renderizarProximoEvento(dados) {
 
     if (!proximoEvento) return;
 
+    if (!dados['success']) {
+        proximoEvento.parentElement = '';
+    }
+
     proximoEvento.className = 'alert-proximo-evento';
     proximoEvento.textContent = dados['proximo_jogo_futuro']['id_event'];
 
@@ -40,4 +44,14 @@ function renderizarProximoEvento(dados) {
         `${dados['proximo_jogo_futuro']['tempo_diferenca']['horas']}` + ':' +
         `${dados['proximo_jogo_futuro']['tempo_diferenca']['minutos']}` + ':' +
         `00`
+}
+
+function removeParenteNode() {
+    const proximoEventoLabel = document.getElementById('proximoEventoLabel');
+    const tempoRestandoLabel = document.getElementById('tempoRestandoLabel');
+
+    if (!proximoEvento || !tempoRestando) return; 
+
+    proximoEventoLabel.remove();
+    tempoRestandoLabel.remove();
 }
