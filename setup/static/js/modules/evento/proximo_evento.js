@@ -40,10 +40,26 @@ function renderizarProximoEvento(dados) {
     proximoEvento.textContent = dados['proximo_jogo_futuro']['id_event'];
 
     tempoRestando.className = 'alert-proximo-evento';
-    tempoRestando.textContent = 
-        `${dados['proximo_jogo_futuro']['tempo_diferenca']['horas']}` + ':' +
-        `${dados['proximo_jogo_futuro']['tempo_diferenca']['minutos']}` + ':' +
-        `00`
+
+    let totalSegundos = (dados['proximo_jogo_futuro']['tempo_diferenca']['horas'] * 3600) + 
+                   (dados['proximo_jogo_futuro']['tempo_diferenca']['minutos'] * 60);
+
+    const timerInterval = setInterval(() => {
+        if (totalSegundos <= 0) {
+            clearInterval(timerInterval);
+            tempoRestando.textContent = "00:00:00";
+            return;
+        }
+
+        totalSegundos--;
+
+        const horas = Math.floor(totalSegundos / 3600);
+        const minutos = Math.floor((totalSegundos % 3600) / 60);
+        const segundos = totalSegundos % 60;
+
+        tempoRestando.textContent = `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+    }, 1000);
+
 }
 
 function removeParenteNode() {
