@@ -11,7 +11,6 @@ export function setupGraficoDesempenhoSemanal() {
         console.error('Chart.js não está disponível. Carregando dinamicamente...');
         
         const chartScript = document.createElement('script');
-        chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
         chartScript.onload = function() {
             console.log('Chart.js carregado com sucesso!');
             initGerenciaGraficos();

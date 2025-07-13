@@ -313,11 +313,11 @@ function renderizarGraficoDesempenho(container, dados) {
         return;
     }
     
-    // Destruir gráfico existente se houver
+    // Destruir gráfico existente se houver comentario para não desaparecer o grafico no carregamento
     const existingChart = window.graficoDesempenho;
-    if (existingChart && existingChart.destroy) {
-        existingChart.destroy();
-    }
+    // if (existingChart && existingChart.destroy) {
+    //     existingChart.destroy();
+    // }
     
     // Criar canvas para o gráfico principal em um container próprio
     const mainChartContainer = document.createElement('div');
@@ -505,7 +505,7 @@ function renderizarGraficoDesempenho(container, dados) {
                 }
             },
             animation: {
-                duration: 500 // Animação mais rápida para atualizações
+                duration: 200 // Animação mais rápida para atualizações
             }
         }
     });
