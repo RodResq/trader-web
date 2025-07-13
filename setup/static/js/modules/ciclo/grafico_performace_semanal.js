@@ -21,7 +21,7 @@ function inicializarGraficoPerformaceSemanal() {
 async function carregarDadosGraficoPerformaceSemanal(chartContainer) {
     let dados = null;
     try {
-        const response = await fetch(`/api/grafico-performace-semanal`);
+        const response = await fetch(`/api/grafico_performace_semanal`);
         if (!response.ok) {
             throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
         }

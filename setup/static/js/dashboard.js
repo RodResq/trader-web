@@ -27,7 +27,7 @@ import { setupEvolucaoSaldoModal } from './modules/ciclo/evolucao_saldo.js'
 import { setupGraficoPerformaceSemanal } from './modules/ciclo/grafico_performace_semanal.js';
 import { setupGraficoResultadoAposta } from './modules/gerencia_aposta/grafico_resultado_aposta.js';
 import { setupGraficoMelhorDia } from './modules/evento/grafico_melhor_dia.js'
-import { setupTemporizadorProximoEvento } from './modules/temporizadorProximoEvento.js';
+import { setupGraficoDesempenhoSemanal } from './modules/gerencia_aposta/gerencia_graficos_principal.js';
 import { setupProgressPerformace } from './modules/performace/grafico_performace.js';
 import { setupProximoEvento } from './modules/evento/proximo_evento.js'
 
@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function() {
     setupGerenciaResultado();
 
     setupEvolucaoSaldoModal();
+
+    // Incializa gráfico gerencia apostas de performace semanal
+    setupGraficoDesempenhoSemanal()
 
     // Incializa gráfico de performace semanal
     setupGraficoPerformaceSemanal();

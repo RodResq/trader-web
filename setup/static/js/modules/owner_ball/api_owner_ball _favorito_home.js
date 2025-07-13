@@ -76,10 +76,8 @@ async function loadOwnerBallFavoritoHomeMarkets(showLoader = true) {
 function updateOwnerBallFavoritoHomeTable(mercados) {
     const tableBody = document.getElementById('ownerBallFavoritoHomeTableBody');
 
-    if (!tableBody) {
-        console.error('Elemento OwnerBallFavoritoHomeTableBody não encontrado');
-        return;
-    }
+    if (!tableBody) return;
+    
 
     if (!mercados || mercados.length === 0) {
         tableBody.innerHTML = `

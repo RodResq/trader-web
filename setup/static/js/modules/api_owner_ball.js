@@ -70,10 +70,8 @@ function loadOwnerBallMarkets(showLoader = true) {
 function updateOwnerBallTable(mercados) {
     const tableBody = document.getElementById('ownerBallTableBody');
 
-    if (!tableBody) {
-        console.error('Elemento ownerBallTableBody não encontrado');
-        return;
-    }
+    if (!tableBody) return;
+
 
     if (!mercados || mercados.length === 0) {
         tableBody.innerHTML = `

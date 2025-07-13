@@ -70,16 +70,12 @@ async function loadOwnerBallUnder25Markets(showLoader = true) {
     })
 }
 
-/**
- * Atualiza a tabela com os dados dos mercados Owner Ball
- */
+
 function updateOwnerBallUnder25Table(mercados) {
     const tableBody = document.getElementById('ownerBallUnder25TableBody');
 
-    if (!tableBody) {
-        console.error('Elemento OwnerBallUnder25TableBody não encontrado');
-        return;
-    }
+    if (!tableBody) return;
+
 
     if (!mercados || mercados.length === 0) {
         tableBody.innerHTML = `

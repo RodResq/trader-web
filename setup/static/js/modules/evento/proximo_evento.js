@@ -7,7 +7,7 @@ export function setupProximoEvento() {
 async function inicializarProximoEvento() {
     let dados = [];
     try {
-        const response = await fetch('analytics/evento/api/proximo_evento');
+        const response = await fetch('/api/proximo_evento');
         if (!response.ok) {
             throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
         }
