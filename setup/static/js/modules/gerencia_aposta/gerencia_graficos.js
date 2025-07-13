@@ -387,12 +387,12 @@ function renderizarGraficoDesempenho(container, dados) {
                 {
                     label: 'Valor Retornado (R$)',
                     data: valorRetornos,
-                    borderColor: '#4e73df',
+                    borderColor: '#147006',
                     backgroundColor: 'rgba(78, 115, 223, 0.1)',
-                    pointBackgroundColor: '#4e73df',
+                    pointBackgroundColor: '#147006',
                     pointBorderColor: '#fff',
                     pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: '#4e73df',
+                    pointHoverBorderColor: '#147006',
                     borderWidth: 3,
                     fill: true,
                     tension: 0.1, // Reduzido para linhas mais retas
@@ -402,12 +402,12 @@ function renderizarGraficoDesempenho(container, dados) {
                 {
                     label: 'Valor Investido (R$)',
                     data: valorEntradas,
-                    borderColor: '#1cc88a',
+                    borderColor: '#c81c1c',
                     backgroundColor: 'rgba(28, 200, 138, 0.1)',
-                    pointBackgroundColor: '#1cc88a',
+                    pointBackgroundColor: '#c81c1c',
                     pointBorderColor: '#fff',
                     pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: '#1cc88a',
+                    pointHoverBorderColor: '#c81c1c',
                     borderWidth: 3,
                     fill: true,
                     tension: 0.1, // Reduzido para linhas mais retas
