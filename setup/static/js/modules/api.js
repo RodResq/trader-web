@@ -82,7 +82,7 @@ export function setupApostaButtons() {
             modalInstance.hide();
             showNotification('Aposta registrada com sucesso!', 'success');
             
-            return updateEntryOptionIcon(currentRow, "A")
+            return updateEntryOptionIcon(false, currentRow, "A")
         }).catch(error => {
             console.error('Erro:', error);
             showNotification('Erro ao registrar aposta. Tente novamente.', 'danger');

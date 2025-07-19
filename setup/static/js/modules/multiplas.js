@@ -361,7 +361,7 @@ function atualizarUIAposProcessamentoMultipla(action) {
         const idEvent = row.querySelector('td:first-child').textContent.trim();
         
         // Atualiza o ícone de status
-        updateEntryOptionIcon(row, action === 'aceitar' ? 'A' : 'R');
+        updateEntryOptionIcon(true, row, action === 'aceitar' ? 'A' : 'R');
     });
 }
 

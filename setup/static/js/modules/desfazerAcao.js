@@ -25,17 +25,14 @@ export function setupDesfazerAcaoModal() {
         button.addEventListener('click', function(e) {
             e.preventDefault();
 
-            // Obter dados da linha da tabela
             currentRow = this.closest('tr');
             if (!currentRow) return;
 
             const eventId = currentRow.querySelector('td:first-child').textContent;
             const mercado = currentRow.querySelector('td:nth-child(2)').textContent;
 
-            // Armazenar ID do evento atual
             currentEventId = eventId;
 
-            // Atualizar dados no modal
             document.getElementById('evento-id-desfazer').textContent = eventId;
             document.getElementById('evento-mercado-desfazer').textContent = mercado;
 
@@ -52,7 +49,6 @@ export function setupDesfazerAcaoModal() {
         this.disabled = true;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
 
-         // Chamada de API 
          const url = `/api/apostar?event_id=${currentEventId}&action=desfazer`;
 
          fetch(url, {
@@ -70,16 +66,13 @@ export function setupDesfazerAcaoModal() {
             desabilitarBtnDesfazer(currentRow);
             
             modalInstance.hide();
-            // Resetar botão
             this.disabled = false;
             this.innerHTML = '<i class="bi bi-x-circle"></i> Confirmar Desfazer';
 
-            updateEntryOptionIcon(currentRow, "E");
+            updateEntryOptionIcon(false, currentRow, "E");
             
-            // Mostrar notificação
             showNotification('Entrada desfeita com sucesso!', 'warning');
             
-            // Limpar referências
             currentEventId = null;
             currentRow = null;
         })
