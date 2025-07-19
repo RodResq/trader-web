@@ -178,9 +178,20 @@ function updateTable(mercados) {
         const row = document.createElement('tr');
         
         const idCell = document.createElement('td');
+        const iconElementStatistic = document.createElement('i');
+        iconElementStatistic.className = 'bi bi-bar-chart-line-fill';
+        iconElementStatistic.style = mercado.resultado_estatistica ? 'color:#198754; vertical-align: middle;': 'color:#dc3545; vertical-align: middle;';
+        
+        const iconTv = document.createElement('i');
+        iconTv.className = 'bi bi-tv m-1';
+        iconTv.style = mercado.resultado_estatistica ? 'color:#198754': null;
+
+
         const spanElement = document.createElement('span');
         spanElement.className = mercado.resultado_estatistica ? 'resultado-statistic-overall-home' : 'resultado-statistic-overall-away'
         spanElement.textContent = mercado.id_event;
+        idCell.appendChild(iconElementStatistic);
+        idCell.appendChild(iconTv);
         idCell.appendChild(spanElement);
         row.appendChild(idCell);
         
