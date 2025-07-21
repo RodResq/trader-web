@@ -10,4 +10,5 @@ urlpatterns = [
     path('performace/', include('performace.urls')),
     path('apostas/aceitar/', aceitar_aposta, name='aceitar_aposta'),
     path('verificar_ciclo/', verificar_ciclo, name='verificar_ciclo'),
+    path('team/', include('team.urls'), name='team'),
 ]

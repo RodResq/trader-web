@@ -1,0 +1,22 @@
+{% extends "analytics/base.html" %}
+{% load static %}
+{% block content %}
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Clubes</h1>
+    </div>
+    {% if messages %}
+    <div class="alert alert-success" role="alert">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+    {% comment %} TODO COLACAR UM CARD LADO ESQUERDO PARA TEAMS SOFASCORE {% endcomment %}
+    {% comment %} TODO COLACAR UM CARD ABAIXO LADO ESQUERDO PARA TEAMS OWNER BOALL {% endcomment %}
+    {% comment %} TODO DISPOSICAO UM ABAIXO DO OUTRO {% endcomment %}
+    {% comment %} TODO LADO DIRETOR INFORMACOES ÚTEIS PARA AS APOSTAS SOBRE O CLUBE {% endcomment %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

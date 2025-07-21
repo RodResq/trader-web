@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'performace.apps.PerformaceConfig',
     'owner_ball.apps.OwnerBallConfig',
     'grafico.apps.GraficoConfig',
+    'team.apps.TeamConfig',
 ]
 
 MIDDLEWARE = [
