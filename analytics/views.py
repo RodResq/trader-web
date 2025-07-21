@@ -571,7 +571,7 @@ def listar_owner_ball_sf(request):
     except ValueError:
         items_per_page = 10
     
-    sfs_owner_ball = VwMercadoOwnerBallSfHome.objects.all()
+    sfs_owner_ball = VwMercadoOwnerBallSfHome.objects.all().order_by('id_event', 'data_jogo')
     
     paginator = Paginator(sfs_owner_ball, items_per_page)
     
@@ -694,7 +694,7 @@ def listar_owner_ball_favorito_home(request):
     except ValueError:
         items_per_page = 10
     
-    favoritos_home = VwMercadoOwnerBallFavoritoHome.objects.all()
+    favoritos_home = VwMercadoOwnerBallFavoritoHome.objects.all().order_by('data_jogo')
     
     paginator = Paginator(favoritos_home, items_per_page)
     
@@ -737,7 +737,7 @@ def listar_owner_ball_under_2_5(request):
     except ValueError:
         items_per_page = 10
     
-    under_2_5 = VwMercadoOwnerBallUnder2_5.objects.all()
+    under_2_5 = VwMercadoOwnerBallUnder2_5.objects.all().order_by('data_jogo')
     
     paginator = Paginator(under_2_5, items_per_page)
     
