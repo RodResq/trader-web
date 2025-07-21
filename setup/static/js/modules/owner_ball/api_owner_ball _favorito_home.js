@@ -1,7 +1,3 @@
-/**
- * Módulo para gerenciar a API de mercados Owner Ball
- */
-
 let currentPage = 1;
 let itemsPerPage = 10;
 let totalPages = 1;
@@ -15,9 +11,7 @@ export async function setupApiOwnerBallFavoritoHome() {
     setupOwnerBallFavoritoHomeEventListeners();
 }
 
-/**
- * Carrega os mercados Owner Ball da API
- */
+
 async function loadOwnerBallFavoritoHomeMarkets(showLoader = true) {
     if (isLoading) return;
 
@@ -27,7 +21,7 @@ async function loadOwnerBallFavoritoHomeMarkets(showLoader = true) {
     if (showLoader && tableBody) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center">
+                <td colspan="7" class="text-center">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Carregando...</span>
                     </div>
@@ -70,9 +64,7 @@ async function loadOwnerBallFavoritoHomeMarkets(showLoader = true) {
     })
 }
 
-/**
- * Atualiza a tabela com os dados dos mercados Owner Ball
- */
+
 function updateOwnerBallFavoritoHomeTable(mercados) {
     const tableBody = document.getElementById('ownerBallFavoritoHomeTableBody');
 
@@ -82,7 +74,7 @@ function updateOwnerBallFavoritoHomeTable(mercados) {
     if (!mercados || mercados.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center text-muted">
+                <td colspan="7" class="text-center text-muted">
                     Nenhum mercado Owner Ball encontrado.
                 </td>
             </tr>
@@ -278,7 +270,7 @@ function showOwnerBallFavoritoHomeError(message) {
     if (tableBody) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center text-danger">
+                <td colspan="7" class="text-center text-danger">
                     <i class="bi bi-exclamation-triangle me-2"></i>
                     ${message}
                 </td>

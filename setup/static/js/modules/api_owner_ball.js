@@ -1,4 +1,7 @@
-import { setupEditarModalOwnerBall } from "./owner_ball/super-favorito/editar_odd_owner_ball.js";
+import { setupEditarModal } from "./editarOdd.js";
+import { initAceitarApostaModal } from "./aceitarApostaModal.js";
+import { setupRecusarModal } from "./recusarAposta.js";
+import { setupDesfazerAcaoModal } from "./desfazerAcao.js";
 
 let currentPage = 1;
 let itemsPerPage = 10;
@@ -21,7 +24,7 @@ function loadOwnerBallMarkets(showLoader = true) {
     if (showLoader && tableBody) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center">
+                <td colspan="7" class="text-center">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Carregando...</span>
                     </div>
@@ -111,16 +114,16 @@ function updateOwnerBallTable(mercados) {
                 <td>${mercado.away_actual}%</td>
                 <td>${dataFormatada || 'N/A'}</td>
                 <td>
-                    <a id="editar-odd-owner-ball" class="btn btn-sm btn-info edit-odd-btn-owner-ball" data-event-id=${mercado.id_event} title="Editar Odd">
+                    <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${mercado.id_event} title="Editar Odd">
                         <i class="bi bi-pencil"></i>
                     </a>
-                    <a id="aceitar-aposta-owner-ball" class="btn btn-sm btn-success apostar-btn-owner-ball" data-event-id=${mercado.id_event} title="Aceitar aposta">
+                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${mercado.id_event} title="Aceitar aposta">
                         <i class="bi bi-check"></i>
                     </a>
-                    <a id="recusar-aposta-owner-ball" class="btn btn-sm btn-danger recusar-btn-owner-ball" data-event-id=${mercado.id_event} title="Recusar aposta">
+                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${mercado.id_event} title="Recusar aposta">
                         <i class="bi bi-x"></i>
                     </a>
-                    <a id="desfazer-acao-owner-ball" class="btn btn-sm btn-warning desfazer-acao-btn-owner-ball" data-event-id=${mercado.id_event} title="Desfazer ação">
+                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${mercado.id_event} title="Desfazer ação">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </a>
                 </td>
@@ -253,7 +256,11 @@ function setupOwnerBallEventListeners() {
         });
     }
 
-    setupEditarModalOwnerBall()
+    // carrega módulos necessários
+    setupEditarModal();
+    initAceitarApostaModal();
+    setupRecusarModal();
+    setupDesfazerAcaoModal();
 }
 
 

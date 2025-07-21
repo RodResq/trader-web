@@ -1,9 +1,7 @@
 import { showNotification } from './notifications.js';
 import { atualizarCellOddAposEditar } from './update_odd_change.js'
 
-/**
- * Configura componentes de edição de odd
- */
+
 export function setupEditarModal() {
     const modal = document.getElementById('editarOddModal');
     const editarOddBtns = document.querySelectorAll('.edit-odd-btn');

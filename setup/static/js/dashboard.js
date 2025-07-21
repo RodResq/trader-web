@@ -45,21 +45,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // Incializa filtros
     initFilters();
     // Inicializa funcionalidades da Api
-    // setupApostaButtons();
-    initAceitarApostaModal();
+    // Inicializa checklist
+    initEntradasEmLote();
 
-    setupRefreshButton();
-    // Inicializa modal de recusa
-    setupRecusarModal();
+    // Inicializa modal de editar odd
+    // setupEditarModal();
+    
+    // // setupApostaButtons();
+    // initAceitarApostaModal();
+
+    // setupRefreshButton();
+    // // Inicializa modal de recusa
+    // setupRecusarModal();
+    
+    // Inicializa API Owner Ball
+    setupApiOwnerBall();
+    
+    // Inicializa API Owner Ball Favorito Home
+    setupApiOwnerBallFavoritoHome();
+    
+    // Incializa API Owner Ball Under 2,5
+    setupApiOwnerBallUnder25();
 
     // Inicializa modal de desfazer
     setupDesfazerAcaoModal();
-    
-    // Inicializa modal de editar odd
-    setupEditarModal();
-    
-    // Inicializa checklist
-    initEntradasEmLote();
     
     // Inicializa Gerência de Resultado
     setupGerenciaResultado();
@@ -84,15 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Incializa gráfico de melhor dia semana
     setupGraficoMelhorDia();
    
-    // Inicializa API Owner Ball
-    setupApiOwnerBall();
-
-    // Inicializa API Owner Ball Favorito Home
-    setupApiOwnerBallFavoritoHome();
-
-    // Incializa API Owner Ball Under 2,5
-    setupApiOwnerBallUnder25();
-    
     //Incializa funcão ayncrona para atualizar odd
     setupUpdateOddChange()
 
@@ -104,11 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Inicializa modal mutlipas entradas
     initMultiplasHandlers();
-
-
-    //Incializa temporizador para o próximo evento
-    // setupTemporizadorProximoEvento();
-
 
     // Inicializa componentes de paginação
     if (typeof initPagination === "function") {
