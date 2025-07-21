@@ -1,17 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
 from django.contrib import messages
-from analytics.models import Entrada, Aposta
-from django.db.models import Q, Sum
+from django.db.models import Sum
 from django.http import JsonResponse
 from django.db import transaction
-from django.db.models.functions import TruncMonth, TruncWeek, TruncDate
-from django.db.models import Sum, F, Case, When, Value, IntegerField, FloatField, Count
-from .models import GerenciaCiclo
-from .forms import GerenciaForm
-from ciclo.models import Ciclo
+from django.db.models import Sum
+from analytics.models import Aposta
 from decimal import Decimal
 from datetime import datetime
+from .models import GerenciaCiclo
+from .forms import GerenciaForm
+
 
 def gerencia(request):
     """Exibe a lista de registros de lucro."""
@@ -41,6 +39,7 @@ def gerencia(request):
         resultado_apostas.append(resultado_dict)
     
     return render(request, 'analytics/gerencia/gerencia.html', {'resultado_apostas': resultado_apostas})
+
 
 def gerencia_edit(request, pk=None):
     """Edita um registro de lucro existente ou cria um novo."""
@@ -134,6 +133,7 @@ def gerencia_resultado(request):
                 'valor_total_retorno': valor_total_retorno
             }            
         })
+    
         
 def desempenho_semanal_json(request):
     """
@@ -265,67 +265,3 @@ def desempenho_semanal_json(request):
             'success': False,
             'error': str(e)
         }, status=500)
-
-
-def grafico_performace_semanal(request):
-    try:
-        ciclos_gerenciados = GerenciaCiclo.objects.select_related('ciclo').all().order_by('ciclo__data_inicial')
-        
-        dados = []
-        
-        for gerencia in ciclos_gerenciados:
-            data_inicial = gerencia.ciclo.data_inicial.strftime('%d/%m/%Y')
-            data_final = gerencia.ciclo.data_final.strftime('%d/%m/%Y')
-            valor_total_retorno = gerencia.valor_total_retorno or Decimal('0.00')
-                
-            
-            dados.append({
-                'periodo': f"{data_inicial} a {data_final}",
-                'valor_retorno': float(valor_total_retorno),
-            })
-        
-        return JsonResponse({
-                'success': True,
-                'dados': dados
-        })
-        
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        
-        return JsonResponse({
-            'success': False,
-            'error': str(e)
-        }, status=500)
-        
-        
-def grafico_resultado_aposta(request):
-    try:
-        dados = []
-        resultado_contagem = Aposta.objects.values('resultado').annotate(total=Count('resultado')).order_by('resultado')
-        
-        RESULTADO_DICT = dict(Aposta.RESULTADO_CHOICES)
-        
-        for item in resultado_contagem:
-            codigo = item['resultado']
-            nome = RESULTADO_DICT.get(codigo, 'Não definido')
-            dados.append({
-                'resultado': nome,
-                'total': item['total']
-            })
-        
-        return JsonResponse({
-            'success': True,
-            'dados': dados
-        }, status=200)
-        
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        
-        return JsonResponse({
-            'success': False,
-            'error': str(e)
-        }, status=500)
-        
-    

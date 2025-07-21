@@ -33,7 +33,7 @@ function loadOwnerBallMarkets(showLoader = true) {
         `;
     }
 
-    const url = `/api/mercados_owner_ball_sf?page=${currentPage}&items_per_page=${itemsPerPage}`;
+    const url = `/api/owner_ball/super_favorito?page=${currentPage}&items_per_page=${itemsPerPage}`;
 
     fetch(url, {
         method: 'GET',

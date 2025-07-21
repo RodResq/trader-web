@@ -20,7 +20,7 @@ function inicializarGraficoResultadoAposta() {
 async function carregarDadosGraficoResultadoAposta(chartContainer) {
     let dados = null;
     try {
-        const response = await fetch('/api/grafico-resultado-aposta');
+        const response = await fetch('/api/grafico/resultado_aposta');
         if (!response.ok) {
             throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
         }

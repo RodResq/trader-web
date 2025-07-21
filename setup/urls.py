@@ -2,11 +2,27 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from analytics.views import index, evento, apostar, mercados, editar_odd, entrada_multipla, listar_owner_ball_sf, atualizar_odd_change, atualizar_odd_status, listar_owner_ball_favorito_home, listar_owner_ball_under_2_5, atualizar_statistica_overall 
-from gerencia.views import grafico_performace_semanal, grafico_resultado_aposta
-from evento.views import grafico_melhor_dia
 from evento.api_views import proximo_evento
 from performace.api_views import PerformaceAPIView
+from analytics.views import (
+    index, 
+    evento, 
+    apostar, 
+    mercados, 
+    editar_odd, 
+    entrada_multipla, 
+    atualizar_odd_change, 
+    atualizar_odd_status, 
+    atualizar_statistica_overall) 
+from owner_ball.views import (
+    listar_owner_ball_super_favorito,
+    listar_owner_ball_favorito_home,
+    listar_owner_ball_under_2_5)
+from grafico.views import (
+    performace_semanal,
+    resultado_aposta,
+    melhor_dia_semana
+)
 
 web_urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
@@ -16,22 +32,21 @@ web_urlpatterns = [
     path('ciclos/', include('ciclo.urls', namespace='ciclo')),
 ]
 
-
 api_urlpatterns = [
-    path('api/apostar', apostar, name='apostar'),
     path('api/mercados', mercados, name='mercados'),
-    path('api/mercados_owner_ball_sf', listar_owner_ball_sf, name='listar_owner_ball_sf'),
+    path('api/entrada_multipla', entrada_multipla, name="entrada_multipla"),
+    path('api/editar_odd', editar_odd, name="editar_odd"),
+    path('api/apostar', apostar, name='apostar'),
+    path('api/update_odd', atualizar_odd_status, name='atualizar_odd_status'),
+    path('api/odd_change/<int:id_evento>', atualizar_odd_change, name='atualizar_odd_change'),
+    path('api/proximo_evento', proximo_evento, name='proximo_evento'),
+    path('api/atualizar-statistic-overall/<int:id_evento>', atualizar_statistica_overall, name='atualizar_statistica_overall'),
+    path('api/owner_ball/super_favorito', listar_owner_ball_super_favorito, name='listar_owner_ball_super_favorito'),
     path('api/owner_ball/favorito_home', listar_owner_ball_favorito_home, name='listar_owner_ball_favorito_home'),
     path('api/owner_ball/under_2_5', listar_owner_ball_under_2_5, name='listar_owner_ball_under_2_5'),
-    path('api/editar_odd', editar_odd, name="editar_odd"),
-    path('api/entrada_multipla', entrada_multipla, name="entrada_multipla"),
-    path('api/grafico_performace_semanal', grafico_performace_semanal, name="grafico_performace_semanal"),
-    path('api/odd_change/<int:id_evento>', atualizar_odd_change, name='atualizar_odd_change'),
-    path('api/update_odd', atualizar_odd_status, name='atualizar_odd_status'),
-    path('api/atualizar-statistic-overall/<int:id_evento>', atualizar_statistica_overall, name='atualizar_statistica_overall'),
-    path('api/grafico-resultado-aposta', grafico_resultado_aposta, name="grafico_resultado_apostas"),
-    path('api/grafico-melhor-dia', grafico_melhor_dia, name="grafico_melhor_dia"),
-    path('api/proximo_evento', proximo_evento, name='proximo_evento'),
+    path('api/grafico/performace_semanal', performace_semanal, name="performace_semanal"),
+    path('api/grafico/resultado_aposta', resultado_aposta, name="resultado_aposta"),
+    path('api/grafico/melhor_dia_semana', melhor_dia_semana, name="melhor_dia_semana"),
     path('api/performace', PerformaceAPIView.as_view()),
 ]
 
