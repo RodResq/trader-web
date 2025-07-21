@@ -109,9 +109,9 @@ function renderizarGrafico(container, dados) {
                 label: 'My First Dataset',
                 data: totais,
                 backgroundColor: [
-                'rgb(54, 162, 235)',
-                'rgb(25, 135, 84)',
-                'rgb(220, 53, 69)',
+                    'rgb(25, 135, 84)',
+                    'rgb(220, 53, 69)',
+                    'rgb(54, 162, 235)',
                 ],
                 borderColor: borderColor,
                 hoverOffset: 4
