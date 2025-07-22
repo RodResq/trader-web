@@ -44,8 +44,11 @@ document.addEventListener('DOMContentLoaded', function() {
     updateMarketStatus();
     // Incializa filtros
     initFilters();
-    // Inicializa funcionalidades da Api
+    
     // Inicializa checklist
+    setupRefreshButton();
+    
+    // Inicializa funcionalidades da Api
     initEntradasEmLote();
 
     // Inicializa modal de editar odd
@@ -54,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // // setupApostaButtons();
     // initAceitarApostaModal();
 
-    // setupRefreshButton();
     // // Inicializa modal de recusa
     // setupRecusarModal();
     
