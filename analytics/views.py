@@ -182,7 +182,7 @@ def mercados(request):
             api_base_url = "http://127.0.0.1:8080"
             
             for evento_id in eventos_ids:
-                if evento_id == 13292666:
+                if evento_id == 13292666:#TODO Rever Condição
                     try:
                         response = requests.get(
                             f'{api_base_url}/odd-change/{evento_id}',

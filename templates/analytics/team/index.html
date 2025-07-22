@@ -3,9 +3,9 @@
 {% block content %}
 <div class="main-content">
   <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    {% comment %} <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="h3 mb-0 text-gray-800">Clubes</h1>
-    </div>
+    </div> {% endcomment %}
     {% if messages %}
     <div class="alert alert-success" role="alert">
       {% for message in messages %}
@@ -17,6 +17,34 @@
     {% comment %} TODO DISPOSICAO UM ABAIXO DO OUTRO {% endcomment %}
     {% comment %} TODO LADO DIRETOR INFORMACOES ÚTEIS PARA AS APOSTAS SOBRE O CLUBE {% endcomment %}
     {% endif %}
+
+    <table class="table table-hover" id="marketsTable">
+      <thead>
+        <tr>
+          <th class="col-id">ID</th>
+          <th class="col-mercado">Bandeira</th>
+          <th class="col-odd">nome</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if teams %}
+          {% for team in teams %}
+          <tr>
+            <td>
+              {{ team.id_team }}
+            </td>
+            <td>
+              <img src="{{ team.icon }}" alt="Icon" style="width: 30px; height: 30px; margin-right: 3px;">
+              {{ team.name }}
+            </td>
+            <td>
+              {{ team.ativo}}
+            </td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+      </tbody>
+    </table>
   </div>
 </div>
 {% endblock %}
