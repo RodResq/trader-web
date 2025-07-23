@@ -1,50 +1,54 @@
 {% extends "analytics/base.html" %}
 {% load static %}
+
 {% block content %}
 <div class="main-content">
-  <div class="container-fluid">
-    {% comment %} <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="h3 mb-0 text-gray-800">Clubes</h1>
-    </div> {% endcomment %}
-    {% if messages %}
-    <div class="alert alert-success" role="alert">
-      {% for message in messages %}
-        {{ message }}
-      {% endfor %}
+    <div class="container-fluid">
+        {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <table class="table-clubes table" id="tableClubesSF">
+            <thead class="thead-clubes">
+                <tr class="tr-clubes">
+                    <th class="thead-th-clubes">ID</th>
+                    <th class="thead-th-clubes">Nome</th>
+                </tr>
+            </thead>
+            <tbody class="tbody-clubes">
+                {% if teams %}
+                    {% for team in teams %}
+                    <tr class="tr-clubes" data-team-id="{{ team.id_team }}">
+                        <td class="td-clubes">
+                            {{ team.id_team }}
+                        </td>
+                        <td class="td-clubes">
+                            <div class="team-info">
+                                {% if team.icon %}
+                                    <img src="{{ team.icon_data_url }}"
+                                         alt="Logo {{ team.name }}"
+                                         class="team-logo"
+                                         style="width: 20px; height: 20px; object-fit: contain; margin-right: 8px;"
+                                         onerror="this.style.display='none'">
+                                {% endif %}
+                                <span>{{ team.name }}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr class="tr-clubes">
+                        <td class="td-clubes" colspan="3" style="text-align: center; color: #6c757d;">
+                            Nenhum clube encontrado
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
     </div>
-    {% comment %} TODO COLACAR UM CARD LADO ESQUERDO PARA TEAMS SOFASCORE {% endcomment %}
-    {% comment %} TODO COLACAR UM CARD ABAIXO LADO ESQUERDO PARA TEAMS OWNER BOALL {% endcomment %}
-    {% comment %} TODO DISPOSICAO UM ABAIXO DO OUTRO {% endcomment %}
-    {% comment %} TODO LADO DIRETOR INFORMACOES ÚTEIS PARA AS APOSTAS SOBRE O CLUBE {% endcomment %}
-    {% endif %}
-
-    <table class="table table-hover" id="marketsTable">
-      <thead>
-        <tr>
-          <th class="col-id">ID</th>
-          <th class="col-mercado">Bandeira</th>
-          <th class="col-odd">nome</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% if teams %}
-          {% for team in teams %}
-          <tr>
-            <td>
-              {{ team.id_team }}
-            </td>
-            <td>
-              <img src="{{ team.icon }}" alt="Icon" style="width: 30px; height: 30px; margin-right: 3px;">
-              {{ team.name }}
-            </td>
-            <td>
-              {{ team.ativo}}
-            </td>
-          </tr>
-          {% endfor %}
-          {% endif %}
-      </tbody>
-    </table>
-  </div>
 </div>
 {% endblock %}

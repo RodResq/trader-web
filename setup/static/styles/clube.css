@@ -1,0 +1,93 @@
+.table-clubes {
+    background: transparent;
+    border: none;
+    border-spacing: 0;
+    border-collapse: separate;
+    max-width: 30%;
+    position: relative;
+}
+
+/* Linha sutil lateral direita da tabela */
+.table-clubes::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+}
+
+/* Remove TODAS as bordas */
+.table-clubes * {
+    border: none !important;
+}
+
+/* Header */
+.thead-clubes .thead-th-clubes {
+    background: transparent;
+    color: #8e9297;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 16px 20px 12px 20px;
+    position: relative;
+}
+
+/* Linha sutil abaixo do header */
+.thead-clubes .thead-th-clubes::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Body rows */
+.tbody-clubes .tr-clubes {
+    background: transparent;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.tbody-clubes .td-clubes {
+    background: transparent;
+    color: #ffffff;
+    padding: 16px 20px;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+/* Hover com box-shadow em vez de border - NÃO afeta o layout */
+.tbody-clubes .tr-clubes:hover {
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    box-shadow: inset 3px 0 0 #007bff; /* Sombra interna simula borda */
+}
+
+/* ID styling */
+.tbody-clubes .td-clubes:first-child {
+    color: #6c757d;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Team info styling */
+.team-info {
+    display: flex;
+    align-items: center;
+}
+
+.team-logo {
+    border-radius: 2px;
+    transition: transform 0.2s ease;
+}
+
+.tbody-clubes .tr-clubes:hover .team-logo {
+    transform: scale(1.05);
+}
