@@ -1,8 +1,10 @@
 from .models import VwConsultaMercadoSf, Entrada, VwMercadoOwnerBallSfHome
+from sofascore.models import VwMercadoSuperFavoritoHome
 from django.db import transaction
 
 def dump_mercados_para_entrada() -> bool:
-    mercados = VwConsultaMercadoSf.objects.all()
+    # mercados = VwConsultaMercadoSf.objects.all()
+    mercados = VwMercadoSuperFavoritoHome.objects.all()
     
     id_existents = Entrada.objects.values_list('id_event', flat=True)
     contador_inseridos = 0
