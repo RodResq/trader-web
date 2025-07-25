@@ -56,7 +56,7 @@ export async function setupUpdateOddChange() {
 }
 
 async function atualizarIconeOdd(row, oddChangeData, oddValueEdited=null) {
-    const oddCell = row.querySelector('td:nth-child(3)');
+    const oddCell = row.querySelector('td:nth-child(4)');
 
     if (!oddCell) {
         console.error('Célula de odd não encontrada');

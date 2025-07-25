@@ -197,36 +197,40 @@ def mercados(request):
         except Exception as e:
             logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}")         
                     
-        mercados = Entrada.objects.all()
+        entradas = Entrada.objects.all()
         
         # Create paginator
-        paginator = Paginator(mercados, items_per_page)
+        paginator = Paginator(entradas, items_per_page)
         
         try:
-            paginator_mercados = paginator.page(page)
+            paginator_entradas = paginator.page(page)
         except PageNotAnInteger:
-            paginator_mercados = paginator.page(1)
+            paginator_entradas = paginator.page(1)
         except EmptyPage:
-            paginator_mercados = paginator.page(paginator.num_pages)
+            paginator_entradas = paginator.page(paginator.num_pages)
         
         data = []
-        for mercado in paginator_mercados:
+        for entrada in paginator_entradas:
             data.append({
-                'id_event': mercado.id_event,
-                'mercado': mercado.mercado,
-                'odd_change': mercado.odd_change,
-                'odd': float(mercado.odd) if mercado.odd else 0,
-                'home_actual': mercado.home_actual,
-                'away_actual': mercado.away_actual,
-                'data_jogo': mercado.data_jogo.strftime('%d/%m/%Y %H:%M:%S') if mercado.data_jogo else None,
-                'opcao_entrada': mercado.opcao_entrada,
-                'resultado_estatistica': mercado.resultado_estatistica
+                'id_event': entrada.id_event,
+                'name_home': entrada.name_home,
+                'icon_home_data_url': entrada.icon_home_data_url,
+                'placar': entrada.mercado,
+                'name_away': entrada.name_away,
+                'icon_away_data_url': entrada.icon_away_data_url,
+                'odd_change': entrada.odd_change,
+                'odd': float(entrada.odd) if entrada.odd else 0,
+                'home_actual': entrada.home_actual,
+                'away_actual': entrada.away_actual,
+                'data_jogo': entrada.data_jogo.strftime('%d/%m/%Y %H:%M:%S') if entrada.data_jogo else None,
+                'opcao_entrada': entrada.opcao_entrada,
+                'resultado_estatistica': entrada.resultado_estatistica
             })
         return JsonResponse({
             'success': True,
             'mercados': data,
             'pagination': {
-                'current_page': paginator_mercados.number,
+                'current_page': paginator_entradas.number,
                 'total_pages': paginator.num_pages,
                 'items_per_page': items_per_page,
                 'total_items': paginator.count

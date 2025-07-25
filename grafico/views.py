@@ -46,10 +46,11 @@ def resultado_aposta(request):
         for item in resultado_contagem:
             codigo = item['resultado']
             nome = RESULTADO_DICT.get(codigo, 'Não definido')
-            dados.append({
-                'resultado': nome,
-                'total': item['total']
-            })
+            if 'green' in nome or 'red' in nome or 'selecione' in nome: #TODO REFATORAR LOGICA, COLOCAR PRA CONSULTA
+                dados.append({
+                    'resultado': nome,
+                    'total': item['total']
+                })
         
         return JsonResponse({
             'success': True,

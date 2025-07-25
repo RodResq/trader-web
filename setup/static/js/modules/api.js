@@ -41,14 +41,14 @@ export function setupApostaButtons() {
 
             if (!currentRow) return;
 
-            const mercadoCell = currentRow.querySelector('td:nth-child(2)');
+            const mercadoCell = currentRow.querySelector('td:nth-child(3)');
 
             if (mercadoCell && !mercadoCell.classList.contains('mercado-column')) {
                 mercadoCell.classList.add('mercado-column');
             }
 
             const mercado = mercadoCell.textContent;
-            const odd = currentRow.querySelector('td:nth-child(3)').textContent;
+            const odd = currentRow.querySelector('td:nth-child(4)').textContent;
             currentEventId = eventId;
 
             document.getElementById('aceitar-evento-id').textContent = eventId;

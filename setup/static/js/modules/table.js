@@ -238,7 +238,7 @@ export function updateMarketsTable(data) {
 
         mercadoCell.appendChild(statusSpan);
         mercadoCell.appendChild(iconElement)
-        mercadoCell.appendChild(document.createTextNode(mercado.mercado));
+        mercadoCell.appendChild(document.createTextNode(`${mercado.name_home} ${mercado.placar} ${mercado.name_away}`));
         row.appendChild(mercadoCell);
         
         

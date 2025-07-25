@@ -194,10 +194,11 @@ function updateTable(mercados) {
         idCell.appendChild(iconTv);
         idCell.appendChild(spanElement);
         row.appendChild(idCell);
-        
-        const mercadoCell = document.createElement('td');
+
+
+        const statusCell = document.createElement('td');
         const iconElement = document.createElement('i');
-        
+
         if (mercado.opcao_entrada === 'A') {
             iconElement.className = 'bi bi-check';
             iconElement.style = 'font-size: 1rem; color: green;';
@@ -208,9 +209,26 @@ function updateTable(mercados) {
             iconElement.className = 'bi bi-alarm';
             iconElement.style = 'font-size: 1rem; color: cornflowerblue;';
         }
+
+        statusCell.appendChild(iconElement);
+        row.appendChild(statusCell);
         
-        mercadoCell.appendChild(iconElement);
-        mercadoCell.appendChild(document.createTextNode(' ' + mercado.mercado));
+        const mercadoCell = document.createElement('td');
+        mercadoCell.className = 'mercado-column';
+        mercadoCell.innerHTML = `
+            <img src="${mercado.icon_home_data_url}"
+                alt="Logo ${mercado.name_home }"
+                class="team-logo"
+                style="width: 20px; height: 20px; object-fit: contain;"
+                onerror="this.style.display='none'">
+            ${mercado.name_home} 
+             ${mercado.placar} 
+                <img src="${mercado.icon_away_data_url}"
+                    alt="Logo ${mercado.name_away }"
+                    class="team-logo"
+                    style="width: 20px; height: 20px; object-fit: contain;"
+                    onerror="this.style.display='none'">
+             ${mercado.name_away}`;
         row.appendChild(mercadoCell);
         
         const oddCell = document.createElement('td');

@@ -52,15 +52,15 @@ function toggleCheckboxes() {
         window.selectedMarkets = [];
     } else {
         rows.forEach(row => {
-            const mercadoCell = row.querySelector('td:nth-child(2)');
+            const mercadoCell = row.querySelector('td:nth-child(3)');
             const iconElement = mercadoCell ? mercadoCell.querySelector('.bi-check, .bi-x') : null;
             
             if (iconElement) return; 
             
             const idEvent = row.querySelector('td:first-child').textContent.trim();
             // const mercado = undefined;
-            const odd = parseFloat(row.querySelector('td:nth-child(3)').textContent.trim());
-            const dataJogo = row.querySelector('td:nth-child(6)').textContent.trim();
+            const odd = parseFloat(row.querySelector('td:nth-child(4)').textContent.trim());
+            const dataJogo = row.querySelector('td:nth-child(7)').textContent.trim();
             
             // Cria a célula de checkbox
             const checkboxCell = document.createElement('td');

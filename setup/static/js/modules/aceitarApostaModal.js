@@ -17,8 +17,8 @@ export function initAceitarApostaModal() {
             
             const eventId = this.dataset.eventId;
             currentRow = this.closest('tr');
-            const mercado = currentRow.querySelector('td:nth-child(2)').textContent.trim();
-            const odd = currentRow.querySelector('td:nth-child(3)').textContent.trim();
+            const mercado = currentRow.querySelector('td:nth-child(3)').textContent.trim();
+            const odd = currentRow.querySelector('td:nth-child(4)').textContent.trim();
             valorOdd = parseFloat(odd.replace(',', '.'))
 
             

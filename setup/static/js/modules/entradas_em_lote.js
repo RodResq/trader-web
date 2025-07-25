@@ -198,9 +198,9 @@ function addCheckboxToRow(row, index) {
     checkbox.dataset.rowIndex = index;
     
     // Obter mais dados da linha para uso no modal
-    const mercado = row.querySelector('td:nth-child(2)').textContent.trim();
-    const odd = parseFloat(row.querySelector('td:nth-child(3)').textContent.replace(',', '.').trim());
-    const dataJogo = row.querySelector('td:nth-child(6)').textContent.trim();
+    const mercado = row.querySelector('td:nth-child(3)').textContent.trim();
+    const odd = parseFloat(row.querySelector('td:nth-child(4)').textContent.replace(',', '.').trim());
+    const dataJogo = row.querySelector('td:nth-child(7)').textContent.trim();
     
     // Adicionar dados ao checkbox para uso no modal
     checkbox.dataset.mercado = mercado;
