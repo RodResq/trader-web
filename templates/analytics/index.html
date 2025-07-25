@@ -191,7 +191,8 @@
                         <thead>
                           <tr>
                             <th class="col-id">ID</th>
-                            <th class="col-mercado">Mercado</th>
+                            <th class="col-status">Status</th>
+                            <th class="col-mercado">Evento</th>
                             <th class="col-odd">Odd</th>
                             <th class="col-home">Home</th>
                             <th class="col-away">Away</th>
@@ -220,13 +221,23 @@
                                   {{ mercado.id_event }}
                                 </span>
                               </td>
-                              <td class="mercado-column"><i {% if mercado.opcao_entrada == "A" %}
+                              <td>
+                                <i {% if mercado.opcao_entrada == "A" %}
                                   class="bi-check" style="font-size: 1rem; color: green;"
                                   {% elif  mercado.opcao_entrada == "R" %}
                                   class="bi bi-x" style="font-size: 1rem; color: red;"
                                   {% else %}
                                   class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"
                                 {% endif %}></i>
+                              </td>
+                              <td class="mercado-column">
+                                {% if mercado.icon_home_data_url %}
+                                    <img src="{{ mercado.icon_home_data_url }}"
+                                         alt="Logo {{ mercado.name }}"
+                                         class="team-logo"
+                                         style="width: 20px; height: 20px; object-fit: contain;"
+                                         onerror="this.style.display='none'">
+                                {% endif %}
                                 {{ mercado.mercado }}
                               </td>
                               <td>
