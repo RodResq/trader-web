@@ -78,7 +78,9 @@ class Entrada(models.Model):
     
     id_event = models.IntegerField(primary_key=True)
     icon_home_data_url = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    name_home = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci')
+    name_home = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    icon_away_data_url = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    name_away = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd_change = models.CharField(max_length=5, blank=True, choices=ODD_CHANGE, default='P')
     odd = models.DecimalField(

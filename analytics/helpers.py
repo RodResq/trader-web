@@ -15,7 +15,10 @@ def dump_mercados_para_entrada() -> bool:
             if mercado.id_event not in id_existents:
                 Entrada.objects.create(
                     id_event=mercado.id_event,
-                    icon_home_data_url = mercado.icon_home_data_url,
+                    icon_home_data_url=mercado.icon_home_data_url,
+                    name_home=mercado.name_home,
+                    icon_away_data_url=mercado.icon_away_data_url,
+                    name_away=mercado.name_away,
                     mercado=mercado.mercado_name,
                     odd=mercado.odd,
                     home_actual=mercado.home_actual,

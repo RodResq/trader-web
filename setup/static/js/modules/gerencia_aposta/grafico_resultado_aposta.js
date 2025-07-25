@@ -9,7 +9,7 @@ function inicializarGraficoResultadoAposta() {
     const chartContainer = document.getElementById('graficoResultadoAposta');
     if (!chartContainer) return;
 
-    chartContainer.style.height = '150px';
+    chartContainer.style.height = '175px';
     chartContainer.style.overflow = 'hidden';
 
     chartContainer.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>';

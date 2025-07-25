@@ -29,3 +29,13 @@ class VwMercadoSuperFavoritoHome(models.Model):
     @property
     def has_icon_home(self):
         return bool(self.icon_home)
+    
+    @property
+    def icon_away_data_url(self):
+        if self.icon_away:
+            return f"data:image/png;base64,{self.icon_away}"
+        return None
+    
+    @property
+    def has_icon_away(self):
+        return bool(self.icon_away)

@@ -9,7 +9,7 @@
     <!-- Primeira linha: Cards principais e Mercados laterais -->
     <div class="row mt-2 mb-4">
       <!-- Cards principais (8 colunas) -->
-      <div class="col-lg-8">
+      <div class="col-lg-9">
         {% comment %} <div class="main-cards-scroll-container"> {% endcomment %}
           <div class="row g-3">
             <!-- Card Gerência Apostas -->
@@ -231,14 +231,27 @@
                                 {% endif %}></i>
                               </td>
                               <td class="mercado-column">
-                                {% if mercado.icon_home_data_url %}
-                                    <img src="{{ mercado.icon_home_data_url }}"
-                                         alt="Logo {{ mercado.name }}"
-                                         class="team-logo"
-                                         style="width: 20px; height: 20px; object-fit: contain;"
-                                         onerror="this.style.display='none'">
-                                {% endif %}
-                                {{ mercado.mercado }}
+                                  {{mercado.mercado_name }}
+                                  {% if mercado.name_home and mercado.name_away %}
+                                      {% if mercado.icon_home_data_url %}
+                                          <img src="{{ mercado.icon_home_data_url }}"
+                                              alt="Logo {{ mercado.name_home }}"
+                                              class="team-logo"
+                                              style="width: 20px; height: 20px; object-fit: contain;"
+                                              onerror="this.style.display='none'">
+                                      {% endif %}
+                                      {{ mercado.name_home }} {{mercado.mercado }} 
+                                      {% if mercado.icon_away_data_url %}
+                                          <img src="{{ mercado.icon_away_data_url }}"
+                                              alt="Logo {{ mercado.name_away }}"
+                                              class="team-logo"
+                                              style="width: 20px; height: 20px; object-fit: contain;"
+                                              onerror="this.style.display='none'">
+                                      {% endif %}
+                                    {{ mercado.name_away }}
+                                  {% else %}
+                                    {{mercado.mercado }}
+                                  {% endif %}
                               </td>
                               <td>
                                 <i {% if mercado.odd_change == 'P' %}
@@ -384,7 +397,7 @@
       </div>
 
       <!-- Coluna direita: Mercados SF e OB (4 colunas) -->
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <div class="sidebar-cards-container">
           
           <!-- Card Mercados SF -->
