@@ -84,7 +84,7 @@ function renderizarGrafico(container, dados) {
     containerGrafico.appendChild(mainChartContainer);
 
     const canvas = document.createElement('canvas');
-    canvas.id = 'mainChartResultadoAposta';
+    canvas.id = 'mainChartResultadoMelhorDiaSemana';
     mainChartContainer.appendChild(canvas);
 
     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
@@ -148,4 +148,4 @@ function renderizarGrafico(container, dados) {
 
 }
 
-window.setupGraficoResultadoAposta = setupGraficoResultadoAposta;
+window.setupGraficoMelhorDia = setupGraficoMelhorDia;

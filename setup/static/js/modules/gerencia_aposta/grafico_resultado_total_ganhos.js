@@ -1,11 +1,11 @@
 let graficoResultadoAposta = null;
 
-export function setupGraficoResultadoAposta() {
-    inicializarGraficoResultadoAposta();
+export function setupGraficoResultadoTotalGanhos() {
+    inicializarGraficoResultadoTotalGanhos();
 }
 
 
-function inicializarGraficoResultadoAposta() {
+function inicializarGraficoResultadoTotalGanhos() {
     const chartContainer = document.getElementById('graficoResultadoAposta');
     if (!chartContainer) return;
 
@@ -14,10 +14,10 @@ function inicializarGraficoResultadoAposta() {
 
     chartContainer.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>';
     
-    carregarDadosGraficoResultadoAposta(chartContainer);
+    carregarDadosGraficoResultadoTotalGanhos(chartContainer);
 }
 
-async function carregarDadosGraficoResultadoAposta(chartContainer) {
+async function carregarDadosGraficoResultadoTotalGanhos(chartContainer) {
     let dados = null;
     try {
         const response = await fetch('/api/grafico/resultado_aposta');
@@ -78,13 +78,13 @@ function renderizarGrafico(container, dados) {
     }
 
     const mainChartContainer = document.createElement('div');
-    mainChartContainer.style.width = '30%';
-    mainChartContainer.style.height = '50%';
+    mainChartContainer.style.width = '45%';
+    mainChartContainer.style.height = '85%';
     mainChartContainer.style.position = 'absolute';
     containerGrafico.appendChild(mainChartContainer);
 
     const canvas = document.createElement('canvas');
-    canvas.id = 'mainChartResultadoAposta';
+    canvas.id = 'mainChartResultadoTotalGanhos';
     mainChartContainer.appendChild(canvas);
 
     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
@@ -104,21 +104,30 @@ function renderizarGrafico(container, dados) {
     graficoResultadoAposta = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            // labels: labels,
+            labels: labels,
             datasets: [{
                 label: 'My First Dataset',
                 data: totais,
                 backgroundColor: [
+                    'rgb(54, 162, 235)',
                     'rgb(25, 135, 84)',
                     'rgb(220, 53, 69)',
-                    'rgb(54, 162, 235)',
                 ],
                 borderColor: borderColor,
                 hoverOffset: 4
             }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+            legend: {
+                position: 'right'
+            }
+            }
         }
     })
 
 }
 
-window.setupGraficoResultadoAposta = setupGraficoResultadoAposta;
+window.setupGraficoResultadoTotalGanhos = setupGraficoResultadoTotalGanhos;

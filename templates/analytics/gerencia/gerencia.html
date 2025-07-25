@@ -110,7 +110,7 @@
                                     {% else %}
                                     class="bi bi-stopwatch-fill" style="font-size: 1rem; color: cornflowerblue; border-radius: 100%; margin-right:5px; vertical-align: middle;"
                                   {% endif %}></i>
-                                {{ aposta.entrada.mercado }}
+                                {{ aposta.entrada.name_home }} {{ aposta.entrada.mercado }} {{ aposta.entrada.name_away }}
                               </td>
                               <td>
                                 {% if aposta.is_multipla %}

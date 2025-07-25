@@ -17,7 +17,7 @@ import { setupApiOwnerBallUnder25 } from './modules/owner_ball/api_owner_ball _u
 import { setupUpdateOddChange } from './modules/update_odd_change.js';
 import { setupEvolucaoSaldoModal } from './modules/ciclo/evolucao_saldo.js'
 import { setupGraficoPerformaceSemanal } from './modules/ciclo/grafico_performace_semanal.js';
-import { setupGraficoResultadoAposta } from './modules/gerencia_aposta/grafico_resultado_aposta.js';
+import { setupGraficoResultadoTotalGanhos } from './modules/gerencia_aposta/grafico_resultado_total_ganhos.js';
 import { setupGraficoMelhorDia } from './modules/evento/grafico_melhor_dia.js'
 import { setupGraficoDesempenhoSemanal } from './modules/gerencia_aposta/gerencia_graficos_principal.js';
 import { setupProgressPerformace } from './modules/performace/grafico_performace.js';
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupGraficoPerformaceSemanal();
 
     // Incializa gráfico de resultado aposta
-    setupGraficoResultadoAposta();
+    setupGraficoResultadoTotalGanhos();
 
     // Inicializa barra de progresso de performace
     setupProgressPerformace();
