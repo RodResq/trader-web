@@ -4,7 +4,7 @@ from .views import eventos, aceitar_aposta, verificar_ciclo, atualizar_odd_chang
 app_name = 'analytics'
 
 urlpatterns = [
-    path('gerencia/', include('gerencia.urls')),
+    # path('gerencia/', include('gerencia.urls')),
     path('evento/', include('evento.urls')),
     path('ciclos/', include('ciclo.urls')),
     path('performace/', include('performace.urls')),

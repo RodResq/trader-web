@@ -39,7 +39,7 @@ export function setupGerenciaResultado() {
             const originalHTML = this.innerHTML;
             this.innerHTML = '<i class="bi bi-hourglass-split"></i>';
 
-            const url = `/analytics/gerencia/resultado?event_id=${eventId}&resultado=${valueSelected}`;
+            const url = `/api/gerencia/resultado?event_id=${eventId}&resultado=${valueSelected}`;
             fetch(url, {
                 method: 'GET',
                 headers: {

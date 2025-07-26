@@ -23,12 +23,14 @@ from grafico.views import (
     resultado_aposta,
     melhor_dia_semana
 )
+from gerencia.views import gerencia_resultado
 
 web_urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
-    path('', index, name='index'),
+    path('analytics/', index, name='index'),
     path('resultado/<int:id_evento>', evento, name='evento'),
     path('analytics/', include('analytics.urls')),
+    path('gerencia/', include('gerencia.urls', namespace='gerencia')),
     path('ciclos/', include('ciclo.urls', namespace='ciclo')),
 ]
 
@@ -48,6 +50,7 @@ api_urlpatterns = [
     path('api/grafico/resultado_aposta', resultado_aposta, name="resultado_aposta"),
     path('api/grafico/melhor_dia_semana', melhor_dia_semana, name="melhor_dia_semana"),
     path('api/performace', PerformaceAPIView.as_view()),
+    path('api/gerencia/resultado', gerencia_resultado, name="gerencia_resultado"),
 ]
 
 admin_urlpatterns = [
