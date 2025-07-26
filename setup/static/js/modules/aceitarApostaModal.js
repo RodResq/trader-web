@@ -75,7 +75,7 @@ export function initAceitarApostaModal() {
         };
         
   
-        fetch('/analytics/apostas/aceitar/', {
+        fetch('api/analytics/aceitar_aposta', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

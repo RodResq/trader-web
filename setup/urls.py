@@ -5,7 +5,8 @@ from django.conf.urls.static import static
 from evento.api_views import proximo_evento
 from performace.api_views import PerformaceAPIView
 from analytics.views import (
-    index, 
+    index,
+    aceitar_aposta, 
     evento, 
     apostar, 
     mercados, 
@@ -27,17 +28,20 @@ from gerencia.views import gerencia_resultado
 
 web_urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
-    path('analytics/', index, name='index'),
+    path('analytics', include('analytics.urls')),
     path('resultado/<int:id_evento>', evento, name='evento'),
-    path('analytics/', include('analytics.urls')),
     path('gerencia/', include('gerencia.urls', namespace='gerencia')),
     path('ciclos/', include('ciclo.urls', namespace='ciclo')),
+    path('evento/', include('evento.urls')),
+    path('ciclos/', include('ciclo.urls')),
+    path('performace/', include('performace.urls')),
+    path('team/', include('team.urls'), name='team'),
 ]
 
 api_urlpatterns = [
+    path('api/analytics/', include('analytics.api_urls')),
     path('api/mercados', mercados, name='mercados'),
     path('api/entrada_multipla', entrada_multipla, name="entrada_multipla"),
-    path('api/editar_odd', editar_odd, name="editar_odd"),
     path('api/apostar', apostar, name='apostar'),
     path('api/update_odd', atualizar_odd_status, name='atualizar_odd_status'),
     path('api/odd_change/<int:id_evento>', atualizar_odd_change, name='atualizar_odd_change'),

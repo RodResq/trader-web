@@ -1,13 +1,8 @@
-/**
- * Módulo de Recusa de Aposta - Gerencia a funcionalidade do modal de recusa
- */
 import { showNotification } from './notifications.js';
 import { updateEntryOptionIcon } from './table.js';
 import { desabilitarBtnRecusar } from './utils.js';
 
-/**
- * Inicializa o modal de recusa de aposta e seus manipuladores de eventos
- */
+
 export function setupRecusarModal() {
     // Obter elementos do modal
     const modal = document.getElementById('recusarApostaModal');
@@ -16,17 +11,13 @@ export function setupRecusarModal() {
     const motivoSelect = document.getElementById('recusarMotivo');
     const outroMotivoContainer = document.getElementById('outroMotivoContainer');
     
-    // Verificar se os elementos existem
     if (!modal || !recusarBtn.length || !confirmarBtn || !motivoSelect) return;
     
-    // Criar instância do modal usando Bootstrap
     const modalInstance = new bootstrap.Modal(modal);
     
-    // Armazenar dados da aposta atual
     let currentEventId = null;
     let currentRow = null;
     
-    // Configurar evento de alteração do motivo de recusa
     motivoSelect.addEventListener('change', function() {
         if (this.value === 'outros') {
             outroMotivoContainer.style.display = 'block';
@@ -35,43 +26,35 @@ export function setupRecusarModal() {
         }
     });
     
-    // Configurar botões de recusa para abrir o modal
     recusarBtn.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Obter dados da linha da tabela
             currentRow = this.closest('tr');
             if (!currentRow) return;
             
-            const eventId = currentRow.querySelector('td:first-child').textContent;
+            const eventId = currentRow.querySelector('td:first-child').textContent.trim();
             const mercado = currentRow.querySelector('td:nth-child(2)').textContent;
             
-            // Armazenar ID do evento atual
             currentEventId = eventId;
             
-            // Atualizar dados no modal
             document.getElementById('recusar-evento-id').textContent = eventId;
             document.getElementById('recusar-evento-mercado').textContent = mercado;
             
-            // Resetar campos do formulário
             motivoSelect.value = '';
             document.getElementById('outroMotivo').value = '';
             outroMotivoContainer.style.display = 'none';
             
-            // Abrir o modal
             modalInstance.show();
         });
     });
     
-    // Configurar botão de confirmação de recusa
     confirmarBtn.addEventListener('click', function() {
         if (!currentEventId || !currentRow) {
             modalInstance.hide();
             return;
         }
         
-        // Obter motivo da recusa
         let motivo = motivoSelect.value;
         if (motivo === 'outros') {
             const outroMotivo = document.getElementById('outroMotivo').value.trim();
@@ -80,11 +63,9 @@ export function setupRecusarModal() {
             }
         }
         
-        // Desabilitar botão durante o processamento
         this.disabled = true;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
         
-        // Chamada de API (você deve implementar a chamada real à API)
         const url = `/api/apostar?event_id=${currentEventId}&action=recusar`;
 
         fetch(url, {
@@ -96,27 +77,21 @@ export function setupRecusarModal() {
             if (!response.ok) {
                 throw new Error('Erro ao recusar a aposta');
             }
-            return response.json();
         }).then(data => {
-            // Marcar visualmente a linha como recusada
-            // currentRow.classList.add('table-danger');
-            desabilitarBtnRecusar(currentRow);
-
-            
-            modalInstance.hide();
-            // Resetar botão
             this.disabled = false;
             this.innerHTML = '<i class="bi bi-x-circle"></i> Confirmar Recusa';
 
             updateEntryOptionIcon(false, currentRow, "R");
-            
-            // Mostrar notificação
-            showNotification('Aposta recusada com sucesso!', 'warning');
-            
-            // Limpar referências
             currentEventId = null;
             currentRow = null;
-        })
+            showNotification('Entrada recusada com sucesso!', 'warning');
+        }).catch(error => {
+            console.error('Erro ao recusar aposta: ' + error);
+            showNotification('Falha ao recusada a entrada!', 'error');
+        }).finally(() => {
+            modalInstance.hide();
+            desabilitarBtnRecusar(currentRow);
+        });
 
     });
 }

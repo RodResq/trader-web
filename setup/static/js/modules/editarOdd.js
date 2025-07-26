@@ -54,7 +54,7 @@ export function setupEditarModal() {
             return;
         }
 
-        const url = `/api/editar_odd?event_id=${currentEventId}&odd=${novaOdd}`;
+        const url = `/api/analytics/editar_odd?event_id=${currentEventId}&odd=${novaOdd}`;
 
         this.disabled = true;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
