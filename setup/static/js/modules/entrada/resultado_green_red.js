@@ -73,6 +73,8 @@ export function setupResultadoEntradaModal() {
                 }
                 this.disabled = false;
                 this.innerHTML = '<i class="bi bi-save"></i> Salvar';
+
+                
             });
 
         } catch(error) {

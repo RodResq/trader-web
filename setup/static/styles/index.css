@@ -607,3 +607,9 @@ body.theme-light .main-cards-scroll-container:hover {
     padding: 3px
 }
 
+[data-bs-theme="light"] .icon-soccer img {
+    background-color: black !important;
+    border-radius: 1rem !important;  /* Arredondamento suave */
+    padding: 0.03rem;  /* Opcional: adicionar um pequeno padding */
+}
+
