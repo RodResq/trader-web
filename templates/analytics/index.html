@@ -234,10 +234,14 @@
                                   class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"
                                 {% endif %}></i>
                                 {% if mercado.resultado_entrada == "G" %}
-                                <span class="icon-soccer">
-                                  <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">
-                                </span>
-                                {% endif %}
+                                  <span class="icon-soccer">
+                                    <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">
+                                  </span>
+                                  {% elif mercado.resultado_entrada == "P" %}
+                                  <span class="icon-soccer-perdeu">
+                                   <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px; background-color: red;">
+                                  </span>
+                                  {% endif %}
                               </td>
                               <td class="mercado-column">
                                   {{ mercado.mercado_name }}

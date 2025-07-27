@@ -613,3 +613,13 @@ body.theme-light .main-cards-scroll-container:hover {
     padding: 0.03rem;  /* Opcional: adicionar um pequeno padding */
 }
 
+
+[data-bs-theme="light"] .icon-soccer-perdeu img,
+[data-bs-theme="dark"] .icon-soccer-perdeu img {
+    background-color: #dc3545 !important;
+    border-radius: 1rem !important;  /* Arredondamento suave */
+    padding: 0.03rem;  /* Opcional: adicionar um pequeno padding */
+}
+
+
+
