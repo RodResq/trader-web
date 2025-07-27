@@ -26,6 +26,12 @@ import { setupProximoEvento } from './modules/evento/proximo_evento.js'
 
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    // Inicializar tooltips
+    const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    tooltips.forEach(tooltip => {
+        new bootstrap.Tooltip(tooltip)
+    });
     // Inicializa o alternador de temas (deve ser inicializado primeiro)
     initThemeToggler();
     // Inicializa componentes de UI

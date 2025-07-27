@@ -218,7 +218,11 @@
                                   {% else %}
                                   class="resultado-statistic-overall-away"
                                   {% endif %}>
-                                  <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline" data-event-id="{{mercado.id_event}}">{{ mercado.id_event }}</a>
+                                  <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline" 
+                                    data-event-id="{{mercado.id_event}}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Registrar resultado entrada manualmente.">{{ mercado.id_event }}</a>
                                 </span>
                               </td>
                               <td>
