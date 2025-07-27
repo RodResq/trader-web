@@ -203,7 +203,7 @@
                         <tbody>
                           {% if mercados %}
                             {% for mercado in mercados %}
-                            <tr>
+                            <tr class="align-baseline">
                               <td>
                                 {% comment %} TODO REFATORAR {% endcomment %}
                                 {% if mercado.resultado_estatistica %}
@@ -218,7 +218,7 @@
                                   {% else %}
                                   class="resultado-statistic-overall-away"
                                   {% endif %}>
-                                  {{ mercado.id_event }}
+                                  <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline" data-event-id="{{mercado.id_event}}">{{ mercado.id_event }}</a>
                                 </span>
                               </td>
                               <td>
@@ -231,7 +231,7 @@
                                 {% endif %}></i>
                               </td>
                               <td class="mercado-column">
-                                  {{mercado.mercado_name }}
+                                  {{ mercado.mercado_name }}
                                   {% if mercado.name_home and mercado.name_away %}
                                       {% if mercado.icon_home_data_url %}
                                           <img src="{{ mercado.icon_home_data_url }}"
@@ -240,7 +240,8 @@
                                               style="width: 20px; height: 20px; object-fit: contain;"
                                               onerror="this.style.display='none'">
                                       {% endif %}
-                                      {{ mercado.name_home }} {{mercado.mercado }} 
+                                      <span class="align-middle">{{ mercado.name_home }}</span> 
+                                      <span class="align-middle">{{ mercado.mercado }}</span> 
                                       {% if mercado.icon_away_data_url %}
                                           <img src="{{ mercado.icon_away_data_url }}"
                                               alt="Logo {{ mercado.name_away }}"
@@ -248,9 +249,9 @@
                                               style="width: 20px; height: 20px; object-fit: contain;"
                                               onerror="this.style.display='none'">
                                       {% endif %}
-                                    {{ mercado.name_away }}
+                                      <span class="align-middle">{{ mercado.name_away }}</span>
                                   {% else %}
-                                    {{mercado.mercado }}
+                                    {{ mercado.mercado }}
                                   {% endif %}
                               </td>
                               <td>

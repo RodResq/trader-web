@@ -663,3 +663,39 @@ def atualizar_statistica_overall(request, id_evento):
     except Exception as e:
             logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 
             
+            
+def resultado_entrada(request):
+    if request.method == 'GET':
+        event_id = request.GET.get('event_id')
+        resultado_entrada = request.GET.get('resultado_entrada')
+        
+        if not event_id:
+            return JsonResponse({
+                'success': False,
+                'message': 'Parâmetros incompletos. É necessário fornecer event_id.'
+            }, status=400)
+            
+        try:
+                         
+            entrada = get_object_or_404(Entrada, id_event=event_id)
+            entrada.resultado_entrada = resultado_entrada
+            entrada.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Resultado entrada registrado com sucesso!',
+                'data': {
+                    'id_event': entrada.id_event,
+                    'resultado_entrada': entrada.resultado_entrada
+                }
+            })
+        except ValueError:
+            return JsonResponse({
+                'success': False,
+                'message': 'Resultado inválido. Reveja o ID ou o resultado.'
+            }, status=400)
+        except Exception as e:
+            return JsonResponse({
+                'sucess':False,
+                'message': f'Erro ao registrar a entrada: {str(e)}'
+            }, status=500)

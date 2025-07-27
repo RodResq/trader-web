@@ -38,6 +38,9 @@
     {% block content %}{% endblock %}
     {% comment %} {% block modalSalvarAposta %}{% endblock %} {% endcomment %}
 
+        <!-- Modal resultado entrada (green ou red) -->
+    {% include 'analytics/modal/entrada/modal_resultado_green_red.html' %}
+
     <!-- Modal de editar odd -->
     {% include 'analytics/modal/modal_editar_odd.html' %}
 

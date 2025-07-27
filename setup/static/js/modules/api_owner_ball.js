@@ -1,3 +1,4 @@
+import { setupResultadoEntradaModal } from "./entrada/resultado_green_red.js";
 import { setupEditarModal } from "./editarOdd.js";
 import { initAceitarApostaModal } from "./aceitarApostaModal.js";
 import { setupRecusarModal } from "./recusarAposta.js";
@@ -257,6 +258,7 @@ function setupOwnerBallEventListeners() {
     }
 
     // carrega módulos necessários
+    setupResultadoEntradaModal();
     setupEditarModal();
     initAceitarApostaModal();
     setupRecusarModal();

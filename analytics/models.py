@@ -76,6 +76,12 @@ class Entrada(models.Model):
         ('P', 'parada')
     ]
     
+    RESULTADO_ENTRADA = [
+        ("G", "ganhou"),
+        ("E", "empatou"),
+        ("P", "perdeu")
+    ]
+    
     id_event = models.IntegerField(primary_key=True)
     icon_home_data_url = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     name_home = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
@@ -95,6 +101,7 @@ class Entrada(models.Model):
     data_jogo = models.DateTimeField(blank=True, null=True)
     opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
     resultado_estatistica = models.BooleanField(default=0)    
+    resultado_entrada = models.CharField(max_length=20, blank=False, choices=RESULTADO_ENTRADA, null=True)
         
     def __str__(self):
         return f"Entrada - {self.id_event} - mercado: {self.mercado} - odd: {self.odd}"    

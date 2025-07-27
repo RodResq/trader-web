@@ -20,7 +20,6 @@ export function initEntradasEmLote() {
 
 
 function getCSRFToken() {
-    // Obter o token CSRF dos cookies
     return document.cookie
         .split('; ')
         .find(row => row.startsWith('csrftoken='))
@@ -63,7 +62,6 @@ function toggleChecklist() {
     
     if (checklistVisible) {
 
-        // Adiciona cabeçalho de checkbox
         if (headerRow) {
             const checkboxHeader = document.createElement('th');
             checkboxHeader.className = 'checkbox-cell';
@@ -71,19 +69,15 @@ function toggleChecklist() {
             headerRow.insertBefore(checkboxHeader, headerRow.firstChild);
         }
 
-        // Adiciona checkboxes a cada linha
         rows.forEach((row, index) => {
             addCheckboxToRow(row, index);
         });
         
-        // Adiciona botão de ação em massa
         addBulkActionButtons();
 
-        // Oculta a coluna de ações e desabilita os botões
         toggleActionColumn(false);
     } else {
 
-        // Remove cabeçalho de checkbox
         if (headerRow) {
             const checkboxHeader = headerRow.querySelector('.checkbox-cell');
             if (checkboxHeader) {
@@ -91,7 +85,6 @@ function toggleChecklist() {
             }
         }
 
-        // Remove checkboxes
         rows.forEach(row => {
             const checkboxCell = row.querySelector('.checkbox-cell');
             if (checkboxCell) {
@@ -99,30 +92,22 @@ function toggleChecklist() {
             }
         });
         
-        // Remove botões de ação em massa
         const bulkActionsContainer = document.getElementById('bulkActionsContainer');
         if (bulkActionsContainer) {
             bulkActionsContainer.remove();
         }
 
-        // Mostra a coluna de ações e habilita os botões
         toggleActionColumn(true);
         
-        // Limpa seleção
         selectedItems.clear();
     }
 }
 
 
-/**
- * Oculta ou mostra a coluna de ações e desabilita/habilita os botões
- * @param {boolean} show - true para mostrar, false para ocultar
- */
 function toggleActionColumn(show) {
     const table = document.getElementById('marketsTable');
     if (!table) return;
     
-    // Ajusta o cabeçalho da tabela
     const headerRow = table.querySelector('thead tr');
     if (headerRow) {
         const actionHeader = headerRow.querySelector('th:last-child');
@@ -131,7 +116,6 @@ function toggleActionColumn(show) {
         }
     }
     
-    // Ajusta as células de ação em cada linha
     const rows = table.querySelectorAll('tbody tr');
     rows.forEach(row => {
         const actionCell = row.querySelector('td:last-child');
@@ -158,9 +142,7 @@ function toggleActionColumn(show) {
 }
 
 
-/**
- * Atualiza o botão de mostrar checklist
- */
+
 function updateBtnMostrarChecklist() {
     const btnMostrarChecklist = document.getElementById('mostrarCheckList');
     if (!btnMostrarChecklist) return;
@@ -176,9 +158,7 @@ function updateBtnMostrarChecklist() {
     }
 }
 
-/**
- * Adiciona uma caixa de seleção a uma linha da tabela
- */
+
 function addCheckboxToRow(row, index) {
     // Verifica se a linha já tem checkbox
     if (row.querySelector('.checkbox-cell')) return;
@@ -506,7 +486,7 @@ function verificarCiclo() {
     
     cicloMultipla.innerHTML = '<i class="bi bi-hourglass-split"></i> Verificando...';
     
-    fetch('/analytics/verificar_ciclo/', {
+    fetch('api/analytics/verificar_ciclo/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

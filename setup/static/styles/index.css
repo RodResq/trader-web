@@ -333,6 +333,16 @@ a .card {
   position: relative;
 }
 
+.col-status {
+  width: 1%;
+}
+
+.btn-resultado-entrada {
+  font-size: small;
+  padding: inherit;
+  color: antiquewhite;
+}
+
 .mercado-column {
   max-width: 300px;
   white-space: nowrap;
@@ -596,3 +606,4 @@ body.theme-light .main-cards-scroll-container:hover {
     border-color: #dc3545;
     padding: 3px
 }
+

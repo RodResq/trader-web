@@ -28,8 +28,8 @@ export function setupEditarModal() {
             currentRow = this.closest('tr');
             if (!currentRow) return;
 
-            const mercado = currentRow.querySelector('td:nth-child(2)').textContent;
-            const oddAtual = currentRow.querySelector('td:nth-child(3)').textContent;
+            const mercado = currentRow.querySelector('td:nth-child(3)').textContent.trim();
+            const oddAtual = currentRow.querySelector('td:nth-child(4)').textContent;
 
             currentEventId = eventId;
 
@@ -69,7 +69,7 @@ export function setupEditarModal() {
                 throw new Error('Erro ao editar odd');
             }
         }).then(data => {
-            const oddCell = currentRow.querySelector('td:nth-child(3)');
+            const oddCell = currentRow.querySelector('td:nth-child(4)');
             if (oddCell) {
                 // oddCell.textContent = novaOdd;
                 console.log('Logica atualizar os icones de odd_change');
