@@ -209,8 +209,14 @@ function updateTable(mercados) {
             iconElement.className = 'bi bi-alarm';
             iconElement.style = 'font-size: 1rem; color: cornflowerblue;';
         }
-
         statusCell.appendChild(iconElement);
+
+        const spanSoccer = document.createElement('span');
+        spanSoccer.className = mercado.resultado_entrada === 'G' ? 'icon-soccer': 'icon-soccer-perdeu';
+        const iconPath = "/static/images/icons/soccer.svg";
+        spanSoccer.innerHTML = `<img src="${iconPath}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">`;
+
+        statusCell.appendChild(spanSoccer);
         row.appendChild(statusCell);
         
         const mercadoCell = document.createElement('td');

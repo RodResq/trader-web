@@ -207,6 +207,16 @@ export function updateMarketsTable(data) {
         const idCell = document.createElement('td');
         idCell.textContent = mercado.id_event;
         row.appendChild(idCell);
+
+        const statusCell = document.createElement('td');
+        if (mercado.resultado_entrada === 'G') {
+            statusCell.innerHTML = `
+                <span class="icon-soccer">
+                    <img src="{% static \'images/icons/soccer.svg\' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">
+                </span>
+            `;
+        }
+        row.appendChild(statusCell);
         
         const mercadoCell = document.createElement('td');
         mercadoCell.className = 'mercado-column';
@@ -229,6 +239,14 @@ export function updateMarketsTable(data) {
                 color: 'text-primary'
             }
         }; 
+
+        if (mercado.resultado_entrada === 'G') {
+            statusCell.innerHTML = `
+                <span class="icon-soccer">
+                    <img src="{% static \'images/icons/soccer.svg\' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">
+                </span>
+            `;
+        }
 
         const estadoConfig = opcoesEntradaMap[mercado.opcao_entrada] || opcoesEntradaMap['E'];
         iconElement.classList.add('bi', estadoConfig.icon, estadoConfig.color);

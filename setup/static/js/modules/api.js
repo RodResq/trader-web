@@ -108,7 +108,7 @@ export function setupRefreshButton() {
 }
 
 
-export function fetchUpdatedMarkets(page = 1, perPage = 10) {
+export async function fetchUpdatedMarkets(page = 1, perPage = 10) {
     currentPage = page;
     itemsPerPage = perPage;
     

@@ -67,6 +67,7 @@ export function setupResultadoEntradaModal() {
                 return response.json();
             }).then(data => {
                 if (data.success) {
+                    atualizarIconSoccer(currentRow, data.data.resultado_entrada)
                     showNotification(`Resultado da entrada ${currentEventId} registrado com sucesso`, 'success');
                 } else {
                     showNotification(`Falha ao registrar resultado da entrada`, 'danger');
@@ -86,5 +87,25 @@ export function setupResultadoEntradaModal() {
             modalInstance.hide();
         }
     });
+
+}
+
+function atualizarIconSoccer(currentRow, resultado_entrada) {
+    if (!currentRow) return;
+
+    const spanExiste = currentRow.querySelector('td:nth-child(2) span');
+    
+    if (spanExiste) {
+        spanExiste.remove();
+    }
+
+    const statusCell = currentRow.querySelector('td:nth-child(2)');
+
+    const spanSoccer = document.createElement('span');
+    spanSoccer.className = resultado_entrada === 'G' ? 'icon-soccer': 'icon-soccer-perdeu';
+    const iconPath = "/static/images/icons/soccer.svg";
+    spanSoccer.innerHTML = `<img src="${iconPath}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">`;
+
+    statusCell.appendChild(spanSoccer);
 
 }
