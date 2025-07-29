@@ -62,7 +62,7 @@ export function setupResultadoEntradaModal() {
                 }
             }).then(response => {
                 if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`)
+                    throw new Error(`Erro HTTP: ${response.status}`);
                 }
                 return response.json();
             }).then(data => {

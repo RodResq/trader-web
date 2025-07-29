@@ -35,7 +35,7 @@ web_urlpatterns = [
     path('evento/', include('evento.urls')),
     path('ciclos/', include('ciclo.urls')),
     path('performace/', include('performace.urls')),
-    path('team/', include('team.urls'), name='team'),
+    path('team', include('team.urls'), name='team'),
 ]
 
 api_urlpatterns = [
@@ -55,6 +55,7 @@ api_urlpatterns = [
     path('api/grafico/melhor_dia_semana', melhor_dia_semana, name="melhor_dia_semana"),
     path('api/performace', PerformaceAPIView.as_view()),
     path('api/gerencia/resultado', gerencia_resultado, name="gerencia_resultado"),
+    path('api/team/', include('team.api_urls')),
 ]
 
 admin_urlpatterns = [

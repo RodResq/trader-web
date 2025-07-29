@@ -12,43 +12,49 @@
         </div>
         {% endif %}
         
-        <table class="table-clubes table" id="tableClubesSF">
-            <thead class="thead-clubes">
-                <tr class="tr-clubes">
-                    <th class="thead-th-clubes">ID</th>
-                    <th class="thead-th-clubes">Nome</th>
-                </tr>
-            </thead>
-            <tbody class="tbody-clubes">
-                {% if teams %}
-                    {% for team in teams %}
-                    <tr class="tr-clubes" data-team-id="{{ team.id_team }}">
-                        <td class="td-clubes">
-                            {{ team.id_team }}
-                        </td>
-                        <td class="td-clubes">
-                            <div class="team-info">
-                                {% if team.icon %}
-                                    <img src="{{ team.icon_data_url }}"
-                                         alt="Logo {{ team.name }}"
-                                         class="team-logo"
-                                         style="width: 20px; height: 20px; object-fit: contain; margin-right: 8px;"
-                                         onerror="this.style.display='none'">
-                                {% endif %}
-                                <span>{{ team.name }}</span>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                {% else %}
+        <div class="row mt-2 mb-4">
+            <table class="table-clubes table" id="tableClubesSF">
+                <thead class="thead-clubes">
                     <tr class="tr-clubes">
-                        <td class="td-clubes" colspan="3" style="text-align: center; color: #6c757d;">
-                            Nenhum clube encontrado
-                        </td>
+                        <th class="thead-th-clubes">ID</th>
+                        <th class="thead-th-clubes">Nome</th>
                     </tr>
-                {% endif %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="tbody-clubes">
+                    {% if teams %}
+                        {% for team in teams %}
+                        <tr class="tr-clubes" data-team-id="{{ team.id_team }}">
+                            <td class="td-clubes">
+                                {{ team.id_team }}
+                            </td>
+                            <td class="td-clubes">
+                                <div class="team-info">
+                                    {% if team.icon %}
+                                        <img src="{{ team.icon_data_url }}"
+                                            alt="Logo {{ team.name }}"
+                                            class="team-logo"
+                                            style="width: 20px; height: 20px; object-fit: contain; margin-right: 8px;"
+                                            onerror="this.style.display='none'">
+                                    {% endif %}
+                                    <span>{{ team.name }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="tr-clubes">
+                            <td class="td-clubes" colspan="3" style="text-align: center; color: #6c757d;">
+                                Nenhum clube encontrado
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <div class="col h-100">
+                 {% include 'analytics/team/card_event.html' %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

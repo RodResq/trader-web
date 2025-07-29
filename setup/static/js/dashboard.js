@@ -22,6 +22,7 @@ import { setupGraficoMelhorDia } from './modules/evento/grafico_melhor_dia.js'
 import { setupGraficoDesempenhoSemanal } from './modules/gerencia_aposta/gerencia_graficos_principal.js';
 import { setupProgressPerformace } from './modules/performace/grafico_performace.js';
 import { setupProximoEvento } from './modules/evento/proximo_evento.js'
+import { setupCardEventTeam } from './modules/team/card_event.js';
 
 
 
@@ -92,6 +93,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Incializa o cálculo final das datas do ciclo
     calcularDataFinalCiclo();
+
+    // Incializa cards do team eventos
+    setupCardEventTeam();
 
     // Inicializa componentes de paginação
     if (typeof initPagination === "function") {
