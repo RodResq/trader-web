@@ -54,21 +54,36 @@ function renderizarCardEventoTeam(dados) {
         dados.forEach(event => {
 
             const cardDiv = document.createElement('div');
-            cardDiv.className = 'card border-left-primary shadow h-100 mb-3';
+            // const borderClass = Number(event.tournament.priority) === 0 ? 'border-left-success' : 'border-left-primary';
+            const styleCard = Number(event.tournament.priority) === 0 ? 'border-left-width: 15px; border-color: #198754;border-top: none;border-bottom: none;border-right: none;': 'None';
+            cardDiv.className = `card shadow h-100 mb-3`;
+            cardDiv.style = styleCard;
+
+            const dataFormatada = event.tournament.startTimestamp ?
+                timestampParaData(event.tournament.startTimestamp): 
+                'Data não informada';
 
             cardDiv.innerHTML = `
                 <div class="card-body">
                     <div class="row no-gutters">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                ${event.tournament.id || 'ID'}
+                        <div class="row mr-2">
+                            <div class="col-5 mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    ${event.tournament.id || 'ID'}
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    ${event.tournament.name || 'Campeonato'}
+                                </div>
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                ${event.tournament.name || 'Campeonato'}
+                            <div class="col-2 mr-2">
+                                <div class="text-xs text-gray-600 mt-2">
+                                    <i class="fas fa-calendar-alt"></i> ${dataFormatada}
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    ${event.tournament.priority}
+                                </div>
                             </div>
-                            <div class="text-xs text-gray-600 mt-2">
-                                <i class="fas fa-calendar-alt"></i> ${event.tournament.startTimestamp || 'Data não informada'}
-                            </div>
+                        </div>
                     </div>
                 </div>
             `;
@@ -88,5 +103,23 @@ function renderizarCardEventoTeam(dados) {
         `;
     }
 
+
+}
+
+
+function timestampParaData(timestamp) {
+    if (!timestamp || isNaN(Number(timestamp)) || Number(timestamp) <= 0) {
+        return 'Data não informada';
+    }
+
+    let timestampNumero = Number(timestamp);
+
+    if (timestampNumero.toString().length <= 10) {
+        timestampNumero = timestampNumero * 1000;
+    }
+    const data = new Date(timestampNumero);
+
+
+    return isNaN(data.getTime()) ? 'Data inválida': data.toLocaleDateString('pt-BR');
 
 }
