@@ -205,7 +205,6 @@
                             {% for mercado in mercados %}
                             <tr class="align-baseline">
                               <td>
-                                {% comment %} TODO REFATORAR {% endcomment %}
                                 {% if mercado.resultado_estatistica %}
                                   <i style="color:#198754; vertical-align: middle;" class="bi bi-bar-chart-line-fill"></i>
                                   <i style="color:#198754; vertical-align: middle;" class="bi bi-tv"></i>
@@ -233,6 +232,11 @@
                                   {% else %}
                                   class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"
                                 {% endif %}></i>
+                                {% if mercado.next_event_priority %}
+                                  <span class="icon-next-event-priority">
+                                    <img src="{% static 'images/icons/next-event-priority.svg' %}" alt="next-event-priority" class="me-2r">
+                                  </span>
+                                {% endif %}
                                 {% if mercado.resultado_entrada == "G" %}
                                   <span class="icon-soccer">
                                     <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">

@@ -93,19 +93,20 @@ export function setupResultadoEntradaModal() {
 function atualizarIconSoccer(currentRow, resultado_entrada) {
     if (!currentRow) return;
 
-    const spanExiste = currentRow.querySelector('td:nth-child(2) span');
-    
-    if (spanExiste) {
-        spanExiste.remove();
-    }
-
     const statusCell = currentRow.querySelector('td:nth-child(2)');
 
-    const spanSoccer = document.createElement('span');
-    spanSoccer.className = resultado_entrada === 'G' ? 'icon-soccer': 'icon-soccer-perdeu';
-    const iconPath = "/static/images/icons/soccer.svg";
-    spanSoccer.innerHTML = `<img src="${iconPath}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">`;
+    const spanSoccerExiste = statusCell.querySelector('.icon-soccer, .icon-soccer-perdeu');
+    
+    if (spanSoccerExiste) {
+        spanSoccerExiste.remove();
+    }
 
-    statusCell.appendChild(spanSoccer);
+
+    const novoSpanSoccer = document.createElement('span');
+    novoSpanSoccer.className = resultado_entrada === 'G' ? 'icon-soccer': 'icon-soccer-perdeu';
+    const iconPath = "/static/images/icons/soccer.svg";
+    novoSpanSoccer.innerHTML = `<img src="${iconPath}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">`;
+
+    statusCell.appendChild(novoSpanSoccer);
 
 }
