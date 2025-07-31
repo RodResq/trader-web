@@ -1,6 +1,8 @@
+import { setupPrioridadeEvento } from './prioridade_evento.js';
 
 export function setupCardEventTeam() {
     const rows = document.querySelectorAll('.tr-clubes[data-team-id]');
+    
     
     if (!rows) return;
 
@@ -54,7 +56,6 @@ function renderizarCardEventoTeam(dados) {
         dados.forEach(event => {
 
             const cardDiv = document.createElement('div');
-            // const borderClass = Number(event.tournament.priority) === 0 ? 'border-left-success' : 'border-left-primary';
             const styleCard = Number(event.tournament.priority) === 0 ? 'border-left-width: 15px; border-color: #198754;border-top: none;border-bottom: none;border-right: none;': 'None';
             cardDiv.className = `card shadow h-100 mb-3`;
             cardDiv.style = styleCard;
@@ -68,11 +69,19 @@ function renderizarCardEventoTeam(dados) {
                     <div class="row no-gutters">
                         <div class="row mr-2">
                             <div class="col-5 mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                <div class="row">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     ${event.tournament.id || 'ID'}
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
                                     ${event.tournament.name || 'Campeonato'}
+                                    </div>
+                                    <div>
+                                        <input class="form-check-input checkPrioridadeEvento" type="checkbox" value="${event.id_event}" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            Prioridade:
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-2 mr-2">
@@ -88,6 +97,8 @@ function renderizarCardEventoTeam(dados) {
                 </div>
             `;
             tournament.append(cardDiv);
+                //Incializa o check de proximo eventos prioritario
+            setupPrioridadeEvento()
         })
     } else {
         tournament.innerHTML = `

@@ -1,7 +1,8 @@
 from django.http import request
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import TeamSofascore
+from analytics.models import Entrada
 import requests
 
 
@@ -39,4 +40,35 @@ def events(request):
                 'erro': str(e)
             }, status=500)
             
+            
+def get_event(request):
+    if request.method == 'GET':
+        id_event = request.GET.get('id_event')
+        checked = request.GET.get('checked')
+        
+        if not id_event:
+            return JsonResponse({
+                'success': False,
+                'message': 'Parâmetros incompletos. É necessário fornecer o id_event'
+            }, status=400)
+        
+        try:
+            entrada = get_object_or_404(Entrada, id_event=int(id_event))
+            if 'true' in checked:
+                entrada.next_event_priority = True
+            else:
+                entrada.next_event_priority = False
+            entrada.save()
+            
+            return JsonResponse({
+                'success': True,
+                'id_event': id_event,
+                'next_event_priority': entrada.next_event_priority
+            })
+            
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({
+                'success': False,
+                'erro': str(e)
+            }, status=500)
         

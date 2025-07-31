@@ -26,6 +26,7 @@ import { setupCardEventTeam } from './modules/team/card_event.js';
 
 
 
+
 document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializar tooltips
@@ -80,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupProgressPerformace();
 
     // Inicializa API Próximo Evento
-    setupProximoEvento();
+    // setupProximoEvento();
 
     // Incializa gráfico de melhor dia semana
     setupGraficoMelhorDia();
