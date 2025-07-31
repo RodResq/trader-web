@@ -50,8 +50,8 @@ export function updateEntryOptionIcon(isMutipla=false, row, estado="E") {
     
     const mercadoCell = row.querySelector(isMutipla ? 'td:nth-child(3)': 'td:nth-child(2)');
     
-    if (mercadoCell && !mercadoCell.classList.contains('mercado-column')) {
-        mercadoCell.classList.add('mercado-column');
+    if (mercadoCell && !mercadoCell.classList.contains('mercado-status')) {
+        mercadoCell.classList.add('mercado-status');
     }
     
     const iconElement = document.createElement('i');
@@ -104,8 +104,8 @@ export function checkAcceptedBets() {
     rows.forEach(row => {
         const mercadoCell = row.querySelector('td:nth-child(2)');
 
-        if (mercadoCell && !mercadoCell.classList.contains('mercado-column')) {
-            mercadoCell.classList.add('mercado-column');
+        if (mercadoCell && !mercadoCell.classList.contains('mercado-status')) {
+            mercadoCell.classList.add('mercado-status');
         }
 
         const iconElement = mercadoCell ? mercadoCell.querySelector('.bi-check') : null;
@@ -133,8 +133,8 @@ export function checkRejectBets() {
     rows.forEach(row => {
         const mercadoCell = row.querySelector('td:nth-child(2)');
 
-        if (mercadoCell && !mercadoCell.classList.contains('mercado-column')) {
-            mercadoCell.classList.add('mercado-column');
+        if (mercadoCell && !mercadoCell.classList.contains('mercado-status')) {
+            mercadoCell.classList.add('mercado-status');
         }
 
         const iconElement = mercadoCell ? mercadoCell.querySelector('.bi-x') : null;
@@ -163,8 +163,8 @@ export function checkDesfazerAcao() {
     rows.forEach(row => {
         const mercadoCell = row.querySelector('td:nth-child(2)');
 
-        if (mercadoCell && !mercadoCell.classList.contains('mercado-column')) {
-            mercadoCell.classList.add('mercado-column');
+        if (mercadoCell && !mercadoCell.classList.contains('mercado-status')) {
+            mercadoCell.classList.add('mercado-status');
         }
 
         const iconElement = mercadoCell ? mercadoCell.querySelector('.bi-alarm') : null;

@@ -343,6 +343,11 @@ a .card {
   color: antiquewhite;
 }
 
+.mercado-status {
+  white-space: nowrap;
+  position: relative;
+}
+
 .mercado-column {
   max-width: 300px;
   white-space: nowrap;
@@ -1024,11 +1029,14 @@ body.theme-light .table-scroll-container-full {
 
 /* ===== REMOVER SCROLL DO CONTAINER PRINCIPAL ===== */
 /* Remove o scroll do container principal já que agora está na tabela */
+/**
 .main-cards-scroll-container {
-  max-height: none; /* Remove altura máxima */
-  overflow: visible; /* Remove scroll */
-  padding-right: 0; /* Remove padding da scrollbar */
+  max-height: none; 
+  overflow: visible; 
+  padding-right: 0; 
 }
+*/
+
 
 /* ===== MELHORIAS VISUAIS ===== */
 /* Tabela sem bordas */

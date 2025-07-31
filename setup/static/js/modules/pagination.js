@@ -211,6 +211,14 @@ function updateTable(mercados) {
         }
         statusCell.appendChild(iconElement);
 
+        if (mercado.next_event_priority) {
+            const spanIconNextEventPriority = document.createElement('span');
+            spanIconNextEventPriority.className = 'icon-next-event-priority';
+            const iconNextEventPath =  "/static/images/icons/next-event-priority.svg";
+            spanIconNextEventPriority.innerHTML = `<img src="${iconNextEventPath}" alt="next-event-priority" class="me-2r">`;
+            statusCell.appendChild(spanIconNextEventPriority);
+        }
+
         const spanSoccer = document.createElement('span');
         spanSoccer.className = mercado.resultado_entrada === 'G' ? 'icon-soccer': 'icon-soccer-perdeu';
         const iconPath = "/static/images/icons/soccer.svg";

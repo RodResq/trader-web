@@ -225,7 +225,8 @@ def mercados(request):
                 'data_jogo': entrada.data_jogo.strftime('%d/%m/%Y %H:%M:%S') if entrada.data_jogo else None,
                 'opcao_entrada': entrada.opcao_entrada,
                 'resultado_estatistica': entrada.resultado_estatistica,
-                'resultado_entrada': entrada.resultado_entrada
+                'resultado_entrada': entrada.resultado_entrada,
+                'next_event_priority': entrada.next_event_priority
             })
         return JsonResponse({
             'success': True,
