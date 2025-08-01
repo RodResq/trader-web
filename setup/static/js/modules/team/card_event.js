@@ -29,6 +29,7 @@ export function setupCardEventTeam() {
                     return response.json();
                 }).then(data => {
                     if (data.success) {
+                        renderizarCardTeam(teamId)
                         renderizarCardEventoTeam(data.dados.data);
                     } else {
                         showNotification(`Falha ao recuperar dados de evento do time`, 'danger');
@@ -43,6 +44,39 @@ export function setupCardEventTeam() {
             }
         });
     });
+}
+
+async function renderizarCardTeam(idTeam) {
+    const teamName = document.getElementById('card-team-name');
+    const teamIcon = document.getElementById('card-team-img')
+    if (!teamName || !teamIcon) return;
+
+    try {
+        const url = `api/team/recuperar?id_team=${idTeam}`;
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`); 
+            }
+            return response.json();
+        }).then(data => {
+            if (data.success) {
+                teamName.textContent = data.team.name
+                teamIcon.setAttribute('src', `data:imagem/png;base64,${data.team.icon}`);
+                team.icon.setAttribute('alt', data.team.name);
+            } else {
+                showNotification(`Falha ao recuperar dados do time`, 'danger');
+            }
+        })
+    } catch(error) {
+        console.error('Erro:', error);
+        this.disabled = false;
+    }
+    
 }
 
 function renderizarCardEventoTeam(dados) {

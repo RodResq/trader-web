@@ -1,6 +1,7 @@
 from django.http import request
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from django.forms.models import model_to_dict
 from .models import TeamSofascore
 from analytics.models import Entrada
 import requests
@@ -66,6 +67,23 @@ def get_event(request):
                 'next_event_priority': entrada.next_event_priority
             })
             
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({
+                'success': False,
+                'erro': str(e)
+            }, status=500)
+            
+            
+def get_team(request):
+    if request.method == 'GET':
+        id_team = request.GET.get('id_team')
+        
+        try:
+            team = get_object_or_404(TeamSofascore, id_team= id_team)
+            return JsonResponse({
+                'success': True,
+                'team': model_to_dict(team)    
+            })
         except requests.exceptions.RequestException as e:
             return JsonResponse({
                 'success': False,
