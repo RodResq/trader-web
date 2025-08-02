@@ -67,7 +67,7 @@ async function renderizarCardTeam(idTeam) {
             if (data.success) {
                 teamName.textContent = data.team.name
                 teamIcon.setAttribute('src', `data:imagem/png;base64,${data.team.icon}`);
-                team.icon.setAttribute('alt', data.team.name);
+                teamIcon.setAttribute('alt', data.team.name);
             } else {
                 showNotification(`Falha ao recuperar dados do time`, 'danger');
             }
@@ -111,7 +111,7 @@ function renderizarCardEventoTeam(dados) {
                                     ${event.tournament.name || 'Campeonato'}
                                     </div>
                                     <div>
-                                        <input class="form-check-input checkPrioridadeEvento" type="checkbox" value="${event.id_event}" id="flexCheckDefault">
+                                        <input class="form-check-input checkPrioridadeEvento" type="checkbox" value="${event.idEvent}" id="flexCheckDefault">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             Prioridade:
                                         </label>
