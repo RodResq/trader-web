@@ -153,3 +153,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATA_FORMAT = 'd/m/Y'
 SHORT_DATA_FORMAT = 'd/m/Y'
 DATE_INPUT_FORMATS = ['%d/%m/%Y']
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

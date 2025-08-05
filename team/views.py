@@ -80,6 +80,14 @@ def get_team(request):
         
         try:
             team = get_object_or_404(TeamSofascore, id_team= id_team)
+            if not team.icon:
+                response = requests.get(f'http://127.0.0.1:8080/team_icon/{id_team}')
+                data = response.json()
+                if data['success'] == True:
+                    icon_team = data['data']
+                    team.icon = icon_team
+                    team.save()
+                    
             return JsonResponse({
                 'success': True,
                 'team': model_to_dict(team)    
