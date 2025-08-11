@@ -8,7 +8,8 @@ import requests
 
 
 def teams(request):
-    teams = TeamSofascore.objects.all();
+    teams = TeamSofascore.objects.filter(ativo=1)\
+        .exclude(name__iregex=r'U\d{2}$').all()
     
     return render(request, 'analytics/team/index.html', {
         'teams': teams
