@@ -1,4 +1,5 @@
 import { setupPrioridadeEvento } from './prioridade_evento.js';
+import { showNotification } from '../notifications.js';
 
 export function setupCardEventTeam() {
     const rows = document.querySelectorAll('.tr-clubes[data-team-id]');
@@ -79,6 +80,33 @@ async function renderizarCardTeam(idTeam) {
     
 }
 
+async function recuperarIconUniqueTournmanet(idUniqueTournament) {
+    console.log(idUniqueTournament);
+    try {
+        const url = `api/unique_tournament/icon?id_unique_tournament=${idUniqueTournament}`;
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`); 
+            }
+            return response.json();
+        }).then(data => {
+            if (data.success) {
+                return data.uniqueTournament.icon;
+            } else {
+                showNotification(`Falha ao recuperar dados do evento`, 'danger');
+            }
+        })
+    }catch {
+        console.error('Erro:', error);
+        this.disabled = false;
+    }
+}
+
 function renderizarCardEventoTeam(dados) {
     const tournament = document.querySelector('.tournament');
 
@@ -87,7 +115,8 @@ function renderizarCardEventoTeam(dados) {
     tournament.innerHTML = '';
 
     if (dados.length > 0) {
-        dados.forEach(event => {
+        dados.forEach(async event => {
+            let iconUniqueTournament = await recuperarIconUniqueTournmanet(event.tournament.uniqueTournament.id);
 
             const cardDiv = document.createElement('div');
             const styleCard = Number(event.tournament.priority) === 0 ? 'border-left-width: 15px; border-color: #198754;border-top: none;border-bottom: none;border-right: none;': 'None';
@@ -107,6 +136,10 @@ function renderizarCardEventoTeam(dados) {
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     ${event.tournament.id || 'ID'}
                                     </div>
+                                    <img 
+                                        alt= ${event.tournament.name}
+                                        src=data:imagem/png;base64,${iconUniqueTournament}>
+               
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                     ${event.tournament.name || 'Campeonato'}
                                     </div>

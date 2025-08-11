@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'owner_ball.apps.OwnerBallConfig',
     'grafico.apps.GraficoConfig',
     'team.apps.TeamConfig',
-    'sofascore.apps.SofascoreConfig'
+    'sofascore.apps.SofascoreConfig',
+    'unique_tournament.apps.UniqueTournamentConfig',
 ]
 
 MIDDLEWARE = [

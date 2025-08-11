@@ -56,7 +56,7 @@ api_urlpatterns = [
     path('api/performace', PerformaceAPIView.as_view()),
     path('api/gerencia/resultado', gerencia_resultado, name="gerencia_resultado"),
     path('api/team/', include('team.api_urls')),
-    path('api/unique_tournament', include('unique_tournament.api_urls')),
+    path('api/unique_tournament/', include('unique_tournament.api_urls')),
 ]
 
 admin_urlpatterns = [
