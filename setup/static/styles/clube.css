@@ -56,7 +56,6 @@
 
 .tbody-clubes .td-clubes {
     background: transparent;
-    color: #ffffff;
     padding: 16px 20px;
     font-size: 0.9rem;
     font-weight: 400;
@@ -90,4 +89,9 @@
 
 .tbody-clubes .tr-clubes:hover .team-logo {
     transform: scale(1.05);
+}
+
+.unique-tournament-logo {
+    border-radius: 2px;
+    transition: transform 0.2s ease;
 }

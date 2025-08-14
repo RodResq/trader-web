@@ -116,8 +116,6 @@ function renderizarCardEventoTeam(dados) {
 
     if (dados.length > 0) {
         dados.forEach(async event => {
-            let iconUniqueTournament = await recuperarIconUniqueTournmanet(event.tournament.uniqueTournament.id);
-
             const cardDiv = document.createElement('div');
             const styleCard = Number(event.tournament.priority) === 0 ? 'border-left-width: 15px; border-color: #198754;border-top: none;border-bottom: none;border-right: none;': 'None';
             cardDiv.className = `card shadow h-100 mb-3`;
@@ -129,35 +127,29 @@ function renderizarCardEventoTeam(dados) {
 
             cardDiv.innerHTML = `
                 <div class="card-body">
-                    <div class="row no-gutters">
+                    <div class="no-gutters">
                         <div class="row mr-2">
-                            <div class="col-5 mr-2">
+                            <div class="col-sm-1 mr-2">
                                 <div class="row">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    ${event.tournament.id || 'ID'}
-                                    </div>
-                                    <img 
+                                    <img class="unique-tournament-logo mb-3img-fluid"
+                                        style="width: 90px;"
                                         alt= ${event.tournament.name}
-                                        src=data:imagem/png;base64,${iconUniqueTournament}>
-               
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    ${event.tournament.name || 'Campeonato'}
-                                    </div>
-                                    <div>
-                                        <input class="form-check-input checkPrioridadeEvento" type="checkbox" value="${event.idEvent}" id="flexCheckDefault">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            Prioridade:
-                                        </label>
-                                    </div>
+                                        src=data:imagem/png;base64,${event.tournament.uniqueTournament.icon}>
                                 </div>
                             </div>
-                            <div class="col-2 mr-2">
+                            <div class="col-sm-4 align-content-start">
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    ${event.tournament.name || 'Campeonato'}
+                                </div>
                                 <div class="text-xs text-gray-600 mt-2">
                                     <i class="fas fa-calendar-alt"></i> ${dataFormatada}
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    ${event.tournament.priority}
-                                </div>
+                            </div>
+                            <div class="col-sm-2 align-content-center">
+                                <input class="form-check-input checkPrioridadeEvento" type="checkbox" value="${event.idEvent}" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Prioridade:
+                                </label>
                             </div>
                         </div>
                     </div>
