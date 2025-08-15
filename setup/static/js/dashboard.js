@@ -23,6 +23,7 @@ import { setupGraficoDesempenhoSemanal } from './modules/gerencia_aposta/gerenci
 import { setupProgressPerformace } from './modules/performace/grafico_performace.js';
 import { setupProximoEvento } from './modules/evento/proximo_evento.js'
 import { setupCardEventTeam } from './modules/team/card_event.js';
+import { setupFindTeam } from './modules/team/pesquisar.js';
 
 
 
@@ -97,6 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Incializa cards do team eventos
     setupCardEventTeam();
+
+    // Incializa pesquisa pelo nome do team
+    setupFindTeam();
 
     // Inicializa componentes de paginação
     if (typeof initPagination === "function") {

@@ -80,7 +80,7 @@ def get_team(request):
         id_team = request.GET.get('id_team')
         
         try:
-            team = get_object_or_404(TeamSofascore, id_team= id_team)
+            team = get_object_or_404(TeamSofascore, id_team=id_team)
             if not team.icon:
                 response = requests.get(f'http://127.0.0.1:8080/team_icon/{id_team}')
                 data = response.json()
@@ -92,6 +92,22 @@ def get_team(request):
             return JsonResponse({
                 'success': True,
                 'team': model_to_dict(team)    
+            })
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({
+                'success': False,
+                'erro': str(e)
+            }, status=500)
+            
+            
+def find_team(request):
+    if request.method == 'GET':
+        name = request.GET.get('name')
+        try:
+            team = get_object_or_404(TeamSofascore, name=name)
+            return JsonResponse({
+                'success': True,
+                'team': model_to_dict(team)
             })
         except requests.exceptions.RequestException as e:
             return JsonResponse({

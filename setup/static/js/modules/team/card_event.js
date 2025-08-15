@@ -47,7 +47,7 @@ export function setupCardEventTeam() {
     });
 }
 
-async function renderizarCardTeam(idTeam) {
+export async function renderizarCardTeam(idTeam) {
     const teamName = document.getElementById('card-team-name');
     const teamIcon = document.getElementById('card-team-img')
     if (!teamName || !teamIcon) return;
@@ -107,7 +107,7 @@ async function recuperarIconUniqueTournmanet(idUniqueTournament) {
     }
 }
 
-function renderizarCardEventoTeam(dados) {
+export function renderizarCardEventoTeam(dados) {
     const tournament = document.querySelector('.tournament');
 
     if (!tournament) return;
