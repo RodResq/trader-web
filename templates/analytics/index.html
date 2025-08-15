@@ -206,10 +206,10 @@
                             <tr class="align-baseline fw-medium lh-sm" style="font-size: smaller;">
                               <td>
                                 {% if mercado.resultado_estatistica %}
-                                  <i style="color:#198754; vertical-align: middle;" class="bi bi-bar-chart-line-fill"></i>
-                                  <i style="color:#198754; vertical-align: middle;" class="bi bi-tv"></i>
+                                  <i style="color:#198754;" class="bi bi-bar-chart-line-fill align-middle"></i>
+                                  <i style="color:#198754;" class="bi bi-tv align-middle"></i>
                                 {% else %}
-                                  <i style="color:#dc3545; vertical-align: middle;" class="bi bi-bar-chart-line-fill"></i>
+                                  <i style="color:#dc3545;" class="bi bi-bar-chart-line-fill align-middle"></i>
                                   <i class="bi bi-tv"></i>
                                 {% endif %}
                                 <span {% if mercado.resultado_estatistica %} 
@@ -227,11 +227,11 @@
                               </td>
                               <td class="mercado-status">
                                 <i {% if mercado.opcao_entrada == "A" %}
-                                  class="bi-check" style="font-size: 1rem; color: green; vertical-align: middle;"
+                                  class="bi-check align-middle" style="font-size: 1rem; color: green;"
                                   {% elif  mercado.opcao_entrada == "R" %}
-                                  class="bi bi-x" style="font-size: 1rem; color: red; vertical-align: middle;"
+                                  class="bi bi-x align-middle" style="font-size: 1rem; color: red;"
                                   {% else %}
-                                  class="bi-alarm" style="font-size: 1rem; color: cornflowerblue; vertical-align: middle;"
+                                  class="bi-alarm align-middle" style="font-size: 1rem; color: cornflowerblue;"
                                 {% endif %}></i>
                                 {% if mercado.next_event_priority %}
                                   <span class="icon-next-event-priority">
@@ -246,9 +246,9 @@
                                   <span class="icon-soccer-perdeu">
                                    <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px; background-color: red;">
                                   </span>
-                                  {% endif %}
-                                  <i style="color:#198754; vertical-align: middle;" class="bi bi-house-up-fill"></i>
-                                  <i style="color:#dc3545; vertical-align: middle;" class="bi bi-house-down-fill"></i>
+                                {% endif %}
+                                  <i style="color:#198754;" class="align-middle fs-6 bi bi-house-up-fill"></i>
+                                  <i style="color:#dc3545;" class="align-middle fs-6 bi bi-house-down-fill"></i>
                               </td>
                               <td class="mercado-column">
                                   {{ mercado.mercado_name }}
@@ -276,11 +276,11 @@
                               </td>
                               <td class="text-light-emphasis">
                                 <i {% if mercado.odd_change == 'P' %}
-                                  class="bi bi-stop" style="1rem; color: yellow; vertical-align: middle;" 
+                                  class="bi bi-stop align-middle" style="1rem; color: yellow;" 
                                   {% elif mercado.odd_change == 'S' %}
-                                  class="bi bi-arrow-up-short" style="color: green; vertical-align: middle;"
+                                  class="bi bi-arrow-up-short align-middle align-middle" style="color: green;"
                                   {% elif mercado.odd_change == 'D' %}
-                                  class="bi bi-arrow-down-short" style="color: red; vertical-align: middle;"
+                                  class="bi bi-arrow-down-short align-middle" style="color: red;"
                                   {% endif %}></i>
                                 {{ mercado.odd }}
                                 <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="{{ mercado.id_event }}" title="Atualizar odd change">
