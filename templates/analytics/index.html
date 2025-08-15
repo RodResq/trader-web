@@ -188,22 +188,22 @@
                   <div class="card-body">
                     <div class="table-responsive">
                       <table class="table table-hover" id="marketsTable">
-                        <thead>
-                          <tr>
-                            <th class="col-id">ID</th>
-                            <th class="col-status">Status</th>
+                        <thead class="text-center">
+                          <tr style="font-size: smaller">
+                            <th class="text-center col-id">ID</th>
+                            <th class="text-center col-status">Status</th>
                             <th class="col-mercado">Evento</th>
-                            <th class="col-odd">Odd</th>
+                            <th class="text-center col-odd">Odd</th>
                             <th class="col-home">Home</th>
                             <th class="col-away">Away</th>
                             <th class="col-data">Data</th>
-                            <th class="col-acoes">Ações</th>
+                            <th class="text-center col-acoes">Ações</th>
                           </tr>
                         </thead>
                         <tbody>
                           {% if mercados %}
                             {% for mercado in mercados %}
-                            <tr class="align-baseline">
+                            <tr class="align-baseline fw-medium lh-sm" style="font-size: smaller;">
                               <td>
                                 {% if mercado.resultado_estatistica %}
                                   <i style="color:#198754; vertical-align: middle;" class="bi bi-bar-chart-line-fill"></i>
@@ -217,7 +217,8 @@
                                   {% else %}
                                   class="resultado-statistic-overall-away"
                                   {% endif %}>
-                                  <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline" 
+                                  <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
+                                    style="font-size: smaller"
                                     data-event-id="{{mercado.id_event}}"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="top"
@@ -226,11 +227,11 @@
                               </td>
                               <td class="mercado-status">
                                 <i {% if mercado.opcao_entrada == "A" %}
-                                  class="bi-check" style="font-size: 1rem; color: green;"
+                                  class="bi-check" style="font-size: 1rem; color: green; vertical-align: middle;"
                                   {% elif  mercado.opcao_entrada == "R" %}
-                                  class="bi bi-x" style="font-size: 1rem; color: red;"
+                                  class="bi bi-x" style="font-size: 1rem; color: red; vertical-align: middle;"
                                   {% else %}
-                                  class="bi-alarm" style="font-size: 1rem; color: cornflowerblue;"
+                                  class="bi-alarm" style="font-size: 1rem; color: cornflowerblue; vertical-align: middle;"
                                 {% endif %}></i>
                                 {% if mercado.next_event_priority %}
                                   <span class="icon-next-event-priority">
@@ -246,6 +247,8 @@
                                    <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px; background-color: red;">
                                   </span>
                                   {% endif %}
+                                  <i style="color:#198754; vertical-align: middle;" class="bi bi-house-up-fill"></i>
+                                  <i style="color:#dc3545; vertical-align: middle;" class="bi bi-house-down-fill"></i>
                               </td>
                               <td class="mercado-column">
                                   {{ mercado.mercado_name }}
@@ -257,8 +260,8 @@
                                               style="width: 20px; height: 20px; object-fit: contain;"
                                               onerror="this.style.display='none'">
                                       {% endif %}
-                                      <span class="align-middle">{{ mercado.name_home }}</span> 
-                                      <span class="align-middle">{{ mercado.mercado }}</span> 
+                                      <span class="align-middle text-light-emphasis">{{ mercado.name_home }}</span> 
+                                      <span class="align-middle text-light-emphasis">{{ mercado.mercado }}</span> 
                                       {% if mercado.icon_away_data_url %}
                                           <img src="{{ mercado.icon_away_data_url }}"
                                               alt="Logo {{ mercado.name_away }}"
@@ -266,12 +269,12 @@
                                               style="width: 20px; height: 20px; object-fit: contain;"
                                               onerror="this.style.display='none'">
                                       {% endif %}
-                                      <span class="align-middle">{{ mercado.name_away }}</span>
+                                      <span class="align-middle text-light-emphasis">{{ mercado.name_away }}</span>
                                   {% else %}
                                     {{ mercado.mercado }}
                                   {% endif %}
                               </td>
-                              <td>
+                              <td class="text-light-emphasis">
                                 <i {% if mercado.odd_change == 'P' %}
                                   class="bi bi-stop" style="1rem; color: yellow; vertical-align: middle;" 
                                   {% elif mercado.odd_change == 'S' %}
@@ -284,22 +287,35 @@
                                   <i class="bi bi-arrow-clockwise"></i>
                                 </a>
                               </td>
-                              <td>{{ mercado.home_actual }}%</td>
-                              <td>{{ mercado.away_actual }}%</td>
-                              <td>{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
+                              <td class="text-light-emphasis">{{ mercado.home_actual }}%</td>
+                              <td class="text-light-emphasis">{{ mercado.away_actual }}%</td>
+                              <td class="text-light-emphasis">{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
                               <td>
-                                <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id="{{ mercado.id_event }}" title="Editar Odd">
-                                  <i class="bi bi-pencil"></i>
-                                </a>
-                                <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id="{{ mercado.id_event }}" title="Aceitar aposta">
-                                  <i class="bi bi-check"></i>
-                                </a>
-                                <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id="{{ mercado.id_event }}" title="Recusar aposta">
-                                  <i class="bi bi-x"></i>
-                                </a>
-                                <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id="{{ mercado.id_event }}" title="Desfazer ação">
-                                  <i class="bi bi-arrow-counterclockwise"></i>
-                                </a>
+                                <div class="d-grid gap-4 d-md-block">
+                                  <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id="{{ mercado.id_event }}" title="Editar Odd">
+                                    <i class="bi bi-pencil"></i>
+                                  </a>
+                                  <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id="{{ mercado.id_event }}" title="Aceitar aposta">
+                                    <i class="bi bi-check"></i>
+                                  </a>
+                                  <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id="{{ mercado.id_event }}" title="Recusar aposta">
+                                    <i class="bi bi-x"></i>
+                                  </a>
+                                  <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id="{{ mercado.id_event }}" title="Desfazer ação">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                  </a>
+                                  <div class="btn-group" role="group">
+                                    <a id="btnGroupDrop1" type="button" class="btn bg-body-secondary btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
+                                      <i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                      <li><a id="btn-votacao" class="dropdown-item" data-event-id="{{ mercado.id_event }}">Votacao</a></li>
+                                      <li><a class="dropdown-item" href="#">Mais</a></li>
+                                      <li><a class="dropdown-item" href="#">Mais</a></li>
+                                      <li><a class="dropdown-item" href="#">Mais</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
                               </td>
                             </tr>
                             {% endfor %}
