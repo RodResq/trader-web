@@ -24,6 +24,7 @@ import { setupProgressPerformace } from './modules/performace/grafico_performace
 import { setupProximoEvento } from './modules/evento/proximo_evento.js'
 import { setupCardEventTeam } from './modules/team/card_event.js';
 import { setupFindTeam } from './modules/team/pesquisar.js';
+import { setupEventVote } from './modules/entrada/event_vote.js';
 
 
 
@@ -102,6 +103,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Incializa pesquisa pelo nome do team
     setupFindTeam();
 
+    // Incializa resultado event vote
+    setupEventVote();
+    
     // Inicializa componentes de paginação
     if (typeof initPagination === "function") {
         initPagination();

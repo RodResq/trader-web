@@ -701,3 +701,25 @@ def resultado_entrada(request):
                 'sucess':False,
                 'message': f'Erro ao registrar a entrada: {str(e)}'
             }, status=500)
+            
+            
+def get_event_vote(request):
+    if request.method == 'GET':
+        id_event = request.GET.get('event_id')
+        
+        try:
+            response = requests.get(f'http://127.0.0.1:8080/event/{id_event}/votes')
+            data = response.json()
+            if not data['sucess']:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Erro ao recuperar dados da votacao'
+                }, status=400)
+                
+            # TODO LOGICA PARA  SALVAR E RETORNA UM BOOLEAN
+            
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({
+                'sucess':False,
+                'message': f'Erro ao recuperar voto: {str(e)}'
+            }, status=500)

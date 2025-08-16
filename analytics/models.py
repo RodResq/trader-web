@@ -103,6 +103,7 @@ class Entrada(models.Model):
     resultado_estatistica = models.BooleanField(default=0)    
     resultado_entrada = models.CharField(max_length=20, blank=False, choices=RESULTADO_ENTRADA, null=True)
     next_event_priority = models.BooleanField(default=0)
+    event_vote_home = models.BooleanField(default=0)
         
     def __str__(self):
         return f"Entrada - {self.id_event} - mercado: {self.mercado} - odd: {self.odd}"    

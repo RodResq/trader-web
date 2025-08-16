@@ -247,8 +247,11 @@
                                    <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px; background-color: red;">
                                   </span>
                                 {% endif %}
+                                {% if mercado.event_vote_home %}
                                   <i style="color:#198754;" class="align-middle fs-6 bi bi-house-up-fill"></i>
+                                {% else %}
                                   <i style="color:#dc3545;" class="align-middle fs-6 bi bi-house-down-fill"></i>
+                                {% endif %}
                               </td>
                               <td class="mercado-column">
                                   {{ mercado.mercado_name }}
@@ -309,7 +312,7 @@
                                       <i class="bi bi-three-dots-vertical"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                      <li><a id="btn-votacao" class="dropdown-item" data-event-id="{{ mercado.id_event }}">Votacao</a></li>
+                                      <li><a id="btn-event-vote" class="dropdown-item" data-event-id="{{ mercado.id_event }}">Votacao</a></li>
                                       <li><a class="dropdown-item" href="#">Mais</a></li>
                                       <li><a class="dropdown-item" href="#">Mais</a></li>
                                       <li><a class="dropdown-item" href="#">Mais</a></li>

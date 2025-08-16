@@ -158,3 +158,13 @@ DATE_INPUT_FORMATS = ['%d/%m/%Y']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# REMOVER EM PRODUCAO
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:8000",
+    # Adicione outros domínios conforme necessário
+]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True

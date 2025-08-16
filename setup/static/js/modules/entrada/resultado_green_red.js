@@ -94,13 +94,11 @@ function atualizarIconSoccer(currentRow, resultado_entrada) {
     if (!currentRow) return;
 
     const statusCell = currentRow.querySelector('td:nth-child(2)');
-
     const spanSoccerExiste = statusCell.querySelector('.icon-soccer, .icon-soccer-perdeu');
     
     if (spanSoccerExiste) {
         spanSoccerExiste.remove();
     }
-
 
     const novoSpanSoccer = document.createElement('span');
     novoSpanSoccer.className = resultado_entrada === 'G' ? 'icon-soccer': 'icon-soccer-perdeu';
