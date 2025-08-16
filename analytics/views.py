@@ -710,13 +710,25 @@ def get_event_vote(request):
         try:
             response = requests.get(f'http://127.0.0.1:8080/event/{id_event}/votes')
             data = response.json()
-            if not data['sucess']:
+            print(data)
+            if not data['success']:
                 return JsonResponse({
                     'success': False,
                     'message': 'Erro ao recuperar dados da votacao'
                 }, status=400)
                 
-            # TODO LOGICA PARA  SALVAR E RETORNA UM BOOLEAN
+            vote_home =  data['data']['vote']['voteHome']
+            vote_away = data['data']['vote']['voteAway']
+            vote_draw = data['data']['vote']['voteDraw']
+            
+            entrada = get_object_or_404(Entrada, id_event=id_event)
+            entrada.event_vote_home = vote_home > vote_away and vote_home > vote_draw
+            entrada.save()
+                
+            return JsonResponse({
+                'success': True,
+                'data': True
+            }, status=200)
             
         except requests.exceptions.RequestException as e:
             return JsonResponse({

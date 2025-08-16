@@ -10,6 +10,13 @@ export function setupEventVote() {
         const idEvent = this.getAttribute('data-event-id');
         if (!idEvent) showNotification('Id evento nao encontrado');
 
+        const currentRow = this.closest('tr');
+        if (!currentRow) console.error('Nao foi possivel recuperar a linha atual');
+
+        const statusCell = currentRow.querySelector('td:nth-child(2)');
+
+        console.log('Current cell', statusCell);
+
         try {
             const url = `api/analytics/vote?event_id=${idEvent}`;
             fetch(url, {
@@ -22,7 +29,7 @@ export function setupEventVote() {
                 return response.json();
             }).then(data => {
                 if (!data.success) showNotification('Nao foi possivel recuperar o event de voto');
-                console.log('Dados: ', data.data);
+                buildIconHomeUp(data.data);
             })
         } catch {
 
@@ -30,4 +37,8 @@ export function setupEventVote() {
 
         }
     });
+}
+
+function buildIconHomeUp(vote) {
+
 }
