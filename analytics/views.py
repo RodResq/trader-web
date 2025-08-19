@@ -722,12 +722,12 @@ def get_event_vote(request):
             vote_draw = data['data']['vote']['voteDraw']
             
             entrada = get_object_or_404(Entrada, id_event=id_event)
-            entrada.event_vote_home = vote_home > vote_away and vote_home > vote_draw
+            entrada.event_vote_home = 'H' if vote_home > vote_away and vote_home > vote_draw else 'A'
             entrada.save()
                 
             return JsonResponse({
                 'success': True,
-                'data': True
+                'data': entrada.event_vote_home
             }, status=200)
             
         except requests.exceptions.RequestException as e:

@@ -82,6 +82,12 @@ class Entrada(models.Model):
         ("P", "perdeu")
     ]
     
+    VOTACAO = [
+        ("H", 'home'),
+        ("A", 'away'),
+        ("N", 'none')
+    ]
+    
     id_event = models.IntegerField(primary_key=True)
     icon_home_data_url = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     name_home = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
@@ -103,7 +109,7 @@ class Entrada(models.Model):
     resultado_estatistica = models.BooleanField(default=0)    
     resultado_entrada = models.CharField(max_length=20, blank=False, choices=RESULTADO_ENTRADA, null=True)
     next_event_priority = models.BooleanField(default=0)
-    event_vote_home = models.BooleanField(default=0)
+    event_vote_home = models.CharField(max_length=20, blank=False, choices=VOTACAO, default="N")
         
     def __str__(self):
         return f"Entrada - {self.id_event} - mercado: {self.mercado} - odd: {self.odd}"    

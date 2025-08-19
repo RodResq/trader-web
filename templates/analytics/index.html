@@ -247,10 +247,10 @@
                                    <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px; background-color: red;">
                                   </span>
                                 {% endif %}
-                                {% if mercado.event_vote_home %}
-                                  <i style="color:#198754;" class="align-middle fs-6 bi bi-house-up-fill"></i>
-                                {% else %}
-                                  <i style="color:#dc3545;" class="align-middle fs-6 bi bi-house-down-fill"></i>
+                                {% if mercado.event_vote_home == "H" %}
+                                  <i style="color:#198754;" class="icon-vote align-middle fs-6 bi bi-house-up-fill"></i>
+                                {% elif mercado.event_vote_home == "A" %}
+                                  <i style="color:#dc3545;" class="icon-vote align-middle fs-6 bi bi-house-down-fill"></i>
                                 {% endif %}
                               </td>
                               <td class="mercado-column">
