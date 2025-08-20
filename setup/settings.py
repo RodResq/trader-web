@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'team.apps.TeamConfig',
     'sofascore.apps.SofascoreConfig',
     'unique_tournament.apps.UniqueTournamentConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

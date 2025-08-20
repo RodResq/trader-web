@@ -2,10 +2,49 @@ from django.http import request
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
-from .models import TeamSofascore
+from team.models import TeamSofascore
 from analytics.models import Entrada
+from rest_framework import generics
+from rest_framework import permissions
+from rest_framework.renderers import JSONRenderer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from team.serializers import TeamSofascoreSerializer
 import requests
+import io
 
+
+
+class TeamList(generics.ListCreateAPIView):
+    queryset =  TeamSofascore.objects.filter(ativo=1)\
+        .exclude(name__iregex=r'U\d{2}$').all()
+    serializer_class = TeamSofascoreSerializer
+
+
+class TeamEvents(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def get(self, request, id_team):
+        if not id_team:
+            return Response({
+                'success': False,
+                'message': 'Parâmetros incompletos. É necessário fornecer o id_team'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+        try:
+            response = requests.get(f'http://127.0.0.1:8080/team/{id_team}/events')
+            response.raise_for_status()
+            dados = response.json()
+            
+            return Response(dados, status=status.HTTP_200_OK)
+        
+        except requests.RequestException as e:
+            return Response({
+                'success': False,
+                'message': f'Erro ao buscar dados: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
 
 def teams(request):
     teams = TeamSofascore.objects.filter(ativo=1)\
@@ -27,7 +66,7 @@ def events(request):
             }, status=400)
             
         try:
-            response = requests.get(f'http://127.0.0.1:8080/eventos-team/{id_team}')
+            response = requests.get(f'http://127.0.0.1:8080/team/{id_team}/events')
             response.raise_for_status()
             
             dados = response.json()
@@ -115,3 +154,4 @@ def find_team(request):
                 'erro': str(e)
             }, status=500)
         
+    

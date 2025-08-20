@@ -21,3 +21,9 @@ class TeamSofascore(models.Model):
         managed = False
         db_table = 'team_sofascore'
         unique_together = (('id_team', 'name'),)
+        
+class TeamPregameForm:
+    def __init__(self, id_team, name, value):
+        self.id_team = id_team
+        self.name = name
+        self.value = value

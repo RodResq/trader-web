@@ -17,7 +17,7 @@ export function setupCardEventTeam() {
             }
             
             try {
-                const url = `api/team/events?id_team=${teamId}`
+                const url = `api/team/${teamId}`
                 await fetch(url, {
                     method: 'GET',
                     headers: {
@@ -31,7 +31,7 @@ export function setupCardEventTeam() {
                 }).then(data => {
                     if (data.success) {
                         renderizarCardTeam(teamId)
-                        renderizarCardEventoTeam(data.dados.data);
+                        renderizarCardEventoTeam(data.data);
                     } else {
                         showNotification(`Falha ao recuperar dados de evento do time`, 'danger');
                     }
