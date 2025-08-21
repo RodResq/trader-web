@@ -1,4 +1,4 @@
-from .models import VwConsultaMercadoSf, Entrada, VwMercadoOwnerBallSfHome
+from analytics.models import Entrada
 from sofascore.models import VwMercadoSuperFavoritoHome
 from django.db import transaction
 

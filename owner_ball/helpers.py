@@ -1,4 +1,4 @@
-from .models import VwMercadoOwnerBallSfHome, EntradaOwnerBall
+from owner_ball.models import VwMercadoOwnerBallSfHome, EntradaOwnerBall
 from django.db import transaction
 
 def dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball() -> bool:

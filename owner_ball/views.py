@@ -1,58 +1,95 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from analytics.models import (
-    VwMercadoOwnerBallSfHome,
+from rest_framework.decorators import api_view 
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from owner_ball.models import (
     VwMercadoOwnerBallFavoritoHome,
     VwMercadoOwnerBallUnder2_5)
+from owner_ball.helpers import dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball
+from owner_ball.models import EntradaOwnerBall
+from owner_ball.serializers import EntradaOwnerBallSerializer
 
 
-def listar_owner_ball_super_favorito(request):
-    page = request.GET.get('page', 1)
-    items_per_page = request.GET.get('items_per_page', 10)
+class CustomPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'items_per_page'
+    max_page_size = 50
+    page_query_param = 'page'
     
-    try:
-        items_per_page = int(items_per_page)
-        if items_per_page > 50:
-            items_per_page = 50
-    except ValueError:
-        items_per_page = 10
-    
-    
-    sfs_owner_ball = VwMercadoOwnerBallSfHome.objects.all().order_by('id_event', 'data_jogo')
-    
-    paginator = Paginator(sfs_owner_ball, items_per_page)
-    
-    try:
-        paginator_sf_ob = paginator.page(page)
-    except PageNotAnInteger:
-        paginator_sf_ob = paginator.page(1)
-    except EmptyPage:
-        paginator_sf_ob = paginator.page(paginator.num_pages)
-    
-    data = []
-    for sf in paginator_sf_ob:
-        # TODO IMPLEMENTAR CHAMADA A API http://127.0.0.1:8080/statistic-overall PARA ATUALIAR O VALOR NA TELA
-        data.append({
-                'id_event': sf.id_event,
-                'mercado': sf.mercado,
-                'odd': sf.odd,
-                'home_actual': sf.home_actual,
-                'away_actual': sf.away_actual,
-                'data_jogo': sf.data_jogo.strftime('%Y-%m-%d %H:%M:%S') if sf.data_jogo else None
-            })
-        
-    return JsonResponse({
+    def get_paginated_response(self, data):
+        return Response({
             'success': True,
             'mercados': data,
             'pagination': {
-                'current_page': paginator_sf_ob.number,
-                'total_pages': paginator.num_pages,
-                'items_per_page': items_per_page,
-                'total_items': paginator.count
+                'current_page': self.page.number,
+                'total_pages': self.page.paginator.num_pages,
+                'items_per_page': self.page.paginator.per_page,
+                'total_items': self.page.paginator.count,
+                'has_next': self.page.has_next(),
+                'has_previous': self.page.has_previous(),
             }
         })
 
+@api_view(['GET'])
+def listar_owner_ball_super_favorito(request, format=None):
+    dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball()
+    
+    entradas_owner_ball = EntradaOwnerBall.objects.all().order_by('id_event', 'data_jogo')
+    
+    paginator = CustomPagination()
+    paginated_queryset = paginator.paginate_queryset(entradas_owner_ball, request)
+
+    serializer = EntradaOwnerBallSerializer(paginated_queryset, many=True)
+    
+    return paginator.get_paginated_response(serializer.data)
+
+
+# def listar_owner_ball_super_favorito(request, format=None):
+#     dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball()
+    
+#     page = request.GET.get('page', 1)
+#     items_per_page = request.GET.get('items_per_page', 10)
+
+#     try:
+#         items_per_page = int(items_per_page)
+#         if items_per_page > 50:
+#             items_per_page = 50
+#     except ValueError:
+#         items_per_page = 10
+
+#     entradas_owner_ball = EntradaOwnerBall.objects.all().order_by('id_event', 'data_jogo')
+#     paginator = Paginator(entradas_owner_ball, items_per_page)
+    
+#     try:
+#         paginator_entrada_sf_ob = paginator.page(page)
+#     except PageNotAnInteger:
+#         paginator_entrada_sf_ob = paginator.page(1)
+#     except EmptyPage:
+#         paginator_entrada_sf_ob = paginator.page(paginator.num_pages)
+    
+#     data = []
+#     for entrada in paginator_entrada_sf_ob:
+#         data.append({
+#                 'id_event': entrada.id_event,
+#                 'mercado': entrada.mercado,
+#                 'odd': entrada.odd,
+#                 'home_actual': entrada.home_actual,
+#                 'away_actual': entrada.away_actual,
+#                 'data_jogo': entrada.data_jogo.strftime('%Y-%m-%d %H:%M:%S') if entrada.data_jogo else None
+#             })
+        
+#     return JsonResponse({
+#             'success': True,
+#             'mercados': data,
+#             'pagination': {
+#                 'current_page': paginator_entrada_sf_ob.number,
+#                 'total_pages': paginator.num_pages,
+#                 'items_per_page': items_per_page,
+#                 'total_items': paginator.count
+#             }
+#         })
 
 def listar_owner_ball_favorito_home(request):
     page = request.GET.get('page', 1)

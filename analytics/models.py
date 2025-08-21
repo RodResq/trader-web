@@ -16,8 +16,6 @@ class VwAnalyticsMercadoV2(models.Model):
     class Meta:
         managed = False
         db_table = 'vw_analytics_mercado_v2'
-        
-        
 
 class VwConsultaMercadoSf(models.Model):
     id_event = models.BigIntegerField(null=False)
@@ -33,23 +31,6 @@ class VwConsultaMercadoSf(models.Model):
         
     def __str__(self):
         return f"VwConsultaMercadoSf[id_event={self.id_event}, mercado={self.mercado}, data_jogo={self.data_jogo}]"
-    
-    
-class VwMercadoOwnerBallSfHome(models.Model):
-    id_event = models.BigIntegerField(null=False, name='id_event')
-    mercado = models.CharField(max_length=200, name='mercado', db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    odd = models.FloatField(blank=True, name='odd', null=True)
-    home_actual = models.IntegerField(blank=True, name='home_actual', null=True)
-    away_actual = models.IntegerField(blank=True, name='away_actual', null=True)
-    data_jogo = models.DateTimeField(blank=True, name='data_jogo', null=True)
-
-
-    class Meta:
-        managed = False
-        db_table = 'vw_mercado_owner_boll_super_favorito_home' 
-        
-    def __str__(self):
-        return f"VwMercadoOwnerBallSfHome[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"
     
 
 class Tournament(models.Model):
@@ -211,28 +192,3 @@ class OddChange(models.Model):
             home_change_from_initial={self.home_change_from_initial}, \
             home_change_from_last={self.home_change_from_last}]"
             
-            
-class VwMercadoOwnerBallFavoritoHome(models.Model):
-    entrada_mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    odd = models.FloatField(blank=True, null=True)
-    data_jogo = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'vw_mercado_owner_ball_favorito_home' 
-        
-    def __str__(self):
-        return f"VwMercadoOwnerBallFavoritoHome[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"
-    
-
-class VwMercadoOwnerBallUnder2_5(models.Model):
-    entrada_mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    odd = models.FloatField(blank=True, null=True)
-    data_jogo = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'vw_mercado_owner_ball_under_2_5' 
-        
-    def __str__(self):
-        return f"VwMercadoOwnerBallUnder2_5[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"

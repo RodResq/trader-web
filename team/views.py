@@ -54,7 +54,7 @@ def teams(request):
         'teams': teams
     })
 
-
+# deprecated
 def events(request):
     if request.method == 'GET':
         id_team = request.GET.get('id_team')
