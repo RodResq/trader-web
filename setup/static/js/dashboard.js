@@ -11,7 +11,7 @@ import { calcularDataFinalCiclo } from './modules/ciclo/calculo_data_final_ciclo
 import { initMultiplasHandlers } from './modules/multiplas.js';
 import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_aposta.js';
 import { initThemeToggler } from './theme_toggler.js';
-import { setupApiOwnerBall } from './modules/api_owner_ball.js';
+import { setupApiOwnerBallSuperFavoriteHome } from './modules/owner_ball/api_owner_ball_super_favorite_home.js';
 import { setupApiOwnerBallFavoritoHome } from './modules/owner_ball/api_owner_ball _favorito_home.js';
 import { setupApiOwnerBallUnder25 } from './modules/owner_ball/api_owner_ball _under_2_5.js';
 import { setupUpdateOddChange } from './modules/update_odd_change.js';
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initEntradasEmLote();
     
     // Inicializa API Owner Ball
-    setupApiOwnerBall();
+    setupApiOwnerBallSuperFavoriteHome();
     
     // Inicializa API Owner Ball Favorito Home
     setupApiOwnerBallFavoritoHome();
@@ -127,6 +127,6 @@ document.addEventListener('DOMContentLoaded', function() {
 window.modules = {
     table: { initTableHandlers },
     multiplas: { initMultiplasHandlers },
-    ownerBall: { setupApiOwnerBall },
+    ownerBall: { setupApiOwnerBall: setupApiOwnerBallSuperFavoriteHome },
     ownerBallFavoritoHome: { setupApiOwnerBallFavoritoHome }
 };

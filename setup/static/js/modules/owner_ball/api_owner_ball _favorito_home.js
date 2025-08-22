@@ -73,7 +73,7 @@ function updateOwnerBallFavoritoHomeTable(mercados) {
 
     if (!mercados || mercados.length === 0) {
         tableBody.innerHTML = `
-            <tr>
+            <tr class="align-baseline fw-medium lh-sm" style="font-size: smaller;">
                 <td colspan="7" class="text-center text-muted">
                     Nenhum mercado Owner Ball encontrado.
                 </td>
@@ -88,9 +88,17 @@ function updateOwnerBallFavoritoHomeTable(mercados) {
             'Data não disponível';
 
         return `
-            <tr>
-                <td>${mercado.id}</td>
-                <td>${mercado.mercado || 'N/A'}</td>
+            <tr class="align-baseline fw-medium lh-sm" style="font-size: smaller;">
+                <td>
+                    <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
+                        style="font-size: smaller"
+                        data-event-id=${mercado.id}
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Registrar resultado entrada manualmente.">
+                    ${mercado.id}
+                </td>
+                <td>${mercado.entrada_mercado || 'N/A'}</td>
                 <td>${mercado.odd || 'N/A'}</td>
                 <td>${dataFormatada}</td>
                 <td>

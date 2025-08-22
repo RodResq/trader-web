@@ -1,15 +1,15 @@
-import { setupResultadoEntradaModal } from "./entrada/resultado_green_red.js";
-import { setupEditarModal } from "./editarOdd.js";
-import { initAceitarApostaModal } from "./aceitarApostaModal.js";
-import { setupRecusarModal } from "./recusarAposta.js";
-import { setupDesfazerAcaoModal } from "./desfazerAcao.js";
+import { setupResultadoEntradaModal } from "../entrada/resultado_green_red.js";
+import { setupEditarModal } from "../editarOdd.js";
+import { initAceitarApostaModal } from "../aceitarApostaModal.js";
+import { setupRecusarModal } from "../recusarAposta.js";
+import { setupDesfazerAcaoModal } from "../desfazerAcao.js";
 
 let currentPage = 1;
 let itemsPerPage = 10;
 let totalPages = 1;
 let isLoading = false;
 
-export function setupApiOwnerBall() {
+export function setupApiOwnerBallSuperFavoriteHome() {
     console.log('Inicializando API Owner Ball...');
     loadOwnerBallMarkets();
 
@@ -24,7 +24,7 @@ function loadOwnerBallMarkets(showLoader = true) {
 
     if (showLoader && tableBody) {
         tableBody.innerHTML = `
-            <tr>
+            <tr class="align-baseline fw-medium lh-sm" style="font-size: smaller;">
                 <td colspan="7" class="text-center">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Carregando...</span>
@@ -93,16 +93,40 @@ function updateOwnerBallTable(mercados) {
             new Date(mercado.data_jogo).toLocaleString('pt-BR'):
             'Data não disponível';
 
+
+        const getResultIcon = (resultado) => {
+            switch(resultado) {
+                case "G":
+                    return `
+                        <span class="icon-soccer">
+                            <img src="/static/images/icons/soccer.svg" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">
+                        </span>
+                    `;
+                case "P":
+                case "E":
+                    return `
+                        <span class="icon-soccer-perdeu">
+                            <img src="/static/images/icons/soccer.svg" alt="soccer" class="me-2r" style="width: 15px; height: 15px; filter: hue-rotate(0deg) saturate(2) brightness(0.8) sepia(1) hue-rotate(-50deg);">
+                        </span>
+                    `;
+                default: 
+                    return '';
+            }
+        }
+
         return `
-            <tr>
+            <tr class="align-baseline fw-medium lh-sm" style="font-size: smaller;">
                 <td>
-                    <span {% if mercado.resultado_estatistica %} 
-                        class="btn-sucess resultado-statistic-overall-home"
-                        {% else %}
-                        class="resultado-statistic-overall-away"
-                        {% endif %}>
-                        ${mercado.id_event || 'N/A'}
-                    </span>
+                    <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
+                        style="font-size: smaller"
+                        data-event-id=${mercado.id_event}
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Registrar resultado entrada manualmente.">
+                    ${mercado.id_event || 'N/A'}
+                </td>
+                <td class="mercado-status">
+                    ${getResultIcon(mercado.resultado_entrada)}
                 </td>
                 <td class="mercado-column">${mercado.mercado}</td>
                 <td>
