@@ -1,5 +1,12 @@
 import { showNotification } from "../notifications.js";
 
+const API_ENDPOINTS = {
+    'tr-ob': 'api/v1/owner_ball/resultado_entrada',
+    'tr-sf': 'api/analytics/resultado_entrada'
+}
+
+
+
 export function setupResultadoEntradaModal() {
     const modal = document.getElementById('resultadoEntradaModal');
     const eventBtn = document.querySelectorAll('.eventBtn');
@@ -28,7 +35,6 @@ export function setupResultadoEntradaModal() {
             const mercado = currentRow.querySelector('td:nth-child(3)').textContent.trim();
             
             currentEventId = eventId;
-
             document.getElementById('resultado-entrada-evento-id').textContent = eventId;
             document.getElementById('resultado-entrada-mercado').textContent = mercado;
 
@@ -37,6 +43,7 @@ export function setupResultadoEntradaModal() {
     });
 
     confirmBtn.addEventListener('click', async function() {
+
         if (!currentEventId || !currentRow) {
             modalInstance.hide();
             return;
@@ -53,11 +60,19 @@ export function setupResultadoEntradaModal() {
         this.disabled = true;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
 
-        try {
-            let url = `api/analytics/resultado_entrada?event_id=${currentEventId}&resultado_entrada=${valueSelected}`;
-            if (currentRow.classList.contains('tr-od')) {
-                url = `api/owner-ball/resultado_entrada?event_id=${currentEventId}&resultado_entrada=${valueSelected}`;
+        const getAPiEndpoint = (row) => {
+            for (const[className, endpoint] of Object.entries(API_ENDPOINTS)) {
+                if (row.classList.contains(className)) {
+                    return endpoint;
+                }
             }
+            return API_ENDPOINTS['tr-sf'] || 'api/analytics/resultado_entrada';
+        }
+
+        const baseUrl = getAPiEndpoint(currentRow);
+        const url = `${baseUrl}?event_id=${currentEventId}&resultado_entrada=${valueSelected}`;
+
+        try {
             await fetch(url, {
                 method: 'GET',
                 headers: {

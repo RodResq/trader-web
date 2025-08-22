@@ -57,6 +57,12 @@ class EntradaOwnerBall(models.Model):
         ('P', 'parada')
     ]
     
+    RESULTADO_ENTRADA = [
+        ("G", "ganhou"),
+        ("E", "empatou"),
+        ("P", "perdeu")
+    ]
+    
     id_event = models.IntegerField(primary_key=True)
     mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd_change = models.CharField(max_length=5, blank=True, choices=ODD_CHANGE, default='P')
@@ -71,7 +77,8 @@ class EntradaOwnerBall(models.Model):
     away_actual = models.IntegerField(blank=True, null=True, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
     opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
-    resultado_estatistica = models.BooleanField(default=0)    
+    resultado_estatistica = models.BooleanField(default=0)
+    resultado_entrada = models.CharField(max_length=20, blank=False, choices=RESULTADO_ENTRADA, null=True)     
         
     def __str__(self):
         return f"EntradaOwnerBall - {self.id_event} - mercado: {self.mercado} - odd: {self.odd}"    

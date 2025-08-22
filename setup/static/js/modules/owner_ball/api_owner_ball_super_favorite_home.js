@@ -115,7 +115,7 @@ function updateOwnerBallTable(mercados) {
         }
 
         return `
-            <tr class="align-baseline fw-medium lh-sm tr-ob" style="font-size: smaller;">
+            <tr class="align-baseline fw-medium lh-sm tr-ob" style="font-size: smaller;" data-row-id=${mercado.id_event}>
                 <td>
                     <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
                         style="font-size: smaller"
