@@ -9,7 +9,7 @@ from owner_ball.models import (
     VwMercadoOwnerBallUnder2_5)
 from owner_ball.helpers import dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball
 from owner_ball.models import EntradaOwnerBall
-from owner_ball.serializers import EntradaOwnerBallSerializer, VwMercadoOwnerBallFavoritoHomeSerializer 
+from owner_ball.serializers import EntradaOwnerBallSerializer, VwMercadoOwnerBallFavoritoHomeSerializer , VwMercadoOwnerBallUnder2_5Serializer
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
@@ -31,6 +31,7 @@ class CustomPagination(PageNumberPagination):
             }
         })
 
+
 @api_view(['GET'])
 def listar_owner_ball_super_favorito(request, format=None):
     dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball()
@@ -51,89 +52,13 @@ def listar_owner_ball_favorito_home(request, format=None):
     
     return paginator.get_paginated_response(serializer.data)
     
+
+@api_view(['GET'])
+def listar_owner_ball_under_2_5(request, format=None):
+    under_25 = VwMercadoOwnerBallUnder2_5.objects.all().order_by('data_jogo')
+    paginator = CustomPagination()
+    paginator_queryset = paginator.paginate_queryset(under_25, request)
+    serializer = VwMercadoOwnerBallUnder2_5Serializer(paginator_queryset, many=True)
     
-# def listar_owner_ball_favorito_home(request):
-#     page = request.GET.get('page', 1)
-#     items_per_page = request.GET.get('items_per_page', 10)
-    
-#     try:
-#         items_per_page = int(items_per_page)
-#         if items_per_page > 50:
-#             items_per_page = 50
-#     except ValueError:
-#         items_per_page = 10
-    
-#     favoritos_home = VwMercadoOwnerBallFavoritoHome.objects.all().order_by('data_jogo')
-    
-#     paginator = Paginator(favoritos_home, items_per_page)
-    
-#     try:
-#         paginator_sf_ob = paginator.page(page)
-#     except PageNotAnInteger:
-#         paginator_sf_ob = paginator.page(1)
-#     except EmptyPage:
-#         paginator_sf_ob = paginator.page(paginator.num_pages)
-    
-#     data = []
-#     for favorito_home in paginator_sf_ob:
-#         data.append({
-#                 'id': favorito_home.id,
-#                 'mercado': favorito_home.entrada_mercado,
-#                 'odd': favorito_home.odd,
-#                 'data_jogo': favorito_home.data_jogo.strftime('%Y-%m-%d %H:%M:%S') if favorito_home.data_jogo else None
-#             })
+    return paginator.get_paginated_response(serializer.data)
         
-#     return JsonResponse({
-#             'success': True,
-#             'mercados': data,
-#             'pagination': {
-#                 'current_page': paginator_sf_ob.number,
-#                 'total_pages': paginator.num_pages,
-#                 'items_per_page': items_per_page,
-#                 'total_items': paginator.count
-#             }
-#         })
-    
-    
-def listar_owner_ball_under_2_5(request):
-    page = request.GET.get('page', 1)
-    items_per_page = request.GET.get('items_per_page', 10)
-    
-    try:
-        items_per_page = int(items_per_page)
-        if items_per_page > 50:
-            items_per_page = 50
-    except ValueError:
-        items_per_page = 10
-    
-    under_2_5 = VwMercadoOwnerBallUnder2_5.objects.all().order_by('data_jogo')
-    
-    paginator = Paginator(under_2_5, items_per_page)
-    
-    try:
-        paginator_under_2_5_ob = paginator.page(page)
-    except PageNotAnInteger:
-        paginator_under_2_5_ob = paginator.page(1)
-    except EmptyPage:
-        paginator_under_2_5_ob = paginator.page(paginator.num_pages)
-    
-    data = []
-    for under_2_5 in paginator_under_2_5_ob:
-        data.append({
-                'id': under_2_5.id,
-                'mercado': under_2_5.entrada_mercado,
-                'odd': under_2_5.odd,
-                'data_jogo': under_2_5.data_jogo.strftime('%Y-%m-%d %H:%M:%S') if under_2_5.data_jogo else None
-            })
-        
-    return JsonResponse({
-            'success': True,
-            'mercados': data,
-            'pagination': {
-                'current_page': paginator_under_2_5_ob.number,
-                'total_pages': paginator.num_pages,
-                'items_per_page': items_per_page,
-                'total_items': paginator.count
-            }
-        })
-    

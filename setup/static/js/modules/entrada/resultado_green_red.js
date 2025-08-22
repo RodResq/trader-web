@@ -54,7 +54,10 @@ export function setupResultadoEntradaModal() {
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
 
         try {
-            const url = `api/analytics/resultado_entrada?event_id=${currentEventId}&resultado_entrada=${valueSelected}`;
+            let url = `api/analytics/resultado_entrada?event_id=${currentEventId}&resultado_entrada=${valueSelected}`;
+            if (currentRow.classList.contains('tr-od')) {
+                url = `api/owner-ball/resultado_entrada?event_id=${currentEventId}&resultado_entrada=${valueSelected}`;
+            }
             await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -74,10 +77,7 @@ export function setupResultadoEntradaModal() {
                 }
                 this.disabled = false;
                 this.innerHTML = '<i class="bi bi-save"></i> Salvar';
-
-                
             });
-
         } catch(error) {
             console.error('Erro:', error);
             this.disabled = false;
@@ -87,7 +87,6 @@ export function setupResultadoEntradaModal() {
             modalInstance.hide();
         }
     });
-
 }
 
 function atualizarIconSoccer(currentRow, resultado_entrada) {

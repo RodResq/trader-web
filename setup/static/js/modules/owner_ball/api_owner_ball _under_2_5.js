@@ -36,7 +36,7 @@ async function loadOwnerBallUnder25Markets(showLoader = true) {
         `;
     }
 
-    const url = `/api/owner_ball/under_2_5?page=${currentPage}&items_per_page=${itemsPerPage}`;
+    const url = `/api/v1/owner_ball/under_2_5?page=${currentPage}&items_per_page=${itemsPerPage}`;
 
     await fetch(url, {
         method: 'GET',

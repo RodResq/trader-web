@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from owner_ball.models import EntradaOwnerBall, VwMercadoOwnerBallFavoritoHome
+from owner_ball.models import EntradaOwnerBall, VwMercadoOwnerBallFavoritoHome, VwMercadoOwnerBallUnder2_5
 
 class EntradaOwnerBallSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,4 +10,10 @@ class EntradaOwnerBallSerializer(serializers.ModelSerializer):
 class VwMercadoOwnerBallFavoritoHomeSerializer(serializers.ModelSerializer):
     class Meta:
         model = VwMercadoOwnerBallFavoritoHome
+        fields = ['id', 'entrada_mercado', 'odd', 'data_jogo']
+        
+
+class VwMercadoOwnerBallUnder2_5Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = VwMercadoOwnerBallUnder2_5
         fields = ['id', 'entrada_mercado', 'odd', 'data_jogo']

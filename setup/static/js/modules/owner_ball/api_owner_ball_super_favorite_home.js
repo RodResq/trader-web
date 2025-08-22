@@ -34,7 +34,7 @@ function loadOwnerBallMarkets(showLoader = true) {
         `;
     }
 
-    const url = `/api/owner_ball/super_favorito?page=${currentPage}&items_per_page=${itemsPerPage}`;
+    const url = `/api/v1/owner_ball/super_favorito?page=${currentPage}&items_per_page=${itemsPerPage}`;
 
     fetch(url, {
         method: 'GET',
@@ -115,7 +115,7 @@ function updateOwnerBallTable(mercados) {
         }
 
         return `
-            <tr class="align-baseline fw-medium lh-sm" style="font-size: smaller;">
+            <tr class="align-baseline fw-medium lh-sm tr-ob" style="font-size: smaller;">
                 <td>
                     <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
                         style="font-size: smaller"
@@ -138,7 +138,7 @@ function updateOwnerBallTable(mercados) {
                 <td>${mercado.home_actual}%</td>
                 <td>${mercado.away_actual}%</td>
                 <td>${dataFormatada || 'N/A'}</td>
-                <td>
+                <td class="d-grid gap-4 d-md-block">
                     <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${mercado.id_event} title="Editar Odd">
                         <i class="bi bi-pencil"></i>
                     </a>
@@ -151,6 +151,15 @@ function updateOwnerBallTable(mercados) {
                     <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${mercado.id_event} title="Desfazer ação">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </a>
+                    <div class="btn-group" role="group">
+                        <a id="btnGroupDrop1" type="button" class="btn bg-body-secondary btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <li><a id="btn-event-vote" class="dropdown-item" data-event-id="{{ mercado.id_event }}">Votacao</a></li>
+                            <li><a class="dropdown-item" href="#">Comparar</a></li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         `;

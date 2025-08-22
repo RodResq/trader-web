@@ -15,10 +15,6 @@ from analytics.views import (
     atualizar_odd_change, 
     atualizar_odd_status, 
     atualizar_statistica_overall) 
-from owner_ball.views import (
-    listar_owner_ball_super_favorito,
-    listar_owner_ball_favorito_home,
-    listar_owner_ball_under_2_5)
 from grafico.views import (
     performace_semanal,
     resultado_aposta,
@@ -47,9 +43,6 @@ api_urlpatterns = [
     path('api/odd_change/<int:id_evento>', atualizar_odd_change, name='atualizar_odd_change'),
     path('api/proximo_evento', proximo_evento, name='proximo_evento'),
     path('api/atualizar-statistic-overall/<int:id_evento>', atualizar_statistica_overall, name='atualizar_statistica_overall'),
-    path('api/owner_ball/super_favorito', listar_owner_ball_super_favorito, name='listar_owner_ball_super_favorito'),
-    path('api/owner_ball/favorito_home', listar_owner_ball_favorito_home, name='listar_owner_ball_favorito_home'),
-    path('api/owner_ball/under_2_5', listar_owner_ball_under_2_5, name='listar_owner_ball_under_2_5'),
     path('api/grafico/performace_semanal', performace_semanal, name="performace_semanal"),
     path('api/grafico/resultado_aposta', resultado_aposta, name="resultado_aposta"),
     path('api/grafico/melhor_dia_semana', melhor_dia_semana, name="melhor_dia_semana"),
@@ -57,6 +50,7 @@ api_urlpatterns = [
     path('api/gerencia/resultado', gerencia_resultado, name="gerencia_resultado"),
     path('api/team/', include('team.api_urls')),
     path('api/unique_tournament/', include('unique_tournament.api_urls')),
+    path('api/v1/owner_ball/', include('owner_ball.api_urls')),
 ]
 
 admin_urlpatterns = [
