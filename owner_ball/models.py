@@ -73,7 +73,7 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
     home_actual = models.IntegerField(blank=False, null=False, default=0)
     away_actual = models.IntegerField(blank=True, null=True, default=0)
     event_date = models.DateTimeField(blank=True, null=True)
-    entry_option = models.CharField(max_length=20, blank=False, choices=ENTRY_OPTION, default="W", help_text='Representa o status da entrada: Aceitado(A), Rejeitado(R), em Espera(W)')
+    entry_option = models.CharField(max_length=20, blank=False, choices=ENTRY_OPTION, default="W")
     statistic_result = models.BooleanField(default=0)
     entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)     
         
