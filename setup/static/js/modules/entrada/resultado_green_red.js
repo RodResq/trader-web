@@ -1,4 +1,5 @@
 import { showNotification } from "../notifications.js";
+import { addCSRFToken } from "../token.js";
 
 const API_ENDPOINTS = {
     'tr-ob': 'api/v1/owner_ball/resultado_entrada',
@@ -70,35 +71,38 @@ export function setupResultadoEntradaModal() {
         }
 
         const baseUrl = getAPiEndpoint(currentRow);
-        const url = `${baseUrl}?event_id=${currentEventId}&entry_result=${valueSelected}`;
 
+        const requestData = {
+            id_event: parseInt(currentEventId),
+            entry_result: valueSelected
+        };
         try {
-            await fetch(url, {
-                method: 'GET',
+            const response = await fetch(baseUrl, addCSRFToken({
+                method: 'PUT',
                 headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-                return response.json();
-            }).then(data => {
-                if (data.success) {
-                    atualizarIconSoccer(currentRow, data.data.entry_result)
-                    showNotification(`Resultado da entrada ${currentEventId} registrado com sucesso`, 'success');
-                } else {
-                    showNotification(`Falha ao registrar resultado da entrada`, 'danger');
-                }
-                this.disabled = false;
-                this.innerHTML = '<i class="bi bi-save"></i> Salvar';
-            });
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            }));
+            
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
+            }
+            const data = await response.json();
+
+            if (data.success) {
+                atualizarIconSoccer(currentRow, data.data.entry_result)
+                showNotification(`Resultado da entrada ${currentEventId} registrado com sucesso.`, 'success');
+            } else {
+                showNotification(`Falha ao registrar resultado da entrada.`, 'danger');
+            }
         } catch(error) {
-            console.error('Erro:', error);
-            this.disabled = false;
-            this.innerHTML = '<i class="bi bi-save"></i> Salvar';
+            console.error('Erro ao atualizar resultado da entrada:', error);
             showNotification('Erro ao registrar resultado da entrada. Tente novamente.', 'danger');
         } finally { 
+            this.disabled = false;
+            this.innerHTML = '<i class="bi bi-save"></i> Salvar';
             modalInstance.hide();
         }
     });
