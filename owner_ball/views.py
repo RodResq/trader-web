@@ -4,11 +4,11 @@ from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from owner_ball.models import (
+    SuperFavoriteHomeBallOwnerEntry,
     VwMercadoOwnerBallFavoritoHome,
     VwMercadoOwnerBallUnder2_5)
 from owner_ball.helpers import dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball
-from owner_ball.models import EntradaOwnerBall
-from owner_ball.serializers import EntradaOwnerBallSerializer, VwMercadoOwnerBallFavoritoHomeSerializer , VwMercadoOwnerBallUnder2_5Serializer
+from owner_ball.serializers import SuperFavoriteHomeBallOwnerEntrySerializer, VwMercadoOwnerBallFavoritoHomeSerializer , VwMercadoOwnerBallUnder2_5Serializer
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
@@ -19,7 +19,7 @@ class CustomPagination(PageNumberPagination):
     def get_paginated_response(self, data):
         return Response({
             'success': True,
-            'mercados': data,
+            'markets': data,
             'pagination': {
                 'current_page': self.page.number,
                 'total_pages': self.page.paginator.num_pages,
@@ -34,19 +34,19 @@ class CustomPagination(PageNumberPagination):
 @api_view(['GET'])
 def listar_owner_ball_super_favorito(request, format=None):
     dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball()
-    entradas_owner_ball = EntradaOwnerBall.objects.all().order_by('id_event', 'data_jogo')
+    super_favorites_home = SuperFavoriteHomeBallOwnerEntry.objects.all().order_by('id_event', 'event_date')
     paginator = CustomPagination()
-    paginated_queryset = paginator.paginate_queryset(entradas_owner_ball, request)
-    serializer = EntradaOwnerBallSerializer(paginated_queryset, many=True)
+    paginated_queryset = paginator.paginate_queryset(super_favorites_home, request)
+    serializer = SuperFavoriteHomeBallOwnerEntrySerializer(paginated_queryset, many=True)
     
     return paginator.get_paginated_response(serializer.data)
 
 
 @api_view(['GET'])
 def listar_owner_ball_favorito_home(request, format=None):
-    favoritos_home = VwMercadoOwnerBallFavoritoHome.objects.all().order_by('data_jogo')
+    favorites_home = VwMercadoOwnerBallFavoritoHome.objects.all().order_by('data_jogo')
     paginator = CustomPagination()
-    paginator_queryset = paginator.paginate_queryset(favoritos_home, request)
+    paginator_queryset = paginator.paginate_queryset(favorites_home, request)
     serializer = VwMercadoOwnerBallFavoritoHomeSerializer(paginator_queryset, many=True)
     
     return paginator.get_paginated_response(serializer.data)
@@ -76,7 +76,7 @@ def resultado_entrada(request):
             
         try:
                          
-            entrada = get_object_or_404(EntradaOwnerBall, id_event=event_id)
+            entrada = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id)
             entrada.resultado_entrada = resultado_entrada
             entrada.save()
             

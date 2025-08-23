@@ -18,23 +18,23 @@
                 <div class="card border-left-primary shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                      <div class="col-4 mr-2">
+                        <div class="font-weight-bold text-primary mb-1">
                           Total Ganhos
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
+                        <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
                           <span class="bi bi-cash-coin text-gray-300 me-2"></span>
                           <span class="text-gray-300" style="margin-top: -15px;">R$ {{ soma_total_retorno }}</span>
                         </div>
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 mt-1">
+                        <div class="font-weight-bold text-primary mb-1 mt-1">
                           Retorno Semanal
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
+                        <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
                           <span class="bi bi-cash-coin text-gray-300 me-2"></span>
                           <span class="text-gray-300" style="margin-top: -15px;">R$ {{ retorno_atual }}</span>
                         </div>
                       </div>
-                      <div class="col mr-2">
+                      <div class="col-4 mr-2">
                         <div id="graficoResultadoAposta">
                           <!-- O gráfico será renderizado aqui via JavaScript -->
                         </div>
@@ -52,22 +52,22 @@
                   <div class="card-body">
                     <div class="row no-gutters">
                       <div class="col-md-4">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        <div class="font-weight-bold text-successmb-1">
                           Qtd. Eventos
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800 d-flex">
+                        <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex">
                           <span class="text-gray-300"> <span class="bi bi-box2 text-gray-300"></span> {{ qtd_eventos }}</span>
                         </div>
-                        <div class="text-xs font-weight-bold text-success text-uppercase mt-1" id="proximoEventoLabel">
+                        <div class="font-weight-bold text-success mt-1" id="proximoEventoLabel">
                           Próximo Evento
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <div class="h6 mb-0 font-weight-bold text-gray-800">
                           <span class="fs-4 text-gray-300" id="proximoEvento"></span>
                         </div>
-                        <div class="text-xs font-weight-bold text-success text-uppercase mt-1" id="tempoRestandoLabel">
+                        <div class="font-weight-bold text-success mt-1" id="tempoRestandoLabel">
                           Tempo Restando
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <div class="h6 mb-0 font-weight-bold text-gray-800">
                           <span class="fs-4 text-gray-300" id="tempoRestando"></span>
                         </div>
                       </div>
@@ -90,12 +90,12 @@
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        <div class="font-weight-bold text-info mb-1">
                           Performance
                         </div>
                         <div class="row no-gutters align-items-center">
                           <div class="col-auto">
-                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                            <div class="h6 mb-0 mr-3 font-weight-bold text-gray-800">
                               <span id="textoProgressBar" class="text-gray-300"></span>
                             </div>
                           </div>
@@ -122,26 +122,26 @@
                   <div class="card-body">
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-1">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        <div class="font-weight-bold text-warning mb-1">
                           Ciclos
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <div class="h6 mb-0 font-weight-bold text-gray-800">
                           <span class="text-gray-300">{{ qtd_ciclos }}</span>
                         </div>
                       </div>
                       <div class="col mr-1">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        <div class="font-weight-bold text-warning mb-1">
                           Último Ciclo
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <div class="h6 mb-0 font-weight-bold text-gray-800">
                           <span class="text-gray-300">{{ ciclo_atual }}</span>
                         </div>
                       </div>
                       <div class="col mr-1">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        <div class="font-weight-bold text-warning mb-1">
                           Disponível
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <div class="h6 mb-0 font-weight-bold text-gray-800">
                          <span class="text-gray-300">R$ <span id="valor-total-disponivel">{{ ciclo_atual_disponivel }}</span></span>
                         </div>
                       </div>

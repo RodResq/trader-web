@@ -44,27 +44,24 @@ class VwMercadoOwnerBallUnder2_5(models.Model):
         return f"VwMercadoOwnerBallUnder2_5[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"
     
 
-class EntradaOwnerBall(models.Model):
-    OPCOES_ENTRADA = [
-        ("A", "aceitar"),
-        ("R", "recusar"),
-        ("E", "em_espera")
+class SuperFavoriteHomeBallOwnerEntry(models.Model):
+    ENTRY_OPTION = [
+        ("A", "accept"),
+        ("R", "refuse"),
+        ("W", "wait")
     ]
-    
     ODD_CHANGE = [
-        ('S', 'subiu'),
-        ('D', 'desceu'),
-        ('P', 'parada')
+        ('U', 'up'),
+        ('D', 'dow'),
+        ('S', 'stop')
     ]
-    
-    RESULTADO_ENTRADA = [
-        ("G", "ganhou"),
-        ("E", "empatou"),
-        ("P", "perdeu")
+    ENTRY_RESULT = [
+        ("W", "win"),
+        ("D", "drow"),
+        ("L", "lose")
     ]
-    
     id_event = models.IntegerField(primary_key=True)
-    mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    market = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd_change = models.CharField(max_length=5, blank=True, choices=ODD_CHANGE, default='P')
     odd = models.DecimalField(
         max_digits=5, 
@@ -75,25 +72,25 @@ class EntradaOwnerBall(models.Model):
     )
     home_actual = models.IntegerField(blank=False, null=False, default=0)
     away_actual = models.IntegerField(blank=True, null=True, default=0)
-    data_jogo = models.DateTimeField(blank=True, null=True)
-    opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
-    resultado_estatistica = models.BooleanField(default=0)
-    resultado_entrada = models.CharField(max_length=20, blank=False, choices=RESULTADO_ENTRADA, null=True)     
+    event_date = models.DateTimeField(blank=True, null=True)
+    entry_option = models.CharField(max_length=20, blank=False, choices=ENTRY_OPTION, default="W")
+    statistic_result = models.BooleanField(default=0)
+    entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)     
         
     def __str__(self):
-        return f"EntradaOwnerBall - {self.id_event} - mercado: {self.mercado} - odd: {self.odd}"    
+        return f"SuperFavoriteHomeBallOwnerEntry - {self.id_event} - market: {self.market} - odd: {self.odd}"    
     
     
     def save(self, *args, **kwargs):
         """
         Garante que entrada só seja atualizada se estiver dentro de um ciclo.
         """
-        if self.data_jogo:            
+        if self.event_date:            
             try:
                 # Find a period that includes the game date
                 Ciclo.objects.filter(
-                    data_inicial__lte=self.data_jogo, 
-                    data_final__gte=self.data_jogo
+                    data_inicial__lte=self.event_date, 
+                    data_final__gte=self.event_date
                 ).first()
             except Ciclo.DoesNotExist:
                 pass
@@ -101,31 +98,31 @@ class EntradaOwnerBall(models.Model):
         return super().save(*args, **kwargs)
     
     class Meta:
-        db_table = "entrada_owner_ball"
-        verbose_name = "entrada_owner_ball"
-        verbose_name_plural = "entrada_owner_ball"
-        ordering = ["-data_jogo"]
+        db_table = "super_favorite_home_ball_owner_entry"
+        verbose_name = "super_favorite_home_ball_owner_entry"
+        verbose_name_plural = "super_favorite_home_ball_owner_entry"
+        ordering = ["-event_date"]
         
 
-class IncomingOwnerBallFavoriteHome(models.Model):
-    OPCOES_ENTRADA = [
-        ("A", "aceitar"),
-        ("R", "recusar"),
-        ("E", "em_espera")
+class FavoriteHomeBallOwnerEntry(models.Model):
+    ENTRY_OPTION = [
+        ("A", "accept"),
+        ("R", "refuse"),
+        ("W", "wait")
     ]
     ODD_CHANGE = [
-        ('S', 'subiu'),
-        ('D', 'desceu'),
-        ('P', 'parada')
+        ('U', 'up'),
+        ('D', 'dow'),
+        ('S', 'stop')
     ]
-    RESULTADO_ENTRADA = [
-        ("G", "ganhou"),
-        ("E", "empatou"),
-        ("P", "perdeu")
+    ENTRY_RESULT = [
+        ("W", "win"),
+        ("D", "drow"),
+        ("L", "lose")
     ]
     id_event = models.IntegerField(primary_key=True)
-    mercado = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    odd_change = models.CharField(max_length=5, blank=True, choices=ODD_CHANGE, default='P')
+    market = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    odd_change = models.CharField(max_length=5, blank=True, choices=ODD_CHANGE, default='S')
     odd = models.DecimalField(
         max_digits=5, 
         decimal_places=2, 
@@ -135,25 +132,25 @@ class IncomingOwnerBallFavoriteHome(models.Model):
     )
     home_actual = models.IntegerField(blank=False, null=False, default=0)
     away_actual = models.IntegerField(blank=True, null=True, default=0)
-    data_jogo = models.DateTimeField(blank=True, null=True)
-    opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
-    resultado_estatistica = models.BooleanField(default=0)
-    resultado_entrada = models.CharField(max_length=20, blank=False, choices=RESULTADO_ENTRADA, null=True)    
+    event_date = models.DateTimeField(blank=True, null=True)
+    entry_option = models.CharField(max_length=20, blank=False, choices=ENTRY_OPTION, default="W")
+    statistic_result = models.BooleanField(default=0)
+    entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)    
         
     def __str__(self):
-        return f"EntradaOwnerBallFavoritoHome - {self.id_event} - mercado: {self.mercado} - odd: {self.odd}"    
+        return f"FavoriteHomeBallOwnerEntry - {self.id_event} - market: {self.market} - odd: {self.odd}"    
     
     
     def save(self, *args, **kwargs):
         """
         Garante que entrada só seja atualizada se estiver dentro de um ciclo.
         """
-        if self.data_jogo:            
+        if self.event_date:            
             try:
                 # Find a period that includes the game date
                 Ciclo.objects.filter(
-                    data_inicial__lte=self.data_jogo, 
-                    data_final__gte=self.data_jogo
+                    data_inicial__lte=self.event_date, 
+                    data_final__gte=self.event_date
                 ).first()
             except Ciclo.DoesNotExist:
                 pass
@@ -161,7 +158,7 @@ class IncomingOwnerBallFavoriteHome(models.Model):
         return super().save(*args, **kwargs)
     
     class Meta:
-        db_table = "icomming_owner_ball_favorite_home"
-        verbose_name = "icomming_owner_ball_favorite_home"
-        verbose_name_plural = "icomming_owner_ball_favorite_home"
-        ordering = ["-data_jogo"]
+        db_table = "favorite_home_ball_owner_entry"
+        verbose_name = "favorite_home_ball_owner_entry"
+        verbose_name_plural = "favorite_home_ball_owner_entry"
+        ordering = ["-event_date"]

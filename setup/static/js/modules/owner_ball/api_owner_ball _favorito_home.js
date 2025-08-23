@@ -47,7 +47,7 @@ async function loadOwnerBallFavoritoHomeMarkets(showLoader = true) {
     })
     .then(data => {
         if (data.success) {
-            updateOwnerBallFavoritoHomeTable(data.mercados);
+            updateOwnerBallFavoritoHomeTable(data.markets);
             updateOwnerBallFavoritoHomePagination(data.pagination);
         } else {
             showOwnerBallFavoritoHomeError('Erro ao carregar mercados owner ball');

@@ -29,7 +29,6 @@ web_urlpatterns = [
     path('gerencia/', include('gerencia.urls', namespace='gerencia')),
     path('ciclos/', include('ciclo.urls', namespace='ciclo')),
     path('evento/', include('evento.urls')),
-    path('ciclos/', include('ciclo.urls')),
     path('performace/', include('performace.urls')),
     path('team', include('team.urls'), name='team'),
 ]

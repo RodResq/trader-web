@@ -53,7 +53,7 @@ async function loadOwnerBallUnder25Markets(showLoader = true) {
     })
     .then(data => {
         if (data.success) {
-            updateOwnerBallUnder25Table(data.mercados);
+            updateOwnerBallUnder25Table(data.markets);
             updateOwnerBallUnder25Pagination(data.pagination);
         } else {
             showOwnerBallUnder25Error('Erro ao carregar mercados owner ball');

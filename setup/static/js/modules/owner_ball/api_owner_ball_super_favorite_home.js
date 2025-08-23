@@ -51,7 +51,7 @@ function loadOwnerBallMarkets(showLoader = true) {
     })
     .then(data => {
         if (data.success) {
-            updateOwnerBallTable(data.mercados);
+            updateOwnerBallTable(data.markets);
             updateOwnerBallPagination(data.pagination);
             setupOwnerBallEventListeners();
 
@@ -71,13 +71,13 @@ function loadOwnerBallMarkets(showLoader = true) {
 }
 
 
-function updateOwnerBallTable(mercados) {
+function updateOwnerBallTable(markets) {
     const tableBody = document.getElementById('ownerBallTableBody');
 
     if (!tableBody) return;
 
 
-    if (!mercados || mercados.length === 0) {
+    if (!markets || markets.length === 0) {
         tableBody.innerHTML = `
             <tr>
                 <td colspan="7" class="text-center text-muted">
@@ -88,9 +88,9 @@ function updateOwnerBallTable(mercados) {
         return;
     }
 
-    const rows = mercados.map(mercado => {
-        const dataFormatada = mercado.data_jogo ?
-            new Date(mercado.data_jogo).toLocaleString('pt-BR'):
+    const rows = markets.map(market => {
+        const dataFormatada = market.event_date ?
+            new Date(market.event_date).toLocaleString('pt-BR'):
             'Data não disponível';
 
 
@@ -115,40 +115,40 @@ function updateOwnerBallTable(mercados) {
         }
 
         return `
-            <tr class="align-baseline fw-medium lh-sm tr-ob" style="font-size: smaller;" data-row-id=${mercado.id_event}>
+            <tr class="align-baseline fw-medium lh-sm tr-ob" style="font-size: smaller;" data-row-id=${market.id_event}>
                 <td>
                     <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
                         style="font-size: smaller"
-                        data-event-id=${mercado.id_event}
+                        data-event-id=${market.id_event}
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="Registrar resultado entrada manualmente.">
-                    ${mercado.id_event || 'N/A'}
+                    ${market.id_event || 'N/A'}
                 </td>
                 <td class="mercado-status">
-                    ${getResultIcon(mercado.resultado_entrada)}
+                    ${getResultIcon(market.entry_result)}
                 </td>
-                <td class="mercado-column">${mercado.mercado}</td>
+                <td class="mercado-column">${market.market}</td>
                 <td>
-                    ${mercado.odd}
-                    <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="${mercado.id_event}" title="Atualizar odd change">
+                    ${market.odd}
+                    <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="${market.id_event}" title="Atualizar odd change">
                         <i class="bi bi-arrow-clockwise"></i>
                     </a>
                 </td>
-                <td>${mercado.home_actual}%</td>
-                <td>${mercado.away_actual}%</td>
+                <td>${market.home_actual}%</td>
+                <td>${market.away_actual}%</td>
                 <td>${dataFormatada || 'N/A'}</td>
                 <td class="d-grid gap-4 d-md-block">
-                    <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${mercado.id_event} title="Editar Odd">
+                    <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${market.id_event} title="Editar Odd">
                         <i class="bi bi-pencil"></i>
                     </a>
-                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${mercado.id_event} title="Aceitar aposta">
+                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${market.id_event} title="Aceitar aposta">
                         <i class="bi bi-check"></i>
                     </a>
-                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${mercado.id_event} title="Recusar aposta">
+                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${market.id_event} title="Recusar aposta">
                         <i class="bi bi-x"></i>
                     </a>
-                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${mercado.id_event} title="Desfazer ação">
+                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${market.id_event} title="Desfazer ação">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </a>
                     <div class="btn-group" role="group">
