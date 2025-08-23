@@ -18,7 +18,7 @@ export function setupEventVote() {
         console.log('Current cell', statusCell);
 
         try {
-            const url = `api/analytics/vote?event_id=${idEvent}`;
+            const url = `api/v1/analytics/vote?event_id=${idEvent}`;
             fetch(url, {
                 method: 'GET',
                 headers: {

@@ -21,7 +21,7 @@ export async function setupUpdateOddChange() {
         btnOddChange.disabled = true;
 
         try {
-            const url = `/api/odd_change/${eventId}`
+            const url = `/api/v1/odd_change/${eventId}`
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -152,7 +152,7 @@ async function updateOddChangeInBackend(row, newOddValue, changeType) {
     }
 
     try {
-        const response = await fetch('/api/update_odd', {
+        const response = await fetch('/api/v1/update_odd', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -194,7 +194,7 @@ export async function atualizarCellOddAposEditar(eventId, currentRow, oddValueEd
     if (!eventId && !currentRow) return;
 
     try {
-        const url = `/api/odd_change/${eventId}`
+        const url = `/api/v1/odd_change/${eventId}`
         const response = await fetch(url, {
             method: 'GET',
             headers: {

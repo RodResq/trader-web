@@ -2,7 +2,7 @@ export async function setupProgressPerformace() {
     let dados = [];
 
     try {
-        const response = await fetch('/api/performace');
+        const response = await fetch('/api/v1/performace');
         if (!response.ok) {
             throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
         }

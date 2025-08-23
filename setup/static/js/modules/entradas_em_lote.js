@@ -486,7 +486,7 @@ function verificarCiclo() {
     
     cicloMultipla.innerHTML = '<i class="bi bi-hourglass-split"></i> Verificando...';
     
-    fetch('api/analytics/verificar_ciclo/', {
+    fetch('api/v1/analytics/verificar_ciclo/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -570,7 +570,7 @@ function processarMultipla(action) {
         confirmarBtn.disabled = true;
     }
     
-    fetch('/api/entrada_multipla', addCSRFToken({
+    fetch('/api/v1/entrada_multipla', addCSRFToken({
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

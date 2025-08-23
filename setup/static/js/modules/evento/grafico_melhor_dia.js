@@ -20,7 +20,7 @@ function inicializarGraficoMelhorDia() {
 async function carregarDadosGraficoMelhorDia(chartContainer) {
     let dados = null;
     try {
-        const response = await fetch('/api/grafico/melhor_dia_semana');
+        const response = await fetch('/api/v1/grafico/melhor_dia_semana');
         if (!response.ok) {
             throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
         }

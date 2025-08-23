@@ -49,7 +49,7 @@ export function setupDesfazerAcaoModal() {
         this.disabled = true;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
 
-         const url = `/api/apostar?event_id=${currentEventId}&action=desfazer`;
+         const url = `/api/v1/apostar?event_id=${currentEventId}&action=desfazer`;
 
          fetch(url, {
             method: 'GET',

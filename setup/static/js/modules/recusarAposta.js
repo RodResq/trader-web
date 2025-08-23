@@ -66,7 +66,7 @@ export function setupRecusarModal() {
         this.disabled = true;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
         
-        const url = `/api/apostar?event_id=${currentEventId}&action=recusar`;
+        const url = `/api/v1/apostar?event_id=${currentEventId}&action=recusar`;
 
         fetch(url, {
             method: 'GET',

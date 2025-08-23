@@ -20,7 +20,7 @@ export function setupFindTeam() {
         const textPesquisar = inputPesquisar.value.trim()
 
         try {
-            const url = `api/team/find?name=${textPesquisar}`;
+            const url = `api/v1/team/find?name=${textPesquisar}`;
             await fetch(url, {
                 method: 'GET',
                 headers: {

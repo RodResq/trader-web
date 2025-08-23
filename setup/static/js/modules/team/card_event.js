@@ -17,7 +17,7 @@ export function setupCardEventTeam() {
             }
             
             try {
-                const url = `api/team/${teamId}`
+                const url = `api/v1/team/${teamId}`
                 await fetch(url, {
                     method: 'GET',
                     headers: {
@@ -53,7 +53,7 @@ export async function renderizarCardTeam(idTeam) {
     if (!teamName || !teamIcon) return;
 
     try {
-        const url = `api/team/recuperar?id_team=${idTeam}`;
+        const url = `api/v1/team/recuperar?id_team=${idTeam}`;
         fetch(url, {
             method: 'GET',
             headers: {
@@ -83,7 +83,7 @@ export async function renderizarCardTeam(idTeam) {
 async function recuperarIconUniqueTournmanet(idUniqueTournament) {
     console.log(idUniqueTournament);
     try {
-        const url = `api/unique_tournament/icon?id_unique_tournament=${idUniqueTournament}`;
+        const url = `api/v1/unique_tournament/icon?id_unique_tournament=${idUniqueTournament}`;
         fetch(url, {
             method: 'GET',
             headers: {

@@ -112,7 +112,7 @@ export function loadPageData() {
     refreshButton.classList.add('loading');
     refreshButton.disabled = true;
 
-    const url = `/api/mercados?page=${currentPage}&items_per_page=${itemsPerPage}`;
+    const url = `/api/v1/mercados?page=${currentPage}&items_per_page=${itemsPerPage}`;
     
     fetch(url, {
         method: 'GET',

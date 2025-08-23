@@ -22,7 +22,7 @@ function handlerPriorityChange() {
  
 async function updateProximoEventoPrioridade(idEvento, checked) {
     try {
-        const url = `api/team/event?id_event=${idEvento}&checked=${checked}`;
+        const url = `api/v1/team/event?id_event=${idEvento}&checked=${checked}`;
         await fetch(url, {
             method: 'GET',
             headers: {

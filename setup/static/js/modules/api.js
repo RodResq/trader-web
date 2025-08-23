@@ -66,7 +66,7 @@ export function setupApostaButtons() {
             return;
         }
 
-        const url = `/api/apostar?event_id=${currentEventId}&action=aceitar`;
+        const url = `/api/v1/apostar?event_id=${currentEventId}&action=aceitar`;
         fetch(url, {
             method: 'GET',
             headers: {
@@ -112,7 +112,7 @@ export async function fetchUpdatedMarkets(page = 1, perPage = 10) {
     currentPage = page;
     itemsPerPage = perPage;
     
-    const url = `/api/mercados?page=${page}&items_per_page=${perPage}`;
+    const url = `/api/v1/mercados?page=${page}&items_per_page=${perPage}`;
 
     return fetch(url, {
         method: 'GET',
