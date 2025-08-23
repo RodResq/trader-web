@@ -70,7 +70,7 @@ export function setupResultadoEntradaModal() {
         }
 
         const baseUrl = getAPiEndpoint(currentRow);
-        const url = `${baseUrl}?event_id=${currentEventId}&resultado_entrada=${valueSelected}`;
+        const url = `${baseUrl}?event_id=${currentEventId}&entry_result=${valueSelected}`;
 
         try {
             await fetch(url, {
@@ -85,7 +85,7 @@ export function setupResultadoEntradaModal() {
                 return response.json();
             }).then(data => {
                 if (data.success) {
-                    atualizarIconSoccer(currentRow, data.data.resultado_entrada)
+                    atualizarIconSoccer(currentRow, data.data.entry_result)
                     showNotification(`Resultado da entrada ${currentEventId} registrado com sucesso`, 'success');
                 } else {
                     showNotification(`Falha ao registrar resultado da entrada`, 'danger');
@@ -104,7 +104,7 @@ export function setupResultadoEntradaModal() {
     });
 }
 
-function atualizarIconSoccer(currentRow, resultado_entrada) {
+function atualizarIconSoccer(currentRow, entry_result) {
     if (!currentRow) return;
 
     const statusCell = currentRow.querySelector('td:nth-child(2)');
@@ -115,7 +115,7 @@ function atualizarIconSoccer(currentRow, resultado_entrada) {
     }
 
     const novoSpanSoccer = document.createElement('span');
-    novoSpanSoccer.className = resultado_entrada === 'G' ? 'icon-soccer': 'icon-soccer-perdeu';
+    novoSpanSoccer.className = entry_result === 'W' ? 'icon-soccer': 'icon-soccer-perdeu';
     const iconPath = "/static/images/icons/soccer.svg";
     novoSpanSoccer.innerHTML = `<img src="${iconPath}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">`;
 

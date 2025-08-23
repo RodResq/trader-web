@@ -66,7 +66,7 @@ def listar_owner_ball_under_2_5(request, format=None):
 def resultado_entrada(request):
     if request.method == 'GET':
         event_id = request.GET.get('event_id')
-        resultado_entrada = request.GET.get('resultado_entrada')
+        entry_result = request.GET.get('entry_result')
         
         if not event_id:
             return JsonResponse({
@@ -77,7 +77,7 @@ def resultado_entrada(request):
         try:
                          
             entrada = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id)
-            entrada.resultado_entrada = resultado_entrada
+            entrada.entry_result = entry_result
             entrada.save()
             
             return JsonResponse({
@@ -85,7 +85,7 @@ def resultado_entrada(request):
                 'message': 'Resultado entrada registrado com sucesso!',
                 'data': {
                     'id_event': entrada.id_event,
-                    'resultado_entrada': entrada.resultado_entrada
+                    'entry_result': entrada.entry_result
                 }
             })
         except ValueError:
