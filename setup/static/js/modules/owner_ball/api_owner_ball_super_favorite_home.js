@@ -103,10 +103,15 @@ function updateOwnerBallTable(markets) {
                         </span>
                     `;
                 case "D":
+                    return `
+                        <span class="icon-soccer-empatou">
+                            <img src="/static/images/icons/soccer.svg" alt="soccer" class="me-2r" style="width: 15px; height: 15px; filter: hue-rotate(0deg) saturate(2) brightness(0.8) sepia(1) hue-rotate(-50deg);">
+                        </span>
+                    `;
                 case "L":
                     return `
                         <span class="icon-soccer-perdeu">
-                            <img src="/static/images/icons/soccer.svg" alt="soccer" class="me-2r" style="width: 15px; height: 15px; filter: hue-rotate(0deg) saturate(2) brightness(0.8) sepia(1) hue-rotate(-50deg);">
+                            <img src="/static/images/icons/soccer.svg" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">
                         </span>
                     `;
                 default: 

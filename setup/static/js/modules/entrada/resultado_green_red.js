@@ -136,6 +136,9 @@ function atualizarIconSoccer(currentRow, entry_result) {
     
     const novoSpanSoccer = document.createElement('span');
     novoSpanSoccer.className = classIconEntryResult;
+    if (entry_result == 'D') {
+        novoSpanSoccer.style = "filter: hue-rotate(0deg) saturate(2) brightness(0.8) sepia(1) hue-rotate(-50deg);"
+    }
 
     const iconPath = "/static/images/icons/soccer.svg";
     novoSpanSoccer.innerHTML = `<img src="${iconPath}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">`;

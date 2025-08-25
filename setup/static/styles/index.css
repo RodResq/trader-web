@@ -632,6 +632,7 @@ body.theme-light .main-cards-scroll-container:hover {
     background-color: #356adc !important;
     border-radius: 1rem !important;  /* Arredondamento suave */
     padding: 0.03rem;  /* Opcional: adicionar um pequeno padding */
+    filter: hue-rotate(0deg) saturate(2) brightness(0.8) sepia(1) hue-rotate(-50deg);
 }
 
 
