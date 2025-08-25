@@ -627,6 +627,14 @@ body.theme-light .main-cards-scroll-container:hover {
 }
 
 
+[data-bs-theme="light"] .icon-soccer-empatou img,
+[data-bs-theme="dark"] .icon-soccer-empatou img {
+    background-color: #356adc !important;
+    border-radius: 1rem !important;  /* Arredondamento suave */
+    padding: 0.03rem;  /* Opcional: adicionar um pequeno padding */
+}
+
+
 /* ===== SCROLL CONTAINER PARA TABELA ===== */
 
 /* Container de scroll específico para a tabela */

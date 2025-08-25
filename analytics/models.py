@@ -57,10 +57,10 @@ class Entrada(models.Model):
         ('P', 'parada')
     ]
     
-    RESULTADO_ENTRADA = [
-        ("G", "ganhou"),
-        ("E", "empatou"),
-        ("P", "perdeu")
+    ENTRY_RESULT = [
+        ("W", "win"),
+        ("D", "drow"),
+        ("L", "lose")
     ]
     
     VOTACAO = [
@@ -86,9 +86,9 @@ class Entrada(models.Model):
     home_actual = models.IntegerField(blank=False, null=False, default=0)
     away_actual = models.IntegerField(blank=True, null=True, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
-    opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="E")
+    opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="W")
     resultado_estatistica = models.BooleanField(default=0)    
-    resultado_entrada = models.CharField(max_length=20, blank=False, choices=RESULTADO_ENTRADA, null=True)
+    entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)
     next_event_priority = models.BooleanField(default=0)
     event_vote_home = models.CharField(max_length=20, blank=False, choices=VOTACAO, default="N")
         

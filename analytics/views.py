@@ -7,12 +7,17 @@ from django.views.decorators.http import require_POST
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Sum, Q
+from rest_framework.decorators import api_view 
+from rest_framework.response import Response
+from rest_framework import status
 from analytics.models import Entrada, Aposta, OddChange
 from analytics.helpers import dump_mercados_para_entrada
 from ciclo.models import Ciclo 
 from decimal import Decimal
 from datetime import datetime
 from gerencia.models import GerenciaCiclo
+from analytics.serializers import EntryResultSuperFavoriteSerializer, CustomResponseEntryResultSuperFavoriteSerializer
+
 from .forms import AceitarApostaForm
 import json
 import asyncio
@@ -665,43 +670,51 @@ def atualizar_statistica_overall(request, id_evento):
     except Exception as e:
             logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 
             
-            
-def resultado_entrada(request):
-    if request.method == 'GET':
-        event_id = request.GET.get('event_id')
-        resultado_entrada = request.GET.get('resultado_entrada')
+
+@api_view(['PUT'])
+def resultado_entrada(request, format=None):
+    serializer = EntryResultSuperFavoriteSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response({
+            'success': False,
+            'message': 'Parâmetros Invalidos.',
+            'errors': serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
         
-        if not event_id:
-            return JsonResponse({
-                'success': False,
-                'message': 'Parâmetros incompletos. É necessário fornecer event_id.'
-            }, status=400)
+    validated_data = serializer.validated_data
+    id_event = validated_data['id_event']
+    entry_result = validated_data['entry_result']
+    
+    try:
+        with transaction.atomic():
+            super_favorites_home = get_object_or_404(Entrada, id_event=id_event)
+            super_favorites_home.entry_result = entry_result
+            super_favorites_home.save(update_fields=['entry_result'])
             
-        try:
-                         
-            entrada = get_object_or_404(Entrada, id_event=event_id)
-            entrada.resultado_entrada = resultado_entrada
-            entrada.save()
-            
-            return JsonResponse({
+            response_serializer = CustomResponseEntryResultSuperFavoriteSerializer(super_favorites_home,many=False)
+            return Response({
                 'success': True,
-                'message': 'Resultado entrada registrado com sucesso!',
-                'data': {
-                    'id_event': entrada.id_event,
-                    'resultado_entrada': entrada.resultado_entrada
-                }
-            })
-        except ValueError:
-            return JsonResponse({
-                'success': False,
-                'message': 'Resultado inválido. Reveja o ID ou o resultado.'
-            }, status=400)
-        except Exception as e:
-            return JsonResponse({
-                'sucess':False,
-                'message': f'Erro ao registrar a entrada: {str(e)}'
-            }, status=500)
-            
+                'message': 'Resultado entrada atualizado com sucesso.',
+                'data': response_serializer.data
+            }, status=status.HTTP_200_OK)
+    except ValueError:
+        return Response({
+           'success': False,
+           'message': ' ID Evento deve ser um numero valido.' 
+        }, status=status.HTTP_400_BAD_REQUEST)
+    except Entrada.DoesNotExist:
+        return Response({
+            'success': False,
+            'message': f'Entrada Super Favorito Home nao encontrada para o evento ID: {id_event}'
+        }, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        logger.error(f'Erro ao atualizar resultado da entrada {id_event}: {str(e)}')
+        return Response({
+            'success': False,
+            'message': 'Erro interno do servidor ao processar a solicitação.'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+        
+                   
             
 def get_event_vote(request):
     if request.method == 'GET':

@@ -112,14 +112,31 @@ function atualizarIconSoccer(currentRow, entry_result) {
     if (!currentRow) return;
 
     const statusCell = currentRow.querySelector('td:nth-child(2)');
-    const spanSoccerExiste = statusCell.querySelector('.icon-soccer, .icon-soccer-perdeu');
-    
+
+    if (!statusCell) return;
+
+    const spanSoccerExiste = statusCell.querySelector('.icon-soccer, .icon-soccer-perdeu, .icon-soccer-empatou');
     if (spanSoccerExiste) {
         spanSoccerExiste.remove();
     }
 
+    let classIconEntryResult;
+    
+    switch (entry_result) {
+        case 'W': 
+            classIconEntryResult = 'icon-soccer';
+            break;
+        case 'L':
+            classIconEntryResult = 'icon-soccer-perdeu';
+            break;
+        case 'D':
+            classIconEntryResult = 'icon-soccer-empatou';
+            break;
+    }
+    
     const novoSpanSoccer = document.createElement('span');
-    novoSpanSoccer.className = entry_result === 'W' ? 'icon-soccer': 'icon-soccer-perdeu';
+    novoSpanSoccer.className = classIconEntryResult;
+
     const iconPath = "/static/images/icons/soccer.svg";
     novoSpanSoccer.innerHTML = `<img src="${iconPath}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">`;
 

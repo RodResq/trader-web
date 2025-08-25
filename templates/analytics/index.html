@@ -238,13 +238,17 @@
                                     <img src="{% static 'images/icons/next-event-priority.svg' %}" alt="next-event-priority" class="me-2r">
                                   </span>
                                 {% endif %}
-                                {% if mercado.resultado_entrada == "G" %}
+                                {% if mercado.entry_result == "W" %}
                                   <span class="icon-soccer">
                                     <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">
                                   </span>
-                                  {% elif mercado.resultado_entrada == "P" or mercado.resultado_entrada == "E" %}
+                                {% elif mercado.entry_result == "L" %}
                                   <span class="icon-soccer-perdeu">
                                    <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px; background-color: red;">
+                                  </span>
+                                {% elif mercado.entry_result == "D" %}
+                                  <span class="icon-soccer-empatou">
+                                   <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px; background-color: #356adc;">
                                   </span>
                                 {% endif %}
                                 {% if mercado.event_vote_home == "H" %}
