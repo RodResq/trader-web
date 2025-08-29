@@ -595,14 +595,10 @@ def atualizar_odd_change(request, id_evento):
                 timeout=5
             )
             
-            resultado_estatistica = atualizar_statistica_overall(request, id_evento) # TODO REFATORAR
-            
-            if response.status_code == 200 or resultado_estatistica:
+            if response.status_code == 200:
                 return JsonResponse({
                     'success': True,
-                    'message': 'Atualizaçao de odd recuperada com sucesso',
                     'oddChange': response.json(),
-                    'statisticOverall': resultado_estatistica
                 }, status=200)
             
         except requests.exceptions.RequestException as e:
@@ -657,12 +653,15 @@ def atualizar_statistica_overall(request, id_evento):
             )
             if response.status_code == 200:
                 data = response.json()
-                resultado_bool = data['resultado'] == 1
                 entrada = Entrada.objects.filter(id_event=id_evento).first()
-                entrada.resultado_estatistica = resultado_bool
+                entrada.resultado_estatistica = data['resultado']
                 entrada.save()
                 
-                return entrada.resultado_estatistica
+                return JsonResponse({
+                    'success': True,
+                    'statistic': entrada.resultado_estatistica,
+                    'message': 'O resultado do calculo estatico foi atualizado com sucesso'
+                }, status=200)
             
         except requests.exceptions.RequestException as e:
             logger.error(f"Erro de conexão ao buscar odd-change para evento {id_evento}: {str(e)}")

@@ -25,6 +25,7 @@ import { setupProximoEvento } from './modules/evento/proximo_evento.js'
 import { setupCardEventTeam } from './modules/team/card_event.js';
 import { setupFindTeam } from './modules/team/pesquisar.js';
 import { setupEventVote } from './modules/entrada/event_vote.js';
+import { setupStatistic } from './modules/entrada/statistic.js';
 
 
 
@@ -105,6 +106,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Incializa resultado event vote
     setupEventVote();
+
+    // Incializa a busca api statistica
+    setupStatistic();
     
     // Inicializa componentes de paginação
     if (typeof initPagination === "function") {
