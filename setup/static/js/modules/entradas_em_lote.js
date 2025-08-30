@@ -37,13 +37,11 @@ function initMultiplaModalHandlers() {
             processarMultipla('aceitar');
         });
     }
-    
     if (recusarMultiplaBtn) {
         recusarMultiplaBtn.addEventListener('click', () => {
             processarMultipla('recusar');
         });
     }
-    
     if (valorEntradaInput) {
         valorEntradaInput.addEventListener('input', calcularRetornoEsperado);
     }
@@ -77,14 +75,12 @@ function toggleChecklist() {
 
         toggleActionColumn(false);
     } else {
-
         if (headerRow) {
             const checkboxHeader = headerRow.querySelector('.checkbox-cell');
             if (checkboxHeader) {
                 checkboxHeader.remove();
             }
         }
-
         rows.forEach(row => {
             const checkboxCell = row.querySelector('.checkbox-cell');
             if (checkboxCell) {
@@ -96,7 +92,6 @@ function toggleChecklist() {
         if (bulkActionsContainer) {
             bulkActionsContainer.remove();
         }
-
         toggleActionColumn(true);
         
         selectedItems.clear();
@@ -122,7 +117,6 @@ function toggleActionColumn(show) {
         if (actionCell) {
             actionCell.style.display = show ? '' : 'none';
             
-            // Desabilita/habilita os botões
             const buttons = actionCell.querySelectorAll('a.btn');
             buttons.forEach(button => {
                 button.style.pointerEvents = show ? '' : 'none';
@@ -142,7 +136,6 @@ function toggleActionColumn(show) {
 }
 
 
-
 function updateBtnMostrarChecklist() {
     const btnMostrarChecklist = document.getElementById('mostrarCheckList');
     if (!btnMostrarChecklist) return;
@@ -160,39 +153,31 @@ function updateBtnMostrarChecklist() {
 
 
 function addCheckboxToRow(row, index) {
-    // Verifica se a linha já tem checkbox
     if (row.querySelector('.checkbox-cell')) return;
     
-    // Obter o ID do evento da primeira célula
     const eventId = row.querySelector('td:first-child').textContent.replace('#', '').trim();
     
-    // Criar célula de checkbox
     const cell = document.createElement('td');
     cell.className = 'checkbox-cell';
     
-    // Criar o checkbox
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.className = 'market-checkbox form-check-input';
     checkbox.dataset.eventId = eventId;
     checkbox.dataset.rowIndex = index;
     
-    // Obter mais dados da linha para uso no modal
     const mercado = row.querySelector('td:nth-child(3)').textContent.trim();
     const odd = parseFloat(row.querySelector('td:nth-child(4)').textContent.replace(',', '.').trim());
     const dataJogo = row.querySelector('td:nth-child(7)').textContent.trim();
     
-    // Adicionar dados ao checkbox para uso no modal
     checkbox.dataset.mercado = mercado;
     checkbox.dataset.odd = odd;
     checkbox.dataset.dataJogo = dataJogo;
     
-    // Verificar se o item estava selecionado anteriormente
     if (selectedItems.has(eventId)) {
         checkbox.checked = true;
     }
     
-    // Adicionar evento de mudança
     checkbox.addEventListener('change', function() {
         if (this.checked) {
             selectedItems.add(eventId);
@@ -205,76 +190,60 @@ function addCheckboxToRow(row, index) {
         updateSelectedCount();
     });
     
-    // Adicionar checkbox à célula
     cell.appendChild(checkbox);
-    
-    // Inserir célula no início da linha
     row.insertBefore(cell, row.firstChild);
 }
 
-/**
- * Adiciona botões de ação em massa
- */
+
 function addBulkActionButtons() {
-    // Verificar se já existem os botões
     if (document.getElementById('bulkActionsContainer')) return;
     
-    // Criar container para os botões
     const container = document.createElement('div');
     container.id = 'bulkActionsContainer';
     container.className = 'mb-3 p-3 bg-light rounded border';
     
-    // Adicionar contagem de selecionados
     const countBadge = document.createElement('span');
     countBadge.id = 'selectedItemsCount';
     countBadge.className = 'badge bg-primary me-2';
     countBadge.textContent = `0 selecionados`;
     
-    // Botão para selecionar todos
     const selectAllBtn = document.createElement('button');
     selectAllBtn.type = 'button';
     selectAllBtn.className = 'btn btn-sm btn-outline-primary me-2';
     selectAllBtn.innerHTML = '<i class="bi bi-check-all"></i> Selecionar Todos';
     selectAllBtn.addEventListener('click', selectAllItems);
     
-    // Botão para limpar seleção
     const clearSelectionBtn = document.createElement('button');
     clearSelectionBtn.type = 'button';
     clearSelectionBtn.className = 'btn btn-sm btn-outline-secondary me-2';
     clearSelectionBtn.innerHTML = '<i class="bi bi-x-circle"></i> Limpar Seleção';
     clearSelectionBtn.addEventListener('click', clearAllSelections);
     
-    // Botão para aceitar selecionados
     const acceptSelectedBtn = document.createElement('button');
     acceptSelectedBtn.type = 'button';
     acceptSelectedBtn.className = 'btn btn-sm btn-success me-2';
     acceptSelectedBtn.innerHTML = '<i class="bi bi-check-circle"></i> Aceitar Selecionados';
     acceptSelectedBtn.addEventListener('click', () => abrirModalMultiplas('aceitar'));
     
-    // Botão para recusar selecionados
     const rejectSelectedBtn = document.createElement('button');
     rejectSelectedBtn.type = 'button';
     rejectSelectedBtn.className = 'btn btn-sm btn-danger';
     rejectSelectedBtn.innerHTML = '<i class="bi bi-x-circle"></i> Recusar Selecionados';
     rejectSelectedBtn.addEventListener('click', () => abrirModalMultiplas('recusar'));
     
-    // Adicionar elementos ao container
     container.appendChild(countBadge);
     container.appendChild(selectAllBtn);
     container.appendChild(clearSelectionBtn);
     container.appendChild(acceptSelectedBtn);
     container.appendChild(rejectSelectedBtn);
     
-    // Adicionar container antes da tabela
     const table = document.getElementById('marketsTable');
     if (table) {
         table.parentNode.insertBefore(container, table);
     }
 }
 
-/**
- * Atualiza a contagem de itens selecionados
- */
+
 function updateSelectedCount() {
     const countBadge = document.getElementById('selectedItemsCount');
     if (!countBadge) return;
@@ -282,9 +251,7 @@ function updateSelectedCount() {
     countBadge.textContent = `${selectedItems.size} selecionado${selectedItems.size !== 1 ? 's' : ''}`;
 }
 
-/**
- * Seleciona todos os itens na tabela
- */
+
 function selectAllItems() {
     const checkboxes = document.querySelectorAll('.market-checkbox');
     
@@ -301,9 +268,7 @@ function selectAllItems() {
     updateSelectedCount();
 }
 
-/**
- * Limpa a seleção de todos os itens
- */
+
 function clearAllSelections() {
     const checkboxes = document.querySelectorAll('.market-checkbox');
     
@@ -321,35 +286,26 @@ function clearAllSelections() {
     updateSelectedCount();
 }
 
-/**
- * Abre o modal de entradas múltiplas
- */
+
 function abrirModalMultiplas(action) {
     if (selectedItems.size === 0) {
         showNotification('Selecione pelo menos um item para executar esta ação.', 'warning');
         return;
     }
     
-    // Preencher a tabela do modal com os itens selecionados
     preencherTabelaMultiplas();
-    
-    // Verificar ciclo
     verificarCiclo();
     
-    // Definir ação no botão
     const confirmarBtn = document.getElementById('confirmarMultiplaBtn');
     if (confirmarBtn) {
         confirmarBtn.setAttribute('data-action', action);
     }
     
-    // Exibir o modal
     const multiplaModal = new bootstrap.Modal(document.getElementById('entradasMultiplasModal'));
     multiplaModal.show();
 }
 
-/**
- * Preenche a tabela de múltiplas no modal
- */
+
 function preencherTabelaMultiplas() {
     const tbody = document.getElementById('multipla-tbody');
     if (!tbody) return;
@@ -358,7 +314,6 @@ function preencherTabelaMultiplas() {
     
     let oddCombinada = 1.0;
     
-    // Obter todos os checkboxes marcados
     const checkboxes = document.querySelectorAll('.market-checkbox:checked');
     
     checkboxes.forEach(checkbox => {
@@ -369,27 +324,22 @@ function preencherTabelaMultiplas() {
         
         const tr = document.createElement('tr');
         
-        // ID
         const tdId = document.createElement('td');
         tdId.textContent = eventId;
         tr.appendChild(tdId);
         
-        // Mercado
         const tdMercado = document.createElement('td');
         tdMercado.textContent = mercado;
         tr.appendChild(tdMercado);
         
-        // Odd
         const tdOdd = document.createElement('td');
         tdOdd.textContent = odd.toFixed(2);
         tr.appendChild(tdOdd);
         
-        // Data
         const tdData = document.createElement('td');
         tdData.textContent = dataJogo;
         tr.appendChild(tdData);
         
-        // Remover
         const tdRemover = document.createElement('td');
         const btnRemover = document.createElement('button');
         btnRemover.className = 'btn btn-sm btn-outline-danger';
@@ -401,24 +351,17 @@ function preencherTabelaMultiplas() {
         tr.appendChild(tdRemover);
         
         tbody.appendChild(tr);
-        
-        // Atualiza odd combinada
         oddCombinada *= odd;
     });
     
-    // Atualiza a odd combinada no modal
     document.getElementById('odd-combinada').textContent = oddCombinada.toFixed(2);
     
-    // Limpa o campo de valor de entrada
     document.getElementById('valor-entrada-multipla').value = '';
     document.getElementById('retorno-esperado').value = '';
 }
 
-/**
- * Remove um item da seleção múltipla
- */
+
 function removerItemMultipla(eventId) {
-    // Desmarca o checkbox correspondente
     const checkbox = document.querySelector(`.market-checkbox[data-event-id="${eventId}"]`);
     if (checkbox) {
         checkbox.checked = false;
@@ -432,17 +375,14 @@ function removerItemMultipla(eventId) {
         updateSelectedCount();
     }
     
-    // Atualiza a tabela no modal
     preencherTabelaMultiplas();
     
-    // Verifica se ainda há items selecionados
     if (selectedItems.size === 0) {
         const modal = bootstrap.Modal.getInstance(document.getElementById('entradasMultiplasModal'));
         if (modal) {
             modal.hide();
         }
     } else {
-        // Atualiza verificação de ciclo
         verificarCiclo();
     }
 }
@@ -464,7 +404,6 @@ function verificarCiclo() {
     
     if (!cicloWarning || !cicloMultipla || !saldoDisponivel) return;
     
-    // Se não houver items selecionados, não faz nada
     if (selectedItems.size === 0) {
         cicloWarning.classList.add('d-none');
         cicloMultipla.textContent = 'Não definido';
@@ -530,7 +469,6 @@ function verificarCiclo() {
         cicloMultipla.textContent = 'Erro';
         saldoDisponivel.textContent = '0.00';
         
-        // Desabilita o botão de confirmar
         document.getElementById('confirmarMultiplaBtn').disabled = true;
     });
 }
@@ -587,9 +525,7 @@ function processarMultipla(action) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Fechar o modal
             bootstrap.Modal.getInstance(document.getElementById('entradasMultiplasModal')).hide();
-
             atualizarValorDisponivel(valorEntrada);
             
             const checkboxes = document.querySelectorAll('.market-checkbox:checked');
@@ -611,21 +547,14 @@ function processarMultipla(action) {
                     });
                 }
             });
-            
-            // Exibir mensagem de sucesso
             showNotification(
                 `${selectedItems.size} ${action === 'aceitar' ? 'aposta(s) aceita(s)' : 'aposta(s) recusada(s)'} com sucesso!`,
                 action === 'aceitar' ? 'success' : 'warning'
             );
-            
-            // Limpar seleção
             selectedItems.clear();
             updateSelectedCount();
-            
-            // Desativar modo checklist
             toggleChecklist();
         } else {
-            // Restaurar botões
             btnAtual.innerHTML = textoOriginal;
             btnAtual.disabled = false;
             
@@ -634,8 +563,6 @@ function processarMultipla(action) {
             } else {
                 confirmarBtn.disabled = false;
             }
-            
-            // Exibir mensagem de erro
             showNotification(data.message || 'Erro ao processar apostas', 'danger');
         }
     })

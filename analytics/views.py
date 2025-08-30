@@ -416,10 +416,7 @@ def entrada_multipla(request):
                         'message': f'O evento {entrada.id_event} já faz parte de uma múltipla.'
                     }, status=400)
             
-            ciclos_validos = Ciclo.objects.filter(
-                Q(data_inicial__gte=min(entrada.data_jogo for entrada in entradas)) |
-                Q(data_final__lte=max(entrada.data_jogo for entrada in entradas))
-            )
+            ciclos_validos = Ciclo.objects.filter(Q(data_inicial__lte=max(entrada.data_jogo for entrada in entradas)))
             
             if not ciclos_validos.exists():
                 return JsonResponse({
@@ -427,7 +424,7 @@ def entrada_multipla(request):
                     'message': 'Não existe um ciclo válido para esta múltipla.'
                 }, status=400)
             
-            ciclo = ciclos_validos.first()
+            ciclo = ciclos_validos.order_by('-id').first()
             
             if action == 'aceitar':
                 if valor_entrada_total <= 0:

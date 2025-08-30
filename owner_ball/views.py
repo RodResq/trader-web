@@ -45,7 +45,7 @@ class CustomPagination(PageNumberPagination):
 @api_view(['GET'])
 def listar_owner_ball_super_favorito(request, format=None):
     dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball()
-    super_favorites_home = SuperFavoriteHomeBallOwnerEntry.objects.all().order_by('id_event', 'event_date')
+    super_favorites_home = SuperFavoriteHomeBallOwnerEntry.objects.all()
     paginator = CustomPagination()
     paginated_queryset = paginator.paginate_queryset(super_favorites_home, request)
     serializer = SuperFavoriteHomeBallOwnerEntrySerializer(paginated_queryset, many=True)
