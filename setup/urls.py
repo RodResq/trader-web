@@ -18,6 +18,12 @@ from grafico.views import (
     melhor_dia_semana
 )
 from gerencia.views import gerencia_resultado
+from rest_framework.authtoken import views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
 
 web_urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -55,7 +61,14 @@ admin_urlpatterns = [
     path('admin/', admin.site.urls),
 ] 
 
-urlpatterns = admin_urlpatterns + web_urlpatterns + api_urlpatterns
+token_urlpatterns = [
+    path('api-token-auth/', views.obtain_auth_token),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+]
+
+urlpatterns = admin_urlpatterns + web_urlpatterns + api_urlpatterns + token_urlpatterns
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
