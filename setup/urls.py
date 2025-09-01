@@ -23,6 +23,7 @@ from grafico.views import (
 from gerencia.views import gerencia_resultado
 
 web_urlpatterns = [
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('__debug__/', include('debug_toolbar.urls')),
     path('analytics', include('analytics.urls')),
     path('resultado/<int:id_evento>', evento, name='evento'),

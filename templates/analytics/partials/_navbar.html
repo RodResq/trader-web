@@ -42,14 +42,22 @@
             </button>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+            <a class="nav-link dropdown-toggle" href="login" id="userDropdown" role="button" data-bs-toggle="dropdown">
               <i class="bi bi-person-circle"></i> Usuário
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{% url 'rest_framework:login' %}">Login</a></li>
               <li><a class="dropdown-item" href="#">Perfil</a></li>
               <li><a class="dropdown-item" href="#">Configurações</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Sair</a></li>
+              <li>
+                <form method="post", action="{% url 'rest_framework:logout' %}" style="display: inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="dropdown-item border-0 bg-transparent w-100 text-start">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                  </button>
+                </form>
+              </li>
             </ul>
           </li>
         </ul>

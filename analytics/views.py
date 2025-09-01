@@ -10,6 +10,7 @@ from django.db.models import Sum, Q
 from rest_framework.decorators import api_view 
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth.decorators import login_required
 from analytics.models import Entrada, Aposta, OddChange
 from analytics.helpers import dump_mercados_para_entrada
 from ciclo.models import Ciclo 
@@ -27,50 +28,51 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def index(request):
-        dump_mercados_para_entrada()
+@login_required
+def index(request, format=None):
+    dump_mercados_para_entrada()
+    
+    page = request.GET.get('page', 1)
+    items_per_page = request.GET.get('items_per_page', 10)
+    
+    try:
+        items_per_page = int(items_per_page)
         
-        page = request.GET.get('page', 1)
-        items_per_page = request.GET.get('items_per_page', 10)
+        if (items_per_page > 50):
+            items_per_page = 50    
+    except ValueError:
+        items_per_page = 10
+    
+    entradas = Entrada.objects.all()
+    
+    _verificar_mudanca_odd(entradas)
+    
+    soma_retorno = GerenciaCiclo.objects.aggregate(total=Sum('valor_total_retorno'))
+    retorno_atual = GerenciaCiclo.objects.exclude(valor_total_retorno=0).order_by('-id').first()
+    
+    paginator = Paginator(entradas, items_per_page)
+    
+    try:
+        paginated_entradas = paginator.page(page)
+    except PageNotAnInteger:
+        paginated_entradas = paginator.page(1)
+    except EmptyPage:
+        paginated_entradas = paginator.page(paginator.num_pages)
+    
+    qtd_ciclos = Ciclo.objects.count() 
+    ciclo_atual = Ciclo.objects.order_by('-id').first()
+    qtd_eventos = Entrada.objects.count()
         
-        try:
-            items_per_page = int(items_per_page)
-            
-            if (items_per_page > 50):
-                items_per_page = 50    
-        except ValueError:
-            items_per_page = 10
-        
-        entradas = Entrada.objects.all()
-        
-        _verificar_mudanca_odd(entradas)
-        
-        soma_retorno = GerenciaCiclo.objects.aggregate(total=Sum('valor_total_retorno'))
-        retorno_atual = GerenciaCiclo.objects.exclude(valor_total_retorno=0).order_by('-id').first()
-        
-        paginator = Paginator(entradas, items_per_page)
-        
-        try:
-            paginated_entradas = paginator.page(page)
-        except PageNotAnInteger:
-            paginated_entradas = paginator.page(1)
-        except EmptyPage:
-            paginated_entradas = paginator.page(paginator.num_pages)
-        
-        qtd_ciclos = Ciclo.objects.count() 
-        ciclo_atual = Ciclo.objects.order_by('-id').first()
-        qtd_eventos = Entrada.objects.count()
-            
-        return render(request, 'analytics/index.html', {
-            'mercados': paginated_entradas,
-            'qtd_eventos': qtd_eventos,
-            'qtd_ciclos': qtd_ciclos,
-            'ciclo_atual': ciclo_atual.id,
-            'ciclo_atual_disponivel': ciclo_atual.valor_disponivel_entrada,
-            'soma_total_retorno': soma_retorno['total'],
-            'retorno_atual': retorno_atual.valor_total_retorno,
-            'items_per_page': items_per_page
-        })
+    return render(request, 'analytics/index.html', {
+        'mercados': paginated_entradas,
+        'qtd_eventos': qtd_eventos,
+        'qtd_ciclos': qtd_ciclos,
+        'ciclo_atual': ciclo_atual.id,
+        'ciclo_atual_disponivel': ciclo_atual.valor_disponivel_entrada,
+        'soma_total_retorno': soma_retorno['total'],
+        'retorno_atual': retorno_atual.valor_total_retorno,
+        'items_per_page': items_per_page
+    })
 
 
 def apostar(request):
