@@ -1,4 +1,13 @@
 import json
+import json
+import asyncio
+import aiohttp
+import requests
+import logging
+
+from decimal import Decimal
+from datetime import datetime
+
 from django.utils import timezone
 from django.db import transaction
 from django.http import JsonResponse
@@ -7,26 +16,30 @@ from django.views.decorators.http import require_POST
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Sum, Q
+from django.contrib.auth.decorators import login_required
+
 from rest_framework.decorators import api_view 
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework import status
-from django.contrib.auth.decorators import login_required
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 from analytics.models import Entrada, Aposta, OddChange
 from analytics.helpers import dump_mercados_para_entrada
-from ciclo.models import Ciclo 
-from decimal import Decimal
-from datetime import datetime
-from gerencia.models import GerenciaCiclo
-from analytics.serializers import EntryResultSuperFavoriteSerializer, CustomResponseEntryResultSuperFavoriteSerializer
+from analytics.forms import AceitarApostaForm
+from analytics.serializers import (
+    EntryResultSuperFavoriteSerializer, 
+    CustomResponseEntryResultSuperFavoriteSerializer
+)
 
-from .forms import AceitarApostaForm
-import json
-import asyncio
-import aiohttp
-import requests
-import logging
+from gerencia.models import GerenciaCiclo
+from ciclo.models import Ciclo 
+from shared.utils import CustomPagination
 
 logger = logging.getLogger(__name__)
+      
 
 @login_required
 def index(request, format=None):

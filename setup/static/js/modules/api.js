@@ -112,7 +112,7 @@ export async function fetchUpdatedMarkets(page = 1, perPage = 10) {
     currentPage = page;
     itemsPerPage = perPage;
     
-    const url = `/api/v1/mercados?page=${page}&items_per_page=${perPage}`;
+    const url = `/api/v1/markets?page=${page}&items_per_page=${perPage}`;
 
     return fetch(url, {
         method: 'GET',

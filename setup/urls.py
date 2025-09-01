@@ -5,12 +5,9 @@ from django.conf.urls.static import static
 from evento.api_views import proximo_evento
 from performace.api_views import PerformaceAPIView
 from analytics.views import (
-    index,
-    aceitar_aposta, 
     evento, 
     apostar, 
     mercados, 
-    editar_odd, 
     entrada_multipla, 
     atualizar_odd_change, 
     atualizar_odd_status, 
@@ -36,7 +33,8 @@ web_urlpatterns = [
 
 api_urlpatterns = [
     path('api/v1/analytics/', include('analytics.api_urls')),
-    path('api/v1/mercados', mercados, name='mercados'),
+    path('api/v1/markets', mercados, name='mercados'),
+    path('api/v1/markets_test/', include('market.api_urls')),
     path('api/v1/entrada_multipla', entrada_multipla, name="entrada_multipla"),
     path('api/v1/apostar', apostar, name='apostar'),
     path('api/v1/update_odd', atualizar_odd_status, name='atualizar_odd_status'),
