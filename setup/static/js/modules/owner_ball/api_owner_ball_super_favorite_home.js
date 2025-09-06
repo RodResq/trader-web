@@ -144,16 +144,16 @@ function updateOwnerBallTable(markets) {
                 <td>${market.away_actual}%</td>
                 <td>${dataFormatada || 'N/A'}</td>
                 <td class="d-grid gap-4 d-md-block">
-                    <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${market.id_event} title="Editar Odd">
+                    <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${market.id_event} data-event-orgin="owner-ball" title="Editar Odd">
                         <i class="bi bi-pencil"></i>
                     </a>
-                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${market.id_event} title="Aceitar aposta">
+                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${market.id_event} data-event-orgin="owner-ball" title="Aceitar aposta">
                         <i class="bi bi-check"></i>
                     </a>
-                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${market.id_event} title="Recusar aposta">
+                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${market.id_event} data-event-orgin="owner-ball" title="Recusar aposta">
                         <i class="bi bi-x"></i>
                     </a>
-                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${market.id_event} title="Desfazer ação">
+                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${market.id_event} data-event-orgin="owner-ball" title="Desfazer ação">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </a>
                     <div class="btn-group" role="group">
@@ -161,7 +161,7 @@ function updateOwnerBallTable(markets) {
                             <i class="bi bi-three-dots-vertical"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <li><a id="btn-event-vote" class="dropdown-item" data-event-id="{{ mercado.id_event }}">Votacao</a></li>
+                            <li><a id="btn-event-vote" class="dropdown-item" data-event-id="{{ mercado.id_event }}" data-event-orgin="owner-ball">Votacao</a></li>
                             <li><a class="dropdown-item" href="#">Comparar</a></li>
                         </ul>
                     </div>

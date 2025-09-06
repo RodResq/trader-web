@@ -5,22 +5,24 @@ export function initAceitarApostaModal() {
     let currentEventId = null;
     let currentRow = null;
     let valorOdd = null;
+    let eventOrigin = null;
 
     const aceitarButtons = document.querySelectorAll('.apostar-btn');
     const modal = document.getElementById('aceitarApostaModal');
     const confirmarBtn = document.getElementById('confirmarAceiteBtn');
     const valorInput = document.querySelector('#aceitar-evento-valor-input input');
-
+    
     aceitarButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
+            
+            eventOrigin = this.getAttribute('data-event-orgin');
             
             const eventId = this.dataset.eventId;
             currentRow = this.closest('tr');
             const mercado = currentRow.querySelector('td:nth-child(3)').textContent.trim();
             const odd = currentRow.querySelector('td:nth-child(4)').textContent.trim();
             valorOdd = parseFloat(odd.replace(',', '.'))
-
             
             document.getElementById('aceitar-evento-id').textContent = eventId;
             document.getElementById('aceitar-evento-mercado').textContent = mercado;
@@ -55,6 +57,8 @@ export function initAceitarApostaModal() {
 
     
     function enviarAposta() {
+        console.log(eventOrigin);
+        
         const eventId = parseInt(document.getElementById('aceitar-evento-id').textContent);
         const mercado = document.getElementById('aceitar-evento-mercado').textContent;
         const odd = parseFloat(document.getElementById('aceitar-evento-odd').textContent.replace(',', '.'));

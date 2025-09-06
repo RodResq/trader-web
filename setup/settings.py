@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'sofascore.apps.SofascoreConfig',
     'unique_tournament.apps.UniqueTournamentConfig',
     'market.apps.MarketConfig',
+    'entrada.apps.EntradaConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework.authtoken',

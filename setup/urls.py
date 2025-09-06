@@ -40,6 +40,7 @@ web_urlpatterns = [
 
 api_urlpatterns = [
     path('api/v1/analytics/', include('analytics.api_urls')),
+    path('api/v1/entradas/', include('entrada.api_urls')),
     path('api/v1/markets', mercados, name='mercados'),
     path('api/v1/markets_test/', include('market.api_urls')),
     path('api/v1/entrada_multipla', entrada_multipla, name="entrada_multipla"),
