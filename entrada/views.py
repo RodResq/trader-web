@@ -35,13 +35,11 @@ class AceitarEntradaView(APIView):
                 
                 print(f"User ID: {user_id}")
                 print(f"Groups: {groups}")
-                
             except Exception as e:
                 return Response({
                     'success': False,
                     'message': f'Token inválido: {str(e)}'
                 }, status=status.HTTP_401_UNAUTHORIZED)
-        
         
         serializer = AceitarEntradaSerializer(data=request.data)
         if serializer.is_valid():
@@ -52,7 +50,8 @@ class AceitarEntradaView(APIView):
             valor_retorno = validated_data['valor_retorno']
             
             try:
-                if 'score_data' == event_origin:
+                print(type(event_origin))
+                if 'score-data' == event_origin:
                     entrada_score_data = get_object_or_404(Entrada, id_event=event_id)
                     ciclo = Ciclo.objects.filter(data_inicial__lte=entrada_score_data.data_jogo, data_final__gte=entrada_score_data.data_jogo).first()
                     aposta = Aposta.objects.filter(entrada__id_event=event_id).first()
@@ -93,13 +92,18 @@ class AceitarEntradaView(APIView):
                             'message': 'Aposta aceita com sucesso',
                             'aposta_id': aposta.id
                         })
-                elif 'owner_ball'== event_origin:
+                elif 'owner-ball'== event_origin:
                     entry_owner_ball = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id)
                     cycle_owner_ball = CycleOwnerBall.objects.filter(start_date__lte=entry_owner_ball.event_date, end_date__gte=entry_owner_ball.event_date).first()
                     bet_owner_ball = BetOwnerBall.objects.filter(entry__id_event=event_id).first()
                     
-                    self._check_cycle(cycle_owner_ball)
-                    self._check_exceeds_availeble(valor_entrada, cycle_owner_ball.available_value)
+                    return_check = self._check_cycle(cycle_owner_ball)
+                    if return_check:
+                        return return_check
+                    
+                    return_check_exceeds_availeble = self._check_exceeds_availeble(valor_entrada, cycle_owner_ball.available_value)
+                    if return_check_exceeds_availeble:
+                        return return_check_exceeds_availeble
                     
                     with transaction.atomic():
                         if bet_owner_ball:
@@ -137,7 +141,7 @@ class AceitarEntradaView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
             
             
-    def _check_cycle(self, cicle):
+    def _check_cycle(self, cicle) -> Response:
         if not cicle:
             return Response({
                 'success': False,
@@ -145,7 +149,7 @@ class AceitarEntradaView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
         pass
     
-    def _check_exceeds_availeble(self, entry_value, available_value):
+    def _check_exceeds_availeble(self, entry_value, available_value) -> Response:
         if entry_value > available_value:
                 return Response({
                     'success': False,

@@ -56,7 +56,7 @@ export function initAceitarApostaModal() {
     }
 
     
-    function enviarAposta() {
+    async function enviarAposta() {
         console.log(eventOrigin);
         
         const eventId = parseInt(document.getElementById('aceitar-evento-id').textContent);
@@ -71,25 +71,27 @@ export function initAceitarApostaModal() {
         }
         
         const dados = {
-            evento_id: eventId,
-            mercado: mercado,
-            odd: odd,
+            event_origin: eventOrigin,
             valor_entrada: valor,
             valor_retorno: valorRetorno
         };
-        
   
-        fetch('api/v1/analytics/aceitar_aposta', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFToken(),
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify(dados)
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+            const response = await fetch(`api/v1/entradas/${eventId}/aceitar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken(),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(dados)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`)
+            }
+
+            const data = await response.json();
             if (data.success) {
                 const modalInstance = bootstrap.Modal.getInstance(modal);
                 modalInstance.hide();
@@ -108,11 +110,11 @@ export function initAceitarApostaModal() {
             } else {
                 exibirMensagem(`Erro: ${data.message}`, 'danger');
             }
-        })
-        .catch(error => {
+
+        } catch(error) {
             console.error('Erro ao processar a aposta:', error);
             exibirMensagem('Erro ao processar a aposta. Verifique o console para mais detalhes.', 'danger');
-        });
+        };
     }
     
     function getCSRFToken() {

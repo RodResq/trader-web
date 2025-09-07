@@ -88,7 +88,6 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
     def __str__(self):
         return f"SuperFavoriteHomeBallOwnerEntry - {self.id_event} - market: {self.market} - odd: {self.odd}"    
     
-    
     def save(self, *args, **kwargs):
         """
         Garante que entrada só seja atualizada se estiver dentro de um ciclo.
@@ -103,9 +102,7 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
             except Ciclo.DoesNotExist:
                 pass
             
-        return super().save(*args, **kwargs)
-    
-        
+        return super().save(*args, **kwargs)   
 
 class FavoriteHomeBallOwnerEntry(models.Model):
     ENTRY_OPTION = [
