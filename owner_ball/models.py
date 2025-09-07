@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from ciclo.models import Ciclo
 
+from decimal import Decimal
+
     
 class VwMercadoOwnerBallSfHome(models.Model):
     id_event = models.BigIntegerField(null=False, name='id_event')
@@ -77,6 +79,12 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
     statistic_result = models.BooleanField(default=0)
     entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)     
         
+    class Meta:
+        db_table = "super_favorite_home_ball_owner_entry"
+        verbose_name = "super_favorite_home_ball_owner_entry"
+        verbose_name_plural = "super_favorite_home_ball_owner_entry"
+        ordering = ["-event_date"]
+        
     def __str__(self):
         return f"SuperFavoriteHomeBallOwnerEntry - {self.id_event} - market: {self.market} - odd: {self.odd}"    
     
@@ -97,11 +105,6 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
             
         return super().save(*args, **kwargs)
     
-    class Meta:
-        db_table = "super_favorite_home_ball_owner_entry"
-        verbose_name = "super_favorite_home_ball_owner_entry"
-        verbose_name_plural = "super_favorite_home_ball_owner_entry"
-        ordering = ["-event_date"]
         
 
 class FavoriteHomeBallOwnerEntry(models.Model):
@@ -135,7 +138,13 @@ class FavoriteHomeBallOwnerEntry(models.Model):
     event_date = models.DateTimeField(blank=True, null=True)
     entry_option = models.CharField(max_length=20, blank=False, choices=ENTRY_OPTION, default="W")
     statistic_result = models.BooleanField(default=0)
-    entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)    
+    entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)
+        
+    class Meta:
+        db_table = "favorite_home_ball_owner_entry"
+        verbose_name = "favorite_home_ball_owner_entry"
+        verbose_name_plural = "favorite_home_ball_owner_entry"
+        ordering = ["-event_date"]
         
     def __str__(self):
         return f"FavoriteHomeBallOwnerEntry - {self.id_event} - market: {self.market} - odd: {self.odd}"    
@@ -157,8 +166,76 @@ class FavoriteHomeBallOwnerEntry(models.Model):
             
         return super().save(*args, **kwargs)
     
+        
+class CycleOwnerBall(models.Model):
+    CATEGORY_CHOICE = [
+        ("W", "Weekly"),
+        ("B", "Biweekly"),
+        ("M", "Monthly")
+    ]
+    
+    category = models.CharField(max_length=20, blank=False, choices=CATEGORY_CHOICE, default="W")
+    current_balance = models.DecimalField(blank=False, max_digits=5, decimal_places=2)
+    available_value = models.DecimalField(blank=False, max_digits=5, decimal_places=2)
+    start_date = models.DateField(verbose_name="Start Date")
+    end_date = models.DateField(verbose_name="End Date")
+    
     class Meta:
-        db_table = "favorite_home_ball_owner_entry"
-        verbose_name = "favorite_home_ball_owner_entry"
-        verbose_name_plural = "favorite_home_ball_owner_entry"
-        ordering = ["-event_date"]
+        managed = True
+        db_table = 'cycle_owner_ball'
+        verbose_name = 'Cycle Owner Ball'
+        verbose_name_plural = 'Cycle Owner Ball'
+        ordering = ['-start_date']
+        
+    def __str__(self):
+        return f"CycleOwnerBall #{self.id}, category: {self.category}, current_balance: {self.current_balance}, start_date: {self.start_date}, end_date: {self.end_date}"
+        
+        
+class BetOwnerBall(models.Model):
+    RESULT_CHOICES = [
+        ("G", "Green"),
+        ("R", "Red"),
+        ("C", "Canceled"),
+        ("", "selecione")
+    ]
+    
+    entry = models.ForeignKey(SuperFavoriteHomeBallOwnerEntry, on_delete=models.CASCADE, related_name='bets_owner_ball')
+    cycle_owner_ball = models.ForeignKey(CycleOwnerBall, db_column="id_cycle", on_delete=models.CASCADE, null=True, blank=True, related_name="bet_owner_ball", verbose_name="cycle")
+    is_multiple = models.BooleanField(default=False, verbose_name="[0-simple, 1-multiple]")
+    cod_multiple = models.CharField(max_length=20, blank=True, null=True)
+    result = models.CharField(
+        max_length=1,
+        choices=RESULT_CHOICES,
+        default=''
+    )
+    value_bet = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.01'))]
+    )
+    return_bet = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+    date_bet = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'bet_owner_ball'
+        verbose_name = 'BetOwnerBall'
+        verbose_name_plural = 'BetsOwnerBall'
+        ordering = ['-id']
+        
+    def __str__(self):
+        return f"BetOwnerBall #{self.id} - {self.entry.market}"
+    
+    def calculete_return_bet(self):
+        if self.result == 'G':
+            return (self.entry.odd - 1) * self.value_bet
+        elif self.resultado == 'R':
+            # TODO REFATORA, POIS JA FOI SUBTRAIDO DO DISPONIVEL
+            return -self.value_bet
+        else:
+            # Para apostas canceladas ou aguardando, o lucro é zero
+            return Decimal('0.00')

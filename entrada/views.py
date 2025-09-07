@@ -11,6 +11,7 @@ from django.db import transaction
 from entrada.serializers import AceitarEntradaSerializer
 from analytics.models import Entrada, Aposta
 from ciclo.models import Ciclo
+from owner_ball.models import SuperFavoriteHomeBallOwnerEntry, CycleOwnerBall, BetOwnerBall
 
 from decimal import Decimal
 
@@ -92,6 +93,37 @@ class AceitarEntradaView(APIView):
                             'message': 'Aposta aceita com sucesso',
                             'aposta_id': aposta.id
                         })
+                elif 'owner_ball'== event_origin:
+                    entry_owner_ball = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id)
+                    cycle_owner_ball = CycleOwnerBall.objects.filter(start_date__lte=entry_owner_ball.event_date, end_date__gte=entry_owner_ball.event_date).first()
+                    bet_owner_ball = BetOwnerBall.objects.filter(entry__id_event=event_id).first()
+                    
+                    self._check_cycle(cycle_owner_ball)
+                    self._check_exceeds_availeble(valor_entrada, cycle_owner_ball.available_value)
+                    
+                    with transaction.atomic():
+                        if bet_owner_ball:
+                            bet_owner_ball.value_bet = valor_entrada
+                            bet_owner_ball.return_bet = valor_retorno
+                            bet_owner_ball.save()
+                        else:
+                            aposta = BetOwnerBall.objects.create(
+                                entry=entry_owner_ball,
+                                cycle_owner_ball=cycle_owner_ball,
+                                value_bet=valor_entrada,
+                                return_bet=valor_retorno
+                            )
+                        entry_owner_ball.entry_option = 'A'
+                        entry_owner_ball.save()
+                        
+                        cycle_owner_ball.available_value -= Decimal(valor_entrada)
+                        cycle_owner_ball.save()
+                        
+                        return Response({
+                            'success': True,
+                            'message': 'Aposta Owner Ball Aceita Com Sucesso',
+                            'aposta_id': bet_owner_ball.id
+                        })
             except Exception as e:
                 return Response({
                     'success': False,
@@ -103,3 +135,20 @@ class AceitarEntradaView(APIView):
                 'message': 'Dados inválidos',
                 'errors': serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
+            
+            
+    def _check_cycle(self, cicle):
+        if not cicle:
+            return Response({
+                'success': False,
+                'message': f'Não existe ciclo para a entrada.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        pass
+    
+    def _check_exceeds_availeble(self, entry_value, available_value):
+        if entry_value > available_value:
+                return Response({
+                    'success': False,
+                    'message': f'Valor excede o disponível (R$ {available_value})'
+                }, status=status.HTTP_400_BAD_REQUEST)
+        pass
