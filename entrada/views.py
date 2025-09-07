@@ -107,7 +107,7 @@ class AceitarEntradaView(APIView):
                             bet_owner_ball.return_bet = valor_retorno
                             bet_owner_ball.save()
                         else:
-                            aposta = BetOwnerBall.objects.create(
+                            bet_owner_ball = BetOwnerBall.objects.create(
                                 entry=entry_owner_ball,
                                 cycle_owner_ball=cycle_owner_ball,
                                 value_bet=valor_entrada,
