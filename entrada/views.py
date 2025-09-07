@@ -50,7 +50,6 @@ class AceitarEntradaView(APIView):
             valor_retorno = validated_data['valor_retorno']
             
             try:
-                print(type(event_origin))
                 if 'score-data' == event_origin:
                     entrada_score_data = get_object_or_404(Entrada, id_event=event_id)
                     ciclo = Ciclo.objects.filter(data_inicial__lte=entrada_score_data.data_jogo, data_final__gte=entrada_score_data.data_jogo).first()

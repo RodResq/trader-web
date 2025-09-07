@@ -119,6 +119,17 @@ function updateOwnerBallTable(markets) {
             }
         }
 
+        const getEntryOptionIcon = (resultado) => {
+            switch(resultado) {
+                case "W":
+                    return `<i class="bi-alarm align-middle" style="font-size: 1rem; color: cornflowerblue;"></i>`;
+                case "A":
+                    return `<i class="bi-check align-middle" style="font-size: 1rem; color: green;"></i>`;
+                case "R":
+                    return `<i class="bi bi-x align-middle" style="font-size: 1rem; color: red;"></i>`;
+            }
+        }
+
         return `
             <tr class="align-baseline fw-medium lh-sm tr-ob" style="font-size: smaller;" data-row-id=${market.id_event}>
                 <td>
@@ -131,6 +142,7 @@ function updateOwnerBallTable(markets) {
                     ${market.id_event || 'N/A'}
                 </td>
                 <td class="mercado-status">
+                    ${getEntryOptionIcon(market.entry_option)}
                     ${getResultIcon(market.entry_result)}
                 </td>
                 <td class="mercado-column">${market.market}</td>
