@@ -236,3 +236,28 @@ class BetOwnerBall(models.Model):
         else:
             # Para apostas canceladas ou aguardando, o lucro é zero
             return Decimal('0.00')
+        
+        
+class CycleManagerOwnerBall(models.Model):
+    cycle = models.ForeignKey(Ciclo, db_column="id_ciclo", on_delete=models.CASCADE, null=True, blank=True, related_name="cycle_manager_owner_ball", verbose_name="cycle_manager_owner_ball")
+    total_entries_number = models.IntegerField(blank=True, null=True, default=0)
+    total_entries_value = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        validators=[MinValueValidator(0)], 
+        verbose_name="Valor Total de Entrada", 
+        default=0.0
+    )
+    total_return_value = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        validators=[MinValueValidator(0)], 
+        verbose_name="Valor Total de Retorno", 
+        default=0.0
+    )
+    
+    class Meta:
+        managed = True
+        db_table = 'cycle_manager_owner_ball'
+        verbose_name = 'CycleManagerOwnerBall'
+        verbose_name_plural = 'Cycle Manager Owner Ball'

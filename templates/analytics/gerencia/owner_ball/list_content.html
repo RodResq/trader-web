@@ -1,0 +1,154 @@
+{% load static %}
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Lista Apostas</h6>
+    <div class="dropdown no-arrow">
+        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="bi bi-three-dots-vertical text-gray-400"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-header">Opções:</div>
+        <a class="dropdown-item" href="#"><i class="bi bi-file-earmark-excel me-2"></i>Exportar para Excel</a>
+        <a class="dropdown-item" href="#"><i class="bi bi-file-earmark-pdf me-2"></i>Exportar para PDF</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a>
+        </div>
+    </div>
+    </div>
+    <div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-hover" id="lucroTable">
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Ciclo</th>
+                <th>Qtd. Entradas</th>
+                <th>Valor Total Entradas (R$)</th>
+                <th>Valor Total Retornado (R$)</th>
+                <th>Performace</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if resultado_apostas %}
+            {% for resultado in resultado_apostas %}
+            {% with gerencia=resultado.gerencia apostas=resultado.apostas %}
+            <tr>
+                <td>
+                <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ gerencia.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ gerencia.pk }}">
+                {{ gerencia.ciclo.categoria }}
+                <i class="bi bi-chevron-down ms-1"></i>
+                </a>
+                </td>
+                <td>De {{ gerencia.ciclo.data_inicial|date:"d/m/Y" }} à {{ gerencia.ciclo.data_final|date:"d/m/Y" }}</td>
+                <td>{{ apostas|length }}</td>
+                <td>{{ gerencia.valor_total_entrada }}</td>
+                <td>{{ gerencia.valor_total_retorno }}</td>
+                <td>Em Desenvolvimento</td>
+            </tr>
+            <tr class="collapse" id="detalhesLucro{{ gerencia.pk }}">
+                <td colspan="6">
+                    <div class="card card-body bg-dark">
+                        <h6 class="text-primary mb-3">Detalhes das Apostas</h6>
+                        {% if apostas %}
+                        <div class="table-responsive">
+                        <table class="table table-dark table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID Evento</th>
+                                <th>Mercado</th>
+                                <th>Múltipla</th>
+                                <th>Odd</th>
+                                <th>Home</th>
+                                <th>Away</th>
+                                <th>Valor (R$)</th>
+                                <th>Retorno (R$)</th>
+                                <th>Data</th>
+                                <th>Resultado</th>
+                                <th>Ação</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for aposta in apostas %}
+                            <tr>
+                                <td>{{ aposta.entrada.id_event }}</td>
+                                <td>
+                                <i style="font-size: 1rem; vertical-align: middle;" 
+                                    {% if aposta.is_multipla %}
+                                    class="bi bi-list-ol" 
+                                    {% else %}
+                                    class="bi bi-universal-access"
+                                    {% endif %}>
+                                </i>
+                                <i {% if aposta.resultado == 'G' %}
+                                    class="bi bi-check-circle" style="font-size: 1rem; color: white; background-color: green; border-color: green; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                    {% elif  aposta.resultado == 'R' %}
+                                    class="bi bi-x-circle" style="font-size: 1rem; color: white;  background-color: #e94949; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                    {% else %}
+                                    class="bi bi-stopwatch-fill" style="font-size: 1rem; color: cornflowerblue; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                    {% endif %}></i>
+                                    {{ aposta.entrada.name_home }} {{ aposta.entrada.mercado }} {{ aposta.entrada.name_away }}
+                                </td>
+                                <td>
+                                {% if aposta.is_multipla %}
+                                    <span>{{ aposta.cod_multipla }}</span>
+                                {% endif %}
+                                </td>
+                                <td>{{ aposta.entrada.odd }}</td>
+                                <td>{{ aposta.entrada.home_actual }}%</td>
+                                <td>{{ aposta.entrada.away_actual }}%</td>
+                                <td>{{ aposta.valor }}</td>
+                                <td>{{ aposta.retorno }}</td>
+                                <td>{{ aposta.entrada.data_jogo|date:"d/m/Y H:i" }}</td>
+                                <td class="resultado-container">
+                                <div class="input-group">
+                                    <select class="form-select form-select-sm resultado-select" 
+                                            data-event-id="{{ aposta.entrada.id_event }}">
+                                    <option value="" 
+                                        {% if not aposta.resultado %}selected{% endif %}>
+                                        Selecione
+                                    </option>
+                                    <option value="G" 
+                                        {% if aposta.resultado == 'G' %}selected{% endif %}>
+                                        Green
+                                    </option>
+                                    <option value="R" 
+                                        {% if aposta.resultado == 'R' %}selected{% endif %}>
+                                        Red
+                                    </option>
+                                    <option value="A" 
+                                        {% if aposta.resultado == 'A' %}selected{% endif %}>
+                                        Anulado
+                                    </option>
+                                    </select>
+                                </div>
+                                </td>
+                                <td>
+                                <a class="btn btn-sm btn-primary salvar-resultado" data-event-id="{{ aposta.entrada.id_event }}">
+                                    <i class="bi bi-save"></i>
+                                </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        </div>
+                        {% else %}
+                        <p class="text-muted">Nenhuma entrada encontrada para este período.</p>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endwith %}
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">Nenhum registro encontrado.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+</div>
+{% endblock %}

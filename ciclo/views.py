@@ -3,8 +3,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.db import transaction, IntegrityError
 from django.http import JsonResponse
-from .models import Ciclo 
-from .forms import CicloEntradaForm
+from ciclo.models import Ciclo 
+from ciclo.forms import CicloEntradaForm
 from gerencia.models import GerenciaCiclo, EvolucaoSaldoAtual
 from datetime import date, timedelta
 
