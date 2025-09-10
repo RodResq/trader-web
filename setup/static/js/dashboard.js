@@ -26,6 +26,7 @@ import { setupCardEventTeam } from './modules/team/card_event.js';
 import { setupFindTeam } from './modules/team/pesquisar.js';
 import { setupEventVote } from './modules/entrada/event_vote.js';
 import { setupStatistic } from './modules/entrada/statistic.js';
+import { setupLinkActivateManager } from './link_activate_manager.js';
 
 
 
@@ -37,6 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
     tooltips.forEach(tooltip => {
         new bootstrap.Tooltip(tooltip)
     });
+
+    setupLinkActivateManager();
     // Inicializa o alternador de temas (deve ser inicializado primeiro)
     initThemeToggler();
     // Inicializa componentes de UI
