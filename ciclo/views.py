@@ -3,15 +3,23 @@ from django.urls import reverse
 from django.contrib import messages
 from django.db import transaction, IntegrityError
 from django.http import JsonResponse
+
 from ciclo.models import Ciclo 
 from ciclo.forms import CicloEntradaForm
 from gerencia.models import GerenciaCiclo, EvolucaoSaldoAtual
+from owner_ball.models import CycleOwnerBall
+
 from datetime import date, timedelta
 
 def ciclos(request):
     """Exibe a lista de ciclos cadastrados."""
     ciclos = Ciclo.objects.all()
-    return render(request, 'analytics/ciclo/ciclos.html', {'ciclos': ciclos})
+    cycle_owner_ball = CycleOwnerBall.objects.all()
+    return render(request, 'analytics/ciclo/ciclos.html', 
+                  {
+                    'ciclos': ciclos, 
+                    'cycle_owner_ball': cycle_owner_ball
+                   })
 
 def ciclo_edit(request, pk=None):
     """Edita um ciclo existente ou cria um novo."""

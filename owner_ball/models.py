@@ -239,7 +239,7 @@ class BetOwnerBall(models.Model):
         
         
 class CycleManagerOwnerBall(models.Model):
-    cycle = models.ForeignKey(Ciclo, db_column="id_ciclo", on_delete=models.CASCADE, null=True, blank=True, related_name="cycle_manager_owner_ball", verbose_name="cycle_manager_owner_ball")
+    cycle = models.ForeignKey(CycleOwnerBall, db_column="id_ciclo", on_delete=models.CASCADE, null=True, blank=True, related_name="cycle_manager_owner_ball", verbose_name="cycle_manager_owner_ball")
     total_entries_number = models.IntegerField(blank=True, null=True, default=0)
     total_entries_value = models.DecimalField(
         max_digits=10, 

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.formats import date_format
-from owner_ball.models import CycleOwnerBall
+from django.urls import reverse
+from django.utils.html import format_html
+from owner_ball.models import CycleOwnerBall, CycleManagerOwnerBall
 
 @admin.register(CycleOwnerBall)
 class ListingCycleOwnerBall(admin.ModelAdmin):
@@ -18,3 +20,20 @@ class ListingCycleOwnerBall(admin.ModelAdmin):
         return '-'
     
     list_display = ("category", "current_balance", "available_value", "start_date", "end_date")
+    
+    
+@admin.register(CycleManagerOwnerBall)
+class ListingCycleManagerOwnerBall(admin.ModelAdmin):
+    
+    @admin.display(description="Id Ciclo Owner Ball")
+    def link_para_cycle_ob(self, obj):
+        if obj:
+            url = reverse(
+                f'admin:{obj._meta.app_label}_{obj._meta.model_name}_change',
+                args=[obj.id]
+            )
+            
+            return format_html('<a href="{}">{}</a>', url, obj.id)
+        return "-"
+    
+    list_display = ('id', 'total_entries_number', 'total_entries_value', 'total_return_value', 'link_para_cycle_ob',)
