@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SofascoreConfig(AppConfig):
+class ScoreDataConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'sofascore'
+    name = 'score_data'

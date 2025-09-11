@@ -1,5 +1,5 @@
 from analytics.models import Entrada
-from sofascore.models import VwMercadoSuperFavoritoHome
+from score_data.models import VwMercadoSuperFavoritoHome
 from django.db import transaction
 
 def dump_mercados_para_entrada() -> bool:
