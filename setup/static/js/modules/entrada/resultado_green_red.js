@@ -3,7 +3,7 @@ import { addCSRFToken } from "../token.js";
 
 const API_ENDPOINTS = {
     'tr-ob': 'api/v1/owner_ball/resultado_entrada',
-    'tr-sf': 'api/v1/analytics/resultado_entrada'
+    'tr-sd': 'api/v1/analytics/resultado_entrada'
 }
 
 

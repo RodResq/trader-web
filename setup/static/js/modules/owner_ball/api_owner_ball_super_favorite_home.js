@@ -131,7 +131,7 @@ function updateOwnerBallTable(markets) {
         }
 
         return `
-            <tr data-row-id=${market.id_event}>
+            <tr data-row-id=${market.id_event} class="tr-ob">
                 <td>
                     <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
                         style="font-size: smaller"
