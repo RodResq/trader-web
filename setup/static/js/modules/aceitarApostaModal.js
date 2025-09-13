@@ -2,7 +2,6 @@
 import { updateEntryOptionIcon } from "./table.js";
 
 export function initAceitarApostaModal() {
-    let currentEventId = null;
     let currentRow = null;
     let valorOdd = null;
     let eventOrigin = null;
@@ -57,11 +56,7 @@ export function initAceitarApostaModal() {
 
     
     async function enviarAposta() {
-        console.log(eventOrigin);
-        
         const eventId = parseInt(document.getElementById('aceitar-evento-id').textContent);
-        const mercado = document.getElementById('aceitar-evento-mercado').textContent;
-        const odd = parseFloat(document.getElementById('aceitar-evento-odd').textContent.replace(',', '.'));
         const valorRetorno = parseFloat(document.getElementById('valorTotal').textContent);
         const valor = parseFloat(valorInput.value) || 0;
         

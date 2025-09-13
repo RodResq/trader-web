@@ -1,0 +1,52 @@
+<div class="modal fade" id="modalCycleOwnerBall" tabindex="-1" aria-labelledby="modalCycleOwnerBallLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalCycleOwnerBallLabel">Cycle Owner Ball</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <label class="col-form-label">Categoria:</label>
+                <select id="categoryCycleOwnerBall" class="form-select">
+                    <option selected>Selecione</option>
+                    <option value="W">Semanal</option>
+                    <option value="B">Quinzenal</option>
+                    <option value="M">Mensal</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-6">
+                        <label class="col-form-label">Data Incial</label>
+                        <input type="date" class="form-control" id="inputPeriodCycleOwnerBall">
+                    </div>
+                    <div class="col-6">
+                        <label class="col-form-label">Data Final</label>
+                        <input type="date" class="form-control" id="inputPeriodCycleOwnerBall">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="col-form-label">Saldo Atual:</label>
+                <input type="number" 
+                    class="form-control bg-dark text-light" 
+                    id="inputCurrentValue" 
+                    placeholder="Digite o valor do saldo atual">
+            </div>
+            <div class="mb-3">
+                <label class="col-form-label">Saldo Disponivel:</label>
+                <input type="text" 
+                    class="form-control bg-dark text-light" 
+                    id="inputAvailebleValue">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btnSaveCycleOwnerBall">
+                <i class="bi bi-check-circle"></i>Salvar
+            </button>
+        </div>
+        </div>
+    </div>
+</div> 

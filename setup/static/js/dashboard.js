@@ -27,6 +27,7 @@ import { setupFindTeam } from './modules/team/pesquisar.js';
 import { setupEventVote } from './modules/entrada/event_vote.js';
 import { setupStatistic } from './modules/entrada/statistic.js';
 import { setupLinkActivateManager } from './link_activate_manager.js';
+import { initCycleOwnerBall } from './modules/owner_ball/cycle/cycle_owner_ball.js';
 
 
 
@@ -127,6 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof atualizaIconeResultado === "function") {
         atualizaIconeResultado();
     }
+
+    // Inicializa Modal Cycle Owner Ball
+    initCycleOwnerBall();
     
 });
 
