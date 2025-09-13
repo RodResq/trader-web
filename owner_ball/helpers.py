@@ -10,7 +10,7 @@ def dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball() -> bool:
     
     with transaction.atomic():
         for market in markets:
-            if market.id_event not in ids:
+            if market.id_event and market.id_event not in ids:
                 SuperFavoriteHomeBallOwnerEntry.objects.create(
                     id_event=market.id_event,
                     market=market.mercado,

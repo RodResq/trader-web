@@ -347,7 +347,7 @@ function showOwnerBallError(message) {
     if (tableBody) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center text-danger">
+                <td colspan="8" class="text-center text-danger">
                     <i class="bi bi-exclamation-triangle me-2"></i>
                     ${message}
                 </td>
