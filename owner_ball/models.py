@@ -172,10 +172,13 @@ class CycleOwnerBall(models.Model):
     ]
     
     category = models.CharField(max_length=20, blank=False, choices=CATEGORY_CHOICE, default="W")
-    current_balance = models.DecimalField(blank=False, max_digits=5, decimal_places=2)
-    available_value = models.DecimalField(blank=False, max_digits=5, decimal_places=2)
+    current_balance = models.DecimalField(blank=False, max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    available_value = models.DecimalField(blank=False, max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     start_date = models.DateField(verbose_name="Start Date")
     end_date = models.DateField(verbose_name="End Date")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
     
     class Meta:
         managed = True
@@ -183,6 +186,16 @@ class CycleOwnerBall(models.Model):
         verbose_name = 'Cycle Owner Ball'
         verbose_name_plural = 'Cycle Owner Ball'
         ordering = ['-start_date']
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(end_date__gt=models.F('start_date')),
+                name='end_date_after_start_date'
+            ),
+            models.CheckConstraint(
+                check=models.Q(available_value__lte=models.F('current_balance')),
+                name='available_value_not_greater_than_balance'
+            )
+        ]
         
     def __str__(self):
         return f"CycleOwnerBall #{self.id}, category: {self.category}, current_balance: {self.current_balance}, start_date: {self.start_date}, end_date: {self.end_date}"
@@ -239,7 +252,7 @@ class BetOwnerBall(models.Model):
         
         
 class CycleManagerOwnerBall(models.Model):
-    cycle = models.ForeignKey(CycleOwnerBall, db_column="id_ciclo", on_delete=models.CASCADE, null=True, blank=True, related_name="cycle_manager_owner_ball", verbose_name="cycle_manager_owner_ball")
+    cycle = models.ForeignKey(CycleOwnerBall, db_column="id_ciclo", on_delete=models.CASCADE, related_name="cycle_manager_owner_ball", verbose_name="cycle_manager_owner_ball")
     total_entries_number = models.IntegerField(blank=True, null=True, default=0)
     total_entries_value = models.DecimalField(
         max_digits=10, 

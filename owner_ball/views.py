@@ -1,14 +1,24 @@
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.db import transaction
+
 from rest_framework.decorators import api_view 
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+
+from rest_framework_simplejwt.tokens import UntypedToken
+from rest_framework_simplejwt.state import token_backend
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
+
+from owner_ball.serializers import CycleOwnerBallSerializer
+from owner_ball.helpers import dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball
 from owner_ball.models import (
     SuperFavoriteHomeBallOwnerEntry,
     VwMercadoOwnerBallFavoritoHome,
-    VwMercadoOwnerBallUnder2_5)
-from owner_ball.helpers import dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball
+    VwMercadoOwnerBallUnder2_5,
+    CycleOwnerBall,
+    CycleManagerOwnerBall)
 from owner_ball.serializers import (
     SuperFavoriteHomeBallOwnerEntrySerializer, 
     VwMercadoOwnerBallFavoritoHomeSerializer, 
@@ -16,7 +26,7 @@ from owner_ball.serializers import (
     EntryResultSuperFavoriteHomeBallOwnerSerializer,
     CustomResponseEntryResultSuperFavoriteHomeBallOwnerSerializer    
 )
-from django.db import transaction
+
 from shared.utils import CustomPagination
 import logging
 
@@ -94,4 +104,79 @@ def resultado_entrada(request, format=None):
             'success': False,
             'message': 'Erro interno do servidor ao processar a solicitação.'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)        
+
+
+def is_authenticated(request):
+    auth_header = request.META.get('HTTP_AUTHORIZATION')
+    if auth_header and auth_header.startwith('Bearer'):
+        token_string = auth_header.split(' ')[1]
+        
+        try:
+            untyped_token = UntypedToken(token_string)
+            payload = token_backend.decode(token_string, verify=True)
+            logger.info(f'Payload JWT: {payload}')
+            
+            user_id = payload.get('user_id')
+            groups = payload.get('groups', [])
+            
+            logger.info(f'User ID: {user_id}')
+            logger.info(f'Groups: {groups}')
+            
+            if not user_id:
+                return False
+
+            return True            
+        except Exception as e:
+            raise AuthenticationFailed
+ 
+class CycleOwnerBallView(APIView):
+    permission_classes = [IsAuthenticated]
     
+    def post(self, request):
+        try:
+            serializer = CycleOwnerBallSerializer(data=request.data)
+            if serializer.is_valid():
+                validated_data = serializer.validated_data
+                
+                try:
+                    with transaction.atomic():
+                        cycle = CycleOwnerBall.objects.create(
+                            category=validated_data['category'],
+                            start_date=validated_data['start_date'],
+                            end_date=validated_data['end_date'],
+                            current_balance=validated_data['current_balance'],
+                            available_value=validated_data['available_value']                   
+                        )
+                        manager = CycleManagerOwnerBall.objects.create(cycle=cycle)
+                        
+                        return Response({
+                            'success':True,
+                            'data': {
+                                'id_cycle': cycle.id,
+                                'id_cycle_manager': manager.id
+                            }
+                        }, status=status.HTTP_201_CREATED)
+                except Exception as e:
+                    logger.error('Error ao salvar cycle owner ball', e)
+                    return Response({
+                        'success': False,
+                        'message': 'Erro Interno do Servidor'
+                    }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            else:
+                return Response({
+                    'success': False,
+                    'message': 'Dados inválidos',
+                    'errors': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+        except AuthenticationFailed as e:
+            return Response({
+                'success': False,
+                'message': f'Token Invalido: {str(e)}'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            logger.error(f'Erro inesperado: {str(e)}', exc_info=True)
+            return Response({
+                'success': False,
+                'message': 'Erro interno do servidor'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                

@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from owner_ball.models import SuperFavoriteHomeBallOwnerEntry, VwMercadoOwnerBallFavoritoHome, VwMercadoOwnerBallUnder2_5
+from django.db import models
+from django.core.validators import MinValueValidator
+from owner_ball.models import (
+    SuperFavoriteHomeBallOwnerEntry, 
+    VwMercadoOwnerBallFavoritoHome, 
+    VwMercadoOwnerBallUnder2_5,
+    CycleOwnerBall
+)
 from rest_framework.utils import timezone
 
 class SuperFavoriteHomeBallOwnerEntrySerializer(serializers.ModelSerializer):
@@ -46,3 +53,39 @@ class VwMercadoOwnerBallUnder2_5Serializer(serializers.ModelSerializer):
     class Meta:
         model = VwMercadoOwnerBallUnder2_5
         fields = ['id', 'entrada_mercado', 'odd', 'data_jogo']
+        
+        
+class CycleOwnerBallSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CycleOwnerBall
+        fields = ['category', 'start_date', 'end_date', 'current_balance', 'available_value']
+    
+    def validate_current_balance(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Valor atual deve ser positivo")
+        return value
+    
+    def validate_available_value(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Valor disponível deve ser positivo")
+        return value
+    
+    def validate(self, data):
+        current_balance = data.get('current_balance')
+        available_value = data.get('available_value')
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        
+        if current_balance and available_value:
+            if available_value > current_balance:
+                raise serializers.ValidationError({
+                    'available_value': 'Valor disponível não pode ser maior que o saldo atual'
+                })
+        
+        if start_date and end_date:
+            if end_date <= start_date:
+                raise serializers.ValidationError({
+                    'end_date': 'Data final deve ser posterior à data inicial'
+                })
+        
+        return data
