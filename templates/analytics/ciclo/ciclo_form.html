@@ -50,67 +50,69 @@
                         {% endif %}
                     </div>
 
-                    <div class="mb-3">
-                        <label for="{{ form.saldo_atual.id_for_label }}" class="form-label">
-                            {{ form.saldo_atual.label }}
-                        </label>
-                        <div id="id_saldo_atual">{{ form.saldo_atual }}</div>
-                        {% if form.saldo_atual.errors %}
-                            <div class="invalid-feedback d-block">
-                                {% for error in form.saldo_atual.errors %}
-                                    {{ error }}
-                                {% endfor %}
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="{{ form.saldo_atual.id_for_label }}" class="form-label">
+                                {{ form.saldo_atual.label }}
+                            </label>
+                            <div id="id_saldo_atual">{{ form.saldo_atual }}</div>
+                            {% if form.saldo_atual.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.saldo_atual.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="{{ form.valor_disponivel_entrada.id_for_label }}" class="form-label">
+                                {{ form.valor_disponivel_entrada.label }}
+                            </label>
+                            <div id="id_valor_disponivel_entrada">{{ form.valor_disponivel_entrada }}</div>
+                            {% if form.valor_disponivel_entrada.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.valor_disponivel_entrada.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> 
+                                Este valor será calculado automaticamente como 6% do saldo atual.
                             </div>
-                        {% endif %}
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="{{ form.valor_disponivel_entrada.id_for_label }}" class="form-label">
-                            {{ form.valor_disponivel_entrada.label }}
-                        </label>
-                        <div id="id_valor_disponivel_entrada">{{ form.valor_disponivel_entrada }}</div>
-                        {% if form.valor_disponivel_entrada.errors %}
-                            <div class="invalid-feedback d-block">
-                                {% for error in form.valor_disponivel_entrada.errors %}
-                                    {{ error }}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        <div class="form-text">
-                            <i class="bi bi-info-circle"></i> 
-                            Este valor será calculado automaticamente como 6% do saldo atual.
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="{{ form.data_inicial.id_for_label }}" class="form-label">
-                            {{ form.data_inicial.label }}
-                        </label>
-                        {{ form.data_inicial }}
-                        {% if form.data_inicial.errors %}
-                            <div class="invalid-feedback d-block">
-                                {% for error in form.data_inicial.errors %}
-                                    {{ error }}
-                                {% endfor %}
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="{{ form.data_inicial.id_for_label }}" class="form-label">
+                                {{ form.data_inicial.label }}
+                            </label>
+                            {{ form.data_inicial }}
+                            {% if form.data_inicial.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.data_inicial.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="{{ form.data_final.id_for_label }}" class="form-label">
+                                {{ form.data_final.label }}
+                            </label>
+                            {{ form.data_final }}
+                            {% if form.data_final.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.data_final.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> 
+                                A data final será calculada automaticamente baseada na categoria selecionada.
                             </div>
-                        {% endif %}
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="{{ form.data_final.id_for_label }}" class="form-label">
-                            {{ form.data_final.label }}
-                        </label>
-                        {{ form.data_final }}
-                        {% if form.data_final.errors %}
-                            <div class="invalid-feedback d-block">
-                                {% for error in form.data_final.errors %}
-                                    {{ error }}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        <div class="form-text">
-                            <i class="bi bi-info-circle"></i> 
-                            A data final será calculada automaticamente baseada na categoria selecionada.
                         </div>
                     </div>
 
