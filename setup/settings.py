@@ -166,20 +166,53 @@ DATE_INPUT_FORMATS = ['%d/%m/%Y']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# REMOVER EM PRODUCAO
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:8000",
-    # Adicione outros domínios conforme necessário
-]
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'x-jwt-authenticated',
+]
+
+CORS_EXPOSE_HEADERS = [
+    'x-jwt-authenticated',
+    'x-jwt-username',
+]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'session_cache_table',
+    }
+}
+
+# TODO ADICIONAR CONFIGURACOES DE LOGGING
+
+CSRF_COOKIE_HTTPONLY = False  # Permitir acesso via JavaScript para AJAX
+CSRF_COOKIE_SECURE = False    # Definir como True em produção
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_AGE = 31449600
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication', # Para Chamadas API
-        'rest_framework.authentication.SessionAuthentication', # Para Browsable API
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
@@ -188,13 +221,41 @@ REST_FRAMEWORK = {
     ],
 }
 
+# Configurações de Sessão
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # ou 'cached_db' para melhor performance
+SESSION_COOKIE_AGE = 86400  # 24 horas em segundos
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False  # Definir como True em produção com HTTPS
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+
+if DEBUG:
+    # Configurações mais relaxadas para desenvolvimento
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    
+    # Adicionar domínios locais se necessário
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+
+# Configurações para produção (exemplo)
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,
-
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
