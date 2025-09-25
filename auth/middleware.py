@@ -51,7 +51,7 @@ class JWTSessionMiddleware(MiddlewareMixin):
     
     
     def process_response(self, request, response):
-        xrequest_with = request.headers.get('X-Resquest_With')
+        xrequest_with = request.headers.get('X-Resquest-With')
         
         if xrequest_with == 'XMLHttpRequest':
             if hasattr(request, 'is_jwt_authenticated') and request.is_jwt_authenticated:
@@ -65,6 +65,6 @@ class JWTSessionMiddleware(MiddlewareMixin):
     
     def _clear_session_jwt(self, request):
         if 'jwt_data' in request.session:
-            del request.session['jwt_date']
+            del request.session['jwt_data']
             
         request.is_jwt_authenticated = False

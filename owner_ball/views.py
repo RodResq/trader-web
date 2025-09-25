@@ -130,7 +130,7 @@ def is_authenticated(request):
             raise AuthenticationFailed
  
 class CycleOwnerBallView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     def post(self, request):
         try:

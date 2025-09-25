@@ -6,6 +6,8 @@ export function initCycleOwnerBall() {
     const btnNewCycle = document.getElementById('btnNewCycleOwnerBall');
     const btnSaveCycle = document.getElementById('btnSaveCycleOwnerBall')
 
+    let token = "";
+
     if (!btnNewCycle) return;
 
     btnNewCycle.addEventListener('click', function(e) {
@@ -20,7 +22,35 @@ export function initCycleOwnerBall() {
         return `${API_BASE_URL}${endpoint}`;
     }
 
+
+    async function preRequestLogin() {
+        try {
+            const dadosLogin = {
+                username: 'rresq',
+                password: '123'
+            }
+            const response = await fetch('/api/token/', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify(dadosLogin)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`)
+            }
+            const data = await response.json();
+            token = data['access'];
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async function saveCycle() {
+
+       preRequestLogin(); 
        const category = document.getElementById('categoryCycleOwnerBall');
        const startDate = document.getElementById('inputStartDateCycleOwnerBall');
        const endDate = document.getElementById('inputEndDateCycleOwnerBall');
@@ -43,8 +73,7 @@ export function initCycleOwnerBall() {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
-                    //TODO RECUPERAR TOKEN DO SESSION ID
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU3ODY0MTkyLCJpYXQiOjE3NTc4NjA1OTIsImp0aSI6IjA3MjY5OWYwOGE4MDQ1NTFhNWQ0MzcxZTU0NzJkYzY5IiwidXNlcl9pZCI6IjEiLCJ1c2VybmFtZSI6InJyZXNxIiwiZW1haWwiOiJyb2RyaWdvLnJlc3F1ZUBnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoiIiwibGFzdF9uYW1lIjoiIiwiaXNfc3RhZmYiOnRydWUsImlzX3N1cGVydXNlciI6dHJ1ZSwidXNlcl90eXBlIjoiYWRtaW4iLCJncm91cHMiOltdfQ.O_7bs2wH3iK3W9XGqQz3qgUZXodFZu_mei8WUloHezo'
+                    'Authorization': `Bearer ${token}` 
                 },
                 body: JSON.stringify(dados)
            });
@@ -57,8 +86,7 @@ export function initCycleOwnerBall() {
            if (data.success) {
                 const modalInstance = bootstrap.Modal.getInstance(modal);
                 modalInstance.hide();
-       
-                //  TODO Atualizar Listagem de Cycle Owner Ball
+                //TODO Atualizar Listagem Cycle Owner Ball
            } else {
                 exibirMensagem(`Erro: ${data.message}`, 'danger'); 
            }
