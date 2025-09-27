@@ -89,3 +89,23 @@ class CycleOwnerBallSerializer(serializers.ModelSerializer):
                 })
         
         return data
+    
+class CycleOwnerBallReadSerializer(serializers.ModelSerializer):
+    category_display = serializers.CharField(source='get_category_display', read_only=True)
+    start_date_formatted = serializers.SerializerMethodField()
+    end_date_formatted = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = CycleOwnerBall
+        fields = [
+            'id', 'category', 'category_display', 
+            'start_date', 'end_date', 'start_date_formatted', 'end_date_formatted', 
+            'current_balance', 'available_value'
+        ]
+        
+    def get_start_date_formatted(self, obj):
+        return obj.start_date.strftime('%d/%m/%Y')
+    
+    def get_end_date_formatted(self, obj):
+        return obj.end_date.strftime('%d/%m/%Y')
+            

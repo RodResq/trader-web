@@ -1,3 +1,4 @@
+import { showSpinner, hideSpinner } from "../../utils.js";
 
 const API_BASE_URL = '/api/v1';
 
@@ -50,7 +51,7 @@ export function initCycleOwnerBall() {
 
     async function saveCycle() {
 
-       preRequestLogin(); 
+       await preRequestLogin(); 
        const category = document.getElementById('categoryCycleOwnerBall');
        const startDate = document.getElementById('inputStartDateCycleOwnerBall');
        const endDate = document.getElementById('inputEndDateCycleOwnerBall');
@@ -86,7 +87,7 @@ export function initCycleOwnerBall() {
            if (data.success) {
                 const modalInstance = bootstrap.Modal.getInstance(modal);
                 modalInstance.hide();
-                //TODO Atualizar Listagem Cycle Owner Ball
+                refreshCycleOwnerBall();
            } else {
                 exibirMensagem(`Erro: ${data.message}`, 'danger'); 
            }
@@ -96,20 +97,57 @@ export function initCycleOwnerBall() {
        }
     }
 
+    async function refreshCycleOwnerBall() {
+        const tableContainer = document.querySelector('#ciclosOwnerBallTable');
+
+        if (!tableContainer) return;
+
+        try {
+            showSpinner(tableContainer);
+
+            const response = await fetch('/api/v1/owner_ball/cycle', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`)
+            }
+           
+            const data = await response.json();
+            if (data.success) {
+                updateOwnerBallTable(data.data);
+                exibirMensagem('Tabela Owner Ball atualizada com sucesso.');
+            } else {
+                exibirMensagem('Erro ao recuperar listagem.', 'danger');
+            }
+            
+        } catch (error) {
+            console.error('Erro ao atualizar listagem de Cycle Owner Ball: ', error);
+            exibirMensagem('Erro ao atualizar Listagem Cycle Owner Ball.', 'danger');
+        } finally {
+            setTimeout(() => {
+                hideSpinner(tableContainer);
+            }, 1000)
+        }
+
+    }
+    
     function getCSRFToken() {
         return document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrftoken='))
-            ?.split('=')[1];
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
     }
-
+    
     function exibirMensagem(texto, tipo) {
         const alerta = document.createElement('div');
         alerta.className = `alert alert-${tipo} alert-dismissible fade show`;
         alerta.role = 'alert';
         alerta.innerHTML = `
-            ${texto}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        ${texto}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
         `;
         
         const container = document.querySelector('.container-fluid');
@@ -119,6 +157,63 @@ export function initCycleOwnerBall() {
             alerta.classList.remove('show');
             setTimeout(() => alerta.remove(), 300);
         }, 5000);
+    }
+
+    function updateOwnerBallTable(cycles) {
+        const tbody = document.querySelector('#ciclosOwnerBallTable tbody');
+        
+        if(!tbody) return;
+        
+        tbody.innerHTML = `
+            <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        `;
+
+        if (!cycles && cycles.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center">Nenhum ciclo Owner Ball cadastrado.</td>
+                </tr>
+            `;
+            return;
+        };
+    
+        let html = '';
+        cycles.forEach(cycle => {
+            const startDate = new Date(cycle.start_date).toLocaleDateString('pt-BR');
+            const endDate = new Date(cycle.end_date).toLocaleDateString('pt-BR');
+    
+            html += `
+                <tr>
+                    <td>${cycle.category_display}</td>
+                    <td>${startDate} a ${endDate}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">R$ ${Number(cycle.current_balance).toFixed(2)}</span>
+                            <button class="btn btn-sm btn-outline-info btn-evolucao-saldo" 
+                                    data-ciclo-id="${cycle.id}"
+                                    data-ciclo-categoria="${cycle.category_display}"
+                                    data-ciclo-periodo="${startDate} à ${endDate}"
+                                    title="Ver evolução do saldo">
+                                <i class="bi bi-graph-up"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td>R$ ${Number(cycle.available_value).toFixed(2)}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-primary" onclick="editCycle(${cycle.id})" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCycle(${cycle.id})" title="Excluir">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    
+        tbody.innerHTML = html;
     }
 
 }

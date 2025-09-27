@@ -11,7 +11,7 @@ from rest_framework_simplejwt.tokens import UntypedToken
 from rest_framework_simplejwt.state import token_backend
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 
-from owner_ball.serializers import CycleOwnerBallSerializer
+from owner_ball.serializers import CycleOwnerBallSerializer, CycleOwnerBallReadSerializer
 from owner_ball.helpers import dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball
 from owner_ball.models import (
     SuperFavoriteHomeBallOwnerEntry,
@@ -131,7 +131,24 @@ def is_authenticated(request):
  
 class CycleOwnerBallView(APIView):
     # permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:
+            cycles = CycleOwnerBall.objects.all().order_by('-id')
+            serializer = CycleOwnerBallReadSerializer(cycles, many=True)
+            
+            return Response({
+                'success': True,
+                'data': serializer.data 
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            logger.error(f'Erro ao recuperar cycles owner ball: ', e)
+            return Response({
+                'success': False,
+                'message': 'Erro interno do servidor'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+
     def post(self, request):
         try:
             serializer = CycleOwnerBallSerializer(data=request.data)
@@ -179,4 +196,7 @@ class CycleOwnerBallView(APIView):
                 'success': False,
                 'message': 'Erro interno do servidor'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+            
+
                 

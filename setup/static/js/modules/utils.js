@@ -1,23 +1,9 @@
-/**
- * Módulo de Utilidades - Funções utilitárias usadas em vários módulos
- */
 
-/**
- * Verifica se uma string está em formato válido de data (DD/MM/AAAA)
- * @param {string} dateString - A string de data a ser verificada
- * @returns {boolean} Verdadeiro se válido, falso caso contrário
- */
 export function isValidDateFormat(dateString) {
-    // Verifica o formato DD/MM/AAAA
     const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
     return regex.test(dateString);
 }
 
-/**
- * Formata e normaliza datas para comparação
- * @param {string} dateString - A string de data a ser formatada
- * @returns {string} String de data formatada
- */
 export function formatDateForComparison(dateString) {
     if (!dateString) return '';
 
@@ -28,18 +14,11 @@ export function formatDateForComparison(dateString) {
     return dateString;
 }
 
-/**
- * Aplica máscara de data no formato DD/MM/AAAA
- * @param {HTMLInputElement} input - O elemento de entrada
- * @returns {string} Valor mascarado
- */
 export function applyDateMask(input) {
     let v = input.value;
-    v = v.replace(/\D/g, ''); // Remove não-dígitos
+    v = v.replace(/\D/g, ''); 
 
-    // Aplica a máscara
     if (v.length > 4) {
-        // Formata como DD/MM/AAAA
         v = v.replace(/^(\d{2})(\d{2})(\d{0,4}).*/, '$1/$2/$3');
     } else if (v.length > 2) {
         v = v.replace(/^(\d{2})(\d{0,2}).*/, '$1/$2');
@@ -115,6 +94,54 @@ export function abilitarBtnRecusar(row) {
             btnRecusar.classList.remove('btn-secondary');
             btnRecusar.classList.add('btn-danger')
             btnRecusar.disabled = false;    
+        }
+    }
+}
+
+export function showSpinner(container) {
+    if (container) {
+        const overlay = _createSpinnerOverlay();
+        container.style.position = 'relative';
+        container.appendChild(overlay);
+
+        function  _createSpinnerOverlay() {
+            const overlay = document.createElement('div');
+            overlay.className = 'spinner-overlay';
+            overlay.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: transparent;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                border-radius: 0.375rem;
+            `;
+            
+            overlay.innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-secondary" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <div class="mt-2 text-muted">
+                        <small>Atualizando dados...</small>
+                    </div>
+                </div>
+            `;
+            
+            return overlay;
+        }
+    }
+}
+
+export function hideSpinner(container) {
+    if (container) {
+        const overlay = container.querySelector('.spinner-overlay');
+        if (overlay) {
+            overlay.remove();
         }
     }
 }
