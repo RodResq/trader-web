@@ -10,9 +10,7 @@ let totalPages = 1;
 let isLoading = false;
 
 export function setupApiOwnerBallSuperFavoriteHome() {
-    console.log('Inicializando API Owner Ball...');
     loadOwnerBallMarkets();
-
 }
 
 
@@ -73,9 +71,7 @@ function loadOwnerBallMarkets(showLoader = true) {
 
 function updateOwnerBallTable(markets) {
     const tableBody = document.getElementById('ownerBallTableBody');
-
     if (!tableBody) return;
-
 
     if (!markets || markets.length === 0) {
         tableBody.innerHTML = `
@@ -92,7 +88,6 @@ function updateOwnerBallTable(markets) {
         const dataFormatada = market.event_date ?
             new Date(market.event_date).toLocaleString('pt-BR'):
             'Data não disponível';
-
 
         const getResultIcon = (resultado) => {
             switch(resultado) {
@@ -173,8 +168,9 @@ function updateOwnerBallTable(markets) {
                             <i class="bi bi-three-dots-vertical"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <li><a id="btn-event-vote" class="dropdown-item" data-event-id="{{ mercado.id_event }}" data-event-orgin="owner-ball">Votacao</a></li>
-                            <li><a class="dropdown-item" href="#">Comparar</a></li>
+                            <li><a class="dropdown-item event-vote" data-event-id=${market.id_event} data-event-orgin="owner-ball">Votacao</a></li>
+                            <li><a class="dropdown-item event-statistic" data-event-id=${market.id_event} data-event-orgin="owner-ball">Estatisticas</a></li>
+                            <li><a class="dropdown-item event-probability" data-event-id=${market.id_event} data-event-orgin="owner-ball">Probabilidade</a></li>
                         </ul>
                     </div>
                 </td>

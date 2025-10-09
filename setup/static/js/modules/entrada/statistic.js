@@ -10,6 +10,8 @@ export function setupStatistic() {
             e.preventDefault();
             const idEvent = this.getAttribute('data-event-id');
             if (!idEvent) showNotification('Id evento nao encontrado');
+
+            const eventOrigin = this.getAttribute('data-event-origin');
     
             const currentRow = this.closest('tr');
             if (!currentRow) console.error('Nao foi possivel recuperar a linha atual');
@@ -19,7 +21,7 @@ export function setupStatistic() {
             console.log('Current cell', statusCell);
     
             try {
-                const url = `api/v1/statistic/${idEvent}`;
+                const url = `api/v1/statistic/${idEvent}?event_origin=${eventOrigin}`;
                 fetch(url, {
                     method: 'GET',
                     headers: {

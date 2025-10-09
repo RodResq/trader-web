@@ -62,6 +62,11 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
         ("D", "drow"),
         ("L", "lose")
     ]
+    VOTACAO = [
+        ("H", 'home'),
+        ("A", 'away'),
+        ("N", 'none')
+    ]
     id_event = models.IntegerField(primary_key=True)
     market = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd_change = models.CharField(max_length=5, blank=True, choices=ODD_CHANGE, default='P')
@@ -77,7 +82,8 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
     event_date = models.DateTimeField(blank=True, null=True)
     entry_option = models.CharField(max_length=20, blank=False, choices=ENTRY_OPTION, default="W")
     statistic_result = models.BooleanField(default=0)
-    entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)     
+    entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)
+    event_vote_home = models.CharField(max_length=20, blank=False, choices=VOTACAO, default="N")     
         
     class Meta:
         db_table = "super_favorite_home_ball_owner_entry"

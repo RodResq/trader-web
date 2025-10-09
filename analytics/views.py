@@ -7,6 +7,7 @@ import logging
 
 from decimal import Decimal
 from datetime import datetime
+from enum import Enum
 
 from django.utils import timezone
 from django.db import transaction
@@ -37,6 +38,8 @@ from analytics.serializers import (
 from gerencia.models import GerenciaCiclo
 from ciclo.models import Ciclo 
 from shared.utils import CustomPagination
+
+from owner_ball.models import SuperFavoriteHomeBallOwnerEntry
 
 logger = logging.getLogger(__name__)
       
@@ -656,30 +659,39 @@ def atualizar_odd_status(request):
         
     
 def atualizar_statistica_overall(request, id_evento):
-    try:
-        api_base_url = "http://127.0.0.1:8080"
+    # TODO Recuperar Valores passados como query params
+    if request.method == 'GET':
+        event_origin = request.GET.get('event_origin')
         try:
-            response = requests.get(
-                f'{api_base_url}/statistic-overall/{id_evento}',
-                timeout=5
-            )
-            if response.status_code == 200:
-                data = response.json()
-                entrada = Entrada.objects.filter(id_event=id_evento).first()
-                entrada.resultado_estatistica = data['resultado']
-                entrada.save()
+            api_base_url = "http://127.0.0.1:8080"
+            try:
+                response = requests.get(
+                    f'{api_base_url}/statistic-overall/{id_evento}',
+                    timeout=5
+                )
+                if response.status_code == 200:
+                    data = response.json()
+                    
+                    entrada = None
+                    if event_origin == EventOrigin.SCORE_DATA.value:
+                        entrada = Entrada.objects.filter(id_event=id_evento).first()
+                    elif event_origin == EventOrigin.OWNER_BALL.value:
+                        entrada = SuperFavoriteHomeBallOwnerEntry.objects.filter(id_event=id_evento).first()
+                        
+                    entrada.resultado_estatistica = data['resultado']
+                    entrada.save()
+                    
+                    return JsonResponse({
+                        'success': True,
+                        'statistic': entrada.resultado_estatistica,
+                        'message': 'O resultado do calculo estatico foi atualizado com sucesso'
+                    }, status=200)
                 
-                return JsonResponse({
-                    'success': True,
-                    'statistic': entrada.resultado_estatistica,
-                    'message': 'O resultado do calculo estatico foi atualizado com sucesso'
-                }, status=200)
-            
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Erro de conexão ao buscar odd-change para evento {id_evento}: {str(e)}")
-            
-    except Exception as e:
-            logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Erro de conexão ao buscar odd-change para evento {id_evento}: {str(e)}")
+                
+        except Exception as e:
+                logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 
             
 
 @api_view(['PUT'])
@@ -725,11 +737,16 @@ def resultado_entrada(request, format=None):
             'message': 'Erro interno do servidor ao processar a solicitação.'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
         
-                   
+
+class EventOrigin(Enum):
+    SCORE_DATA = "socore-data"
+    OWNER_BALL = "owner-ball"
+                       
             
 def get_event_vote(request):
     if request.method == 'GET':
         id_event = request.GET.get('event_id')
+        event_origin = request.GET.get('event_origin')
         
         try:
             response = requests.get(f'http://127.0.0.1:8080/event/{id_event}/votes')
@@ -745,9 +762,15 @@ def get_event_vote(request):
             vote_away = data['data']['vote']['voteAway']
             vote_draw = data['data']['vote']['voteDraw']
             
-            entrada = get_object_or_404(Entrada, id_event=id_event)
-            entrada.event_vote_home = 'H' if vote_home > vote_away and vote_home > vote_draw else 'A'
-            entrada.save()
+            entrada = None
+            if event_origin == EventOrigin.SCORE_DATA.value:
+                entrada = get_object_or_404(Entrada, id_event=id_event)
+            elif event_origin == EventOrigin.OWNER_BALL.value:
+                entrada = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=id_event)
+            
+            if entrada:
+                entrada.event_vote_home = 'H' if vote_home > vote_away and vote_home > vote_draw else 'A'
+                entrada.save()
                 
             return JsonResponse({
                 'success': True,

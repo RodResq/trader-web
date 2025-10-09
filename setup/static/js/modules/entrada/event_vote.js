@@ -10,16 +10,16 @@ export function setupEventVote() {
             e.preventDefault();
             const idEvent = this.getAttribute('data-event-id');
             if (!idEvent) showNotification('Id evento nao encontrado');
+
+            const eventOrigin = this.getAttribute('data-event-orgin');
     
             const currentRow = this.closest('tr');
             if (!currentRow) console.error('Nao foi possivel recuperar a linha atual');
     
             const statusCell = currentRow.querySelector('td:nth-child(2)');
     
-            console.log('Current cell', statusCell);
-    
             try {
-                const url = `api/v1/analytics/vote?event_id=${idEvent}`;
+                const url = `api/v1/analytics/vote?event_id=${idEvent}&event_origin=${eventOrigin}`;
                 fetch(url, {
                     method: 'GET',
                     headers: {
