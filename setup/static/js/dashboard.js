@@ -109,10 +109,14 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFindTeam();
 
     // Incializa resultado event vote
-    setupEventVote();
+    setTimeout(() => {
+        setupEventVote();
+    }, 1000);
 
     // Incializa a busca api statistica
-    setupStatistic();
+    setTimeout(() => {
+        setupStatistic();
+    }, 1000);
     
     // Inicializa componentes de paginação
     if (typeof initPagination === "function") {

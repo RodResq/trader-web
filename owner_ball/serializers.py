@@ -12,7 +12,7 @@ from rest_framework.utils import timezone
 class SuperFavoriteHomeBallOwnerEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = SuperFavoriteHomeBallOwnerEntry
-        fields = ['id_event', 'entry_result', 'entry_option', 'market', 'odd', 'home_actual', 'away_actual', 'event_date']
+        fields = ['id_event', 'entry_result', 'event_vote_home', 'entry_option', 'statistic_result', 'market', 'odd', 'home_actual', 'away_actual', 'event_date']
         
 class EntryResultSuperFavoriteHomeBallOwnerSerializer(serializers.Serializer):
     id_event = serializers.IntegerField(required=True)

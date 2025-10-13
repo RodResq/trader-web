@@ -673,17 +673,19 @@ def atualizar_statistica_overall(request, id_evento):
                     data = response.json()
                     
                     entrada = None
+                    statistic_result = data['resultado']
                     if event_origin == EventOrigin.SCORE_DATA.value:
                         entrada = Entrada.objects.filter(id_event=id_evento).first()
+                        entrada.resultado_estatistica = statistic_result
+                         
                     elif event_origin == EventOrigin.OWNER_BALL.value:
                         entrada = SuperFavoriteHomeBallOwnerEntry.objects.filter(id_event=id_evento).first()
-                        
-                    entrada.resultado_estatistica = data['resultado']
+                        entrada.statistic_result = statistic_result
                     entrada.save()
                     
                     return JsonResponse({
                         'success': True,
-                        'statistic': entrada.resultado_estatistica,
+                        'statistic': statistic_result,
                         'message': 'O resultado do calculo estatico foi atualizado com sucesso'
                     }, status=200)
                 
@@ -739,7 +741,7 @@ def resultado_entrada(request, format=None):
         
 
 class EventOrigin(Enum):
-    SCORE_DATA = "socore-data"
+    SCORE_DATA = "score-data"
     OWNER_BALL = "owner-ball"
                        
             

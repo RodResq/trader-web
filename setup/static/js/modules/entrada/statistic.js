@@ -32,7 +32,7 @@ export function setupStatistic() {
                     return response.json();
                 }).then(data => {
                     if (!data.success) showNotification('Nao foi possivel recuperar o event de voto');
-                    // TODO Atualizar Icone statistica com a cor verde
+                    buidlIconStatisticResult(data.statistic, currentRow);
                 })
             } catch {
     
@@ -41,5 +41,30 @@ export function setupStatistic() {
             }
         });
     })
+}
+
+function buidlIconStatisticResult(statiticResult, currentRow) {
+    if (!currentRow) return;
+
+    const statusCell = currentRow.querySelector('td:nth-child(2)');
+    const iconStatictExist = currentRow.querySelector('.icon-statistic');
+
+    if (!statusCell) return;
+
+    if (iconStatictExist) {
+        iconStatictExist.remove();
+    }
+
+    const iconStatistc = document.createElement('i');
+    iconStatistc.classList.add('icon-statistic', 'bi', 'bi-bar-chart-line-fill', 'align-middle');
+    
+    if (statiticResult) {
+        iconStatistc.style.color = '#198754';
+        statusCell.appendChild(iconStatistc);
+    } else {
+        iconStatistc.style.color = '#dc3545';
+        statusCell.appendChild(iconStatistc);
+    }
+    
 }
 

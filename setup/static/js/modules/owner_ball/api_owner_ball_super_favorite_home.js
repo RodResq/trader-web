@@ -125,6 +125,25 @@ function updateOwnerBallTable(markets) {
             }
         }
 
+        const getEventVote = (result) => {
+            switch(result) {
+                case "H":
+                    return `<i style="color:#198754;" class="icon-vote align-middle fs-6 bi bi-house-up-fill"></i>`;
+                case "A":
+                    return `<i style="color:#dc3545;" class="icon-vote align-middle fs-6 bi bi-house-down-fill"></i>`;
+                default:
+                    return '';    
+            }
+        }
+
+        const getStatisticResult = (result) => {
+            if (result) {
+                return `<i style="color:#198754;" class="bi bi-bar-chart-line-fill align-middle"></i>`;
+            } else {
+                return '';
+            }
+        }
+
         return `
             <tr data-row-id=${market.id_event} class="tr-ob">
                 <td>
@@ -138,6 +157,8 @@ function updateOwnerBallTable(markets) {
                 </td>
                 <td class="mercado-status">
                     ${getEntryOptionIcon(market.entry_option)}
+                    ${getStatisticResult(market.statistic_result)}
+                    ${getEventVote(market.event_vote_home)}
                     ${getResultIcon(market.entry_result)}
                 </td>
                 <td class="mercado-column">${market.market}</td>
@@ -151,16 +172,16 @@ function updateOwnerBallTable(markets) {
                 <td>${market.away_actual}%</td>
                 <td>${dataFormatada || 'N/A'}</td>
                 <td class="d-grid gap-4 d-md-block">
-                    <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${market.id_event} data-event-orgin="owner-ball" title="Editar Odd">
+                    <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Editar Odd">
                         <i class="bi bi-pencil"></i>
                     </a>
-                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${market.id_event} data-event-orgin="owner-ball" title="Aceitar aposta">
+                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Aceitar aposta">
                         <i class="bi bi-check"></i>
                     </a>
-                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${market.id_event} data-event-orgin="owner-ball" title="Recusar aposta">
+                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Recusar aposta">
                         <i class="bi bi-x"></i>
                     </a>
-                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${market.id_event} data-event-orgin="owner-ball" title="Desfazer ação">
+                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Desfazer ação">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </a>
                     <div class="btn-group" role="group">
@@ -168,9 +189,9 @@ function updateOwnerBallTable(markets) {
                             <i class="bi bi-three-dots-vertical"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <li><a class="dropdown-item event-vote" data-event-id=${market.id_event} data-event-orgin="owner-ball">Votacao</a></li>
-                            <li><a class="dropdown-item event-statistic" data-event-id=${market.id_event} data-event-orgin="owner-ball">Estatisticas</a></li>
-                            <li><a class="dropdown-item event-probability" data-event-id=${market.id_event} data-event-orgin="owner-ball">Probabilidade</a></li>
+                            <li><a class="dropdown-item event-vote" data-event-id=${market.id_event} data-event-origin="owner-ball">Votacao</a></li>
+                            <li><a class="dropdown-item event-statistic" data-event-id=${market.id_event} data-event-origin="owner-ball">Estatisticas</a></li>
+                            <li><a class="dropdown-item event-probability" data-event-id=${market.id_event} data-event-origin="owner-ball">Probabilidade</a></li>
                         </ul>
                     </div>
                 </td>

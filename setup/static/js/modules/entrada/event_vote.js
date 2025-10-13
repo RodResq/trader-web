@@ -11,7 +11,7 @@ export function setupEventVote() {
             const idEvent = this.getAttribute('data-event-id');
             if (!idEvent) showNotification('Id evento nao encontrado');
 
-            const eventOrigin = this.getAttribute('data-event-orgin');
+            const eventOrigin = this.getAttribute('data-event-origin');
     
             const currentRow = this.closest('tr');
             if (!currentRow) console.error('Nao foi possivel recuperar a linha atual');
