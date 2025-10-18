@@ -202,9 +202,8 @@
                       <tbody>
                         {% if mercados %}
                           {% for mercado in mercados %}
-                          <tr class="tr-sd">
+                          <tr class="tr-sd" data-event-origin="score-data">
                             <td>
-                              
                               <span {% if mercado.resultado_estatistica %} 
                                 class="btn-sucess resultado-statistic-overall-home"
                                 {% else %}

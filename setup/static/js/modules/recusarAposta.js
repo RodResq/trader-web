@@ -4,7 +4,6 @@ import { desabilitarBtnRecusar } from './utils.js';
 
 
 export function setupRecusarModal() {
-    // Obter elementos do modal
     const modal = document.getElementById('recusarApostaModal');
     const recusarBtn = document.querySelectorAll('#recusar-aposta');
     const confirmarBtn = document.getElementById('confirmarRecusaBtn');
@@ -33,11 +32,13 @@ export function setupRecusarModal() {
             currentRow = this.closest('tr');
             if (!currentRow) return;
             
+            const eventOrigin = currentRow.getAttribute('data-event-origin');
             const eventId = currentRow.querySelector('td:first-child').textContent.trim();
-            const mercado = currentRow.querySelector('td:nth-child(2)').textContent;
+            const mercado = currentRow.querySelector('td:nth-child(3)').textContent.trim();
             
             currentEventId = eventId;
             
+            document.getElementById('recusar-event-origin').textContent = eventOrigin;
             document.getElementById('recusar-evento-id').textContent = eventId;
             document.getElementById('recusar-evento-mercado').textContent = mercado;
             
@@ -50,6 +51,7 @@ export function setupRecusarModal() {
     });
     
     confirmarBtn.addEventListener('click', function() {
+        const eventOrigin = document.getElementById('recusar-event-origin').textContent;
         if (!currentEventId || !currentRow) {
             modalInstance.hide();
             return;
@@ -66,7 +68,7 @@ export function setupRecusarModal() {
         this.disabled = true;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
         
-        const url = `/api/v1/apostar?event_id=${currentEventId}&action=recusar`;
+        const url = `/api/v1/entradas/${currentEventId}/recusar?event_origin=${eventOrigin}`;
 
         fetch(url, {
             method: 'GET',

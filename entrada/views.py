@@ -9,12 +9,13 @@ from django.shortcuts import get_object_or_404
 from django.db import transaction
 
 from entrada.serializers import AceitarEntradaSerializer
+from entrada.models import EventOriginEnum, EntryOptionEnum
 from analytics.models import Entrada, Aposta
 from ciclo.models import Ciclo
 from owner_ball.models import SuperFavoriteHomeBallOwnerEntry, CycleOwnerBall, BetOwnerBall
 
 from decimal import Decimal
-
+    
 
 class AceitarEntradaView(APIView):
     permission_classes = [IsAuthenticated]
@@ -155,3 +156,35 @@ class AceitarEntradaView(APIView):
                     'message': f'Valor excede o disponível (R$ {available_value})'
                 }, status=status.HTTP_400_BAD_REQUEST)
         pass
+    
+
+class RecusarEntradaView(APIView):
+    
+    def get(self, request, event_id):
+        if not event_id:
+            return Response({
+                'success':False,
+                'message': 'Parâmetros incompletos. É necessário fornecer event_id e action.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+        try:
+            event_origin = request.GET.get('event_origin');
+            if event_origin == EventOriginEnum.OWNER_BALL.value:
+                entry_owner_ball = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id)
+                entry_owner_ball.entry_option = EntryOptionEnum.REFUSE.value
+                entry_owner_ball.save()
+                
+                return Response({
+                    'success': True,
+                    'message': 'Entrada Owner Ball Recusada',
+                    'aposta_id': entry_owner_ball.id_event
+                })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': 'Dados inválidos',
+                'errors': e
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+        
