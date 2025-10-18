@@ -161,7 +161,21 @@ function updateOwnerBallTable(markets) {
                     ${getEventVote(market.event_vote_home)}
                     ${getResultIcon(market.entry_result)}
                 </td>
-                <td class="mercado-column">${market.market}</td>
+                <td class="mercado-column">
+                    <img src="${market.icon_home}"
+                        alt="Logo ${market.icon_home}"
+                        class="team-logo"
+                        style="width: 20px; height: 20px; object-fit: contain;"
+                        onerror="this.style.display='none'">
+                    <span class="align-middle text-light-emphasis">${market.name_home}</span>
+                    <span class="align-middle text-light-emphasis">${market.placar}</span>
+                    <img src="${market.icon_away}"
+                        alt="Logo ${market.icon_away}"
+                        class="team-logo"
+                        style="width: 20px; height: 20px; object-fit: contain;"
+                        onerror="this.style.display='none'">
+                    <span class="align-middle text-light-emphasis">${market.name_away}</span>
+                </td>
                 <td>
                     ${market.odd}
                     <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="${market.id_event}" title="Atualizar odd change">

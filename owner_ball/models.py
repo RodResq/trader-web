@@ -7,17 +7,34 @@ from decimal import Decimal
     
 class VwMercadoOwnerBallSfHome(models.Model):
     id_event = models.BigIntegerField(null=False, name='id_event')
-    mercado = models.CharField(max_length=200, name='mercado', db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    placar = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd = models.FloatField(blank=True, name='odd', null=True)
     home_actual = models.IntegerField(blank=True, name='home_actual', null=True)
     away_actual = models.IntegerField(blank=True, name='away_actual', null=True)
     data_jogo = models.DateTimeField(blank=True, name='data_jogo', null=True)
+    home_name = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    home_icon = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    away_name = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    away_icon = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    
     class Meta:
         managed = False
         db_table = 'vw_mercado_owner_boll_super_favorito_home' 
         
+    @property
+    def icon_home_data_url(self):
+        if self.home_icon:
+            return f"data:image/png;base64,{self.home_icon}"
+        return None
+    
+    @property
+    def icon_away_data_url(self):
+        if self.away_icon:
+            return f"data:image/png;base64,{self.away_icon}"
+        return None
+        
     def __str__(self):
-        return f"VwMercadoOwnerBallSfHome[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"
+        return f"VwMercadoOwnerBallSfHome[placar={self.placar}, data_jogo={self.data_jogo}]"
 
         
 class VwMercadoOwnerBallFavoritoHome(models.Model):
@@ -68,7 +85,7 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
         ("N", 'none')
     ]
     id_event = models.IntegerField(primary_key=True)
-    market = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    placar = models.CharField(max_length=200, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     odd_change = models.CharField(max_length=5, blank=True, choices=ODD_CHANGE, default='P')
     odd = models.DecimalField(
         max_digits=5, 
@@ -83,7 +100,12 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
     entry_option = models.CharField(max_length=20, blank=False, choices=ENTRY_OPTION, default="W")
     statistic_result = models.BooleanField(default=0)
     entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)
-    event_vote_home = models.CharField(max_length=20, blank=False, choices=VOTACAO, default="N")     
+    event_vote_home = models.CharField(max_length=20, blank=False, choices=VOTACAO, default="N")   
+    icon_home = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    name_home = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    icon_away = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    name_away = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    
         
     class Meta:
         db_table = "super_favorite_home_ball_owner_entry"
@@ -92,7 +114,7 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
         ordering = ["-event_date"]
         
     def __str__(self):
-        return f"SuperFavoriteHomeBallOwnerEntry - {self.id_event} - market: {self.market} - odd: {self.odd}"    
+        return f"SuperFavoriteHomeBallOwnerEntry - {self.id_event} - placar: {self.placar} - odd: {self.odd}"    
     
     def save(self, *args, **kwargs):
         """

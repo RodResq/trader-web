@@ -204,13 +204,7 @@
                           {% for mercado in mercados %}
                           <tr class="tr-sd">
                             <td>
-                              {% if mercado.resultado_estatistica %}
-                                <i style="color:#198754;" class="bi bi-bar-chart-line-fill align-middle"></i>
-                                <i style="color:#198754;" class="bi bi-tv align-middle"></i>
-                              {% else %}
-                                <i style="color:#dc3545;" class="bi bi-bar-chart-line-fill align-middle"></i>
-                                <i class="bi bi-tv"></i>
-                              {% endif %}
+                              
                               <span {% if mercado.resultado_estatistica %} 
                                 class="btn-sucess resultado-statistic-overall-home"
                                 {% else %}
@@ -236,6 +230,13 @@
                                 <span class="icon-next-event-priority">
                                   <img src="{% static 'images/icons/next-event-priority.svg' %}" alt="next-event-priority" class="me-2r">
                                 </span>
+                              {% endif %}
+                              {% if mercado.resultado_estatistica %}
+                                <i style="color:#198754;" class="bi bi-bar-chart-line-fill align-middle"></i>
+                                {% comment %} <i style="color:#198754;" class="bi bi-tv align-middle"></i> {% endcomment %}
+                              {% else %}
+                                <i style="color:#dc3545;" class="bi bi-bar-chart-line-fill align-middle"></i>
+                                {% comment %} <i class="bi bi-tv"></i> {% endcomment %}
                               {% endif %}
                               {% if mercado.entry_result == "W" %}
                                 <span class="icon-soccer">
