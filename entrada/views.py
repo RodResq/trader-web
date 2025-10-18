@@ -169,7 +169,18 @@ class RecusarEntradaView(APIView):
             
         try:
             event_origin = request.GET.get('event_origin');
-            if event_origin == EventOriginEnum.OWNER_BALL.value:
+            if event_origin == EventOriginEnum.SCORE_DATA.value:
+                entry_score_data = get_object_or_404(Entrada, id_event=event_id)
+                entry_score_data.opcao_entrada = EntryOptionEnum.REFUSE.value
+                entry_score_data.save()
+                
+                return Response({
+                    'success': True,
+                    'message': 'Entrada Score Data Recusada',
+                    'aposta_id': entry_score_data.id_event
+                })
+                
+            elif event_origin == EventOriginEnum.OWNER_BALL.value:
                 entry_owner_ball = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id)
                 entry_owner_ball.entry_option = EntryOptionEnum.REFUSE.value
                 entry_owner_ball.save()
