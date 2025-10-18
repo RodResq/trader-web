@@ -116,22 +116,5 @@ export function initAceitarApostaModal() {
             .find(row => row.startsWith('csrftoken='))
             ?.split('=')[1];
     }
-    
-    // function exibirMensagem(texto, tipo) {
-    //     const alerta = document.createElement('div');
-    //     alerta.className = `alert alert-${tipo} alert-dismissible fade show`;
-    //     alerta.role = 'alert';
-    //     alerta.innerHTML = `
-    //         ${texto}
-    //         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-    //     `;
-        
-    //     const container = document.querySelector('.container-fluid');
-    //     container.insertBefore(alerta, container.firstChild);
-        
-    //     setTimeout(() => {
-    //         alerta.classList.remove('show');
-    //         setTimeout(() => alerta.remove(), 300);
-    //     }, 5000);
-    // }
+
 }
