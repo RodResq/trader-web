@@ -6,7 +6,7 @@ export function setupStatistic() {
     if (!btnsEventStatistic) return;
 
     btnsEventStatistic.forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', async function(e) {
             e.preventDefault();
             const idEvent = this.getAttribute('data-event-id');
             if (!idEvent) showNotification('Id evento nao encontrado');
@@ -16,29 +16,30 @@ export function setupStatistic() {
             const currentRow = this.closest('tr');
             if (!currentRow) console.error('Nao foi possivel recuperar a linha atual');
     
-            const statusCell = currentRow.querySelector('td:nth-child(2)');
-    
-            console.log('Current cell', statusCell);
+            const url = `api/v1/statistic/${idEvent}?event_origin=${eventOrigin}`;
     
             try {
-                const url = `api/v1/statistic/${idEvent}?event_origin=${eventOrigin}`;
-                fetch(url, {
+                const response  = await fetch(url, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
                     }
-                }).then(response => {
-                    if (!response.ok) throw new Error('Erro ao recuperar votos'); 
-                    return response.json();
-                }).then(data => {
-                    if (!data.success) showNotification('Nao foi possivel recuperar o event de voto');
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Erro ao recuperar estatisticas do evento'); 
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    showNotification('Resultado de estatisticas do evento recuperado com sucesso', 'success');
                     buidlIconStatisticResult(data.statistic, currentRow);
-                })
-            } catch {
-    
-            } finally {
-    
-            }
+                } else {
+                    showNotification('Nao foi possivel recuperar estatistica do evento');
+                }
+            } catch(error) {
+                showNotification('Erro ao recuperar estatisticas do jogo.', 'danger');
+            } 
         });
     })
 }

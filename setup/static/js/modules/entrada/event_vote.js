@@ -6,7 +6,7 @@ export function setupEventVote() {
     if (!btnsEventVote) return;
 
     btnsEventVote.forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', async function(e) {
             e.preventDefault();
             const idEvent = this.getAttribute('data-event-id');
             if (!idEvent) showNotification('Id evento nao encontrado');
@@ -20,7 +20,7 @@ export function setupEventVote() {
     
             try {
                 const url = `api/v1/analytics/vote?event_id=${idEvent}&event_origin=${eventOrigin}`;
-                fetch(url, {
+                await fetch(url, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'

@@ -5,7 +5,7 @@ import { setupRecusarModal } from "../recusarAposta.js";
 import { setupDesfazerAcaoModal } from "../desfazerAcao.js";
 
 let currentPage = 1;
-let itemsPerPage = 10;
+let itemsPerPage = 20;
 let totalPages = 1;
 let isLoading = false;
 

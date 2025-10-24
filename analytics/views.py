@@ -672,6 +672,9 @@ def atualizar_statistica_overall(request, id_evento):
                 if response.status_code == 200:
                     data = response.json()
                     
+                    if not data['success']:
+                        return JsonResponse(data, status=404)
+                        
                     entrada = None
                     statistic_result = data['resultado']
                     if event_origin == EventOrigin.SCORE_DATA.value:
