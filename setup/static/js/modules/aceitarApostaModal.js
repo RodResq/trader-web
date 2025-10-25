@@ -80,11 +80,13 @@ export function initAceitarApostaModal() {
                 body: JSON.stringify(dados)
             });
 
-            if (!response.ok) {
-                throw new Error(`Erro HTTP: ${response.status}`)
-            }
-
             const data = await response.json();
+            
+            if (!response.ok) {
+                showNotification(`Erro ao processar a aposta, ${data.message}`, 'danger');
+                return;
+            }
+            
             if (data.success) {
                 const modalInstance = bootstrap.Modal.getInstance(modal);
                 modalInstance.hide();
@@ -101,12 +103,11 @@ export function initAceitarApostaModal() {
                 
                 showNotification('Aposta registrada com sucesso!', 'success');
             } else {
-                showNotification('Erro ao registrar aposta. Tente novamente.', 'danger');
+                showNotification(`Erro desconhecido.`, 'danger');
             }
 
         } catch(error) {
-            console.error('Erro ao processar a aposta:', error);
-            showNotification('Erro ao processar a aposta. Verifique o console para mais detalhes.', 'danger');
+            // console.error('Erro ao processar a aposta:', error);
         };
     }
     

@@ -16,7 +16,7 @@ let itemsPerPage = 10;
 export function setupApostaButtons() {
     const modal = document.getElementById('aceitarApostaModal');
     const aceitarBtn = document.querySelectorAll('#aceitar-aposta');
-    const confirmarBrn = document.getElementById('confirmarAceiteBtn')
+    const confirmarBrn = document.getElementById('confirmarAceiteBtn');
     const apostarButtons = document.querySelectorAll('.apostar-btn');
 
     if (!modal || !aceitarBtn.length || !confirmarBrn || !apostarButtons) return;
@@ -66,7 +66,7 @@ export function setupApostaButtons() {
             return;
         }
 
-        const url = `/api/v1/apostar?event_id=${currentEventId}&action=aceitar`;
+        const url = `/api/legacy/v1/apostar?event_id=${currentEventId}&action=aceitar`;
         fetch(url, {
             method: 'GET',
             headers: {
