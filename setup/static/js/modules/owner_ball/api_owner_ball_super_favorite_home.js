@@ -3,14 +3,17 @@ import { setupEditarModal } from "../editarOdd.js";
 import { initAceitarApostaModal } from "../aceitarApostaModal.js";
 import { setupRecusarModal } from "../recusarAposta.js";
 import { setupDesfazerAcaoModal } from "../desfazerAcao.js";
+import { setupEventVote } from '../entrada/event_vote.js';
+import { setupStatistic } from "../entrada/statistic.js";
 
 let currentPage = 1;
-let itemsPerPage = 20;
+let itemsPerPage = 10;
 let totalPages = 1;
 let isLoading = false;
 
 export function setupApiOwnerBallSuperFavoriteHome() {
     loadOwnerBallMarkets();
+
 }
 
 
@@ -218,6 +221,11 @@ function updateOwnerBallTable(markets) {
 
 
 function updateOwnerBallPagination(pagination) {
+    setTimeout(() => {
+        setupEventVote();
+        setupStatistic();
+    }, 1000);
+
     if (!pagination) return;
 
     currentPage = pagination.current_page;
