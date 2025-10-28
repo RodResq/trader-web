@@ -20,16 +20,20 @@
                     Selecione
                 </option>
                 <option value="W" 
-                    {% if entrada.resultado_aposta == 'G' %}selected{% endif %}>
+                    {% if entrada.resultado_aposta == 'W' %}selected{% endif %}>
                     Vitoria
                 </option>
                 <option value="D" 
-                    {% if entrada.resultado_aposta == 'E' %}selected{% endif %}>
+                    {% if entrada.resultado_aposta == 'D' %}selected{% endif %}>
                     Empate
                 </option>
                 <option value="L" 
-                    {% if entrada.resultado_aposta == 'P' %}selected{% endif %}>
+                    {% if entrada.resultado_aposta == 'L' %}selected{% endif %}>
                     Derrota
+                </option>
+                <option value="P" 
+                    {% if entrada.resultado_aposta == 'P' %}selected{% endif %}>
+                    Postergado
                 </option>
                 </select>
             </div>

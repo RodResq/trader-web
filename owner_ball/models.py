@@ -80,7 +80,8 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
     ENTRY_RESULT = [
         ("W", "win"),
         ("D", "drow"),
-        ("L", "lose")
+        ("L", "lose"),
+        ("P", "Postponed")
     ]
     VOTACAO = [
         ("H", 'home'),

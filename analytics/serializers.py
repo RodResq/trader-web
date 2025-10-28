@@ -8,7 +8,7 @@ class EntryResultSuperFavoriteSerializer(serializers.Serializer):
     entry_result = serializers.CharField(required=True, max_length=1)
     
     def validate_entry_result(self, value):
-        valid_results = ['W', 'L', 'D']
+        valid_results = ['W', 'L', 'D', 'P']
         if value not in valid_results:
             raise serializers.ValidationError(f"entry_result deve ser um de: {valid_results}")
         return value
@@ -26,7 +26,8 @@ class CustomResponseEntryResultSuperFavoriteSerializer(serializers.ModelSerializ
         result_map = {
             'W': 'VITÓRIA',
             'L': 'DERROTA', 
-            'D': 'EMPATE'
+            'D': 'EMPATE',
+            'P': 'POSTERGADO'
         }
         return result_map.get(obj.entry_result, obj.entry_result)
     

@@ -132,6 +132,9 @@ function atualizarIconSoccer(currentRow, entry_result) {
         case 'D':
             classIconEntryResult = 'icon-soccer-empatou';
             break;
+        case 'P':
+            classIconEntryResult = '';
+            break;
     }
     
     const novoSpanSoccer = document.createElement('span');
@@ -140,8 +143,18 @@ function atualizarIconSoccer(currentRow, entry_result) {
         novoSpanSoccer.style = "filter: hue-rotate(0deg) saturate(2) brightness(0.8) sepia(1) hue-rotate(-50deg);"
     }
 
-    const iconPath = "/static/images/icons/soccer.svg";
-    novoSpanSoccer.innerHTML = `<img src="${iconPath}" alt="soccer" class="me-2r" style="width: 15px; height: 15px;">`;
+
+    let iconPath = null;
+    let style = null;
+    if (entry_result != "P") {
+        iconPath = "/static/images/icons/soccer.svg";
+        style="width: 15px; height: 15px;"
+    } else {
+        iconPath = "/static/images/icons/calendar-question.svg";
+        style="width: 17px; height: 30px;"
+
+    }
+    novoSpanSoccer.innerHTML = `<img src="${iconPath}" style="${style}">`;
 
     statusCell.appendChild(novoSpanSoccer);
 

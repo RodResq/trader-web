@@ -232,10 +232,8 @@
                               {% endif %}
                               {% if mercado.resultado_estatistica %}
                                 <i style="color:#198754;" class="bi bi-bar-chart-line-fill align-middle"></i>
-                                {% comment %} <i style="color:#198754;" class="bi bi-tv align-middle"></i> {% endcomment %}
                               {% else %}
                                 <i style="color:#dc3545;" class="bi bi-bar-chart-line-fill align-middle"></i>
-                                {% comment %} <i class="bi bi-tv"></i> {% endcomment %}
                               {% endif %}
                               {% if mercado.entry_result == "W" %}
                                 <span class="icon-soccer">
@@ -248,6 +246,10 @@
                               {% elif mercado.entry_result == "D" %}
                                 <span class="icon-soccer-empatou">
                                   <img src="{% static 'images/icons/soccer.svg' %}" alt="soccer" class="me-2r" style="width: 15px; height: 15px; background-color: #356adc; filter: hue-rotate(0deg) saturate(2) brightness(0.8) sepia(1) hue-rotate(-50deg);">
+                                </span>
+                              {% elif mercado.entry_result == "P" %}
+                                <span>
+                                  <img src="{% static 'images/icons/calendar-question.svg' %}" alt="calendar-question" style="width: 17px; height: 30px;">
                                 </span>
                               {% endif %}
                               {% if mercado.event_vote_home == "H" %}

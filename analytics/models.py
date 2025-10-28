@@ -60,7 +60,8 @@ class Entrada(models.Model):
     ENTRY_RESULT = [
         ("W", "win"),
         ("D", "drow"),
-        ("L", "lose")
+        ("L", "lose"),
+        ("P", "postponed")
     ]
     
     VOTACAO = [
