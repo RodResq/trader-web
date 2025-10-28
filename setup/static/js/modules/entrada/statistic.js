@@ -35,7 +35,7 @@ export function setupStatistic() {
                     showNotification('Resultado de estatisticas do evento recuperado com sucesso', 'success');
                     buidlIconStatisticResult(data.statistic, currentRow);
                 } else {
-                    showNotification('Nao foi possivel recuperar estatistica do evento');
+                    showNotification('Nao foi possivel recuperar estatistica do evento', 'danger');
                 }
             } catch(error) {
                 showNotification('Erro ao recuperar estatisticas do jogo.', 'danger');

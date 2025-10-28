@@ -14,12 +14,14 @@ export function setupEditarModal() {
 
     let currentEventId = null;
     let currentRow = null;
+    let eventOrigin = null;
 
     editarOddBtns.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
 
             const eventId = this.getAttribute('data-event-id');
+
             if (!eventId) {
                 console.error('ID do evento não encontrado');
                 return;
@@ -30,6 +32,7 @@ export function setupEditarModal() {
 
             const mercado = currentRow.querySelector('td:nth-child(3)').textContent.trim();
             const oddAtual = currentRow.querySelector('td:nth-child(4)').textContent;
+            eventOrigin = currentRow.getAttribute('data-event-origin');
 
             currentEventId = eventId;
 
@@ -54,7 +57,7 @@ export function setupEditarModal() {
             return;
         }
 
-        const url = `/api/v1/analytics/editar_odd?event_id=${currentEventId}&odd=${novaOdd}`;
+        const url = `/api/v1/analytics/editar_odd?event_id=${currentEventId}&event_origin=${eventOrigin}&odd=${novaOdd}`;
 
         this.disabled = true;
         this.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
@@ -71,9 +74,8 @@ export function setupEditarModal() {
         }).then(data => {
             const oddCell = currentRow.querySelector('td:nth-child(4)');
             if (oddCell) {
-                // oddCell.textContent = novaOdd;
                 console.log('Logica atualizar os icones de odd_change');
-                atualizarCellOddAposEditar(currentEventId, currentRow, novaOdd);
+                atualizarCellOddAposEditar(currentEventId, currentRow, novaOdd, eventOrigin);
             }
 
             modalInstance.hide();
@@ -86,7 +88,7 @@ export function setupEditarModal() {
             this.disabled = false;
             this.innerHTML = '<i class="bi bi-save"></i> Salvar';
             showNotification('Erro ao atualizar odd. Tente novamente.', 'danger');
-        })
+        });
     });
 
 }

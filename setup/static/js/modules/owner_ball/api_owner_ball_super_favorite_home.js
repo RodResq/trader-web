@@ -147,6 +147,17 @@ function updateOwnerBallTable(markets) {
             }
         }
 
+        const getStatusOdd = (result) => {
+            switch(result) {
+                case "S":
+                    return `<i class="bi bi-arrow-up-short align-middle align-middle" style="color: green;"></i>`;
+                case "D":
+                    return `<i class="bi bi-arrow-down-short align-middle" style="color: red;"></i>`;
+                default:
+                    return `<i class="bi bi-stop align-middle" style="1rem; color: yellow;"></i>`;
+            }
+        }
+
         return `
             <tr data-row-id=${market.id_event} class="tr-ob" data-event-origin="owner-ball">
                 <td>
@@ -180,6 +191,7 @@ function updateOwnerBallTable(markets) {
                     <span class="align-middle text-light-emphasis">${market.name_away}</span>
                 </td>
                 <td>
+                    ${getStatusOdd(market.odd_change)}
                     ${market.odd}
                     <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="${market.id_event}" title="Atualizar odd change">
                         <i class="bi bi-arrow-clockwise"></i>

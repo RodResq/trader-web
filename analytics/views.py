@@ -272,6 +272,7 @@ def editar_odd(request):
     if request.method == 'GET':
         event_id = request.GET.get('event_id')
         nova_odd = request.GET.get('odd')
+        event_origin = request.GET.get('event_origin')
         
         if not event_id or not nova_odd:
             return JsonResponse({
@@ -287,20 +288,35 @@ def editar_odd(request):
                     'success': False,
                     'message': 'Odd inválida. Valor mínimo é 1.01.'
                 }, status=400)
+              
+            if event_origin ==  EventOrigin.SCORE_DATA.value:
+                entrada = get_object_or_404(Entrada, id_event=event_id)
+                entrada.odd = nova_odd
+                entrada.save()
                 
-            entrada = get_object_or_404(Entrada, id_event=event_id)
-            entrada.odd = nova_odd
-            entrada.save()
+                return JsonResponse({
+                    'success': True,
+                    'message': f'Odd Score Data do Id Event: {entrada.id_event} atualizada com sucesso!',
+                    'data': {
+                        'id_event': entrada.id_event,
+                        'odd': float(entrada.odd),
+                        'mercado': entrada.mercado
+                    }
+                })
+            elif event_origin == EventOrigin.OWNER_BALL.value:
+                super_favorite_ob = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id)
+                super_favorite_ob.odd = nova_odd
+                super_favorite_ob.save()
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': f'Odd OwnerBall do Id Event: {super_favorite_ob.id_event} atualizada com sucesso!',
+                    'data': {
+                        'id_event': super_favorite_ob.id_event,
+                        'odd': float(super_favorite_ob.odd)
+                    }
+                })
             
-            return JsonResponse({
-                'success': False,
-                'message': 'Odd atualizada com sucesso!',
-                'data': {
-                    'id_event': entrada.id_event,
-                    'odd': float(entrada.odd),
-                    'mercado': entrada.mercado
-                }
-            })
         except ValueError:
             return JsonResponse({
                 'success': False,
@@ -602,6 +618,7 @@ def _verificar_mudanca_odd(entradas):
                 
                 
 def atualizar_odd_change(request, id_evento):
+    
     try:
         api_base_url = "http://127.0.0.1:8080"
         try:
@@ -633,23 +650,40 @@ def atualizar_odd_status(request):
                 'success': False,
                 'message': 'Nenhuma dado fornecido.'
             }, status=400)
-        
-        entrada = Entrada.objects.filter(id_event=data.get('event_id')).first()
-        
-        if not entrada:
-            return JsonResponse({
-                'sucess': False,
-                'message': 'Entrada não encontrada'
-            }, status=400)
             
-        entrada.odd = data.get('odd_value')
-        entrada.odd_change = data.get('odd_change')
-        entrada.save()
+        event_origin = data.get('event_origin')
+        event_id = data.get('event_id')
+        odd = data.get('odd_value')
+        odd_change = data.get('odd_change')
         
-        return JsonResponse({
-            'success': True,
-            'message': 'Valor e status da odd atualizada com sucesso'
-        }, status=200)          
+        if event_origin == EventOrigin.SCORE_DATA.value:
+            entrada = Entrada.objects.filter(id_event=event_id).first()
+            
+            if not entrada:
+                return JsonResponse({
+                    'sucess': False,
+                    'message': 'Entrada não encontrada'
+                }, status=400)
+                
+            entrada.odd = odd
+            entrada.odd_change = odd_change
+            entrada.save()
+        
+            return JsonResponse({
+                'success': True,
+                'message': 'Valor e status da odd score data atualizada com sucesso'
+            }, status=200)  
+            
+        elif event_origin == EventOrigin.OWNER_BALL.value:
+            sf_owner_ball = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id) 
+            sf_owner_ball.odd =  odd
+            sf_owner_ball.odd_change = odd_change
+            sf_owner_ball.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Valor e status da odd owner ball atualizada com sucesso'
+            }, status=200) 
             
     except Exception as e:
         return JsonResponse({

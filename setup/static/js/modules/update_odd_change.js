@@ -1,4 +1,6 @@
 
+import { showNotification } from "./notifications.js";
+
 export async function setupUpdateOddChange() {
 
     document.addEventListener('click', async function(e) {
@@ -145,6 +147,7 @@ function updateOddCell(oddCell, newOddValue, iconClass, iconColor) {
 
 async function updateOddChangeInBackend(row, newOddValue, changeType) {
     const eventId = row.querySelector('td:first-child')?.textContent?.trim();
+    const eventOrigin = row.getAttribute('data-event-origin');
 
     if (!eventId) {
         console.error('ID do evento não encontrado para atualização no backend');
@@ -162,16 +165,23 @@ async function updateOddChangeInBackend(row, newOddValue, changeType) {
             body: JSON.stringify({
                 event_id: eventId,
                 odd_value: newOddValue,
-                odd_change: changeType
+                odd_change: changeType,
+                event_origin: eventOrigin
             })
         })
-
+        
         if (!response.ok) {
-
+            showNotification('Erro ao atualizar odd', 'danger');
+            throw new Error('Error ao atualizar odd')
+        } 
+        const data = await response.json();
+        if (data.success) {
+            showNotification(data.message, 'success');
+        } else {
+            showNotification('Erro ao atualizar odd', 'danger');
         }
-
     } catch (error) {
-        console.error('Erro ao atualizar status no backend:', error);
+        console.error('Erro ao atualizar odd no backend:', error);
     }
 
 }
@@ -189,12 +199,10 @@ function getCsrfToken() {
 }
 
 
-export async function atualizarCellOddAposEditar(eventId, currentRow, oddValueEdited) {
-
+export async function atualizarCellOddAposEditar(eventId, currentRow, oddValueEdited, eventOrigin) {
     if (!eventId && !currentRow) return;
-
     try {
-        const url = `/api/v1/odd_change/${eventId}`
+        const url = `/api/v1/odd_change/${eventId}?event_origin=${eventOrigin}`
         const response = await fetch(url, {
             method: 'GET',
             headers: {
