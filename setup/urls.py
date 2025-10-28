@@ -11,7 +11,9 @@ from analytics.views import (
     entrada_multipla, 
     atualizar_odd_change, 
     atualizar_odd_status, 
-    atualizar_statistica_overall) 
+    atualizar_statistica_overall,
+    atualizar_statistica_overall_team,
+    comparar_statistica_teams) 
 from grafico.views import (
     performace_semanal,
     resultado_aposta,
@@ -49,6 +51,8 @@ api_urlpatterns = [
     path('api/v1/odd_change/<int:id_evento>', atualizar_odd_change, name='atualizar_odd_change'),
     path('api/v1/proximo_evento', proximo_evento, name='proximo_evento'),
     path('api/v1/statistic/<int:id_evento>', atualizar_statistica_overall, name='atualizar_statistica_overall'),
+    path('api/v1/statistic/team/<int:id_team>', atualizar_statistica_overall_team, name='atualizar_statistica_overall_team'),
+    path('api/v1/statistic/compare/<int:id_home>/<int:id_away>', comparar_statistica_teams, name='comparar_statistica_teams'),
     path('api/v1/grafico/performace_semanal', performace_semanal, name="performace_semanal"),
     path('api/v1/grafico/resultado_aposta', resultado_aposta, name="resultado_aposta"),
     path('api/v1/grafico/melhor_dia_semana', melhor_dia_semana, name="melhor_dia_semana"),

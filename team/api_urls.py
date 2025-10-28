@@ -6,6 +6,7 @@ urlpatterns = [
     path('events', events, name="events"),
     path('event', get_event, name="get_event"),
     path('find', find_team, name="find_team"),
+    
 ]
 
 # API USANDO O REST FRAMEWORK

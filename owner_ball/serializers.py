@@ -22,9 +22,11 @@ class SuperFavoriteHomeBallOwnerEntrySerializer(serializers.ModelSerializer):
             'odd', 
             'home_actual', 
             'away_actual', 
-            'event_date', 
+            'event_date',
+            'id_home', 
             'name_home', 
             'icon_home',
+            'id_away',
             'name_away',
             'icon_away'
         ]

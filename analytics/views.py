@@ -691,14 +691,92 @@ def atualizar_statistica_overall(request, id_evento):
                         'statistic': statistic_result,
                         'message': 'O resultado do calculo estatico foi atualizado com sucesso'
                     }, status=200)
+                else:
+                    logger.error('Erro interno na api statistics')
                 
             except requests.exceptions.RequestException as e:
                 logger.error(f"Erro de conexão ao buscar odd-change para evento {id_evento}: {str(e)}")
                 
         except Exception as e:
                 logger.error(f"Erro geral ao chamar API de odd-change: {str(e)}") 
-            
+                
 
+def atualizar_statistica_overall_team(request, id_team):
+    if request.method == 'GET':
+        
+        try:
+            api_base_url = "http://127.0.0.1:8080"
+            try:
+                response = requests.get(
+                    f'{api_base_url}/statistic-overall/team/{id_team}',
+                    timeout=5
+                )
+                if response.status_code == 200:
+                    data = response.json()
+                    
+                    if not data['success']:
+                        return JsonResponse(data, status=404)
+                        
+                    data = data['data']
+                    
+                    return JsonResponse({
+                        'success': True,
+                        'data': data,
+                        'message': 'O resultado estatico foi recuperado com sucesso'
+                    }, status=200)
+                else:
+                    logger.error('Erro interno na api statistics')
+                
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Erro de conexão ao buscar estatistica do team {id_team}: {str(e)}")
+                
+        except Exception as e:
+                logger.error(f"Erro geral ao chamar API de estatistica do team: {str(e)}")
+          
+            
+def comparar_statistica_teams(request, id_home, id_away):
+    if request.method == 'GET':
+        event_origin = request.GET.get('event_origin')
+        id_event = request.GET.get('id_event')
+        try:
+            api_base_url = "http://127.0.0.1:8080"
+            try:
+                response = requests.get(
+                    f'{api_base_url}/statistic-compare/teams/{id_home}/{id_away}',
+                    timeout=5
+                )
+                if response.status_code == 200:
+                    data = response.json()
+                    
+                    if not data['success']:
+                        return JsonResponse(data, status=404)
+                    
+                    entrada = None
+                    data = data['data']
+                    if event_origin == EventOrigin.SCORE_DATA.value:
+                        entrada = Entrada.objects.filter(id_event=id_event).first()
+                        entrada.resultado_estatistica = data
+                         
+                    elif event_origin == EventOrigin.OWNER_BALL.value:
+                        entrada = SuperFavoriteHomeBallOwnerEntry.objects.filter(id_event=id_event).first()
+                        entrada.statistic_result = data
+                    entrada.save()
+                    
+                    return JsonResponse({
+                        'success': True,
+                        'data': data,
+                        'message': 'O resultado da comparacao estatistica foi recuperado com sucesso'
+                    }, status=200)
+                else:
+                    logger.error('Erro interno na api compare statistics')
+                
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Erro de conexão ao buscar estatistica dos times: {id_home} e {id_away}: {str(e)}")
+                
+        except Exception as e:
+                logger.error(f"Erro geral ao chamar API de comparacao estatisticas dos times: {str(e)}")
+            
+            
 @api_view(['PUT'])
 def resultado_entrada(request, format=None):
     serializer = EntryResultSuperFavoriteSerializer(data=request.data)

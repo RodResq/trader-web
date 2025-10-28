@@ -12,8 +12,10 @@ class VwMercadoOwnerBallSfHome(models.Model):
     home_actual = models.IntegerField(blank=True, name='home_actual', null=True)
     away_actual = models.IntegerField(blank=True, name='away_actual', null=True)
     data_jogo = models.DateTimeField(blank=True, name='data_jogo', null=True)
+    id_home =  models.IntegerField(null=False, name='id_home')
     home_name = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     home_icon = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    id_away =  models.IntegerField(null=False, name='id_away')
     away_name = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     away_icon = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     
@@ -63,6 +65,7 @@ class VwMercadoOwnerBallUnder2_5(models.Model):
         return f"VwMercadoOwnerBallUnder2_5[entrada_mercado={self.entrada_mercado}, data_jogo={self.data_jogo}]"
     
 
+
 class SuperFavoriteHomeBallOwnerEntry(models.Model):
     ENTRY_OPTION = [
         ("A", "accept"),
@@ -102,10 +105,12 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
     entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)
     event_vote_home = models.CharField(max_length=20, blank=False, choices=VOTACAO, default="N")   
     icon_home = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    id_home = models.IntegerField(null=True)
     name_home = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     icon_away = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
+    id_away = models.IntegerField(null=True)
     name_away = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    
+    # TODO Adcionar campo id_home_team, e Id_away_team
         
     class Meta:
         db_table = "super_favorite_home_ball_owner_entry"

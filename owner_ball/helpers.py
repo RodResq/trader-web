@@ -18,8 +18,10 @@ def dump_vw_mercado_owner_ball_sfHome_to_entrada_owner_ball() -> bool:
                     home_actual=market.home_actual,
                     away_actual=market.away_actual,
                     event_date=market.data_jogo,
+                    id_home=market.id_home,
                     name_home=market.home_name,
                     icon_home=market.icon_home_data_url,
+                    id_away=market.id_away,
                     name_away=market.away_name,
                     icon_away=market.icon_away_data_url
                 )

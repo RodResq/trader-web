@@ -4,7 +4,7 @@ import { initAceitarApostaModal } from "../aceitarApostaModal.js";
 import { setupRecusarModal } from "../recusarAposta.js";
 import { setupDesfazerAcaoModal } from "../desfazerAcao.js";
 import { setupEventVote } from '../entrada/event_vote.js';
-import { setupStatistic } from "../entrada/statistic.js";
+import { setupStatisticOwnerBall } from "./statistic_owner_ball.js";
 
 let currentPage = 1;
 let itemsPerPage = 10;
@@ -207,7 +207,15 @@ function updateOwnerBallTable(markets) {
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <li><a class="dropdown-item event-vote" data-event-id=${market.id_event} data-event-origin="owner-ball">Votacao</a></li>
-                            <li><a class="dropdown-item event-statistic" data-event-id=${market.id_event} data-event-origin="owner-ball">Estatisticas</a></li>
+                            <li><a 
+                                class="dropdown-item event-statistic-ownerball" 
+                                data-event-id=${market.id_event} 
+                                data-id-home=${market.id_home} 
+                                data-id-away=${market.id_away}  
+                                data-event-origin="owner-ball">
+                                Estatisticas
+                                </a>
+                            </li>
                             <li><a class="dropdown-item event-probability" data-event-id=${market.id_event} data-event-origin="owner-ball">Probabilidade</a></li>
                         </ul>
                     </div>
@@ -223,7 +231,7 @@ function updateOwnerBallTable(markets) {
 function updateOwnerBallPagination(pagination) {
     setTimeout(() => {
         setupEventVote();
-        setupStatistic();
+        setupStatisticOwnerBall();
     }, 1000);
 
     if (!pagination) return;
