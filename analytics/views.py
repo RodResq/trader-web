@@ -644,7 +644,6 @@ def atualizar_odd_change(request, id_evento):
 def atualizar_odd_status(request):
     try:
         data = json.loads(request.body)
-        
         if not data:
             return JsonResponse({
                 'success': False,
@@ -657,14 +656,7 @@ def atualizar_odd_status(request):
         odd_change = data.get('odd_change')
         
         if event_origin == EventOrigin.SCORE_DATA.value:
-            entrada = Entrada.objects.filter(id_event=event_id).first()
-            
-            if not entrada:
-                return JsonResponse({
-                    'sucess': False,
-                    'message': 'Entrada não encontrada'
-                }, status=400)
-                
+            entrada = get_object_or_404(Entrada, id_event=event_id) 
             entrada.odd = odd
             entrada.odd_change = odd_change
             entrada.save()
@@ -685,6 +677,18 @@ def atualizar_odd_status(request):
                 'message': 'Valor e status da odd owner ball atualizada com sucesso'
             }, status=200) 
             
+    except Entrada.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': f'Entrada score data nao existe para atualizar odd change: {str(e)}'
+        }, status=500)
+        
+    except SuperFavoriteHomeBallOwnerEntry.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': f'Entrada owner ball nao existe para atualizar odd change: {str(e)}'
+        }, status=500)
+        
     except Exception as e:
         return JsonResponse({
             'success': False,

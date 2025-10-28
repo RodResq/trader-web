@@ -178,7 +178,7 @@ async function updateOddChangeInBackend(row, newOddValue, changeType) {
         if (data.success) {
             showNotification(data.message, 'success');
         } else {
-            showNotification('Erro ao atualizar odd', 'danger');
+            showNotification(data.message, 'danger');
         }
     } catch (error) {
         console.error('Erro ao atualizar odd no backend:', error);

@@ -36,7 +36,7 @@ export function showNotification(message, type) {
                 notification.remove();
             }
         }, 300);
-    }, 5000);
+    }, 3000);
     
     const closeButton = notification.querySelector('.btn-close');
     closeButton.addEventListener('click', () => {
