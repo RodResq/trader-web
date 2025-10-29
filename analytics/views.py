@@ -43,6 +43,23 @@ from shared.utils import CustomPagination
 from owner_ball.models import SuperFavoriteHomeBallOwnerEntry
 
 logger = logging.getLogger(__name__)
+
+COLORES_WEIGHT = [
+    "#1a237e",  # Azul escuro
+    "#880e4f",  # Rosa escuro
+    "#4a148c",  # Roxo escuro
+    "#311b92",  # Índigo escuro
+    "#1b5e20",  # Verde escuro
+    "#33691e",  # Verde lima escuro
+    "#f57f17",  # Amarelo escuro
+    "#e65100",  # Laranja escuro
+    "#bf360c",  # Laranja avermelhado
+    "#3e2723",  # Marrom escuro
+    "#263238",  # Cinza azulado
+    "#b71c1c",  # Vermelho escuro
+    "#01579b",  # Azul claro escuro
+    "#006064",  # Ciano escuro
+]
       
 
 @login_required
@@ -441,7 +458,7 @@ def entrada_multipla(request):
                 }, status=400)
             
             cod_multipla = f"ML-{timezone.now().strftime('%Y%m%d%H%M%S')}"
-            color_multipla = "#{:06x}".format(random.randint(0, 0xFFFFFF))
+            color_multipla = random.choice(COLORES_WEIGHT)
             
             for entrada in entradas:
                 aposta = Aposta.objects.filter(entrada__id_event=entrada.id_event).first()
@@ -494,7 +511,7 @@ def entrada_multipla(request):
                         entrada.opcao_entrada = "R"
                         
                     entrada.save()
-                    aposta.save()
+                    # aposta.save()
                     
                 # Atualizar saldo disponível do ciclo
                 ciclo.valor_disponivel_entrada -= valor_entrada_total
@@ -505,6 +522,7 @@ def entrada_multipla(request):
                 'message': f'Múltipla {"aceita" if action == "aceitar" else "recusada"} com sucesso!',
                 'data': {
                     'cod_multipla': cod_multipla,
+                    'color_multipla': color_multipla,
                     'odd_combinada': float(odd_combinada),
                     'quantidade_eventos': len(event_ids),
                     'ciclo': ciclo.id
