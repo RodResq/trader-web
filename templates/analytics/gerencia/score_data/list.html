@@ -44,14 +44,6 @@
                 <td>{{ gerencia.valor_total_entrada }}</td>
                 <td>{{ gerencia.valor_total_retorno }}</td>
                 <td>Em Desenvolvimento</td>
-                {% comment %} <td class="text-center">
-                <a href="{% url 'analytics:gerencia:gerencia_edit' gerencia.pk %}" class="btn btn-sm btn-primary editar-gerencia-resultado" title="Editar">
-                    <i class="bi bi-pencil"></i>
-                </a>
-                <a href="{% url 'analytics:gerencia:gerencia_delete' gerencia.pk %}" class="btn btn-sm btn-danger excluir-gerencia-resultado" title="Excluir">
-                    <i class="bi bi-trash"></i>
-                </a>
-                </td> {% endcomment %}
             </tr>
             <tr class="collapse" id="detalhesLucro{{ gerencia.pk }}">
                 <td colspan="6">
@@ -98,7 +90,7 @@
                             </td>
                             <td>
                             {% if aposta.is_multipla %}
-                                <span>{{ aposta.cod_multipla }}</span>
+                                <span style="background-color: {{ aposta.color_multipla }}">{{ aposta.cod_multipla }}</span>
                             {% endif %}
                             </td>
                             <td>{{ aposta.entrada.odd }}</td>

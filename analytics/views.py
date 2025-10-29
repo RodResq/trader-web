@@ -4,6 +4,7 @@ import asyncio
 import aiohttp
 import requests
 import logging
+import random
 
 from decimal import Decimal
 from datetime import datetime
@@ -440,6 +441,7 @@ def entrada_multipla(request):
                 }, status=400)
             
             cod_multipla = f"ML-{timezone.now().strftime('%Y%m%d%H%M%S')}"
+            color_multipla = "#{:06x}".format(random.randint(0, 0xFFFFFF))
             
             for entrada in entradas:
                 aposta = Aposta.objects.filter(entrada__id_event=entrada.id_event).first()
@@ -485,7 +487,8 @@ def entrada_multipla(request):
                             valor=valor_entrada_rateado,
                             retorno=retorno_esperado,
                             is_multipla = True,
-                            cod_multipla = cod_multipla
+                            cod_multipla = cod_multipla,
+                            color_multipla = color_multipla
                         )
                     elif action == 'recusar':
                         entrada.opcao_entrada = "R"

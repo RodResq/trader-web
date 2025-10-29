@@ -136,6 +136,7 @@ class Aposta(models.Model):
     entrada = models.ForeignKey(Entrada, on_delete=models.CASCADE, related_name='apostas')
     ciclo = models.ForeignKey(Ciclo, db_column="id_ciclo", on_delete=models.CASCADE, null=True, blank=True, related_name="aposta", verbose_name="ciclo")
     is_multipla = models.BooleanField(default=False, verbose_name="[0-simples, 1-multipla]")
+    color_multipla = models.CharField(max_length=20, blank=True, null=True)
     cod_multipla = models.CharField(max_length=20, blank=True, null=True)
     resultado = models.CharField(
         max_length=1,
