@@ -9,15 +9,19 @@ from decimal import Decimal
 from datetime import datetime
 from .models import GerenciaCiclo
 from .forms import GerenciaForm
+from owner_ball.models import CycleManagerOwnerBall, BetOwnerBall
 
 
 def gerencia(request):
     """Exibe a lista de registros de lucro."""
-    gerencias = GerenciaCiclo.objects.all()
+    manger_score_data = GerenciaCiclo.objects.all()
+    cycle_maneger_owner_ball = CycleManagerOwnerBall.objects.all();
     
-    resultado_apostas = []
     
-    for gerencia in gerencias:
+    results_bet_score_data = []
+    results_bet_owner_ball = []
+    
+    for gerencia in manger_score_data:
         apostas = Aposta.objects.filter(ciclo=gerencia.ciclo).all()
         
         quantiade_apostas = apostas.count()
@@ -36,9 +40,34 @@ def gerencia(request):
             'apostas': apostas
         }
         
-        resultado_apostas.append(resultado_dict)
+        results_bet_score_data.append(resultado_dict)
+        
+    for manager in cycle_maneger_owner_ball:
+        bets = BetOwnerBall.objects.filter(cycle_owner_ball=manager.cycle).all()
+        quantity_entries = bets.count()
+        total_return_values = bets.aggregate(
+            total_value=Sum('return_bet', default=0)
+        )['total_value']
+        
+        if quantity_entries > 0:
+            if total_return_values != manager.total_entries_value:
+                manager.total_return_value = total_return_values
+                manager.total_entries_number = quantity_entries
+                manager.save()
+        
+        result_dict = {
+            'manager': manager,
+            'bets': bets
+        }
+        
+        results_bet_owner_ball.append(result_dict)
     
-    return render(request, 'analytics/gerencia/gerencia.html', {'resultado_apostas': resultado_apostas})
+    return render(request, 'analytics/gerencia/gerencia.html', 
+                    {
+                      'resultado_apostas': results_bet_score_data,
+                      'results_bet_owner_ball': results_bet_owner_ball
+                    }
+                  )
 
 
 def gerencia_edit(request, pk=None):
