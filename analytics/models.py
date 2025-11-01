@@ -85,9 +85,12 @@ class Entrada(models.Model):
         default=0.0
     )
     home_actual = models.IntegerField(blank=False, null=False, default=0)
+    home_win = models.IntegerField(blank=False, null=False, default=0)
     home_vote = models.IntegerField(blank=False, null=False, default=0)
     away_actual = models.IntegerField(blank=True, null=True, default=0)
+    away_win = models.IntegerField(blank=False, null=False, default=0)
     away_vote = models.IntegerField(blank=True, null=True, default=0)
+    draw_probability = models.IntegerField(blank=True, null=True, default=0)
     data_jogo = models.DateTimeField(blank=True, null=True)
     opcao_entrada = models.CharField(max_length=20, blank=False, choices=OPCOES_ENTRADA, default="W")
     resultado_estatistica = models.BooleanField(default=0)    

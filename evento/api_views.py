@@ -4,9 +4,95 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.db.models.functions import Abs
 from django.db.models import F, Q
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.exceptions import NotFound
+
 from datetime import timedelta
 
 from analytics.models import Entrada
+from shared.enums import EventOriginEnum
+
+from owner_ball.models import SuperFavoriteHomeBallOwnerEntry
+
+import requests
+
+
+
+@api_view(['GET'])
+def win_probability(request, id_event):
+    if not id_event:
+        return Response({
+            'sucess': False,
+            'message': 'ID Event passado como paramentro'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    event_origin = request.query_params.get('event_origin')
+    if not event_origin:
+        return Response({
+            'sucess': False,
+            'message': 'Event Orgin nao informado'
+        }, status=status.HTTP_400_BAD_REQUEST)
+        
+    try:
+        api_base_url = "http://127.0.0.1:8080"
+        response = requests.get(
+            f'{api_base_url}/event/{id_event}/win_probability', 
+            timeout=5
+        )
+        if response.status_code == status.HTTP_200_OK:
+            data = response.json()
+            
+            if not data['success']:
+                return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+            if event_origin == EventOriginEnum.SCORE_DATA.value:
+                entrada = Entrada.objects.get(id_event=id_event)
+            
+                if not entrada:
+                    return Response({
+                        'success': False,
+                        'message': 'Entrada Score Date nao encontrada'
+                    }, status=status.HTTP_404_NOT_FOUND)
+                
+                entrada.home_win = int(data['data']['home_win'])
+                entrada.away_win = int(data['data']['away_win']) 
+                entrada.draw_probability = int(data['data']['draw'])
+                entrada.save()
+            
+            elif event_origin == EventOriginEnum.OWNER_BALL.value:
+                owner_ball_entry = SuperFavoriteHomeBallOwnerEntry.objects.get(id_event=id_event)
+                
+                if not owner_ball_entry:
+                    return Response({
+                        'success': False,
+                        'message': 'Entrada owner ball nao encontrada'
+                    }, status=status.HTTP_404_NOT_FOUND)
+                    
+                owner_ball_entry.home_win = int(data['data']['home_win'])
+                owner_ball_entry.away_win = int(data['data']['away_win'])
+                owner_ball_entry.save()
+            
+            return Response(data, status=status.HTTP_200_OK)    
+        else:
+            raise NotFound()    
+            
+    except NotFound as e:
+        return Response({
+            'success': False,
+            'message': e.detail
+        }, status=status.HTTP_404_NOT_FOUND)
+    
+    except Exception as e:
+        return Response({
+            'success': False,
+            'message': e.detail
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    
+    
 
 
 @require_http_methods(['GET'])

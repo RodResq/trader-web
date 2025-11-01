@@ -99,7 +99,10 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
         default=0.0
     )
     home_actual = models.IntegerField(blank=False, null=False, default=0)
+    home_win = models.IntegerField(blank=False, null=False, default=0)
     away_actual = models.IntegerField(blank=True, null=True, default=0)
+    away_win = models.IntegerField(blank=True, null=True, default=0)
+    draw_probability = models.IntegerField(blank=True, null=True, default=0)
     event_date = models.DateTimeField(blank=True, null=True)
     entry_option = models.CharField(max_length=20, blank=False, choices=ENTRY_OPTION, default="W")
     statistic_result = models.BooleanField(default=0)
@@ -111,7 +114,6 @@ class SuperFavoriteHomeBallOwnerEntry(models.Model):
     icon_away = models.TextField(db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
     id_away = models.IntegerField(null=True)
     name_away = models.CharField(max_length=255, db_collation='utf8mb4_0900_ai_ci', blank=True, null=True)
-    # TODO Adcionar campo id_home_team, e Id_away_team
         
     class Meta:
         db_table = "super_favorite_home_ball_owner_entry"

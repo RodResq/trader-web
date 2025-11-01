@@ -193,8 +193,8 @@
                           <th class="text-center col-status">Status</th>
                           <th class="col-mercado">Evento</th>
                           <th class="text-center col-odd">Odd</th>
-                          <th class="col-home">HWin[odd/Vote]</th>
-                          <th class="col-away">AWin[odd/Vote]</th>
+                          <th class="col-home">HWin[odd/Win]</th>
+                          <th class="col-away">AWin[odd/Win]</th>
                           <th class="col-data">Data</th>
                           <th class="text-center col-acoes">Ações</th>
                         </tr>
@@ -295,8 +295,8 @@
                                 <i class="bi bi-arrow-clockwise"></i>
                               </a>
                             </td>
-                            <td class="text-light-emphasis">{{ mercado.home_actual }}% / <span id="home-vote">{{ mercado.home_vote }}</span>%</td>
-                            <td class="text-light-emphasis">{{ mercado.away_actual }}% / <span id="home-vote">{{ mercado.home_vote }}</span>%</td>
+                            <td class="text-light-emphasis">{{ mercado.home_actual }}% / <span class="home-win">{{ mercado.home_win }}</span>%</td>
+                            <td class="text-light-emphasis">{{ mercado.away_actual }}% / <span class="away-win">{{ mercado.away_win }}</span>%</td>
                             <td class="text-light-emphasis">{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
                             <td>
                               <div class="d-grid gap-4 d-md-block">

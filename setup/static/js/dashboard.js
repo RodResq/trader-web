@@ -28,6 +28,7 @@ import { setupEventVote } from './modules/entrada/event_vote.js';
 import { setupStatistic } from './modules/entrada/statistic.js';
 import { setupLinkActivateManager } from './link_activate_manager.js';
 import { initCycleOwnerBall } from './modules/owner_ball/cycle/cycle_owner_ball.js';
+import { setupWinProbability } from './modules/entrada/win_probability.js';
 
 
 
@@ -117,6 +118,10 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         setupStatistic();
     }, 1000);
+
+    setTimeout(() => {
+        setupWinProbability();
+    }, 1000)
     
     // Inicializa componentes de paginação
     if (typeof initPagination === "function") {

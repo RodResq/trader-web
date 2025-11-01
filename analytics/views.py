@@ -8,7 +8,6 @@ import random
 
 from decimal import Decimal
 from datetime import datetime
-from enum import Enum
 
 from django.utils import timezone
 from django.db import transaction
@@ -41,6 +40,7 @@ from ciclo.models import Ciclo
 from shared.utils import CustomPagination
 
 from owner_ball.models import SuperFavoriteHomeBallOwnerEntry
+from shared.enums import EventOriginEnum
 
 logger = logging.getLogger(__name__)
 
@@ -307,7 +307,7 @@ def editar_odd(request):
                     'message': 'Odd inválida. Valor mínimo é 1.01.'
                 }, status=400)
               
-            if event_origin ==  EventOrigin.SCORE_DATA.value:
+            if event_origin ==  EventOriginEnum.SCORE_DATA.value:
                 entrada = get_object_or_404(Entrada, id_event=event_id)
                 entrada.odd = nova_odd
                 entrada.save()
@@ -321,7 +321,7 @@ def editar_odd(request):
                         'mercado': entrada.mercado
                     }
                 })
-            elif event_origin == EventOrigin.OWNER_BALL.value:
+            elif event_origin == EventOriginEnum.OWNER_BALL.value:
                 super_favorite_ob = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id)
                 super_favorite_ob.odd = nova_odd
                 super_favorite_ob.save()
@@ -676,7 +676,7 @@ def atualizar_odd_status(request):
         odd = data.get('odd_value')
         odd_change = data.get('odd_change')
         
-        if event_origin == EventOrigin.SCORE_DATA.value:
+        if event_origin == EventOriginEnum.SCORE_DATA.value:
             entrada = get_object_or_404(Entrada, id_event=event_id) 
             entrada.odd = odd
             entrada.odd_change = odd_change
@@ -687,7 +687,7 @@ def atualizar_odd_status(request):
                 'message': 'Valor e status da odd score data atualizada com sucesso'
             }, status=200)  
             
-        elif event_origin == EventOrigin.OWNER_BALL.value:
+        elif event_origin == EventOriginEnum.OWNER_BALL.value:
             sf_owner_ball = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=event_id) 
             sf_owner_ball.odd =  odd
             sf_owner_ball.odd_change = odd_change
@@ -736,11 +736,11 @@ def atualizar_statistica_overall(request, id_evento):
                         
                     entrada = None
                     statistic_result = data['resultado']
-                    if event_origin == EventOrigin.SCORE_DATA.value:
+                    if event_origin == EventOriginEnum.SCORE_DATA.value:
                         entrada = Entrada.objects.filter(id_event=id_evento).first()
                         entrada.resultado_estatistica = statistic_result
                          
-                    elif event_origin == EventOrigin.OWNER_BALL.value:
+                    elif event_origin == EventOriginEnum.OWNER_BALL.value:
                         entrada = SuperFavoriteHomeBallOwnerEntry.objects.filter(id_event=id_evento).first()
                         entrada.statistic_result = statistic_result
                     entrada.save()
@@ -812,11 +812,11 @@ def comparar_statistica_teams(request, id_home, id_away):
                     
                     entrada = None
                     data = data['data']
-                    if event_origin == EventOrigin.SCORE_DATA.value:
+                    if event_origin == EventOriginEnum.SCORE_DATA.value:
                         entrada = Entrada.objects.filter(id_event=id_event).first()
                         entrada.resultado_estatistica = data
                          
-                    elif event_origin == EventOrigin.OWNER_BALL.value:
+                    elif event_origin == EventOriginEnum.OWNER_BALL.value:
                         entrada = SuperFavoriteHomeBallOwnerEntry.objects.filter(id_event=id_event).first()
                         entrada.statistic_result = data
                     entrada.save()
@@ -878,12 +878,7 @@ def resultado_entrada(request, format=None):
             'success': False,
             'message': 'Erro interno do servidor ao processar a solicitação.'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
-        
-
-class EventOrigin(Enum):
-    SCORE_DATA = "score-data"
-    OWNER_BALL = "owner-ball"
-                       
+                               
             
 def get_event_vote(request):
     if request.method == 'GET':
@@ -905,9 +900,9 @@ def get_event_vote(request):
             vote_draw = data['data']['vote']['voteDraw']
             
             entrada = None
-            if event_origin == EventOrigin.SCORE_DATA.value:
+            if event_origin == EventOriginEnum.SCORE_DATA.value:
                 entrada = get_object_or_404(Entrada, id_event=id_event)
-            elif event_origin == EventOrigin.OWNER_BALL.value:
+            elif event_origin == EventOriginEnum.OWNER_BALL.value:
                 entrada = get_object_or_404(SuperFavoriteHomeBallOwnerEntry, id_event=id_event)
             
             if entrada:
