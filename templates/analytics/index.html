@@ -51,32 +51,11 @@
                 <div class="card border-left-success shadow h-100 py-2">
                   <div class="card-body">
                     <div class="row no-gutters">
-                      <div class="col-md-4">
-                        <div class="font-weight-bold text-successmb-1">
-                          Qtd. Eventos
-                        </div>
-                        <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex">
-                          <span class="text-gray-300"> <span class="bi bi-box2 text-gray-300"></span> {{ qtd_eventos }}</span>
-                        </div>
-                        <div class="font-weight-bold text-success mt-1" id="proximoEventoLabel">
-                          Próximo Evento
-                        </div>
-                        <div class="h6 mb-0 font-weight-bold text-gray-800">
-                          <span class="fs-4 text-gray-300" id="proximoEvento"></span>
-                        </div>
-                        <div class="font-weight-bold text-success mt-1" id="tempoRestandoLabel">
-                          Tempo Restando
-                        </div>
-                        <div class="h6 mb-0 font-weight-bold text-gray-800">
-                          <span class="fs-4 text-gray-300" id="tempoRestando"></span>
-                        </div>
-                      </div>
                       <div class="col md-2">
                         <div id="graficoMelhorDia">
                           <!-- O gráfico será renderizado aqui via JavaScript -->
                         </div>
                       </div>
-                      
                     </div>
                   </div>
                 </div>
@@ -159,7 +138,7 @@
             <div class="col-lg-12">
               <div class="card shadow h-100 mb-4" id="marketsCard">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Lista de Mercados</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Socore Data ({{ qtd_eventos }})</h6>
                   <div class="d-flex align-items-center">
                     <div class="input-group date-filter">
                       <input type="text" 
