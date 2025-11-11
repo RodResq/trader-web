@@ -795,8 +795,6 @@ def atualizar_statistica_overall_team(request, id_team):
             
 def comparar_statistica_teams(request, id_home, id_away):
     if request.method == 'GET':
-        event_origin = request.GET.get('event_origin')
-        id_event = request.GET.get('id_event')
         try:
             api_base_url = "http://127.0.0.1:8080"
             try:
@@ -810,22 +808,18 @@ def comparar_statistica_teams(request, id_home, id_away):
                     if not data['success']:
                         return JsonResponse(data, status=404)
                     
-                    entrada = None
                     data = data['data']
-                    if event_origin == EventOriginEnum.SCORE_DATA.value:
-                        entrada = Entrada.objects.filter(id_event=id_event).first()
-                        entrada.resultado_estatistica = data
-                         
-                    elif event_origin == EventOriginEnum.OWNER_BALL.value:
-                        entrada = SuperFavoriteHomeBallOwnerEntry.objects.filter(id_event=id_event).first()
-                        entrada.statistic_result = data
-                    entrada.save()
-                    
-                    return JsonResponse({
-                        'success': True,
-                        'data': data,
-                        'message': 'O resultado da comparacao estatistica foi recuperado com sucesso'
-                    }, status=200)
+                    if data:
+                        return JsonResponse({
+                            'success': True,
+                            'data': data,
+                            'message': 'Dados da comparacao recuperado com sucesso'
+                        }, status=200)
+                    else:
+                        return JsonResponse({
+                            'success': False,
+                            'message': 'Erro ao recuperar dados da comparacao'
+                        }, status=500)
                 else:
                     logger.error('Erro interno na api compare statistics')
                 

@@ -97,9 +97,11 @@ class Entrada(models.Model):
     entry_result = models.CharField(max_length=20, blank=False, choices=ENTRY_RESULT, null=True)
     next_event_priority = models.BooleanField(default=0)
     event_vote_home = models.CharField(max_length=20, blank=False, choices=VOTACAO, default="N")
+    id_home = models.BigIntegerField(null=True)
+    id_away = models.BigIntegerField(null=True)
         
     def __str__(self):
-        return f"Entrada - {self.id_event} - mercado: {self.mercado} - odd: {self.odd}"    
+        return f"Entrada - {self.id_event} - id_home: {self.id_home} - id_away: {self.id_away} - mercado: {self.mercado} - odd: {self.odd}"    
     
     
     def save(self, *args, **kwargs):

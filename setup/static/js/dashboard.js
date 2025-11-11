@@ -29,6 +29,7 @@ import { setupStatistic } from './modules/entrada/statistic.js';
 import { setupLinkActivateManager } from './link_activate_manager.js';
 import { initCycleOwnerBall } from './modules/owner_ball/cycle/cycle_owner_ball.js';
 import { setupWinProbability } from './modules/entrada/win_probability.js';
+import { setupCompareTeam } from './modules/entrada/compare_team.js';
 
 
 
@@ -123,6 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
         setupWinProbability();
     }, 1000)
     
+
+    // Incializa a busca api compare team
+    setTimeout(() => {
+        setupCompareTeam();
+    }, 1000);
+
+
     // Inicializa componentes de paginação
     if (typeof initPagination === "function") {
         initPagination();
