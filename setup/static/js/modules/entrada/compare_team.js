@@ -18,6 +18,8 @@ export function setupCompareTeam() {
     btnCompareTeam.forEach(button => {
         button.addEventListener('click', async function(e) {
             e.preventDefault();
+            const idEvent = this.getAttribute('data-event-id');
+            const eventOrigin = this.getAttribute('data-event-origin');
             const idHome = this.getAttribute('data-home-id');
             nameHome = this.getAttribute('data-home-name');
             const idAway = this.getAttribute('data-away-id');
@@ -25,7 +27,7 @@ export function setupCompareTeam() {
 
             if (!idHome || !idAway) return;
 
-            const url = `api/v1/statistic/compare/${idHome}/${idAway}`;
+            const url = `api/v1/statistic/compare/${idHome}/${idAway}?event_origin=${eventOrigin}&id_event=${idEvent}`;
 
             try {
                 const response = await fetch(url, {

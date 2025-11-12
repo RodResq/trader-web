@@ -15,9 +15,6 @@ export function setupStatisticOwnerBall() {
             const idAway = this.getAttribute('data-id-away')
             
             if (!idHome && !idAway) showNotification('Id Home e Id Away nao encontrados', 'danger');
-
-            console.log('>>>>>>>>>>>> IDHome: ', idHome);
-            console.log('>>>>>>>>>>>> IDAway: ', idAway);
             
             const eventOrigin = this.getAttribute('data-event-origin');
             
