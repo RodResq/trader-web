@@ -8,7 +8,6 @@ import { initEntradasEmLote } from './modules/entradas_em_lote.js';
 import { setupGerenciaResultado } from './modules/gerencia_aposta/gerencia_resultado.js';
 import { calcularValorDisponivelEntrada } from './modules/ciclo/calcula_disponivel_entrada.js';
 import { calcularDataFinalCiclo } from './modules/ciclo/calculo_data_final_ciclo.js';
-import { initMultiplasHandlers } from './modules/multiplas.js';
 import { atualizaIconeResultado } from './modules/gerencia_aposta/icone_lista_aposta.js';
 import { initThemeToggler } from './theme_toggler.js';
 import { setupApiOwnerBallSuperFavoriteHome } from './modules/owner_ball/api_owner_ball_super_favorite_home.js';
@@ -21,7 +20,6 @@ import { setupGraficoResultadoTotalGanhos } from './modules/gerencia_aposta/graf
 import { setupGraficoMelhorDia } from './modules/evento/grafico_melhor_dia.js'
 import { setupGraficoDesempenhoSemanal } from './modules/gerencia_aposta/gerencia_graficos_principal.js';
 import { setupProgressPerformace } from './modules/performace/grafico_performace.js';
-import { setupProximoEvento } from './modules/evento/proximo_evento.js'
 import { setupCardEventTeam } from './modules/team/card_event.js';
 import { setupFindTeam } from './modules/team/pesquisar.js';
 import { setupEventVote } from './modules/entrada/event_vote.js';
@@ -30,6 +28,7 @@ import { setupLinkActivateManager } from './link_activate_manager.js';
 import { initCycleOwnerBall } from './modules/owner_ball/cycle/cycle_owner_ball.js';
 import { setupWinProbability } from './modules/entrada/win_probability.js';
 import { setupCompareTeam } from './modules/entrada/compare_team.js';
+import { setupBatchEntriesOwnerBall } from './modules/owner_ball/entry/batch_entries_owner_ball.js';
 
 
 
@@ -57,8 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializa checklist
     setupRefreshButton();
     
-    // Inicializa funcionalidades da Api
+    // Inicializa Entrada em Lote Score Data
     initEntradasEmLote();
+
+    // Inicializa entradas em lote Owner Ball
+    setupBatchEntriesOwnerBall();
     
     // Inicializa API Owner Ball
     setupApiOwnerBallSuperFavoriteHome();
@@ -154,7 +156,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // Permite o acesso global aos módulos para debugging
 window.modules = {
     table: { initTableHandlers },
-    multiplas: { initMultiplasHandlers },
     ownerBall: { setupApiOwnerBall: setupApiOwnerBallSuperFavoriteHome },
     ownerBallFavoritoHome: { setupApiOwnerBallFavoritoHome }
 };

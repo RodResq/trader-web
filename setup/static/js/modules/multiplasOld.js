@@ -1,6 +1,6 @@
 import { updateEntryOptionIcon } from './table.js';
 
-export function initMultiplasHandlers() {
+export function initMultiplasHandlersOld() {
     const multiplaModal = document.getElementById('entradasMultiplasModal');
     const mostrarCheckListBtn = document.getElementById('mostrarCheckList');
     const marketsTable = document.getElementById('marketsTable');

@@ -237,13 +237,6 @@ function setupOwnerBallFavoritoHomeEventListeners() {
         })
     }
 
-    const checklistBtn = document.getElementById('mostrarCheckListOwnerBallFavoritoHome');
-    if (checklistBtn) {
-        checklistBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Múltiplas Owner Ball - Em desenvolvimento');
-        });
-    }
 }
 
 

@@ -235,14 +235,6 @@ function setupOwnerBallUnder25EventListeners() {
         })
     }
 
-    const checklistBtn = document.getElementById('mostrarCheckListOwnerBallUnder25');
-    if (checklistBtn) {
-        checklistBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Múltiplas Owner Ball - Em desenvolvimento');
-            // Implementar funcionalidade de múltiplas se necessário
-        });
-    }
 }
 
 

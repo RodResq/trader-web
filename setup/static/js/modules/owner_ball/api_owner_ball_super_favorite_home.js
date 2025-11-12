@@ -367,15 +367,6 @@ function setupOwnerBallEventListeners() {
         })
     }
 
-    const checklistBtn = document.getElementById('mostrarCheckListOwnerBall');
-    if (checklistBtn) {
-        checklistBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Múltiplas Owner Ball - Em desenvolvimento');
-            // Implementar funcionalidade de múltiplas se necessário
-        });
-    }
-
     // carrega módulos necessários
     setupResultadoEntradaModal();
     setupEditarModal();

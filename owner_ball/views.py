@@ -199,4 +199,44 @@ class CycleOwnerBallView(APIView):
             
             
 
+class CycleOwnerBallCheckDate(APIView):
+    
+    def get(self, request, date_str):
+        try:
+            from datetime import datetime
+            check_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+            
+            cycle = CycleOwnerBall.objects.filter(
+                start_date__lte=check_date,
+                end_date__gte=check_date
+            ).first()
+            
+            if cycle:
+                serializer = CycleOwnerBallSerializer(cycle)
+                return Response({
+                    'success': True,
+                    'exists': True,
+                    'message': 'Data encontrada em ciclo(s)',
+                    'data': serializer.data
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({
+                    'success': True,
+                    'exists': False,
+                    'message': 'Date procurada nao existe em nenhum ciclo',
+                    'data': []
+                }, status=status.HTTP_200_OK)
                 
+        except ValueError:
+            return Response({
+                'success': False,
+                'exists': False,
+                'message': 'Data nao encontrada em nenhum periodo de ciclo',
+                'data': []
+            }, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error(f'Erro ao verificar data no servidor: {str(e)}')
+            return Response({
+                'success': False,
+                'message': 'Erro interno no servidor'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)                 
