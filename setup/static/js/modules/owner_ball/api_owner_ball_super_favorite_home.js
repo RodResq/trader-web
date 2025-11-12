@@ -229,6 +229,15 @@ function updateOwnerBallTable(markets) {
                                 </a>
                             </li>
                             <li><a class="dropdown-item event-probability" data-event-id=${market.id_event} data-event-origin="owner-ball">Probabilidade</a></li>
+                            <li><a 
+                                class="dropdown-item compare-team" 
+                                data-home-id=${market.id_home} 
+                                data-home-name=${market.name_home} 
+                                data-away-id=${market.id_away}  
+                                data-away-name=${market.name_away} 
+                                data-event-origin="owner-ball">
+                                Comparar Times
+                            </a></li>
                         </ul>
                     </div>
                 </td>

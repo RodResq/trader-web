@@ -115,6 +115,7 @@ function renderizarGrafico(dados) {
     const config = {
         type: 'radar',
         data: data,
+        fill: true,
         options: {
             plugins: {
                 legend: {

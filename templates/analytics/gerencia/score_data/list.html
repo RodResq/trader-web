@@ -22,8 +22,8 @@
             <th>Categoria</th>
             <th>Ciclo</th>
             <th>Qtd. Entradas</th>
-            <th>Valor Total Entradas (R$)</th>
-            <th>Valor Total Retornado (R$)</th>
+            <th>Valor Investido (R$)</th>
+            <th>ROI (R$)</th>
             <th>Performace</th>
             {% comment %} <th class="text-center">Ações</th> {% endcomment %}
             </tr>
@@ -90,7 +90,8 @@
                             </td>
                             <td>
                             {% if aposta.is_multipla %}
-                                <span style="background-color: {{ aposta.color_multipla }}">{{ aposta.cod_multipla }}</span>
+                                <span class="border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
+                                    style="border-radius: 10px; background-color: {{ aposta.color_multipla }}">{{ aposta.cod_multipla }}</span>
                             {% endif %}
                             </td>
                             <td>{{ aposta.entrada.odd }}</td>

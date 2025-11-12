@@ -55,7 +55,7 @@ COLORES_WEIGHT = [
     "#e65100",  # Laranja escuro
     "#bf360c",  # Laranja avermelhado
     "#3e2723",  # Marrom escuro
-    "#263238",  # Cinza azulado
+    "#F54927",  # Vermelho claro
     "#b71c1c",  # Vermelho escuro
     "#01579b",  # Azul claro escuro
     "#006064",  # Ciano escuro
@@ -81,8 +81,8 @@ def index(request, format=None):
     
     _verificar_mudanca_odd(entradas)
     
+    total_investido = GerenciaCiclo.objects.aggregate(total=Sum('valor_total_entrada'))
     soma_retorno = GerenciaCiclo.objects.aggregate(total=Sum('valor_total_retorno'))
-    retorno_atual = GerenciaCiclo.objects.exclude(valor_total_retorno=0).order_by('-id').first()
     
     paginator = Paginator(entradas, items_per_page)
     
@@ -103,8 +103,9 @@ def index(request, format=None):
         'qtd_ciclos': qtd_ciclos,
         'ciclo_atual': ciclo_atual.id,
         'ciclo_atual_disponivel': ciclo_atual.valor_disponivel_entrada,
+        'total_investido': total_investido['total'],
         'soma_total_retorno': soma_retorno['total'],
-        'retorno_atual': retorno_atual.valor_total_retorno,
+        'ganho_perda': (soma_retorno['total'] - total_investido['total']),
         'items_per_page': items_per_page
     })
 
