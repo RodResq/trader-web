@@ -39,7 +39,7 @@ from gerencia.models import GerenciaCiclo
 from ciclo.models import Ciclo 
 from shared.utils import CustomPagination
 
-from owner_ball.models import SuperFavoriteHomeBallOwnerEntry
+from owner_ball.models import SuperFavoriteHomeBallOwnerEntry, BetOwnerBall, CycleOwnerBall
 from shared.enums import EventOriginEnum
 
 logger = logging.getLogger(__name__)
@@ -431,9 +431,6 @@ def aceitar_aposta(request):
     
 @require_POST
 def entrada_multipla(request):
-    """
-    View para processamento de entradas múltiplas (aceitar ou recusar)
-    """
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -443,92 +440,160 @@ def entrada_multipla(request):
             valor_entrada_rateado = Decimal(str(data.get('valor_entrada_rateado', 0)))
             odd_combinada = Decimal(str(data.get('odd_combinada', 1.0)))
             retorno_esperado = Decimal(str(data.get('retorno_esperado', 0)))
+            event_origin = str(data.get('event_origin'))
+            cycle_id = Decimal(str(data.get('cycle_id')))
             
             if not event_ids or action not in ['aceitar', 'recusar']:
                 return JsonResponse({
                     'success': False,
                     'message': 'Parâmetros inválidos.'
                 }, status=400)
-            
-            entradas = Entrada.objects.filter(id_event__in=event_ids)
-            
-            if len(entradas) != len(event_ids):
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Alguns eventos não foram encontrados.'
-                }, status=400)
-            
+                
             cod_multipla = f"ML-{timezone.now().strftime('%Y%m%d%H%M%S')}"
             color_multipla = random.choice(COLORES_WEIGHT)
             
-            for entrada in entradas:
-                aposta = Aposta.objects.filter(entrada__id_event=entrada.id_event).first()
+            if event_origin == EventOriginEnum.SCORE_DATA.value:
+                entradas = Entrada.objects.filter(id_event__in=event_ids)
                 
-                if aposta and aposta.is_multipla:
+                if len(entradas) != len(event_ids):
                     return JsonResponse({
                         'success': False,
-                        'message': f'O evento {entrada.id_event} já faz parte de uma múltipla.'
-                    }, status=400)
-            
-            ciclos_validos = Ciclo.objects.filter(Q(data_inicial__lte=max(entrada.data_jogo for entrada in entradas)))
-            
-            if not ciclos_validos.exists():
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Não existe um ciclo válido para esta múltipla.'
-                }, status=400)
-            
-            ciclo = ciclos_validos.order_by('-id').first()
-            
-            if action == 'aceitar':
-                if valor_entrada_total <= 0:
-                    return JsonResponse({
-                        'success': False,
-                        'message': 'Valor de entrada inválido.'
+                        'message': 'Alguns eventos não foram encontrados.'
                     }, status=400)
                 
-                if valor_entrada_total > ciclo.valor_disponivel_entrada:
-                    return JsonResponse({
-                        'success': False,
-                        'message': f'Valor excede o disponível (R$ {ciclo.valor_disponivel_entrada})'
-                    }, status=400)
-            
-            # Processar cada entrada
-            with transaction.atomic():
                 for entrada in entradas:
-                    if action == 'aceitar':
-                        entrada.opcao_entrada = "A"
-                        # Criar registro de aposta
-                        aposta = Aposta.objects.create(
-                            entrada=entrada,  
-                            ciclo=ciclo,
-                            valor=valor_entrada_rateado,
-                            retorno=retorno_esperado,
-                            is_multipla = True,
-                            cod_multipla = cod_multipla,
-                            color_multipla = color_multipla
-                        )
-                    elif action == 'recusar':
-                        entrada.opcao_entrada = "R"
-                        
-                    entrada.save()
-                    # aposta.save()
+                    aposta = Aposta.objects.filter(entrada__id_event=entrada.id_event).first()
+                    if aposta and aposta.is_multipla:
+                        return JsonResponse({
+                            'success': False,
+                            'message': f'O evento {entrada.id_event} já faz parte de uma múltipla.'
+                        }, status=400)
+                
+                ciclos_validos = Ciclo.objects.filter(Q(data_inicial__lte=max(entrada.data_jogo for entrada in entradas)))
+                
+                if not ciclos_validos.exists():
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'Não existe um ciclo válido para esta múltipla.'
+                    }, status=400)
+                
+                ciclo = ciclos_validos.order_by('-id').first()
+                
+                if action == 'aceitar':
+                    if valor_entrada_total <= 0:
+                        return JsonResponse({
+                            'success': False,
+                            'message': 'Valor de entrada inválido.'
+                        }, status=400)
                     
-                # Atualizar saldo disponível do ciclo
-                ciclo.valor_disponivel_entrada -= valor_entrada_total
-                ciclo.save()
+                    if valor_entrada_total > ciclo.valor_disponivel_entrada:
+                        return JsonResponse({
+                            'success': False,
+                            'message': f'Valor excede o disponível (R$ {ciclo.valor_disponivel_entrada})'
+                        }, status=400)
+                
+                # Processar cada entrada
+                with transaction.atomic():
+                    for entrada in entradas:
+                        if action == 'aceitar':
+                            entrada.opcao_entrada = "A"
+                            # Criar registro de aposta
+                            aposta = Aposta.objects.create(
+                                entrada=entrada,  
+                                ciclo=ciclo,
+                                valor=valor_entrada_rateado,
+                                retorno=retorno_esperado,
+                                is_multipla = True,
+                                cod_multipla = cod_multipla,
+                                color_multipla = color_multipla
+                            )
+                        elif action == 'recusar':
+                            entrada.opcao_entrada = "R"
+                            
+                        entrada.save()
+                        
+                    # Atualizar saldo disponível do ciclo
+                    ciclo.valor_disponivel_entrada -= valor_entrada_total
+                    ciclo.save()
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': f'Múltipla {"aceita" if action == "aceitar" else "recusada"} com sucesso!',
+                    'data': {
+                        'cod_multipla': cod_multipla,
+                        'color_multipla': color_multipla,
+                        'odd_combinada': float(odd_combinada),
+                        'quantidade_eventos': len(event_ids),
+                        'ciclo': ciclo.id
+                    }
+                })
+                
+            elif event_origin == EventOriginEnum.OWNER_BALL.value:
+                entries_owner_ball = SuperFavoriteHomeBallOwnerEntry.objects.filter(id_event__in=event_ids)
+                
+                if len(entries_owner_ball) != len(event_ids):
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'Alguns eventos não foram encontrados.'
+                    }, status=400)
+                    
+                for entry in entries_owner_ball:
+                    bet_owner_ball = BetOwnerBall.objects.filter(entry__id_event=entry.id_event).first()
+                    if bet_owner_ball and bet_owner_ball.is_multiple:
+                        return JsonResponse({
+                            'success': False,
+                            'message': f'O evento {entry.id_event} já faz parte de uma múltipla.'
+                        }, status=400)
+                        
+                        
+                        
+                cycle_owner_ball = get_object_or_404(CycleOwnerBall, id=cycle_id)
+                
+                if action == 'aceitar':
+                    if valor_entrada_total <= 0:
+                        return JsonResponse({
+                            'success': False,
+                            'message': 'Valor de entrada inválido.'
+                        }, status=400)
+                        
+                    if valor_entrada_total > cycle_owner_ball.available_value:
+                        return JsonResponse({
+                            'success': False,
+                            'message': f'Valor excede o disponível (R$ {ciclo.valor_disponivel_entrada})'
+                        }, status=400)
+                        
+                        
+                with transaction.atomic():
+                    for entry in entries_owner_ball:
+                        if action == 'aceitar':
+                            entry.entry_option = "A"
+                            aposta = BetOwnerBall.objects.create(
+                                entry=entry,  
+                                cycle_owner_ball=cycle_owner_ball,
+                                is_multiple = True,
+                                value_bet=valor_entrada_rateado,
+                                return_bet=retorno_esperado,
+                                cod_multiple = cod_multipla,
+                                color_multiple = color_multipla
+                            )
+                        elif action == 'recusar':
+                            entrada.entry_option = "R"
+                        entry.save()
+                        
+                    cycle_owner_ball.available_value -= valor_entrada_total
+                    cycle_owner_ball.save()
             
             return JsonResponse({
-                'success': True,
-                'message': f'Múltipla {"aceita" if action == "aceitar" else "recusada"} com sucesso!',
-                'data': {
-                    'cod_multipla': cod_multipla,
-                    'color_multipla': color_multipla,
-                    'odd_combinada': float(odd_combinada),
-                    'quantidade_eventos': len(event_ids),
-                    'ciclo': ciclo.id
-                }
-            })
+                        'success': True,
+                        'message': f'Múltipla {"aceita" if action == "aceitar" else "recusada"} com sucesso!',
+                        'data': {
+                            'cod_multipla': cod_multipla,
+                            'color_multipla': color_multipla,
+                            'odd_combinada': float(odd_combinada),
+                            'quantidade_eventos': len(event_ids),
+                            'ciclo': cycle_owner_ball.id
+                        }
+                    }, status=status.HTTP_200_OK)
         
         except ValueError as e:
             return JsonResponse({

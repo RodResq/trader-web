@@ -1,13 +1,17 @@
 import { showNotification } from "../../notifications.js";
+import { updateEntryOptionIcon } from '../../table.js';
 
 let checklistVisible = false;
 let selectedItems = new Set();
+let eventOrigin = '';
+let cycleId = '';
 
 export function setupBatchEntriesOwnerBall() {
     const btnMostrarCheckListOwnerBall = document.getElementById('mostrarCheckListOwnerBall');
     if (!btnMostrarCheckListOwnerBall) return;
-
+    
     btnMostrarCheckListOwnerBall.addEventListener('click', function(e) {
+        eventOrigin = this.getAttribute('data-event-origin');
         e.preventDefault();
         toggleChecklist();
     });
@@ -15,6 +19,12 @@ export function setupBatchEntriesOwnerBall() {
 
 }
 
+function getCSRFToken() {
+    return document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+}
 
 function initMultiplaModalHandlers() {
     const confirmarMultiplaBtn = document.getElementById('confirmarMultiplaBtn');
@@ -432,6 +442,7 @@ async function verificarCiclo() {
         if (data.success) {
             if (data.exists) {
                 console.log(data.message);
+                cycleId = data.data.id;
                 cicloWarning.classList.add('d-none');
                 cicloMultipla.textContent = data.data.category + ': ' + 
                                           `${data.data.start_date} a ${data.data.end_date}`;
@@ -467,12 +478,10 @@ async function verificarCiclo() {
 }
 
 
-function processarMultipla(action) {
-    if (selectedItems.size === 0) {
-        showNotification('Selecione pelo menos um item para executar esta ação.', 'warning');
-        return;
-    }
+async function processarMultipla(action) {
     
+    if (eventOrigin != "owner-ball" || eventOrigin == '') return;
+
     const valorEntrada = parseFloat(document.getElementById('valor-entrada-multipla').value) || 0;
     if (action === 'aceitar' && valorEntrada <= 0) {
         showNotification('Informe um valor de entrada válido.', 'warning');
@@ -500,23 +509,36 @@ function processarMultipla(action) {
     } else {
         confirmarBtn.disabled = true;
     }
+
+    const dados = {
+        event_ids: eventIds,
+        action: action,
+        valor_entrada_total: valorEntrada,
+        valor_entrada_rateado: valorMultiplaRateado,
+        odd_combinada: oddCombinada,
+        retorno_esperado: retornoMultiplaRateado,
+        event_origin: eventOrigin,
+        cycle_id: cycleId
+    };
+
+    try {
+        const response = await fetch('/api/v1/entrada_multipla', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken(),
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify(dados)
+        });
     
-    fetch('/api/v1/entrada_multipla', addCSRFToken({
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            event_ids: eventIds,
-            action: action,
-            valor_entrada_total: valorEntrada,
-            valor_entrada_rateado: valorMultiplaRateado,
-            odd_combinada: oddCombinada,
-            retorno_esperado: retornoMultiplaRateado
-        })
-    }))
-    .then(response => response.json())
-    .then(data => {
+        const data = await response.json();
+    
+        if (!response.ok) {
+            showNotification(`Erro ao processar entradas multiplas, ${data.message}`, 'danger');
+            return;
+        }
+    
         if (data.success) {
             bootstrap.Modal.getInstance(document.getElementById('entradasMultiplasModal')).hide();
             atualizarValorDisponivel(valorEntrada);
@@ -558,11 +580,7 @@ function processarMultipla(action) {
             }
             showNotification(data.message || 'Erro ao processar apostas', 'danger');
         }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        
-        // Restaurar botões
+    } catch(error) {
         btnAtual.innerHTML = textoOriginal;
         btnAtual.disabled = false;
         
@@ -571,9 +589,8 @@ function processarMultipla(action) {
         } else {
             confirmarBtn.disabled = false;
         }
-        
-        showNotification('Erro ao processar apostas', 'danger')
-    });
+        showNotification('Erro ao processar apostas', 'danger');
+    }
 
 }
 

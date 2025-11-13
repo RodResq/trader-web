@@ -249,6 +249,7 @@ class BetOwnerBall(models.Model):
     cycle_owner_ball = models.ForeignKey(CycleOwnerBall, db_column="id_cycle", on_delete=models.CASCADE, null=True, blank=True, related_name="bet_owner_ball", verbose_name="cycle")
     is_multiple = models.BooleanField(default=False, verbose_name="[0-simple, 1-multiple]")
     cod_multiple = models.CharField(max_length=20, blank=True, null=True)
+    color_multiple = models.CharField(max_length=20, blank=True, null=True)
     result = models.CharField(
         max_length=1,
         choices=RESULT_CHOICES,

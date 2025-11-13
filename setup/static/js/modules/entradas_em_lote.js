@@ -4,13 +4,15 @@ import { addCSRFToken } from './token.js';
 
 let checklistVisible = false;
 let selectedItems = new Set();
-
+let eventOrigin = '';
+let cycleId = '';
 
 export function initEntradasEmLote() {
     const btnMostrarChecklist = document.getElementById('mostrarCheckList');
     if (!btnMostrarChecklist) return;
     
     btnMostrarChecklist.addEventListener('click', function(e) {
+        eventOrigin = this.getAttribute('data-event-origin');
         e.preventDefault();
         toggleChecklist();
     });
@@ -475,11 +477,9 @@ function verificarCiclo() {
 
 
 function processarMultipla(action) {
-    if (selectedItems.size === 0) {
-        showNotification('Selecione pelo menos um item para executar esta ação.', 'warning');
-        return;
-    }
-    
+
+    if (eventOrigin != 'score-data' || eventOrigin == '') return;
+
     const valorEntrada = parseFloat(document.getElementById('valor-entrada-multipla').value) || 0;
     if (action === 'aceitar' && valorEntrada <= 0) {
         showNotification('Informe um valor de entrada válido.', 'warning');

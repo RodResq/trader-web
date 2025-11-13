@@ -76,7 +76,7 @@ class VwMercadoOwnerBallUnder2_5Serializer(serializers.ModelSerializer):
 class CycleOwnerBallSerializer(serializers.ModelSerializer):
     class Meta:
         model = CycleOwnerBall
-        fields = ['category', 'start_date', 'end_date', 'current_balance', 'available_value']
+        fields = ['id', 'category', 'start_date', 'end_date', 'current_balance', 'available_value']
     
     def validate_current_balance(self, value):
         if value <= 0:
