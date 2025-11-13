@@ -88,11 +88,16 @@
                                     {{ bet.entry.name_home }} {{ bet.entry.placar }} {{ bet.entry.name_away }}
                                 </td>
                                 <td>
-                                    {% if aposta.is_multipla %}
-                                    <span>{{ aposta.cod_multipla }}</span>
+                                    {% if bet.is_multiple %}
+                                        <span class="border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
+                                            style="border-radius: 10px; background-color: {{ bet.color_multiple }}">{{ bet.cod_multiple }}</span>
                                     {% endif %}
                                 </td>
-                                <td>{{ bet.entry.entry_result }}</td>
+                                <td>
+                                    {% if bet.entry.entry_result != None %}
+                                        {{ bet.entry.entry_result }}
+                                    {% endif %}
+                                </td>
                                 <td>{{ bet.value_bet }}</td>
                                 <td>{{ bet.return_bet }}</td>
                                 <td>{{ bet.entry.event_date|date:"d/m/Y H:i" }}</td>
