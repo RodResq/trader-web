@@ -1,6 +1,7 @@
 import { atualizaIconeResultado } from "./icone_lista_aposta.js";
 import { showNotification } from "../notifications.js";
 
+const BASE_URL_API = '/api/v1/gerencia';
 
 export function setupGerenciaResultado() {
     const btnSalvarResultado = document.querySelectorAll('.salvar-resultado');
@@ -15,10 +16,10 @@ export function setupGerenciaResultado() {
             e.preventDefault();
 
             const eventId = this.getAttribute('data-event-id');
-            if (!eventId) {
-                console.error("ID do evento não encontrado");
-                return;
-            }
+            if (!eventId) return;
+
+            const eventOrigin = this.getAttribute('data-event-origin');
+            if (!eventOrigin) return;
 
             const currentRow = this.closest('tr');
             if (!currentRow) return;
@@ -39,7 +40,7 @@ export function setupGerenciaResultado() {
             const originalHTML = this.innerHTML;
             this.innerHTML = '<i class="bi bi-hourglass-split"></i>';
 
-            const url = `/api/v1/gerencia/resultado?event_id=${eventId}&resultado=${valueSelected}`;
+            const url = `${BASE_URL_API}/resultado?eventId=${eventId}&eventOrigin=${eventOrigin}&resultado=${valueSelected}`;
             fetch(url, {
                 method: 'GET',
                 headers: {

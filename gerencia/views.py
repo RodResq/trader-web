@@ -10,6 +10,8 @@ from datetime import datetime
 from .models import GerenciaCiclo
 from .forms import GerenciaForm
 from owner_ball.models import CycleManagerOwnerBall, BetOwnerBall
+from shared.enums import EventOriginEnum, BetsResultEnum
+from rest_framework import status
 
 
 def gerencia(request):
@@ -106,63 +108,109 @@ def gerencia_delete(request, pk):
 
 
 def gerencia_resultado(request):
-    if "event_id" in request.GET and "resultado" in request.GET:
-        event_id = request.GET['event_id']
+    if "eventId" in request.GET and "resultado" in request.GET:
+        event_id = request.GET['eventId']
+        event_origin = request.GET['eventOrigin']
         resultado = request.GET.get('resultado')
         valor_total_retorno = 0
         
-        aposta = Aposta.objects.filter(entrada__id_event=event_id).first()
-        
-        if not aposta:
-            return JsonResponse({
-                'success': False,
-                'message': f'Não existe aposta registrada'
-            }, status=400)
+        if event_origin == EventOriginEnum.SCORE_DATA.value:
+            aposta = Aposta.objects.filter(entrada__id_event=event_id).first()
             
-        if "G" == aposta.resultado and aposta.resultado == resultado:
-            return JsonResponse({
-                'success': False,
-                'message': f'Retorno já adicionado ao valor principal'
-            }, status=200)
-            
-        if "R" == aposta.resultado and aposta.resultado == resultado:
-            return JsonResponse({
-                'success': False,
-                'message': f'Retorno já excluído do valor principal'
-            }, status=200)
-        
-        with transaction.atomic():
-            aposta.resultado = resultado
-            aposta.save()
-            
-            gerencia_ciclo = GerenciaCiclo.objects.filter(ciclo=aposta.ciclo).first()
-
-            if not gerencia_ciclo:
+            if not aposta:
                 return JsonResponse({
-                'success': False,
-                'message': f'Não existe ciclo para registrar o valor de retorno da aposta'
-            }, status=400)
+                    'success': False,
+                    'message': f'Não existe aposta score data registrada'
+                }, status=400)
                 
-            if "G" == aposta.resultado:
-                gerencia_ciclo.valor_total_retorno += aposta.retorno;
-                valor_total_retorno = gerencia_ciclo.valor_total_retorno
-                gerencia_ciclo.save()
+            if ((BetsResultEnum.GREEN.value == aposta.resultado and aposta.resultado == resultado) or 
+                (BetsResultEnum.RED.value == aposta.resultado and aposta.resultado == resultado)):
+                return JsonResponse({
+                    'success': False,
+                    'message': f'Resultado da aposta já adicionado ao valor principal'
+                }, status=200)
                 
-            if "R" == aposta.resultado:
-                gerencia_ciclo.valor_total_retorno -= aposta.retorno;
-                valor_total_retorno = gerencia_ciclo.valor_total_retorno
-                gerencia_ciclo.save()
-        
+            
+            with transaction.atomic():
+                gerencia_ciclo = GerenciaCiclo.objects.filter(ciclo=aposta.ciclo).first()
+
+                if not gerencia_ciclo:
+                    return JsonResponse({
+                    'success': False,
+                    'message': f'Não existe ciclo para registrar o valor de retorno da aposta'
+                }, status=400)
+                    
+                    
+                if BetsResultEnum.GREEN.value == resultado:
+                    gerencia_ciclo.valor_total_retorno += aposta.retorno;
+                    valor_total_retorno = gerencia_ciclo.valor_total_retorno
+                    gerencia_ciclo.save()
+                elif BetsResultEnum.RED.value == resultado:
+                    gerencia_ciclo.valor_total_retorno = 0;
+                    valor_total_retorno = gerencia_ciclo.valor_total_retorno
+                    gerencia_ciclo.save()
+                
+                aposta.resultado = resultado
+                aposta.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Resultado da aposta registrado',
+                'data': {
+                    'id_event': event_id,
+                    'resultado': resultado,
+                    'valor_total_retorno': valor_total_retorno
+                }            
+            }, status=status.HTTP_200_OK)
+            
+        elif event_origin == EventOriginEnum.OWNER_BALL.value:
+            bet_owner_ball = BetOwnerBall.objects.filter(entry__id_event=event_id).first()
+            if not bet_owner_ball:
+                return JsonResponse({
+                    'success': False,
+                    'message': f'Não existe aposta owner ball registrada'
+                }, status=400)
+                
+            if ((BetsResultEnum.GREEN.value == bet_owner_ball.result and bet_owner_ball.result == resultado) or 
+                (BetsResultEnum.RED.value == bet_owner_ball.result and bet_owner_ball.result == resultado)):
+                return JsonResponse({
+                    'success': False,
+                    'message': f'Resultado da aposta já adicionado ao valor principal'
+                }, status=200)
+                
+            cycle_manager = CycleManagerOwnerBall.objects.filter(cycle=bet_owner_ball.cycle_owner_ball).first()
+            if not cycle_manager:
+                    return JsonResponse({
+                    'success': False,
+                    'message': f'Não existe ciclo para registrar o valor de retorno da aposta'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            with transaction.atomic():
+                if BetsResultEnum.GREEN.value == resultado:
+                    cycle_manager.total_return_value += bet_owner_ball.return_bet;
+                    valor_total_retorno = cycle_manager.total_return_value
+                    cycle_manager.save()
+                elif BetsResultEnum.RED.value == resultado:
+                    bet_owner_ball.return_bet = 0;
+                    valor_total_retorno = bet_owner_ball.return_bet 
+                
+                bet_owner_ball.result = resultado
+                bet_owner_ball.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Resultado da aposta owner basll registrado',
+                'data': {
+                    'id_event': event_id,
+                    'resultado': resultado,
+                    'valor_total_retorno': valor_total_retorno
+                }            
+            }, status=status.HTTP_200_OK)
+    else:
         return JsonResponse({
-            'success': True,
-            'message': 'Resultado da aposta registrado',
-            'data': {
-                'id_event': event_id,
-                'resultado': resultado,
-                'valor_total_retorno': valor_total_retorno
-            }            
-        })
-    
+            'success': False,
+            'message': 'Algum paramentro obrigatorio esta faltando'
+        }, status=status.HTTP_400_BAD_REQUEST)         
         
 def desempenho_semanal_json(request):
     """
