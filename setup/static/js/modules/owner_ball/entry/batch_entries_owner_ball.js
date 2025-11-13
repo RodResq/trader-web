@@ -538,11 +538,9 @@ async function processarMultipla(action) {
             showNotification(`Erro ao processar entradas multiplas, ${data.message}`, 'danger');
             return;
         }
-    
+
         if (data.success) {
-            bootstrap.Modal.getInstance(document.getElementById('entradasMultiplasModal')).hide();
             atualizarValorDisponivel(valorEntrada);
-            
             const checkboxes = document.querySelectorAll('.market-checkbox:checked');
             
             checkboxes.forEach(checkbox => {
@@ -589,7 +587,10 @@ async function processarMultipla(action) {
         } else {
             confirmarBtn.disabled = false;
         }
+        
         showNotification('Erro ao processar apostas', 'danger');
+    } finally {
+        bootstrap.Modal.getInstance(document.getElementById('entradasMultiplasModal')).hide();
     }
 
 }
