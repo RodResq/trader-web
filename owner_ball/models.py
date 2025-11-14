@@ -311,3 +311,6 @@ class CycleManagerOwnerBall(models.Model):
         db_table = 'cycle_manager_owner_ball'
         verbose_name = 'CycleManagerOwnerBall'
         verbose_name_plural = 'Cycle Manager Owner Ball'
+        
+    def __str__(self):
+        return f'CycleManagerOwnerBall(cycle={self.cycle.id}, total_entries_number={self.total_entries_number}, total_entries_value={self.total_entries_value}, total_return_value={self.total_return_value}'

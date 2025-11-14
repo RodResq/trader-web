@@ -15,7 +15,6 @@ from rest_framework import status
 
 
 def gerencia(request):
-    """Exibe a lista de registros de lucro."""
     manger_score_data = GerenciaCiclo.objects.all()
     cycle_maneger_owner_ball = CycleManagerOwnerBall.objects.all();
     
@@ -24,7 +23,7 @@ def gerencia(request):
     results_bet_owner_ball = []
     
     for gerencia in manger_score_data:
-        apostas = Aposta.objects.filter(ciclo=gerencia.ciclo).all()
+        apostas = Aposta.objects.filter(ciclo=gerencia.ciclo)
         
         quantiade_apostas = apostas.count()
         valor_total_apostas = apostas.aggregate(
@@ -46,16 +45,22 @@ def gerencia(request):
         
     for manager in cycle_maneger_owner_ball:
         bets = BetOwnerBall.objects.filter(cycle_owner_ball=manager.cycle).all()
+        
         quantity_entries = bets.count()
-        total_return_values = bets.aggregate(
-            total_value=Sum('return_bet', default=0)
+        
+        sum_total_values_entries = bets.aggregate(
+            total_value=Sum('value_bet', default=0)
         )['total_value']
         
+        sum_total_return_values = bets.aggregate(
+            total_return=Sum('return_bet', default=0)
+        )['total_return']
+        
         if quantity_entries > 0:
-            if total_return_values != manager.total_entries_value:
-                manager.total_return_value = total_return_values
-                manager.total_entries_number = quantity_entries
-                manager.save()
+            manager.total_entries_value = sum_total_values_entries
+            manager.total_return_value = sum_total_return_values
+            manager.total_entries_number = quantity_entries
+            manager.save()
         
         result_dict = {
             'manager': manager,
@@ -64,12 +69,11 @@ def gerencia(request):
         
         results_bet_owner_ball.append(result_dict)
     
-    return render(request, 'analytics/gerencia/gerencia.html', 
-                    {
-                      'resultado_apostas': results_bet_score_data,
-                      'results_bet_owner_ball': results_bet_owner_ball
-                    }
-                  )
+    return render(request, 'analytics/gerencia/gerencia.html', {
+            'resultado_apostas': results_bet_score_data,
+            'results_bet_owner_ball': results_bet_owner_ball
+        }
+    )
 
 
 def gerencia_edit(request, pk=None):
@@ -141,11 +145,7 @@ def gerencia_resultado(request):
                 }, status=400)
                     
                     
-                if BetsResultEnum.GREEN.value == resultado:
-                    gerencia_ciclo.valor_total_retorno += aposta.retorno;
-                    valor_total_retorno = gerencia_ciclo.valor_total_retorno
-                    gerencia_ciclo.save()
-                elif BetsResultEnum.RED.value == resultado:
+                if BetsResultEnum.RED.value == resultado:
                     gerencia_ciclo.valor_total_retorno = 0;
                     valor_total_retorno = gerencia_ciclo.valor_total_retorno
                     gerencia_ciclo.save()
@@ -157,9 +157,9 @@ def gerencia_resultado(request):
                 'success': True,
                 'message': 'Resultado da aposta registrado',
                 'data': {
-                    'id_event': event_id,
+                    'idEvent': event_id,
                     'resultado': resultado,
-                    'valor_total_retorno': valor_total_retorno
+                    'valorIndividualAposta': valor_total_retorno
                 }            
             }, status=status.HTTP_200_OK)
             
@@ -186,13 +186,9 @@ def gerencia_resultado(request):
                 }, status=status.HTTP_400_BAD_REQUEST)
             
             with transaction.atomic():
-                if BetsResultEnum.GREEN.value == resultado:
-                    cycle_manager.total_return_value += bet_owner_ball.return_bet;
-                    valor_total_retorno = cycle_manager.total_return_value
-                    cycle_manager.save()
-                elif BetsResultEnum.RED.value == resultado:
+                if BetsResultEnum.RED.value == resultado:
+                    valor_total_retorno = bet_owner_ball.return_bet
                     bet_owner_ball.return_bet = 0;
-                    valor_total_retorno = bet_owner_ball.return_bet 
                 
                 bet_owner_ball.result = resultado
                 bet_owner_ball.save()
@@ -201,9 +197,9 @@ def gerencia_resultado(request):
                 'success': True,
                 'message': 'Resultado da aposta owner basll registrado',
                 'data': {
-                    'id_event': event_id,
+                    'idEvent': event_id,
                     'resultado': resultado,
-                    'valor_total_retorno': valor_total_retorno
+                    'valorIndividualAposta': valor_total_retorno
                 }            
             }, status=status.HTTP_200_OK)
     else:

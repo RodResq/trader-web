@@ -55,8 +55,8 @@ export function setupGerenciaResultado() {
                 if (data.success) {
                     atualizaIconeResultado(currentRow, data.data.resultado);
                     
-                    if ((valueSelected === 'G' || valueSelected === 'R') && data.data  && data.data.valor_total_retorno) {
-                        updateValorTotalRetornado(currentRow, data.data.valor_total_retorno, valueSelected);
+                    if ((data.data.resultado === 'G' || data.data.resultado === 'R') && data.data) {
+                        updateValorTotalRetornado(currentRow, data.data.valorIndividualAposta, data.data.resultado);
                     }
     
                     showNotification('Resultado registrado com sucesso!', 'success');
@@ -80,7 +80,7 @@ export function setupGerenciaResultado() {
 }
 
 
-function updateValorTotalRetornado(row, valorTotalRetorno, valorSelecionado) {
+function updateValorTotalRetornado(row, valorIndivualAposta, resultadoSelecionado) {
     const collapseSection = row.closest(".collapse");
     if (!collapseSection) return;
 
@@ -90,10 +90,14 @@ function updateValorTotalRetornado(row, valorTotalRetorno, valorSelecionado) {
     const valorRetornoCell = cicloRow.querySelector('td:nth-child(5)');
     if (!valorRetornoCell) return;
 
-    valorRetornoCell.textContent = parseFloat(valorTotalRetorno).toFixed(2);
+    if (resultadoSelecionado === 'R') {
+        const currentValueCell = parseFloat(String(valorRetornoCell.textContent).replace(',', '.')).toFixed(2);
+        const valorTotalRetornoResponse = parseFloat(valorIndivualAposta).toFixed(2);
+        valorRetornoCell.textContent = parseFloat(currentValueCell - valorTotalRetornoResponse).toFixed(2);
+    }
 
-    valorRetornoCell.style.transition = 'background-color 0.5s';
-    valorRetornoCell.style.backgroundColor = valorSelecionado === 'G'? '#28a745': '#CC0000';
+    valorRetornoCell.style.transition = 'background-color 1s';
+    valorRetornoCell.style.backgroundColor = resultadoSelecionado === 'G'? '#28a745': '#CC0000';
     valorRetornoCell.style.color = 'white';
 
     setTimeout(() => {
