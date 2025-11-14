@@ -21,7 +21,6 @@
         <table class="table table-hover" id="lucroTable">
         <thead>
             <tr>
-                <th>Categoria</th>
                 <th>Ciclo</th>
                 <th>Qtd. Entradas</th>
                 <th>Valor Total Investido (R$)</th>
@@ -35,12 +34,11 @@
             {% with manager=results.manager bets=results.bets %}
             <tr>
                 <td>
-                <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ manager.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ gerencia.pk }}">
-                {{ manager.cycle.category }}
-                <i class="bi bi-chevron-down ms-1"></i>
-                </a>
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ manager.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ gerencia.pk }}">
+                        De {{ manager.cycle.start_date|date:"d/m/Y" }} à {{ manager.cycle.end_date|date:"d/m/Y" }}
+                        <i class="bi bi-chevron-down ms-1"></i>
+                    </a>
                 </td>
-                <td>De {{ manager.cycle.start_date|date:"d/m/Y" }} à {{ manager.cycle.end_date|date:"d/m/Y" }}</td>
                 <td>{{ bets|length }}</td>
                 <td>{{ manager.total_entries_value }}</td>
                 <td>{{ manager.total_return_value }}</td>
@@ -72,30 +70,40 @@
                                 <td>{{ bet.entry.id_event }}</td>
                                 <td>
                                     <i style="font-size: 1rem; vertical-align: middle;" 
-                                        {% if bet.is_multipla %}
+                                        {% if bet.is_multiple %}
                                         class="bi bi-list-ol" 
                                         {% else %}
                                         class="bi bi-universal-access"
                                         {% endif %}>
                                     </i>
                                     <i {% if bet.result == 'G' %}
-                                        class="bi bi-check-circle" style="font-size: 1rem; color: white; background-color: green; border-color: green; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                        class="bi bi-check-circle rounded-circle" style="font-size: 1rem; color: white; background-color: green; border-color: green; margin-right:5px; vertical-align: middle;"
                                         {% elif  bet.result == 'R' %}
-                                        class="bi bi-x-circle" style="font-size: 1rem; color: white;  background-color: #e94949; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                        class="bi bi-x-circle rounded-circle" style="font-size: 1rem; color: white;  background-color: #e94949; margin-right:5px; vertical-align: middle;"
                                         {% else %}
-                                        class="bi bi-stopwatch-fill" style="font-size: 1rem; color: cornflowerblue; border-radius: 100%; margin-right:5px; vertical-align: middle;"
+                                        class="bi bi-stopwatch-fill rounded-circle" style="font-size: 1rem; color: cornflowerblue; margin-right:5px; vertical-align: middle;"
                                         {% endif %}></i>
                                     {{ bet.entry.name_home }} {{ bet.entry.placar }} {{ bet.entry.name_away }}
                                 </td>
                                 <td>
                                     {% if bet.is_multiple %}
-                                        <span class="border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
-                                            style="border-radius: 10px; background-color: {{ bet.color_multiple }}">{{ bet.cod_multiple }}</span>
+                                        <span class="rounded-5 p-1 align-baseline font-weight-bold" 
+                                            style="background-color: {{ bet.color_multiple }}">{{ bet.cod_multiple }}</span>
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if bet.entry.entry_result != None %}
-                                        {{ bet.entry.entry_result }}
+                                        <span class="p-sm-1 align-baseline rounded-circle"
+                                            {% if bet.entry.entry_result == "W" %} 
+                                                style="background-color: #1b5e20;"
+                                            {% elif bet.entry.entry_result == "L" %}
+                                                style="background-color: #d41827ff;"
+                                            {% else %}
+                                                style="10px; background-color: #185ad4ff;"
+                                            {% endif %}
+                                        >
+                                            {{ bet.entry.entry_result }}
+                                        </span>
                                     {% endif %}
                                 </td>
                                 <td>{{ bet.value_bet }}</td>

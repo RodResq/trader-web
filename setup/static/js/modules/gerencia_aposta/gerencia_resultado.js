@@ -87,7 +87,7 @@ function updateValorTotalRetornado(row, valorIndivualAposta, resultadoSelecionad
     const cicloRow = collapseSection.previousElementSibling;
     if (!cicloRow) return;
 
-    const valorRetornoCell = cicloRow.querySelector('td:nth-child(5)');
+    const valorRetornoCell = cicloRow.querySelector('td:nth-child(4)');
     if (!valorRetornoCell) return;
 
     if (resultadoSelecionado === 'R') {
