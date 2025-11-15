@@ -160,7 +160,7 @@ function updateOwnerBallTable(markets) {
 
         const statisticResult = (result, idEvent) => {
             if(result) {
-                return `<span class="btn-sucess resultado-statistic-overall-home"
+                return `<span class="btn-sucess resultado-statistic-overall-home">
                             <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
                                 style="font-size: smaller"
                                 data-event-id=${idEvent}
@@ -169,7 +169,7 @@ function updateOwnerBallTable(markets) {
                                 title="Registrar resultado entrada manualmente.">${idEvent}</a>
                         </span>`
             } else {
-                return `<span class="resultado-statistic-overall-away"
+                return `<span class="resultado-statistic-overall-away">
                             <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
                                 style="font-size: smaller"
                                 data-event-id=${idEvent}
