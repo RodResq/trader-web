@@ -158,16 +158,32 @@ function updateOwnerBallTable(markets) {
             }
         }
 
+        const statisticResult = (result, idEvent) => {
+            if(result) {
+                return `<span class="btn-sucess resultado-statistic-overall-home"
+                            <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
+                                style="font-size: smaller"
+                                data-event-id=${idEvent}
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="Registrar resultado entrada manualmente.">${idEvent}</a>
+                        </span>`
+            } else {
+                return `<span class="resultado-statistic-overall-away"
+                            <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
+                                style="font-size: smaller"
+                                data-event-id=${idEvent}
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="Registrar resultado entrada manualmente.">${idEvent}</a>
+                        </span>`
+            }
+        }
+
         return `
             <tr data-row-id=${market.id_event} class="tr-ob" data-event-origin="owner-ball">
                 <td>
-                    <a class="eventBtn btn btn-sm btn-outline-light border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
-                        style="font-size: smaller"
-                        data-event-id=${market.id_event}
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Registrar resultado entrada manualmente.">
-                    ${market.id_event || 'N/A'}
+                    ${statisticResult(market.statistic_result, market.id_event)}
                 </td>
                 <td class="mercado-status">
                     ${getEntryOptionIcon(market.entry_option)}
