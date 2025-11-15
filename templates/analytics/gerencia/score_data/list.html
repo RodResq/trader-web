@@ -19,13 +19,11 @@
         <table class="table table-hover" id="lucroTable">
         <thead>
             <tr>
-            <th>Categoria</th>
             <th>Ciclo</th>
             <th>Qtd. Entradas</th>
             <th>Valor Investido (R$)</th>
             <th>ROI (R$)</th>
             <th>Performace</th>
-            {% comment %} <th class="text-center">Ações</th> {% endcomment %}
             </tr>
         </thead>
         <tbody>
@@ -34,14 +32,13 @@
             {% with gerencia=resultado.gerencia apostas=resultado.apostas %}
             <tr>
                 <td>
-                <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ gerencia.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ gerencia.pk }}">
-                {{ gerencia.ciclo.categoria }}
-                <i class="bi bi-chevron-down ms-1"></i>
-                </a>
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#detalhesLucro{{ gerencia.pk }}" role="button" aria-expanded="false" aria-controls="detalhesLucro{{ gerencia.pk }}">
+                        De {{ gerencia.ciclo.data_inicial|date:"d/m/Y" }} à {{ gerencia.ciclo.data_final|date:"d/m/Y" }}
+                        <i class="bi bi-chevron-down ms-1"></i>
+                    </a>
                 </td>
-                <td>De {{ gerencia.ciclo.data_inicial|date:"d/m/Y" }} à {{ gerencia.ciclo.data_final|date:"d/m/Y" }}</td>
                 <td>{{ apostas|length }}</td>
-                <td>{{ gerencia.valor_total_entrada }}</td>
+                <td>{{ gerencia.valor_total_entradas }}</td>
                 <td>{{ gerencia.valor_total_retorno }}</td>
                 <td>Em Desenvolvimento</td>
             </tr>
@@ -57,6 +54,7 @@
                             <th>ID Evento</th>
                             <th>Mercado</th>
                             <th>Múltipla</th>
+                            <th>Resultado Final</th>
                             <th>Odd</th>
                             <th>Home</th>
                             <th>Away</th>
@@ -93,6 +91,21 @@
                                 <span class="border-top-0 border-start-0 border-end-0 border-bottom-0 p-1 align-baseline font-weight-bold" 
                                     style="border-radius: 10px; background-color: {{ aposta.color_multipla }}">{{ aposta.cod_multipla }}</span>
                             {% endif %}
+                            </td>
+                            <td>
+                                {% if aposta.entrada.entry_result != None %}
+                                    <span class="p-sm-1 align-baseline rounded-circle"
+                                        {% if aposta.entrada.entry_result == "W" %} 
+                                            style="background-color: #1b5e20;"
+                                        {% elif aposta.entrada.entry_result == "L" %}
+                                            style="background-color: #d41827ff;"
+                                        {% else %}
+                                            style="10px; background-color: #185ad4ff;"
+                                        {% endif %}
+                                    >
+                                        {{ aposta.entrada.entry_result }}
+                                    </span>
+                                {% endif %}
                             </td>
                             <td>{{ aposta.entrada.odd }}</td>
                             <td>{{ aposta.entrada.home_actual }}%</td>

@@ -12,8 +12,8 @@ export function initEntradasEmLote() {
     if (!btnMostrarChecklist) return;
     
     btnMostrarChecklist.addEventListener('click', function(e) {
-        eventOrigin = this.getAttribute('data-event-origin');
         e.preventDefault();
+        eventOrigin = this.getAttribute('data-event-origin');
         toggleChecklist();
     });
     
@@ -438,6 +438,7 @@ function verificarCiclo() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            cycleId = data.ciclo.id;
             cicloWarning.classList.add('d-none');
             cicloMultipla.textContent = data.ciclo.categoria + ': ' + 
                                       `${data.ciclo.data_inicial} a ${data.ciclo.data_final}`;
@@ -519,7 +520,9 @@ function processarMultipla(action) {
             valor_entrada_total: valorEntrada,
             valor_entrada_rateado: valorMultiplaRateado,
             odd_combinada: oddCombinada,
-            retorno_esperado: retornoMultiplaRateado
+            retorno_esperado: retornoMultiplaRateado,
+            event_origin: eventOrigin,
+            cycle_id: cycleId
         })
     }))
     .then(response => response.json())

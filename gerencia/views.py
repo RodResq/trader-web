@@ -26,15 +26,20 @@ def gerencia(request):
         apostas = Aposta.objects.filter(ciclo=gerencia.ciclo)
         
         quantiade_apostas = apostas.count()
-        valor_total_apostas = apostas.aggregate(
+        
+        sum_total_apostas = apostas.aggregate(
             total_valor=Sum('valor', default=0)
         )['total_valor']
         
+        sum_total_retorno = apostas.aggregate(
+            total_retorno=Sum('retorno', defeault=0)
+        )['total_retorno']
+        
         if quantiade_apostas > 0:
-            if valor_total_apostas != gerencia.valor_total_entrada:
-                gerencia.valor_total_entrada = valor_total_apostas
-                gerencia.qtd_total_entrada = quantiade_apostas
-                gerencia.save()
+            gerencia.valor_total_entradas = sum_total_apostas
+            gerencia.valor_total_retorno = sum_total_retorno
+            gerencia.qtd_total_entrada = quantiade_apostas
+            gerencia.save()
         
         resultado_dict = {
             'gerencia': gerencia,

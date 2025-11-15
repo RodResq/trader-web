@@ -441,7 +441,7 @@ def entrada_multipla(request):
             odd_combinada = Decimal(str(data.get('odd_combinada', 1.0)))
             retorno_esperado = Decimal(str(data.get('retorno_esperado', 0)))
             event_origin = str(data.get('event_origin'))
-            cycle_id = Decimal(str(data.get('cycle_id')))
+            cycle_id = data.get('cycle_id')
             
             if not event_ids or action not in ['aceitar', 'recusar']:
                 return JsonResponse({
@@ -469,15 +469,13 @@ def entrada_multipla(request):
                             'message': f'O evento {entrada.id_event} já faz parte de uma múltipla.'
                         }, status=400)
                 
-                ciclos_validos = Ciclo.objects.filter(Q(data_inicial__lte=max(entrada.data_jogo for entrada in entradas)))
+                ciclo = get_object_or_404(Ciclo, id=cycle_id)
                 
-                if not ciclos_validos.exists():
+                if not ciclo:
                     return JsonResponse({
                         'success': False,
                         'message': 'Não existe um ciclo válido para esta múltipla.'
                     }, status=400)
-                
-                ciclo = ciclos_validos.order_by('-id').first()
                 
                 if action == 'aceitar':
                     if valor_entrada_total <= 0:
@@ -497,7 +495,6 @@ def entrada_multipla(request):
                     for entrada in entradas:
                         if action == 'aceitar':
                             entrada.opcao_entrada = "A"
-                            # Criar registro de aposta
                             aposta = Aposta.objects.create(
                                 entrada=entrada,  
                                 ciclo=ciclo,
@@ -621,9 +618,6 @@ def entrada_multipla(request):
 
 @require_POST
 def verificar_ciclo(request):
-    """
-    View para verificar se um conjunto de datas pertence a um ciclo válido
-    """
     try:
         data = json.loads(request.body)
         datas = data.get('datas', [])
@@ -661,7 +655,6 @@ def verificar_ciclo(request):
                 'message': 'Não existe um ciclo válido para todas as datas selecionadas.'
             })
         
-        # Retorna informações do ciclo
         return JsonResponse({
             'success': True,
             'ciclo': {
