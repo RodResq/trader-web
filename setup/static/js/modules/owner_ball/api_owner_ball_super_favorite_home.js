@@ -216,46 +216,47 @@ function updateOwnerBallTable(markets) {
                 <td>${market.home_actual}%</td>
                 <td>${market.away_actual}%</td>
                 <td>${dataFormatada || 'N/A'}</td>
-                <td class="d-grid gap-4 d-md-block">
-                    <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Editar Odd">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Aceitar aposta">
-                        <i class="bi bi-check"></i>
-                    </a>
-                    <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Recusar aposta">
-                        <i class="bi bi-x"></i>
-                    </a>
-                    <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Desfazer ação">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                    </a>
-                    <div class="btn-group" role="group">
-                        <a id="btnGroupDrop1" type="button" class="btn bg-body-secondary btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-three-dots-vertical"></i>
+                <td>
+                    <div class="d-grid gap-4 d-md-block">
+                        <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Editar Odd">
+                            <i class="bi bi-pencil"></i>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <li><a class="dropdown-item event-vote" data-event-id=${market.id_event} data-event-origin="owner-ball">Votacao</a></li>
-                            <li><a 
-                                class="dropdown-item event-statistic-ownerball" 
-                                data-event-id=${market.id_event} 
-                                data-id-home=${market.id_home} 
-                                data-id-away=${market.id_away}  
-                                data-event-origin="owner-ball">
-                                Estatisticas
-                                </a>
-                            </li>
-                            <li><a class="dropdown-item event-probability" data-event-id=${market.id_event} data-event-origin="owner-ball">Probabilidade</a></li>
-                            <li><a 
-                                class="dropdown-item compare-team" 
-                                data-event-id=${market.id_event}
-                                data-home-id=${market.id_home} 
-                                data-home-name=${market.name_home} 
-                                data-away-id=${market.id_away}  
-                                data-away-name=${market.name_away} 
-                                data-event-origin="owner-ball">
-                                Comparar Times
-                            </a></li>
-                        </ul>
+                        <a id="aceitar-aposta" class="btn btn-sm btn-success apostar-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Aceitar aposta">
+                            <i class="bi bi-check"></i>
+                        </a>
+                        <a id="recusar-aposta" class="btn btn-sm btn-danger recusar-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Recusar aposta">
+                            <i class="bi bi-x"></i>
+                        </a>
+                        <a id="desfazer-acao" class="btn btn-sm btn-warning desfazer-acao-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Desfazer ação">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                        <div class="btn-group" role="group">
+                            <a id="btnGroupDrop1" type="button" class="btn bg-body-secondary btn-sm" style="border-radius: inherit;" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <li><a class="dropdown-item event-vote" data-event-id=${market.id_event} data-event-origin="owner-ball">Votacao</a></li>
+                                <li><a class="dropdown-item event-statistic-ownerball" 
+                                        data-event-id=${market.id_event} 
+                                        data-id-home=${market.id_home} 
+                                        data-id-away=${market.id_away}  
+                                        data-event-origin="owner-ball">
+                                        Estatisticas
+                                    </a>
+                                </li>
+                                <li><a class="dropdown-item event-probability" data-event-id=${market.id_event} data-event-origin="owner-ball">Probabilidade</a></li>
+                                <li><a class="dropdown-item compare-team" 
+                                        data-event-id=${market.id_event}
+                                        data-home-id=${market.id_home} 
+                                        data-home-name=${market.name_home} 
+                                        data-away-id=${market.id_away}  
+                                        data-away-name=${market.name_away} 
+                                        data-event-origin="owner-ball">
+                                        Comparar Times
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </td>
             </tr>
