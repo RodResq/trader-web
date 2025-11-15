@@ -6,48 +6,78 @@ let teamId = '';
 export function setupCardEventTeam() {
     const rows = document.querySelectorAll('.tr-clubes[data-team-id]');
     
-    
-    if (!rows) return;
+    if (!rows || rows.length === 0) {
+        console.warn('Nenhum elemento .tr-clubes[data-team-id] encontrado');
+        return;
+    }
+
+    console.log(`✓ Encontrados ${rows.length} elementos para setupCardEventTeam`);
 
     rows.forEach(row => {
         row.style.cursor = 'pointer';
         row.addEventListener('click', async function() {
             teamId = this.getAttribute('data-team-id');
             if (!teamId) {
-                console.error('ID do team não encontrado')
+                showNotification('ID do time não encontrado', 'danger');
                 return;
             }
-            
-            try {
-                const url = `api/v1/team/${teamId}`
-                await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(response => {
-                    if (!response.ok) {
-                       throw new Error(`Erro HTTP: ${response.status}`); 
-                    }
-                    return response.json();
-                }).then(data => {
-                    if (data.success) {
-                        renderizarCardTeam(teamId)
-                        renderizarCardEventoTeam(data.data);
-                    } else {
-                        showNotification(`Falha ao recuperar dados de evento do time`, 'danger');
-                    }
-                });
-
-            } catch(error) {
-                console.error('Erro:', error);
-                this.disabled = false;
-            } finally {
-
-            }
+            await carregarEventosTime(teamId);
         });
     });
 }
+
+
+export async function carregarEventosTime(idTeam, tentativas = 3) {
+
+    for (let i = 1; i <= tentativas; i++) {
+
+        try {
+            const url = `api/v1/team/${idTeam}/events`;
+            console.log(`Tentatica ${i}/${tentativas}: Buscando Eventos ...`);
+
+            const controller = new AbortController();
+            const timoutId = setTimeout(() => controller.abort(), 10000);
+            
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                signal: controller.signal
+            });
+
+            clearTimeout(timoutId);
+    
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`); 
+            }
+    
+            const data = await response.json();
+            
+            if (data.success) {
+                console.log('Eventos carregados com sucesso...');
+                await renderizarCardTeam(idTeam)
+                renderizarCardEventoTeam(data.data);
+                return;
+            } else {
+                console.error('Resposta API sem sucesso:', data);
+                showNotification(`Falha ao recuperar dados de evento do time`, 'danger');
+            }
+    
+        } catch(error) {
+            console.warn(`Tentaiva ${i} falhou: `, error.message);
+
+            if (i == tentativas) {
+                console.error('Todas as tentativas falharam');
+                showNotification(`Erro ao carregar eventos após ${tentativas} tentativas`, 'danger');
+            } else {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+        } 
+    }
+
+}
+
 
 export async function renderizarCardTeam(idTeam) {
     const teamName = document.getElementById('card-team-name');
@@ -55,68 +85,53 @@ export async function renderizarCardTeam(idTeam) {
     if (!teamName || !teamIcon) return;
 
     try {
-        const url = `api/v1/team/recuperar?id_team=${idTeam}`;
-        fetch(url, {
+        const url = `api/v1/team/${idTeam}`;
+        console.log(`Buscando dados do time ${idTeam}...`);
+        
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
             }
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error(`Erro HTTP: ${response.status}`); 
-            }
-            return response.json();
-        }).then(data => {
-            if (data.success) {
-                teamName.textContent = data.team.name
-                teamIcon.setAttribute('src', `data:imagem/png;base64,${data.team.icon}`);
-                teamIcon.setAttribute('alt', data.team.name);
-            } else {
-                showNotification(`Falha ao recuperar dados do time`, 'danger');
-            }
-        })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`); 
+        }
+        
+        const data = await response.json();
+
+        if (data.success) {
+            console.log('Dados do time carregados');
+            teamName.textContent = data.team.name
+            teamIcon.setAttribute('src', `data:imagem/png;base64,${data.team.icon}`);
+            teamIcon.setAttribute('alt', data.team.name);
+        } else {
+            console.error('Resposta API sem sucesso:', data);
+            showNotification(`Falha ao recuperar dados do time`, 'danger');
+        }
     } catch(error) {
-        console.error('Erro:', error);
-        this.disabled = false;
+        console.error('Erro ao carregar dados do time:', error);
+        showNotification(`Erro ao carregar dados do time: ${error.message}`, 'danger');
     }
     
 }
 
-async function recuperarIconUniqueTournmanet(idUniqueTournament) {
-    console.log(idUniqueTournament);
-    try {
-        const url = `api/v1/unique_tournament/icon?id_unique_tournament=${idUniqueTournament}`;
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error(`Erro HTTP: ${response.status}`); 
-            }
-            return response.json();
-        }).then(data => {
-            if (data.success) {
-                return data.uniqueTournament.icon;
-            } else {
-                showNotification(`Falha ao recuperar dados do evento`, 'danger');
-            }
-        })
-    }catch {
-        console.error('Erro:', error);
-        this.disabled = false;
-    }
-}
 
 export function renderizarCardEventoTeam(dados) {
     const tournament = document.querySelector('.tournament');
 
-    if (!tournament) return;
+    if (!tournament) {
+        console.warn('Elemento .tournament não encontrado');
+        return;
+    }
 
     tournament.innerHTML = '';
 
+    console.log(`Renderizando ${dados.length} eventos`);
+
     if (dados.length > 0) {
+
         dados.forEach(async event => {
             const cardDiv = document.createElement('div');
             const styleCard = Number(event.tournament.priority) === 0 ? 'border-left-width: 15px; border-color: #198754;border-top: none;border-bottom: none;border-right: none;': 'None';
@@ -131,8 +146,14 @@ export function renderizarCardEventoTeam(dados) {
                 if (idTeam == event.awayTeam.id) {
                     return event.homeTeam.name;
                 } 
-
                 return event.awayTeam.name;
+            }
+
+            const iconeTimeConfronto = (idTeam) => {
+                if (idTeam == event.awayTeam.id) {
+                    return event.homeTeam.icon;
+                } 
+                return event.awayTeam.icon;
             }
 
 
@@ -164,8 +185,9 @@ export function renderizarCardEventoTeam(dados) {
                             <div class="card-body">
                                 <div class="d-flex align-items-center gap-2">
                                     <img class="unique-tournament-logo img-fluid" 
-                                    src="data:imagem/png;base64,${event.tournament.uniqueTournament.icon}" 
-                                    alt=${event.tournament.name}>
+                                        style="max-width: 30px; height: 30px; object-fit: contain;"
+                                        src="data:imagem/png;base64,${iconeTimeConfronto(teamId)}" 
+                                        alt=${timeConfronto(teamId)}>
                                     <h6 class="card-title">${timeConfronto(teamId)}</h6>
                                 </div>
                             </div>

@@ -1,5 +1,5 @@
 import { showNotification } from "../notifications.js";
-import { renderizarCardTeam, renderizarCardEventoTeam } from "./card_event.js";
+import { renderizarCardTeam } from './card_event.js';
 
 export function setupFindTeam() {
 
@@ -10,38 +10,57 @@ export function setupFindTeam() {
 
     btnPesquisar.addEventListener('click', async function() {
 
-        const teamContext = window.location.pathname === '/team' ||
-                            window.location.pathname.startsWith('/team/');
-        
-        if (!teamContext) return;
-
         if (inputPesquisar.value === null) return;
 
         const textPesquisar = inputPesquisar.value.trim()
 
-        try {
-            const url = `api/v1/team/find?name=${textPesquisar}`;
-            await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`); 
-                }
-                return response.json();
-            }).then(data => {
-                if (data.success) {
-                    renderizarCardTeam(data.team.id_team);
-                    renderizarCardEventoTeam(data.team);
-                } else {
-                    showNotification('Time nao encontrado', 'error');
-                }
-            })
-        } catch {
-            console.error('Erro:', error);
-            this.disabled = false;
+        if (!textPesquisar) {
+            showNotification('Digite o nome do time para pesquisar', 'warning');
+            return;
+        }
+        await buscarTeam(textPesquisar);
+        
+    });
+
+    inputPesquisar.addEventListener('keypress', async function(e) {
+        if (e.key === 'Enter') {
+            const textPesquisar = inputPesquisar.value?.trim();
+            if (textPesquisar) {
+                await buscarTeam(textPesquisar);
+            }
         }
     });
+
+}
+
+
+async function buscarTeam(nome) {
+    try {
+        const url = `api/v1/team/find?name=${nome}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`); 
+        }
+
+        const data = await response.json();
+        
+        if (data.success) {
+            console.log('Time encontrado:', data.team.name);
+            await renderizarCardTeam(data.team.id_team);
+            showNotification(`Time "${data.team.name}" carregado com sucesso`, 'success');
+        } else {
+            console.warn('Time não encontrado');
+            showNotification('Time nao encontrado', 'error');
+        }
+    } catch {
+        console.error('Erro ao buscar time::', error);
+        showNotification(`Erro ao buscar time: ${error.message}`, 'danger');
+    }
+    
 }

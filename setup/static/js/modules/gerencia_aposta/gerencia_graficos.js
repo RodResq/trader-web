@@ -41,17 +41,13 @@ function setupTableObserver() {
         attributeFilter: ['class', 'style']  // Filtrar apenas atributos relevantes
     };
     
-    // Iniciar observação da tabela
     observer.observe(tabela, config);
-    console.log('Observador de tabela configurado com sucesso');
     
     document.addEventListener('cicloAdded', () => {
-        console.log('Evento cicloAdded detectado');
         inicializarGraficoDesempenho();
     });
     
     document.addEventListener('apostaUpdated', () => {
-        console.log('Evento apostaUpdated detectado');
         inicializarGraficoDesempenho();
     });
     
@@ -104,8 +100,6 @@ function extrairApenasLinhasPrincipais() {
         return !!linkExpansao;
     });
     
-    console.log(`Encontradas ${linhasPrincipais.length} linhas principais`);
-    
     linhasPrincipais.forEach((linha, index) => {
         try {            
             const cicloCell = linha.querySelector('td:first-child');
@@ -133,8 +127,6 @@ function extrairApenasLinhasPrincipais() {
             const valorRetorno = parseFloat(retornoText.replace(/[^\d.,]/g, '').replace(',', '.')) || 0;
             
             let categoriaNome = 'Semanal';
-            
-            console.log(`Linha principal ${index}: Categoria: ${categoriaNome}, Período: ${cicloText}, Entrada: ${valorEntrada}, Retorno: ${valorRetorno}`);
             
             if (dataInicial && cicloText) {
                 dados.push({
@@ -218,7 +210,6 @@ function extrairApenasLinhasPrincipais() {
         return dateA - dateB;
     });
     
-    console.log('Dados extraídos das linhas principais:', dados);
     return dados;
 }
 
@@ -250,15 +241,7 @@ function renderizarGraficoDesempenho(container, dados) {
     const canvas = document.createElement('canvas');
     canvas.id = 'mainChartDesempenho';
     mainChartContainer.appendChild(canvas);
-    
-    const dadosCompletos = dados.every(item => 
-        item.hasOwnProperty('valorEntrada') && 
-        item.hasOwnProperty('valorRetorno') && 
-        item.hasOwnProperty('dataInicial')
-    );
-    
-    console.log('Todos os dados estão completos?', dadosCompletos);
-    
+        
     const labels = dados.map(item => {
         if (item.dataInicial) {
             const parts = item.dataInicial.split('/');
@@ -272,8 +255,6 @@ function renderizarGraficoDesempenho(container, dados) {
     const valorRetornos = dados.map(item => item.valorRetorno || 0);
     const valorEntradas = dados.map(item => item.valorEntrada || 0);
     
-    console.log('Valores de retorno a serem plotados:', valorRetornos);
-    console.log('Valores de entrada a serem plotados:', valorEntradas);
     
     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
     const textColor = isDarkTheme ? '#cccccc' : '#666666';

@@ -31,7 +31,7 @@ from auth.views import CustomTokenObteinPairView
 web_urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('__debug__/', include('debug_toolbar.urls')),
-    path('analytics', include('analytics.urls')),
+    path('dashboard', include('analytics.urls')),
     path('resultado/<int:id_evento>', evento, name='evento'),
     path('gerencia/', include('gerencia.urls', namespace='gerencia')),
     path('ciclos/', include('ciclo.urls', namespace='ciclo')),

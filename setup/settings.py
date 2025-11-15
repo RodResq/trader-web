@@ -278,6 +278,6 @@ SIMPLE_JWT = {
 }
 
 LOGIN_URL = '/api-auth/login'
-LOGIN_REDIRECT_URL = '/analytics'
-LOGOUT_REDIRECT_URL = '/analytics'
+LOGIN_REDIRECT_URL = '/dashboard'
+LOGOUT_REDIRECT_URL = '/dashboard'
 

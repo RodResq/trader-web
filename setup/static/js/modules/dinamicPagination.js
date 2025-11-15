@@ -1,5 +1,5 @@
 
-import { navigateToPage } from './pagination.js';
+import  { navigateToPageEnhanced }  from './pagination.js';
 
 export function initDynamicPagination() {
     document.addEventListener('DOMContentLoaded', function() {
@@ -22,7 +22,7 @@ export function initDynamicPagination() {
                         }
                     }
                     
-                    navigateToPage(page);
+                    navigateToPageEnhanced(page);
                 } else {
                     window.location.href = pageLink.getAttribute('href');
                 }
@@ -38,7 +38,7 @@ export function initDynamicPagination() {
                 const refreshButton = document.getElementById('updateMarkets');
                 if (refreshButton) {
                     // Reiniciar para a primeira página com novo número de itens
-                    navigateToPage(1, itemsPerPage);
+                    navigateToPageEnhanced(1, itemsPerPage);
                 } else {
                     // Navegação tradicional
                     const currentUrl = new URL(window.location.href);
@@ -154,7 +154,7 @@ export function updatePaginationControls(paginationData) {
                 if (this.closest('.page-item.disabled')) return;
                 
                 const page = parseInt(this.dataset.page);
-                navigateToPage(page);
+                navigateToPageEnhanced(page);
             });
         });
     }
@@ -198,7 +198,7 @@ export function createPaginationControls(container, paginationData) {
     if (itemsPerPageSelect) {
         itemsPerPageSelect.addEventListener('change', function() {
             const newItemsPerPage = parseInt(this.value);
-            navigateToPage(1, newItemsPerPage);
+            navigateToPageEnhanced(1, newItemsPerPage);
         });
     }
 }

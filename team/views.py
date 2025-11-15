@@ -82,7 +82,7 @@ def events(request):
             }, status=500)
             
             
-def get_event(request):
+def get_event(request, id_team):
     if request.method == 'GET':
         id_event = request.GET.get('id_event')
         checked = request.GET.get('checked')
@@ -114,9 +114,8 @@ def get_event(request):
             }, status=500)
             
             
-def get_team(request):
+def get_team(request, id_team):
     if request.method == 'GET':
-        id_team = request.GET.get('id_team')
         
         try:
             team = get_object_or_404(TeamSofascore, id_team=id_team)
