@@ -4,6 +4,7 @@ import { showNotification } from "../notifications.js";
 let modalInstance = null;
 let nameHome = '';
 let nameAway = '';
+let chartInstance = null;
 
 export function setupCompareTeam() {
     const btnCompareTeam = document.querySelectorAll('.compare-team');
@@ -43,7 +44,8 @@ export function setupCompareTeam() {
 
                 const data = await response.json();
                 if (data.success) {
-                    showModal(modalInstance, data.data);
+                    modalInstance.show()
+                    renderizarGrafico(data.data);
                 } else {
                     showNotification('Erro ao recuperar estatisticas dos times.', 'danger');
                 }
@@ -53,12 +55,9 @@ export function setupCompareTeam() {
             
         });
     });
+
 }
 
-function showModal(modalInstance, compareData) {
-    modalInstance.show();
-    renderizarGrafico(compareData);
-}
 
 function renderizarGrafico(dados) {
     const dataHome = dados?.home;
@@ -93,7 +92,7 @@ function renderizarGrafico(dados) {
         ],
         datasets: [{
             label: nameHome,
-            data: [dataHome?.atack, dataHome?.control, dataHome?.defese, dataHome?.discipline],
+            data: [dataHome?.atack, dataHome?.defese, dataHome?.control, dataHome?.discipline],
             fill: true,
             backgroundColor: homeBgColor,
             borderColor: homeColor,
@@ -103,7 +102,7 @@ function renderizarGrafico(dados) {
             pointHoverBorderColor: isDarkTheme ? '#1a1a1a' : '#fff'
         }, {
             label: nameAway,
-            data: [dataAway?.atack, dataAway?.control, dataAway?.defese, dataAway?.discipline],
+            data: [dataAway?.atack, dataAway?.defese, dataAway?.control, dataAway?.discipline],
             fill: true,
             backgroundColor: awayBgColor,
             borderColor: awayColor,
@@ -169,6 +168,11 @@ function renderizarGrafico(dados) {
         },
     };
 
-    graficoCompareTeam = new Chart(ctx, config)
+    if (chartInstance !== null && typeof chartInstance.destroy === 'function') {
+        chartInstance.destroy();
+    }
+
+    chartInstance = new Chart(ctx, config)
+
 
 }
