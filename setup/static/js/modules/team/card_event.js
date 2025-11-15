@@ -1,6 +1,8 @@
 import { setupPrioridadeEvento } from './prioridade_evento.js';
 import { showNotification } from '../notifications.js';
 
+let teamId = '';
+
 export function setupCardEventTeam() {
     const rows = document.querySelectorAll('.tr-clubes[data-team-id]');
     
@@ -10,7 +12,7 @@ export function setupCardEventTeam() {
     rows.forEach(row => {
         row.style.cursor = 'pointer';
         row.addEventListener('click', async function() {
-            const teamId = this.getAttribute('data-team-id');
+            teamId = this.getAttribute('data-team-id');
             if (!teamId) {
                 console.error('ID do team não encontrado')
                 return;
@@ -125,38 +127,52 @@ export function renderizarCardEventoTeam(dados) {
                 timestampParaData(event.tournament.startTimestamp): 
                 'Data não informada';
 
+            const timeConfronto = (idTeam) => {
+                if (idTeam == event.awayTeam.id) {
+                    return event.homeTeam.name;
+                } 
+
+                return event.awayTeam.name;
+            }
+
+
             cardDiv.innerHTML = `
-                <div class="card-body">
-                    <div class="no-gutters">
-                        <div class="row mr-2">
-                            <div class="col-sm-1 mr-2">
-                                <div class="row">
-                                    <img class="unique-tournament-logo mb-3img-fluid"
-                                        style="width: 90px;"
-                                        alt= ${event.tournament.name}
-                                        src=data:imagem/png;base64,${event.tournament.uniqueTournament.icon}>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 align-content-start">
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    ${event.tournament.name || 'Campeonato'}
-                                </div>
-                                <div class="text-xs text-gray-600 mt-2">
-                                    <i class="fas fa-calendar-alt"></i> ${dataFormatada}
-                                </div>
-                            </div>
-                            <div class="col-sm-2 align-content-center">
-                                <input class="form-check-input checkPrioridadeEvento" type="checkbox" value="${event.idEvent}" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
+                <div class="card">
+                    <div class="row g-0">
+                        <div class="row col-sm-1 m-2">
+                            <img class="align-self-center h-50 unique-tournament-logo mb-3img-fluid" 
+                                src="data:imagem/png;base64,${event.tournament.uniqueTournament.icon}" 
+                                alt=${event.tournament.name}>
+                        </div>
+                        <div class="col-sm-2 border-end">
+                            <div class="card-body">
+                                <h6 class="card-title">${event.tournament.name}</h6>
+                                <p class="card-text">
+                                    <span class="text-xs text-gray-600 mt-2">
+                                        <i class="fas fa-calendar-alt"></i> ${dataFormatada}
+                                    </span>
+                                </p>
+                                <div class="col-sm-2 align-content-center">
+                                    <input class="form-check-input checkPrioridadeEvento" type="checkbox" value="${event.idEvent}" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
                                     Prioridade:
-                                </label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center gap-2">
+                                    <img class="unique-tournament-logo img-fluid" 
+                                    src="data:imagem/png;base64,${event.tournament.uniqueTournament.icon}" 
+                                    alt=${event.tournament.name}>
+                                    <h6 class="card-title">${timeConfronto(teamId)}</h6>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
             tournament.append(cardDiv);
-                //Incializa o check de proximo eventos prioritario
             setupPrioridadeEvento()
         })
     } else {
