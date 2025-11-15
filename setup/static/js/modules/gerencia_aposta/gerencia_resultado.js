@@ -54,7 +54,7 @@ export function setupGerenciaResultado() {
             }).then(data => {
                 if (data.success) {
                     atualizaIconeResultado(currentRow, data.data.resultado);
-                    
+
                     if ((data.data.resultado === 'G' || data.data.resultado === 'R') && data.data) {
                         updateValorTotalRetornado(currentRow, data.data.valorIndividualAposta, data.data.resultado);
                     }
@@ -79,6 +79,13 @@ export function setupGerenciaResultado() {
 
 }
 
+function atualiarRetornoIndividual(row) {
+    const retornoApostaIndividual = row.querySelector('td:nth-child(9)');
+    if (!retornoApostaIndividual) return;
+
+    retornoApostaIndividual.textContent = parseFloat(0).toFixed(2);
+}
+
 
 function updateValorTotalRetornado(row, valorIndivualAposta, resultadoSelecionado) {
     const collapseSection = row.closest(".collapse");
@@ -91,6 +98,8 @@ function updateValorTotalRetornado(row, valorIndivualAposta, resultadoSelecionad
     if (!valorRetornoCell) return;
 
     if (resultadoSelecionado === 'R') {
+        atualiarRetornoIndividual(row);
+                    
         const currentValueCell = parseFloat(String(valorRetornoCell.textContent).replace(',', '.')).toFixed(2);
         const valorTotalRetornoResponse = parseFloat(valorIndivualAposta).toFixed(2);
         valorRetornoCell.textContent = parseFloat(currentValueCell - valorTotalRetornoResponse).toFixed(2);

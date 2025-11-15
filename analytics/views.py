@@ -58,7 +58,16 @@ COLORES_WEIGHT = [
     "#F54927",  # Vermelho claro
     "#b71c1c",  # Vermelho escuro
     "#01579b",  # Azul claro escuro
-    "#006064",  # Ciano escuro
+    "#004F52",  # Ciano escuro
+    "#eead0e",
+    "#5a367a",
+    "#789012",
+    "#82aecc",
+    "#d77c59",
+    "#4d0303",
+    "#2f334c",
+    "#6f7387",
+    "#3e6a40"
 ]
       
 

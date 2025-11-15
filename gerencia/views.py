@@ -139,21 +139,18 @@ def gerencia_resultado(request):
                     'message': f'Resultado da aposta já adicionado ao valor principal'
                 }, status=200)
                 
-            
-            with transaction.atomic():
-                gerencia_ciclo = GerenciaCiclo.objects.filter(ciclo=aposta.ciclo).first()
+            gerencia_ciclo = GerenciaCiclo.objects.filter(ciclo=aposta.ciclo).first()
 
-                if not gerencia_ciclo:
-                    return JsonResponse({
-                    'success': False,
-                    'message': f'Não existe ciclo para registrar o valor de retorno da aposta'
-                }, status=400)
-                    
-                    
+            if not gerencia_ciclo:
+                return JsonResponse({
+                'success': False,
+                'message': f'Não existe ciclo para registrar o valor de retorno da aposta'
+            }, status=400)
+                
+            with transaction.atomic():
                 if BetsResultEnum.RED.value == resultado:
-                    gerencia_ciclo.valor_total_retorno = 0;
-                    valor_total_retorno = gerencia_ciclo.valor_total_retorno
-                    gerencia_ciclo.save()
+                    valor_total_retorno = aposta.retorno
+                    aposta.retorno = 0
                 
                 aposta.resultado = resultado
                 aposta.save()
