@@ -11,5 +11,5 @@ urlpatterns = [
 urlpatterns += [
     path('<str:id_team>', get_team, name='get_team'),
     path('<int:id_team>/events', TeamEvents.as_view()),
-    path('list', TeamList.as_view()),
+    path('list/', TeamList.as_view()),
 ]

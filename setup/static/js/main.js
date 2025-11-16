@@ -84,6 +84,10 @@ const routeModules = {
     ],
     '/team': [
         {
+            name: 'setupTeamList',
+            module: () => import('./modules/team/teamList.js').then(m => m.setupTeamList)
+        },
+        {
             name: 'setupCardEventTeam',
             module: () => import('./modules/team/card_event.js').then(m => m.setupCardEventTeam)
         },

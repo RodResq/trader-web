@@ -4,26 +4,40 @@ import { showNotification } from '../notifications.js';
 let teamId = '';
 
 export function setupCardEventTeam() {
-    const rows = document.querySelectorAll('.tr-clubes[data-team-id]');
+    const scrollContainer = document.getElementById('teamsScrollContainer');
+    const teamsTableBody = document.getElementById('teamsTableBody');
     
-    if (!rows || rows.length === 0) {
-        console.warn('Nenhum elemento .tr-clubes[data-team-id] encontrado');
+    if (!scrollContainer || !teamsTableBody) {
+        console.warn('Elementos scrollContainer ou teamsTableBody não encontrados');
         return;
     }
 
-    console.log(`✓ Encontrados ${rows.length} elementos para setupCardEventTeam`);
+    console.log(`setupCardEventTeam inicializado com event delegation`);
 
-    rows.forEach(row => {
+    teamsTableBody.addEventListener('click', async function(event) {
+        const row = event.target.closest('.tr-clubes');
+
+        if (!row) {
+            console.log('Clique não foi em uma linha válida');
+            return;
+        }
+
+        console.log('>>>>>> Linha clicada:', row);
+
+        teamId = row.getAttribute('data-team-id');
+
+        if (!teamId) {
+            showNotification('ID do time não encontrado', 'danger');
+            return;
+        }
+
         row.style.cursor = 'pointer';
-        row.addEventListener('click', async function() {
-            teamId = this.getAttribute('data-team-id');
-            if (!teamId) {
-                showNotification('ID do time não encontrado', 'danger');
-                return;
-            }
-            await carregarEventosTime(teamId);
-        });
+        console.log(`Carregando eventos do time: ${teamId}`);
+
+        await carregarEventosTime(teamId);
+
     });
+    
 }
 
 
@@ -81,8 +95,12 @@ export async function carregarEventosTime(idTeam, tentativas = 3) {
 
 export async function renderizarCardTeam(idTeam) {
     const teamName = document.getElementById('card-team-name');
-    const teamIcon = document.getElementById('card-team-img')
-    if (!teamName || !teamIcon) return;
+    const teamIcon = document.getElementById('card-team-img');
+
+    if (!teamName || !teamIcon) {
+        console.warn('Elementos card-team-name ou card-team-img não encontrados');
+        return;
+    }
 
     try {
         const url = `api/v1/team/${idTeam}`;
@@ -128,13 +146,13 @@ export function renderizarCardEventoTeam(dados) {
 
     tournament.innerHTML = '';
 
-    console.log(`Renderizando ${dados.length} eventos`);
-
     if (dados.length > 0) {
-
         dados.forEach(async event => {
             const cardDiv = document.createElement('div');
-            const styleCard = Number(event.tournament.priority) === 0 ? 'border-left-width: 15px; border-color: #198754;border-top: none;border-bottom: none;border-right: none;': 'None';
+            const styleCard = Number(event.tournament.priority) === 0 ? 
+                'border-left-width: 15px; border-color: #198754;border-top: none;border-bottom: none;border-right: none;': 
+                'None';
+
             cardDiv.className = `card shadow h-100 mb-3`;
             cardDiv.style = styleCard;
 
@@ -155,7 +173,6 @@ export function renderizarCardEventoTeam(dados) {
                 } 
                 return event.awayTeam.icon;
             }
-
 
             cardDiv.innerHTML = `
                 <div class="card">
@@ -210,7 +227,6 @@ export function renderizarCardEventoTeam(dados) {
             </div>
         `;
     }
-
 
 }
 

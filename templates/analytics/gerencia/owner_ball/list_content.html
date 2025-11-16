@@ -96,10 +96,8 @@
                                         <span class="p-sm-1 align-baseline rounded-circle"
                                             {% if bet.entry.entry_result == "W" %} 
                                                 style="background-color: #1b5e20;"
-                                            {% elif bet.entry.entry_result == "L" %}
+                                            {% elif bet.entry.entry_result == "L" or bet.entry.entry_result == "D" %}
                                                 style="background-color: #d41827ff;"
-                                            {% else %}
-                                                style="10px; background-color: #185ad4ff;"
                                             {% endif %}
                                         >
                                             {{ bet.entry.entry_result }}

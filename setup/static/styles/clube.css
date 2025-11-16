@@ -1,22 +1,32 @@
+
+.table-scroll-container-full {
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
 .table-clubes {
     background: transparent;
     border: none;
     border-spacing: 0;
     border-collapse: separate;
-    max-width: 30%;
+    width: 100%;
     position: relative;
 }
 
 /* Linha sutil lateral direita da tabela */
-.table-clubes::after {
+.table-clubes.table-with-border::after {
     content: '';
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     width: 1px;
+    height: max-content;
     background: rgba(255, 255, 255, 0.1);
     z-index: 1;
+    pointer-events: none;
 }
 
 /* Remove TODAS as bordas */
@@ -95,3 +105,12 @@
     border-radius: 2px;
     transition: transform 0.2s ease;
 }
+
+#loadingIndicator {
+    color: #6c757d;
+}
+
+#loadingIndicator .spinner-border {
+    color: rgba(255, 255, 255, 0.5);
+}
+

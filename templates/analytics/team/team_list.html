@@ -1,0 +1,28 @@
+{% comment %} {% if teams %} 
+    {% for team in teams %}
+        <tr class="tr-clubes" data-team-id="{{ team.id_team }}">
+            <td class="td-clubes">
+                {{ team.id_team }}
+            </td>
+            <td class="td-clubes">
+                <div class="team-info">
+                {% if team.icon %}
+                <img
+                    src="{{ team.icon_data_url }}"
+                    alt="Logo {{ team.name }}"
+                    class="team-logo"
+                    style="width: 20px; height: 20px; object-fit: contain; margin-right: 8px;"
+                    onerror="this.style.display='none'"/>
+                {% endif %}
+                <span>{{ team.name }}</span>
+                </div>
+            </td>
+        </tr>
+    {% endfor %} 
+{% else %}
+    <tr class="tr-clubes">
+        <td class="td-clubes" colspan="2" style="text-align: center; color: #6c757d">
+            Nenhum clube encontrado
+        </td>
+    </tr>
+{% endif %} {% endcomment %}

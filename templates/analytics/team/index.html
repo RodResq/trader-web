@@ -6,48 +6,26 @@
         {% if messages %}
         <div class="alert alert-success" role="alert">
             {% for message in messages %}
-            {{ message }}
+                {{ message }}
             {% endfor %}
         </div>
         {% endif %}
         
         <div class="row mt-2 mb-4">
             <div class="col-3 mb-4">
-                <div class="table-scroll-container-full">
+                <div id="teamsScrollContainer" class="table-scroll-container-full"> 
                     <table class="table-clubes table table-borderless mb-0" id="tableClubesSF">
-                        <tbody class="tbody-clubes">
-                            {% if teams %}
-                            {% for team in teams %}
-                            <tr class="tr-clubes" data-team-id="{{ team.id_team }}">
-                                <td class="td-clubes">
-                                    {{ team.id_team }}
-                                </td>
-                                <td class="td-clubes">
-                                    <div class="team-info">
-                                        {% if team.icon %}
-                                        <img src="{{ team.icon_data_url }}"
-                                             alt="Logo {{ team.name }}"
-                                             class="team-logo"
-                                             style="width: 20px; height: 20px; object-fit: contain; margin-right: 8px;"
-                                             onerror="this.style.display='none'">
-                                        {% endif %}
-                                        <span>{{ team.name }}</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            {% else %}
-                            <tr class="tr-clubes">
-                                <td class="td-clubes" colspan="2" style="text-align: center; color: #6c757d;">
-                                    Nenhum clube encontrado
-                                </td>
-                            </tr>
-                            {% endif %}
+                        <tbody class="tbody-clubes" id="teamsTableBody">
                         </tbody>
                     </table>
                 </div>
+
+                <div id="loadingIndicator" style="display: none; text-align: center; padding: 20px;">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Carregando...</span>
+                    </div>
+                </div>
             </div>
-            
             <div class="col-9">
                 {% include 'analytics/team/card_event.html' %}
             </div>

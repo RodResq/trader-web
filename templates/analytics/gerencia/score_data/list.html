@@ -97,10 +97,8 @@
                                     <span class="p-sm-1 align-baseline rounded-circle"
                                         {% if aposta.entrada.entry_result == "W" %} 
                                             style="background-color: #1b5e20;"
-                                        {% elif aposta.entrada.entry_result == "L" %}
+                                        {% elif aposta.entrada.entry_result == "L" or aposta.entrada.entry_result == "D" %}
                                             style="background-color: #d41827ff;"
-                                        {% else %}
-                                            style="10px; background-color: #185ad4ff;"
                                         {% endif %}
                                     >
                                         {{ aposta.entrada.entry_result }}

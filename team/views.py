@@ -10,16 +10,36 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import generics, viewsets, pagination
 from team.serializers import TeamSofascoreSerializer
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 import requests
 import io
 
-
+class TeamCustomPageNumberPagination(pagination.PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size'
+    max_page_size = 30
+    
+    def get_paginated_response(self, data):
+        return Response({
+            'count': self.page.paginator.count,
+            'next': self.get_next_link(),
+            'previous': self.get_previous_link(),
+            'total_pages': self.page.paginator.num_pages,
+            'current_page': self.page.number,
+            'has_next': self.page.has_next(),
+            'has_previous': self.page.has_previous(),
+            'results': data
+        })
 
 class TeamList(generics.ListCreateAPIView):
     queryset =  TeamSofascore.objects.filter(ativo=1)\
         .exclude(name__iregex=r'U\d{2}$').all()
     serializer_class = TeamSofascoreSerializer
+    pagination_class = TeamCustomPageNumberPagination
 
 
 class TeamEvents(generics.ListCreateAPIView):
