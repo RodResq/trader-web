@@ -13,9 +13,7 @@ export function setupTeamList() {
         return;
     }
 
-    const resizeObserver = new ResizeObserver(() => {
-         console.log('Tabela redimensionada - borda atualizada');
-    });
+    const resizeObserver = new ResizeObserver(() => {});
 
     resizeObserver.observe(table);
     table.classList.add('table-with-border');
@@ -73,7 +71,6 @@ export function setupTeamList() {
             return response.json();
         })
         .then(data => {
-            console.log('Dados recebido: ', data);
             if (data.results  && data.results.length > 0) {
                 data.results.forEach(team => {
                     const row = renderTeamRow(team);
@@ -82,8 +79,6 @@ export function setupTeamList() {
 
                 currentPage = data.current_page;
                 hasNextPage = data.has_next;
-
-                console.log(`Página ${currentPage} carregada. Próxima página: ${hasNextPage}`);
             }
 
             isLoading = false;
@@ -108,7 +103,6 @@ export function setupTeamList() {
         }
     });
 
-    console.log('Iniciando carregamento da primeira página...');
     loadNextPage();
 
 }

@@ -1,12 +1,11 @@
 import { initGerenciaGraficos } from './gerencia_graficos.js';
 
 export function setupGraficoDesempenhoSemanal() {
+    
     const lucroTable = document.getElementById('lucroTable');
 
     if (!lucroTable) return;
 
-    console.log('Inicializando gráficos de desempenho...');
-    
     if (typeof Chart === 'undefined') {
         console.error('Chart.js não está disponível. Carregando dinamicamente...');
         
@@ -35,5 +34,7 @@ export function setupGraficoDesempenhoSemanal() {
             });
         });
     }
+
 }
+
 

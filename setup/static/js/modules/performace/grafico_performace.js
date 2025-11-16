@@ -14,10 +14,10 @@ export async function setupProgressPerformace() {
         }
     } catch (error) {
         console.error('Erro ao carregar dados de resutltado das apostas:', error);
-    } finally {
-        console.log('Finaly grafico performace');
-    }
+    } 
+
 }
+
 
 function renderizarDados(dados) {
     const progressPerformace = document.getElementById('progressPerformace');
@@ -42,4 +42,5 @@ function renderizarDados(dados) {
 
     progressPerformace.style.width = `${dados['percentual_green']}%`;
     textoProgressBar.textContent = `${dados['percentual_green']}%`;
+    
 }

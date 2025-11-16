@@ -36,9 +36,8 @@ async function carregarDadosGraficoPerformaceSemanal(chartContainer) {
     
     } catch (error) {
         console.error('Erro ao carregar dados de evolução:', error);
-    } finally {
-        console.log('Finaly grafico performace');
-    }
+    } 
+
 }
 
 
@@ -60,7 +59,7 @@ function renderizarDados(container, dados) {
     } else {
         mostrarGraficoVazio();
     }
-    // atualizarDetalhes(analise);
+
 }
 
 
@@ -142,6 +141,7 @@ function renderizarGrafico(container, dados) {
     });
 
     window.graficoPerformaceSemanal = graficoPerformaceSemanal;
+    
 }
 
 

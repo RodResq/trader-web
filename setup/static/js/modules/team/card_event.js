@@ -12,8 +12,6 @@ export function setupCardEventTeam() {
         return;
     }
 
-    console.log(`setupCardEventTeam inicializado com event delegation`);
-
     teamsTableBody.addEventListener('click', async function(event) {
         const row = event.target.closest('.tr-clubes');
 
@@ -21,8 +19,6 @@ export function setupCardEventTeam() {
             console.log('Clique não foi em uma linha válida');
             return;
         }
-
-        console.log('>>>>>> Linha clicada:', row);
 
         teamId = row.getAttribute('data-team-id');
 
@@ -32,7 +28,6 @@ export function setupCardEventTeam() {
         }
 
         row.style.cursor = 'pointer';
-        console.log(`Carregando eventos do time: ${teamId}`);
 
         await carregarEventosTime(teamId);
 
@@ -69,7 +64,6 @@ export async function carregarEventosTime(idTeam, tentativas = 3) {
             const data = await response.json();
             
             if (data.success) {
-                console.log('Eventos carregados com sucesso...');
                 await renderizarCardTeam(idTeam)
                 renderizarCardEventoTeam(data.data);
                 return;
@@ -120,7 +114,6 @@ export async function renderizarCardTeam(idTeam) {
         const data = await response.json();
 
         if (data.success) {
-            console.log('Dados do time carregados');
             teamName.textContent = data.team.name
             teamIcon.setAttribute('src', `data:imagem/png;base64,${data.team.icon}`);
             teamIcon.setAttribute('alt', data.team.name);

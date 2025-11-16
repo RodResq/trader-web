@@ -33,9 +33,7 @@ async function carregarDadosGraficoResultadoTotalGanhos(chartContainer) {
         }
     } catch (error) {
         console.error('Erro ao carregar dados de resutltado das apostas:', error);
-    } finally {
-        console.log('Finaly grafico performace');
-    }
+    } 
 }
 
 function renderizarDados(container, dados) {

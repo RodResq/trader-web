@@ -153,11 +153,9 @@ const globalModules = [
 
 async function loadRouteModules() {
     const currentRoute = getCurrentRoute();
-    console.log('>>>>>>>>>>> ROTA ATUAL: ', currentRoute);
 
     for (const [route, modules] of Object.entries(routeModules)) {
         if (isRoute(route)) {
-            console.log('>>>>>>>>>>>> CARREGANDO MODULOS PARA: ', route);
 
             for (const moduleConfig of modules) {
                 try {
@@ -165,7 +163,7 @@ async function loadRouteModules() {
                     setupFunction();
                     console.log('>>>> Modulo Carregado: ', moduleConfig.name);
                 } catch (error) {
-                    console.error('>>>>>>>>> ERRO AO CARREGAR MODULO: ', moduleConfig.name, error);
+                    console.error('Erro ao carregar modulo: ', moduleConfig.name, error);
                 }
             }
             
@@ -176,7 +174,6 @@ async function loadRouteModules() {
 
 
 async function loagGlobalModules() {
-    console.log(' CARREGANDO MODULOS GLOBAIS...');
 
     for (const moduleConfig of globalModules) {
         try {
@@ -184,14 +181,14 @@ async function loagGlobalModules() {
             setupFunction();
             console.log('>>>> Modulo Carregado: ', moduleConfig.name);
         } catch(error) {
-            console.error('>>>>>>>>> ERRO AO CARREGAR MODULO: ', moduleConfig.name, error);
+            console.error('Erro ao carregar modulo: ', moduleConfig.name, error);
         }
     }
     
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('>>>>>>>>> Inciando a aplicacao...');
+
     const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     tooltips.forEach(tooltip => {
         new bootstrap.Tooltip(tooltip);
@@ -212,8 +209,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (typeof atualizaIconeResultado === "function") {
         atualizaIconeResultado();
     }
-    
-    console.log('>>>>>>>> APLICACAO PRONTA <<<<<<<<<<<');
     
 });
 
