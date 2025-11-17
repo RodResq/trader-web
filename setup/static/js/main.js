@@ -24,7 +24,10 @@ function  isAnyRoute(...paths) {
 const routeModules = {
     
     '/dashboard': [
-        
+        {
+            name: 'setupApiOwnerBallSuperFavoriteHome',
+            module: () => import('./modules/owner_ball/api_owner_ball_super_favorite_home.js').then(m => m.setupApiOwnerBallSuperFavoriteHome)
+        },
         {
             name: 'setupGraficoResultadoTotalGanhos',
             module: () => import('./modules/gerencia_aposta/grafico_resultado_total_ganhos.js').then(m => m.setupGraficoResultadoTotalGanhos)
@@ -38,8 +41,8 @@ const routeModules = {
             module: () => import('./modules/evento/grafico_melhor_dia.js').then(m => m.setupGraficoMelhorDia)
         },
         {
-            name: 'setupApiOwnerBallSuperFavoriteHome',
-            module: () => import('./modules/owner_ball/api_owner_ball_super_favorite_home.js').then(m => m.setupApiOwnerBallSuperFavoriteHome)
+            name: 'setupBatchEntriesOwnerBall',
+            module: () => import('./modules/owner_ball/entry/batch_entries_owner_ball.js').then(m => m.setupBatchEntriesOwnerBall)
         },
         {
             name: 'setupEventVote',
@@ -48,6 +51,10 @@ const routeModules = {
         {
             name: 'setupStatistic',
             module: () => import('./modules/entrada/statistic.js').then(m => m.setupStatistic)
+        },
+        {
+            name: 'setupStatisticOwnerBall',
+            module: () => import('./modules/owner_ball/statistic_owner_ball.js').then(m => m.setupStatisticOwnerBall)
         },
         {
             name: 'setupWinProbability',
