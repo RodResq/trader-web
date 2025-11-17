@@ -36,53 +36,44 @@ export function setupCardEventTeam() {
 }
 
 
-export async function carregarEventosTime(idTeam, tentativas = 3) {
+export async function carregarEventosTime(idTeam) {
 
-    for (let i = 1; i <= tentativas; i++) {
+    try {
+        const url = `api/v1/team/${idTeam}/events?page=1&page_size=5`;
 
-        try {
-            const url = `api/v1/team/${idTeam}/events`;
-            console.log(`Tentatica ${i}/${tentativas}: Buscando Eventos ...`);
+        const controller = new AbortController();
+        const timoutId = setTimeout(() => controller.abort(), 10000);
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            },
+            signal: controller.signal
+        });
 
-            const controller = new AbortController();
-            const timoutId = setTimeout(() => controller.abort(), 10000);
-            
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                },
-                signal: controller.signal
-            });
+        clearTimeout(timoutId);
 
-            clearTimeout(timoutId);
-    
-            if (!response.ok) {
-                throw new Error(`Erro HTTP: ${response.status}`); 
-            }
-    
-            const data = await response.json();
-            
-            if (data.success) {
-                await renderizarCardTeam(idTeam)
-                renderizarCardEventoTeam(data.data);
-                return;
-            } else {
-                console.error('Resposta API sem sucesso:', data);
-                showNotification(`Falha ao recuperar dados de evento do time`, 'danger');
-            }
-    
-        } catch(error) {
-            console.warn(`Tentaiva ${i} falhou: `, error.message);
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`); 
+        }
 
-            if (i == tentativas) {
-                console.error('Todas as tentativas falharam');
-                showNotification(`Erro ao carregar eventos após ${tentativas} tentativas`, 'danger');
-            } else {
-                await new Promise(resolve => setTimeout(resolve, 2000));
-            }
-        } 
-    }
+        const data = await response.json();
+        
+        if (data.results && data.results.length > 0) {
+            await renderizarCardTeam(idTeam)
+            renderizarCardEventoTeam(data.results);
+            return;
+        } else {
+            console.error('Resposta API sem sucesso:', data);
+            showNotification(`Falha ao recuperar dados de evento do time`, 'danger');
+        }
+
+    } catch(error) {
+        console.error('Todas as tentativas falharam');
+        showNotification(`Erro ao carregar eventos após ${tentativas} tentativas`, 'danger');
+        
+    } 
 
 }
 

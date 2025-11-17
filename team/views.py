@@ -15,6 +15,8 @@ from team.serializers import TeamSofascoreSerializer
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from math import ceil
+
 import requests
 import io
 
@@ -55,10 +57,35 @@ class TeamEvents(generics.ListCreateAPIView):
         try:
             response = requests.get(f'http://127.0.0.1:8080/team/{id_team}/events')
             response.raise_for_status()
-            dados = response.json()
+            response_data = response.json()
             
-            return Response(dados, status=status.HTTP_200_OK)
+            if not response_data.get('success'):
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+            
+            dados = response_data.get('data', [])
+            
+            page_size = 5
+            page_number = int(request.query_params.get('page', 1))
+            
+            total_count = len(dados)
+            total_pages = ceil(total_count /page_size)
+            
+            start_idx = (page_number - 1) * page_size
+            end_idx = start_idx + page_size
+            
+            paginated_data = dados[start_idx:end_idx]
         
+            return Response({
+                'count': total_count,
+                'next': f'/api/team/{id_team}/events/?page={page_number + 1}' if page_number < total_pages else None,
+                'previous': f'/api/team/{id_team}/events/?page={page_number - 1}' if page_number > 1 else None,
+                'total_pages': total_pages,
+                'current_page': page_number,
+                'has_next': page_number < total_pages,
+                'has_previous': page_number > 1,
+                'results': paginated_data
+            }, status=status.HTTP_200_OK)
+            
         except requests.RequestException as e:
             return Response({
                 'success': False,
