@@ -26,7 +26,8 @@ const routeModules = {
     '/dashboard': [
         {
             name: 'setupApiOwnerBallSuperFavoriteHome',
-            module: () => import('./modules/owner_ball/api_owner_ball_super_favorite_home.js').then(m => m.setupApiOwnerBallSuperFavoriteHome)
+            module: () => import('./modules/owner_ball/api_owner_ball_super_favorite_home.js').then(m => m.setupApiOwnerBallSuperFavoriteHome),
+            dependencies: []
         },
         {
             name: 'setupGraficoResultadoTotalGanhos',
@@ -42,27 +43,33 @@ const routeModules = {
         },
         {
             name: 'setupBatchEntriesOwnerBall',
-            module: () => import('./modules/owner_ball/entry/batch_entries_owner_ball.js').then(m => m.setupBatchEntriesOwnerBall)
+            module: () => import('./modules/owner_ball/entry/batch_entries_owner_ball.js').then(m => m.setupBatchEntriesOwnerBall),
+            dependencies: ['setupApiOwnerBallSuperFavoriteHome']
         },
         {
             name: 'setupEventVote',
             module: () => import('./modules/entrada/event_vote.js').then(m => m.setupEventVote),
+            dependencies: ['setupApiOwnerBallSuperFavoriteHome']
         },
         {
             name: 'setupStatistic',
-            module: () => import('./modules/entrada/statistic.js').then(m => m.setupStatistic)
+            module: () => import('./modules/entrada/statistic.js').then(m => m.setupStatistic),
+            dependencies: ['setupApiOwnerBallSuperFavoriteHome']
         },
         {
             name: 'setupStatisticOwnerBall',
-            module: () => import('./modules/owner_ball/statistic_owner_ball.js').then(m => m.setupStatisticOwnerBall)
+            module: () => import('./modules/owner_ball/statistic_owner_ball.js').then(m => m.setupStatisticOwnerBall),
+            dependencies: ['setupApiOwnerBallSuperFavoriteHome']
         },
         {
             name: 'setupWinProbability',
-            module: () => import('./modules/entrada/win_probability.js').then(m => m.setupWinProbability)
+            module: () => import('./modules/entrada/win_probability.js').then(m => m.setupWinProbability),
+            dependencies: ['setupApiOwnerBallSuperFavoriteHome']
         },
         {
             name: 'setupCompareTeam',
-            module: () => import('./modules/entrada/compare_team.js').then(m => m.setupCompareTeam)
+            module: () => import('./modules/entrada/compare_team.js').then(m => m.setupCompareTeam),
+            dependencies: ['setupApiOwnerBallSuperFavoriteHome']
         },
     ],
     '/gerencia': [
