@@ -5,6 +5,7 @@ from django.views.decorators.http import require_http_methods
 from django.db.models.functions import Abs
 from django.db.models import F, Q
 
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -16,6 +17,9 @@ from analytics.models import Entrada
 from shared.enums import EventOriginEnum
 
 from owner_ball.models import SuperFavoriteHomeBallOwnerEntry
+
+from .serializers import LineupsSerializer
+from .services import ApiService, LineupComparationService
 
 import requests
 
@@ -160,3 +164,42 @@ def proximo_evento(request):
     return JsonResponse(response_data, safe=False)
         
         
+class LineupComparationView(APIView):
+    
+    def get(self, request, id_event):
+        if not id_event:
+            return Response({
+                'success': False,
+                'message': 'Paramentro incompleto. E necessario informar o eventID'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+        try:
+            lineups_data = ApiService.get_lineups(id_event)
+            lineups_serializer = LineupsSerializer(data=lineups_data)
+            
+            if not lineups_serializer.is_valid():
+                return Response({
+                    'success': False,
+                    'errors': lineups_serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+                
+            analysis = LineupComparationService.compare_attack_home_defense_away(
+                lineups_serializer.validated_data
+            )
+            
+            return Response({
+                'success': True,
+                'data': analysis
+            }, status=status.HTTP_200_OK)
+            
+        except requests.exceptions.RequestException as e:
+            return Response({
+                'success': False,
+                'message': f'Erro ao conectar com a API: {str(e)}'
+            }, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message':f'Erro inesperado: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

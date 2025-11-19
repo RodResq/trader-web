@@ -1,6 +1,6 @@
 import { showNotification } from "../notifications.js";
 
-const API_BASE = 'api/v1/event';
+const API_BASE = 'api/v1/events';
 
 export function setupWinProbability() {
 
