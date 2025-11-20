@@ -31,15 +31,18 @@ const routeModules = {
         },
         {
             name: 'setupGraficoResultadoTotalGanhos',
-            module: () => import('./modules/gerencia_aposta/grafico_resultado_total_ganhos.js').then(m => m.setupGraficoResultadoTotalGanhos)
+            module: () => import('./modules/gerencia_aposta/grafico_resultado_total_ganhos.js').then(m => m.setupGraficoResultadoTotalGanhos),
+            dependencies: []
         },
         {
             name: 'setupProgressPerformace',
-            module: () => import('./modules/performace/grafico_performace.js').then(m => m.setupProgressPerformace)
+            module: () => import('./modules/performace/grafico_performace.js').then(m => m.setupProgressPerformace),
+            dependencies: []
         },
         {
             name: 'setupGraficoMelhorDia',
-            module: () => import('./modules/evento/grafico_melhor_dia.js').then(m => m.setupGraficoMelhorDia)
+            module: () => import('./modules/evento/grafico_melhor_dia.js').then(m => m.setupGraficoMelhorDia),
+            dependencies: []
         },
         {
             name: 'setupBatchEntriesOwnerBall',
@@ -75,39 +78,47 @@ const routeModules = {
     '/gerencia': [
         {
             name: 'setupGerenciaResultado',
-            module: () => import('./modules/gerencia_aposta/gerencia_resultado.js').then(m => m.setupGerenciaResultado)
+            module: () => import('./modules/gerencia_aposta/gerencia_resultado.js').then(m => m.setupGerenciaResultado),
+            dependencies: []
         },
         {
             name: 'setupGraficoDesempenhoSemanal',
-            module: () => import('./modules/gerencia_aposta/gerencia_graficos_principal.js').then(m => m.setupGraficoDesempenhoSemanal)
+            module: () => import('./modules/gerencia_aposta/gerencia_graficos_principal.js').then(m => m.setupGraficoDesempenhoSemanal),
+            dependencies: ['setupGerenciaResultado']
         },
         {
             name: 'setupGraficoPerformaceSemanal',
-            module: () => import('./modules/ciclo/grafico_performace_semanal.js').then(m => m.setupGraficoPerformaceSemanal)
+            module: () => import('./modules/ciclo/grafico_performace_semanal.js').then(m => m.setupGraficoPerformaceSemanal),
+            dependencies: ['setupGerenciaResultado']
         },
     ],
     '/ciclos': [
         {
             name: 'initCycleOwnerBall',
-            module: () => import('./modules/owner_ball/cycle/cycle_owner_ball.js').then(m => m.initCycleOwnerBall)
+            module: () => import('./modules/owner_ball/cycle/cycle_owner_ball.js').then(m => m.initCycleOwnerBall),
+            dependencies: []
         },
         {
             name: 'setupEvolucaoSaldoModal',
-            module: () => import('./modules/ciclo/evolucao_saldo.js').then(m => m.setupEvolucaoSaldoModal)
+            module: () => import('./modules/ciclo/evolucao_saldo.js').then(m => m.setupEvolucaoSaldoModal),
+            dependencies: ['initCycleOwnerBall']
         }
     ],
     '/team': [
         {
             name: 'setupTeamList',
-            module: () => import('./modules/team/teamList.js').then(m => m.setupTeamList)
+            module: () => import('./modules/team/teamList.js').then(m => m.setupTeamList),
+            dependencies: []
         },
         {
             name: 'setupCardEventTeam',
-            module: () => import('./modules/team/card_event.js').then(m => m.setupCardEventTeam)
+            module: () => import('./modules/team/card_event.js').then(m => m.setupCardEventTeam),
+            dependencies: []
         },
         {
             name: 'setupFindTeam',
-            module: () => import('./modules/team/pesquisar.js').then(m => m.setupFindTeam)
+            module: () => import('./modules/team/pesquisar.js').then(m => m.setupFindTeam),
+            dependencies: []
         }
     ],
 };
@@ -167,18 +178,36 @@ const globalModules = [
 
 async function loadRouteModules() {
     const currentRoute = getCurrentRoute();
+    const loadedModules = {};
 
     for (const [route, modules] of Object.entries(routeModules)) {
         if (isRoute(route)) {
+            console.log(`Carregando módulos da rota: ${route}`);
 
-            for (const moduleConfig of modules) {
-                try {
-                    const setupFunction = await moduleConfig.module();
-                    setupFunction();
-                    console.log('>>>> Modulo Carregado: ', moduleConfig.name);
-                } catch (error) {
-                    console.error('Erro ao carregar modulo: ', moduleConfig.name, error);
-                }
+            const independent = modules.filter(
+                m => !m.dependencies || m.dependencies.length === 0
+            );
+
+            const dependent = modules.filter(
+                m => m.dependencies && m.dependencies.length > 0
+            );
+
+            if (independent.length > 0) {
+                console.log(`Carregando ${independent.length} módulos independentes em paralelo...`);
+                await Promise.all(
+                    independent.map(moduleConfig => 
+                        loadModule(moduleConfig, loadedModules)
+                    )
+                );
+            }
+
+            if (dependent.length > 0) {
+                console.log(`Carregando ${dependent.length} módulos com dependências...`);
+                await Promise.all(
+                    dependent.map(moduleConfig => 
+                        loadModule(moduleConfig, loadedModules)
+                    )
+                );
             }
             
         }
@@ -187,7 +216,39 @@ async function loadRouteModules() {
 }
 
 
+async function loadModule(moduleConfig, loadedModules) {
+    try {
+        if (moduleConfig.dependencies && moduleConfig.dependencies.length > 0) {
+            console.log(`${moduleConfig.name} aguardando: [${moduleConfig.dependencies.join(', ')}]`);
+
+            const dependencyPromisse = moduleConfig.dependencies.map(dep => {
+                if (!loadedModules[dep]) {
+                    throw new Error(`Dependência não encontrada: ${dep} (requerida por ${moduleConfig.name})`);
+                }
+
+                return loadedModules[dep]
+            });
+
+            await Promise.all(dependencyPromisse);
+            console.log(`Dependências prontas para ${moduleConfig.name}`);
+        }
+
+        const setupFunction = await moduleConfig.module();
+        await setupFunction();
+        
+        loadedModules[moduleConfig.name] = Promise.resolve();
+        console.log(`Modulo Carregado: ${moduleConfig.name}`);
+
+    } catch(error) {
+        loadedModules[moduleConfig.name] = Promise.reject(error);
+        console.error(`Erro ao carregar modulo: ${moduleConfig.name}`, error.message);
+    }
+
+}
+
+
 async function loagGlobalModules() {
+    console.log('Carregando módulos globais...');
 
     for (const moduleConfig of globalModules) {
         try {
@@ -201,7 +262,10 @@ async function loagGlobalModules() {
     
 }
 
+
 document.addEventListener('DOMContentLoaded', async function() {
+
+    console.log('DOM Carregado - Iniciando sistema de módulos...');
 
     const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     tooltips.forEach(tooltip => {
@@ -223,6 +287,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (typeof atualizaIconeResultado === "function") {
         atualizaIconeResultado();
     }
+
+     console.log('Sistema de módulos inicializado com sucesso!');
     
 });
 
@@ -236,7 +302,19 @@ window.modules = {
         isRoute,
         isExactRoute,
         isAnyRoute,
-        loadedRoute: () => getCurrentRoute()
+        loadedRoute: () => getCurrentRoute(),
+        testDependencies: (routeName) => {
+            const route = routeModules[routeName];
+            if (!route) {
+                console.log(`Rota ${routeName} não encontrada`);
+                return;
+            }
+
+            console.table(route.map(m => ({
+                name: m.name,
+                dependencies: m.dependencies.length > 0 ? m.dependencies.join(', ') : 'NENHUMA'
+            })));
+        }
     }
 };
 
