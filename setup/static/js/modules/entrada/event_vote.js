@@ -7,17 +7,17 @@ export function setupEventVote() {
     if (!btnsEventVote) return;
 
     btnsEventVote.forEach(button => {
+
         button.addEventListener('click', async function(e) {
             e.preventDefault();
+
             const idEvent = this.getAttribute('data-event-id');
-            if (!idEvent) showNotification('Id evento nao encontrado');
+            if (!idEvent) showNotification('Id evento nao encontrado', 'error');
 
             const eventOrigin = this.getAttribute('data-event-origin');
     
             const currentRow = this.closest('tr');
-            if (!currentRow) console.error('Nao foi possivel recuperar a linha atual');
-    
-            const statusCell = currentRow.querySelector('td:nth-child(2)');
+            if (!currentRow) console.error('Nao foi possivel recuperar a linha atual', 'error');
     
             const url = `/analytics/vote?event_id=${idEvent}&event_origin=${eventOrigin}`;
             
