@@ -1,4 +1,5 @@
 import { showNotification } from "../notifications.js";
+import { apiClient } from "../shared/apiClient.js";
 
 export function setupStatistic() {
     const btnsEventStatistic = document.querySelectorAll('.event-statistic');
@@ -16,29 +17,15 @@ export function setupStatistic() {
             const currentRow = this.closest('tr');
             if (!currentRow) console.error('Nao foi possivel recuperar a linha atual');
     
-            const url = `api/v1/statistic/${idEvent}?event_origin=${eventOrigin}`;
+            const url = `/statistic/${idEvent}?event_origin=${eventOrigin}`;
     
             try {
-                const response  = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
+                const data  = await apiClient.get(url);
                 
-                if (!response.ok) {
-                    throw new Error('Erro ao recuperar estatisticas do evento'); 
-                }
-
-                const data = await response.json();
-                if (data.success) {
-                    showNotification('Resultado de estatisticas do evento recuperado com sucesso', 'success');
-                    buidlIconStatisticResult(data.statistic, currentRow);
-                } else {
-                    showNotification('Nao foi possivel recuperar estatistica do evento', 'danger');
-                }
+                showNotification('Resultado de estatisticas do evento recuperado com sucesso', 'success');
+                buidlIconStatisticResult(data.statistic, currentRow);
             } catch(error) {
-                showNotification('Erro ao recuperar estatisticas do jogo.', 'danger');
+                showNotification(error.message, 'danger');
             } 
         });
     })

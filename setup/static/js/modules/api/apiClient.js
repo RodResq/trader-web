@@ -20,7 +20,7 @@ export class ApiClient {
             const response = await this._fetchWithTimeout(url, config);
             return await this._handleResponse(response)
         } catch(error) {
-            this._logError(error);
+            this._logError(url, error);
             throw this._formatError(error);
         }
     }
@@ -87,6 +87,7 @@ export class ApiClient {
         }
 
         return error;
+
     }
 
 
@@ -96,6 +97,7 @@ export class ApiClient {
             timestamp: new Date().toISOString(),
             endpoint
         });
+
     }
 
     setTimout(ms) {

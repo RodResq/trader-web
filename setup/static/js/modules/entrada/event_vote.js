@@ -23,13 +23,11 @@ export function setupEventVote() {
             
             try {
                 const dados = await apiClient.get(url);
-                if (dados.success) {
-                    showNotification('Event Voto Recuperado com sucesso', 'success');
-                    buildIconHomeUp(dados.data, currentRow);
-                }
 
-            } catch {
-                showNotification('Nao foi possivel recuperar o event de voto', 'error');
+                showNotification('Event Voto Recuperado com sucesso', 'success');
+                buildIconHomeUp(dados.data, currentRow);
+            } catch(error) {
+                showNotification(error.message, 'error');
             }
         });
     });

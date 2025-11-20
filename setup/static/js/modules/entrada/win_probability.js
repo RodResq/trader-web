@@ -1,6 +1,6 @@
 import { showNotification } from "../notifications.js";
+import { apiClient } from "../shared/apiClient.js";
 
-const API_BASE = 'api/v1/events';
 
 export function setupWinProbability() {
 
@@ -9,6 +9,7 @@ export function setupWinProbability() {
     if (!btnWinProbalility) return;
 
     btnWinProbalility.forEach(btn => {
+
         btn.addEventListener('click', async function(e) {
             e.preventDefault();
             const idEvent = this.getAttribute('data-event-id');
@@ -23,27 +24,13 @@ export function setupWinProbability() {
             const homeWin = currentRow.querySelector('.home-win');
             if (!homeWin) console.error('Nao foi possivel recuperar o elemento span win probability');
 
-            const url = `${API_BASE}/${idEvent}/win_probability?event_origin=${eventOrigin}`;
+            const url = `/events/${idEvent}/win_probability?event_origin=${eventOrigin}`;
 
             try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
+                const data = await apiClient.get(url);
 
-                if (!response.ok) {
-                    throw new Error('Erro ao recuperar win propability');
-                }
-
-                const responseData = await response.json();
-                if (responseData.success) {
-                    showNotification('Resultado de win probability recuperado com sucesso', 'success');
-                    homeWin.textContent = responseData.data.home_win;
-                } else {
-                    showNotification('Erro ao recuperar win probability', 'danger');
-                }
+                showNotification('Resultado de win probability recuperado com sucesso', 'success');
+                homeWin.textContent = data.data.home_win;
 
             } catch (error) {
                 showNotification(error.message, 'danger');
