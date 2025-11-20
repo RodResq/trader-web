@@ -1,4 +1,5 @@
 import { showNotification } from "../notifications.js";
+import { apiClient } from '../shared/apiClient.js'
 
 export function setupEventVote() {
     const btnsEventVote = document.querySelectorAll('.event-vote');
@@ -18,24 +19,17 @@ export function setupEventVote() {
     
             const statusCell = currentRow.querySelector('td:nth-child(2)');
     
+            const url = `/analytics/vote?event_id=${idEvent}&event_origin=${eventOrigin}`;
+            
             try {
-                const url = `api/v1/analytics/vote?event_id=${idEvent}&event_origin=${eventOrigin}`;
-                await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(response => {
-                    if (!response.ok) throw new Error('Erro ao recuperar votos'); 
-                    return response.json();
-                }).then(data => {
-                    if (!data.success) showNotification('Nao foi possivel recuperar o event de voto');
-                    buildIconHomeUp(data.data, currentRow);
-                })
+                const dados = await apiClient.get(url);
+                if (dados.success) {
+                    showNotification('Event Voto Recuperado com sucesso', 'success');
+                    buildIconHomeUp(dados.data, currentRow);
+                }
+
             } catch {
-    
-            } finally {
-    
+                showNotification('Nao foi possivel recuperar o event de voto', 'error');
             }
         });
     });
