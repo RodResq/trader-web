@@ -5,7 +5,7 @@ export class ApiClient {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         };
-        this.timeout = 5000;
+        this.timeout = 10000;
     }
 
     async get(endpoint, options = {}) {
