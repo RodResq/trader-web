@@ -1,4 +1,5 @@
 import { showNotification } from "../notifications.js";
+import { apiClient } from "../shared/apiClient.js"
 
 
 let modalInstance = null;
@@ -10,15 +11,14 @@ export function setupCompareTeam() {
     const btnCompareTeam = document.querySelectorAll('.compare-team');
     const modal = document.getElementById('compareTeamModal');
 
-    if (!btnCompareTeam) return;
-
-    if (!modal) return;
+    if (!btnCompareTeam || !modal) return;
 
     modalInstance = new bootstrap.Modal(modal);
 
     btnCompareTeam.forEach(button => {
         button.addEventListener('click', async function(e) {
             e.preventDefault();
+
             const idEvent = this.getAttribute('data-event-id');
             const eventOrigin = this.getAttribute('data-event-origin');
             const idHome = this.getAttribute('data-home-id');
@@ -28,27 +28,13 @@ export function setupCompareTeam() {
 
             if (!idHome || !idAway) return;
 
-            const url = `api/v1/statistic/compare/${idHome}/${idAway}?event_origin=${eventOrigin}&id_event=${idEvent}`;
+            const url = `/statistic/compare/${idHome}/${idAway}?event_origin=${eventOrigin}&id_event=${idEvent}`;
 
             try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
+                const dados = await apiClient.get(url);
 
-                if (!response.ok) {
-                    throw new Error('Erro ao comparar times');
-                }
-
-                const data = await response.json();
-                if (data.success) {
-                    modalInstance.show()
-                    renderizarGrafico(data.data);
-                } else {
-                    showNotification('Erro ao recuperar estatisticas dos times.', 'danger');
-                }
+                modalInstance.show();
+                renderizarGrafico(dados.data);
             } catch(error) {
                 showNotification('Erro ao recuperar estatisticas dos times.', 'danger');
             }

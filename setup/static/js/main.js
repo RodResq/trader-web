@@ -145,6 +145,10 @@ const globalModules = [
         name: 'initFilters',
         init: () => import('./modules/filters.js').then(m => m.initFilters)
     },
+    {
+        name: 'initApiClient',
+        init: () => import('./modules/shared/apiClient.js').then(m => m.initApiClient)
+    },
     { 
         name: 'setupRefreshButton',
         init: () => import('./modules/api.js').then(m => m.setupRefreshButton)
