@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.views import View
 from django.http import JsonResponse
 from django.utils import timezone
@@ -15,6 +16,8 @@ from datetime import timedelta
 
 from analytics.models import Entrada
 from shared.enums import EventOriginEnum
+
+from dataclasses import dataclass, asdict
 
 from owner_ball.models import SuperFavoriteHomeBallOwnerEntry
 
@@ -163,7 +166,13 @@ def proximo_evento(request):
     
     return JsonResponse(response_data, safe=False)
         
-        
+@dataclass
+class Player:
+    id: int
+    name: str
+    position: str
+    avg_rating: float
+           
 class LineupComparationView(APIView):
     
     def get(self, request, id_event):
@@ -183,13 +192,40 @@ class LineupComparationView(APIView):
                     'errors': lineups_serializer.errors
                 }, status=status.HTTP_400_BAD_REQUEST)
                 
-            analysis = LineupComparationService.compare_attack_home_defense_away(
-                lineups_serializer.validated_data
+            home_players = self._convert_to_player_list(
+                lineups_serializer.validated_data.get('data').get('home')
             )
+            
+            away_players = self._convert_to_player_list(
+                lineups_serializer.validated_data.get('data').get('away')
+            )
+            
+            analyser = LineupComparationService()
+            
+            compare_all = analyser.compare_all_home_vs_away(
+                home_players,
+                away_players
+            )
+            
+            attack_vs_defense = analyser.compare_attack_vs_defense(
+                home_players, 
+                'home',
+                away_players,
+                'away'
+            )
+            
+            compare_all_dict = asdict(compare_all)
+            compare_all_dict = self._convert_decimals(compare_all_dict)
+            
+            attack_vs_defense_dict = asdict(attack_vs_defense)
+            attack_vs_defense_dict = self._convert_decimals(attack_vs_defense_dict)
             
             return Response({
                 'success': True,
-                'data': analysis
+                'data': {
+                    'compareAll': compare_all_dict,
+                    'attackVsDefense': attack_vs_defense_dict
+                }
             }, status=status.HTTP_200_OK)
             
         except requests.exceptions.RequestException as e:
@@ -203,3 +239,37 @@ class LineupComparationView(APIView):
                 'success': False,
                 'message':f'Erro inesperado: {str(e)}'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+            
+    @staticmethod
+    def _convert_to_player_list(players_data: list) -> list:
+        players_list = []
+        
+        for player_data in players_data:
+            avg_rating = float(player_data.get('avg_rating', 0))
+            
+            player = Player(
+                id=player_data.get('id'),
+                name=player_data.get('name'),
+                position=player_data.get('position'),
+                avg_rating=avg_rating
+            )
+            players_list.append(player)
+        
+        return players_list
+    
+    
+    @staticmethod
+    def _convert_decimals(obj):
+        """Converte Decimal para float recursivamente"""
+        if isinstance(obj, dict):
+            return {k: LineupComparationView._convert_decimals(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [LineupComparationView._convert_decimals(item) for item in obj]
+        elif isinstance(obj, Decimal):
+            return float(obj)
+        else:
+            return obj
+        
+        
+    # TODO Continuar https://claude.ai/chat/f04db11a-231a-4012-b41c-16e721e6edf7
