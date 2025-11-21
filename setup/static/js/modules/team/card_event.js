@@ -1,5 +1,6 @@
 import { setupPrioridadeEvento } from './prioridade_evento.js';
 import { showNotification } from '../notifications.js';
+import { apiClient } from '../shared/apiClient.js';
 
 let teamId = '';
 
@@ -61,8 +62,9 @@ export async function carregarEventosTime(idTeam) {
         const data = await response.json();
         
         if (data.results && data.results.length > 0) {
-            await renderizarCardTeam(idTeam)
-            renderizarCardEventoTeam(data.results);
+            await renderizarCardTeam(idTeam);
+            const resultados = await compareTeams(data.results);
+            await renderizarCardEventoTeam(data.results, resultados);
             return;
         } else {
             console.error('Resposta API sem sucesso:', data);
@@ -75,6 +77,44 @@ export async function carregarEventosTime(idTeam) {
         
     } 
 
+}
+
+async function compareTeams(events) {
+    try {
+
+        if (!events || events.length === 0) {
+            console.warn('Nenhum evento fornecido');
+            return [];
+        }
+        
+        console.log(`Iniciando comparação de ${events.length} eventos`);
+
+        const promisses = events.map(async event => {
+            try {
+                const url = `/events/${event.idEvent}/compare_players`;
+                const dados = await apiClient.get(url);
+
+                if (dados.success) {
+                    return {
+                        eventId: event.idEvent,
+                        comparison: dados.data 
+                    };
+                }
+            } catch(error) {
+                console.error(`Erro ao comparar evento ${event.idEvent}:`, error);
+                showNotification('Erro ao comparar times', 'danger');
+                return null;
+            }
+        });
+    
+        const resultados = await Promise.all(promisses);
+    
+        return resultados.filter(resultado => resultado !== null);
+    } catch(error) {
+        console.error('Erro em compareTeams:', error);
+        showNotification('Erro ao comparar times', 'danger');
+        return [];
+    } 
 }
 
 
@@ -120,7 +160,7 @@ export async function renderizarCardTeam(idTeam) {
 }
 
 
-export function renderizarCardEventoTeam(dados) {
+async function renderizarCardEventoTeam(dados, resultados) {
     const tournament = document.querySelector('.tournament');
 
     if (!tournament) {
@@ -131,12 +171,16 @@ export function renderizarCardEventoTeam(dados) {
     tournament.innerHTML = '';
 
     if (dados.length > 0) {
-        dados.forEach(async event => {
-            const cardDiv = document.createElement('div');
-            const styleCard = Number(event.tournament.priority) === 0 ? 
-                'border-left-width: 15px; border-color: #198754;border-top: none;border-bottom: none;border-right: none;': 
-                'None';
+        dados.forEach(event => {
 
+            const comparacao = resultados.find(r => r.eventId === event.idEvent);
+
+            let styleCard = 'None';
+            if (comparacao && comparacao.comparison) {
+                styleCard = 'border-left-width: 15px; border-color: #198754; border-top: none; border-bottom: none; border-right: none;';
+            }
+
+            const cardDiv = document.createElement('div');
             cardDiv.className = `card shadow h-100 mb-3`;
             cardDiv.style = styleCard;
 
