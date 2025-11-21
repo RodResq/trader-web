@@ -178,6 +178,8 @@ async function renderizarCardEventoTeam(dados, resultados) {
             let styleCard = 'None';
             if (comparacao && comparacao.comparison) {
                 styleCard = 'border-left-width: 15px; border-color: #198754; border-top: none; border-bottom: none; border-right: none;';
+            } else {
+                styleCard = 'border-left-width: 15px; border-color: #dc3545; border-top: none; border-bottom: none; border-right: none;';
             }
 
             const cardDiv = document.createElement('div');
@@ -203,7 +205,7 @@ async function renderizarCardEventoTeam(dados, resultados) {
             }
 
             cardDiv.innerHTML = `
-                <div class="card">
+                <div class="card" style="border-radius: unset;">
                     <div class="row g-0">
                         <div class="row col-sm-1 m-2">
                             <img class="align-self-center h-50 unique-tournament-logo mb-3img-fluid" 
