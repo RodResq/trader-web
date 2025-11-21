@@ -5,6 +5,7 @@ class PlayerSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=200)
     position= serializers.CharField(max_length=2)
     avg_rating = serializers.DecimalField(max_digits=3, decimal_places=2)
+    team_id = serializers.IntegerField()
         
 class DataSerializer(serializers.Serializer):
     home = PlayerSerializer(many=True)

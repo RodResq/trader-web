@@ -172,6 +172,7 @@ class Player:
     name: str
     position: str
     avg_rating: float
+    team_id: int
            
 class LineupComparationView(APIView):
     
@@ -214,17 +215,26 @@ class LineupComparationView(APIView):
                 'away'
             )
             
+            analyse_attack_vs_defense = analyser.analyse_attack_vs_defense_dual(
+                home_players, 
+                away_players,
+            )
+            
             compare_all_dict = asdict(compare_all)
             compare_all_dict = self._convert_decimals(compare_all_dict)
             
             attack_vs_defense_dict = asdict(attack_vs_defense)
             attack_vs_defense_dict = self._convert_decimals(attack_vs_defense_dict)
             
+            analyse_attack_vs_defense_dict = asdict(analyse_attack_vs_defense)
+            analyse_attack_vs_defense_dict = self._convert_decimals(analyse_attack_vs_defense_dict)
+            
             return Response({
                 'success': True,
                 'data': {
                     'compareAll': compare_all_dict,
-                    'attackVsDefense': attack_vs_defense_dict
+                    'attackVsDefense': attack_vs_defense_dict,
+                    'analyseAttackVsDefense': analyse_attack_vs_defense_dict
                 }
             }, status=status.HTTP_200_OK)
             
@@ -252,7 +262,8 @@ class LineupComparationView(APIView):
                 id=player_data.get('id'),
                 name=player_data.get('name'),
                 position=player_data.get('position'),
-                avg_rating=avg_rating
+                avg_rating=avg_rating,
+                team_id=player_data.get('team_id')
             )
             players_list.append(player)
         

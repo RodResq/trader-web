@@ -44,6 +44,7 @@ class Player:
     name: str
     position: str
     avg_rating: float
+    team_id: int
     
     
 @dataclass
@@ -128,30 +129,30 @@ class LineupComparationService:
         
         defensive_diff = home_analysis.defensive_rating - away_analysis.defensive_rating
         defensive_winner = (
-            "home" if defensive_diff > 0.1 else
-            "away" if defensive_diff < -0.1 else
-            "equal"
+            home_players[0].team_id if defensive_diff > 0.1 else
+            away_players[0].team_id if defensive_diff < -0.1 else
+            None
         )
         
         midfield_diff = home_analysis.midfield_rating - away_analysis.midfield_rating
         midfield_winner = (
-            "home" if midfield_diff > 0.1 else
-            "away" if midfield_diff < -0.1 else
-            "equal"
+            home_players[0].team_id if midfield_diff > 0.1 else
+            away_players[0].team_id if midfield_diff < -0.1 else
+            None
         )
         
         offensive_diff = home_analysis.offensive_rating - away_analysis.offensive_rating
         offensive_winner = (
-            "home" if offensive_diff > 0.1 else
-            "away" if offensive_diff < -0.1 else
-            "equal"
+            home_players[0].team_id if offensive_diff > 0.1 else
+            away_players[0].team_id if offensive_diff < -0.1 else
+            None
         )
         
         overall_diff = home_analysis.overall_rating - away_analysis.overall_rating
         overall_winner = (
-            "home" if overall_diff > 0.1 else
-            "away" if overall_diff < -0.1 else
-            "equal"
+            home_players[0].team_id if overall_diff > 0.1 else
+            away_players[0].team_id if overall_diff < -0.1 else
+            None
         )
         
         
@@ -163,19 +164,19 @@ class LineupComparationService:
                 'home': home_analysis.defensive_rating,
                 'away': away_analysis.defensive_rating,
                 'difference': defensive_diff,
-                'winner': defensive_winner
+                'winnerId': defensive_winner
             },
             midfield_cmparation={
                 'home': home_analysis.midfield_rating,
                 'away': away_analysis.midfield_rating,
                 'difference': midfield_diff,
-                'winner': midfield_winner
+                'winnerId': midfield_winner
             },
             offensive_comparasion={
                 'home': home_analysis.offensive_rating,
                 'away': away_analysis.offensive_rating,
                 'difference': offensive_diff,
-                'winner': offensive_winner
+                'winnerId': offensive_winner
             }
         )
         
@@ -223,9 +224,105 @@ class LineupComparationService:
             winner=winner
         )
         
+    @staticmethod
+    def analyse_attack_vs_defense_dual(
+        home_players: List[Player],
+        away_players: List[Player]
+    ) -> DualAttackDefenseAnalysis:
+        
+        home_attack_vs_away_defense = LineupComparationService.compare_attack_vs_defense(
+            home_players, "home", away_players, "Away"
+        )
+        
+        away_attack_vs_home_defense = LineupComparationService.compare_attack_vs_defense(
+            away_players, "Away", home_players, "Home"
+        )
+        
+        likely_scenario = LineupComparationService._analyze_scenario(
+            home_attack_vs_away_defense,
+            away_attack_vs_home_defense
+        )
+        
+        return DualAttackDefenseAnalysis(
+            home_attack_vs_away_defense=home_attack_vs_away_defense,
+            away_attack_vs_home_defense=away_attack_vs_home_defense,
+            likely_scenario=likely_scenario
+        )
     
+    
+    @staticmethod
+    def _analyze_scenario(
+        home_attack_vs_away_defense: AttackVsDefenseComparison,
+        away_attack_vs_home_defense: AttackVsDefenseComparison
+    ) -> Dict[str, Any]:
+        home_offensive_advantage = home_attack_vs_away_defense.winner == "attack"
+        away_offensive_advantage = away_attack_vs_home_defense.winner == "attack"
         
+        home_defensive_strength = home_attack_vs_away_defense.winner == "defense"
+        away_defensive_strength = away_attack_vs_home_defense.winner == "defense"
         
+        scenarios = {
+            'both_strong_offense': home_offensive_advantage and away_offensive_advantage,
+            'both_strong_defense': home_defensive_strength and away_defensive_strength,
+            'home_offensive_advantage': home_offensive_advantage and away_offensive_advantage,
+            'away_offensive_advantage': away_offensive_advantage and home_defensive_strength,
+            'balanced_match': not any([
+                home_offensive_advantage, away_offensive_advantage,
+                home_defensive_strength, away_defensive_strength
+            ])
+        }
+        
+        scenario_descriptions = {
+            'both_strong_offense': {
+                'description': 'Partida Ofensiva - Muitos Gols Esperados',
+                'prediction': 'Over 2.5 Goals - Ambos os times têm ataque superior às defesas',
+                'likelihood': 'Alta'
+            },
+            'both_strong_defense': {
+                'description': 'Partida Defensiva - Poucos Gols Esperados',
+                'prediction': 'Under 2.5 Goals - Ambos os times têm defesa superior aos ataques',
+                'likelihood': 'Alta'
+            },
+            'home_offensive_advantage': {
+                'description': 'Home com Vantagem Ofensiva',
+                'prediction': 'Vitória do Home ou Empate com gols',
+                'likelihood': 'Moderada a Alta'
+            },
+            'away_offensive_advantage': {
+                'description': 'Away com Vantagem Ofensiva',
+                'prediction': 'Vitória do Away ou Empate com gols',
+                'likelihood': 'Moderada a Alta'
+            },
+            'balanced_match': {
+                'description': 'Partida Equilibrada',
+                'prediction': 'Resultado imprevisível - Pode dar qualquer coisa',
+                'likelihood': 'Moderada'
+            }
+        }
+        
+        dominant_scenario = next(
+            (k for k, v in scenarios.items() if v), 
+            'balanced_match'
+        )
+        
+        return {
+            'dominant_scenario': dominant_scenario,
+            **scenario_descriptions.get(dominant_scenario, scenario_descriptions['balanced_match']),
+            'metrics': {
+                'home_attack_vs_away_defense': {
+                    'attack_rating': round(home_attack_vs_away_defense.attack_rating, 2),
+                    'defense_rating': round(home_attack_vs_away_defense.defense_rating, 2),
+                    'difference': round(home_attack_vs_away_defense.difference, 2),
+                    'advantage': home_attack_vs_away_defense.winner
+                },
+                'away_attack_vs_home_defense': {
+                    'attack_rating': round(away_attack_vs_home_defense.attack_rating, 2),
+                    'defense_rating': round(away_attack_vs_home_defense.defense_rating, 2),
+                    'difference': round(away_attack_vs_home_defense.difference, 2),
+                    'advantage': away_attack_vs_home_defense.winner
+                }
+            }
+        }
         
         
         
