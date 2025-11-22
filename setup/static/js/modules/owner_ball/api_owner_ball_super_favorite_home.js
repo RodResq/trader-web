@@ -182,14 +182,14 @@ function updateOwnerBallTable(markets) {
 
         const checkWinnerOddHomeZero = (result, win) => {
             if (result === 0) {
-                return `<td class="cell-home-win bg-danger-subtle">${result}% / <span class="span-home-win">${win || 0}</span>%</td>`
+                return `<td class="cell-home-win text-light-emphasis bg-danger-subtle">${result}% / <span class="span-home-win">${win || 0}</span>%</td>`
             } 
 
-            return `<td class="cell-home-win">${result}% / <span class="span-home-win">${win || 0}</span>%</td>`
+            return `<td class="cell-home-win text-light-emphasis">${result}% / <span class="span-home-win">${win || 0}</span>%</td>`
         }
 
         const buildWinnerOddAway = (result, win) => {
-            return `<td class="cell-away-win">${result}% / <span class="span-away-win">${win || 0}</span>%</td>`
+            return `<td class="cell-away-win text-light-emphasis">${result}% / <span class="span-away-win">${win || 0}</span>%</td>`
         }
 
         return `
@@ -218,7 +218,7 @@ function updateOwnerBallTable(markets) {
                         onerror="this.style.display='none'">
                     <span class="align-middle text-light-emphasis">${market.name_away}</span>
                 </td>
-                <td>
+                <td class="text-light-emphasis">
                     ${getStatusOdd(market.odd_change)}
                     ${market.odd}
                     <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="${market.id_event}" title="Atualizar odd change">
@@ -227,7 +227,7 @@ function updateOwnerBallTable(markets) {
                 </td>
                 <span>${checkWinnerOddHomeZero(market.home_actual, market.home_win)}</span>
                 <span>${buildWinnerOddAway(market.away_actual, market.away_win)}</span>
-                <td>${dataFormatada || 'N/A'}</td>
+                <td class="text-light-emphasis">${dataFormatada || 'N/A'}</td>
                 <td>
                     <div class="d-grid gap-4 d-md-block">
                         <a id="editar-odd" class="btn btn-sm btn-info edit-odd-btn" data-event-id=${market.id_event} data-event-origin="owner-ball" title="Editar Odd">
