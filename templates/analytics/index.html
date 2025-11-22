@@ -270,11 +270,11 @@
                             </td>
                             <td class="text-light-emphasis">
                               <i {% if mercado.odd_change == 'P' %}
-                                class="bi bi-stop align-middle" style="1rem; color: yellow;" 
+                                class="bi bi-stop align-middle" style="1rem; color: #e65100;" 
                                 {% elif mercado.odd_change == 'S' %}
-                                class="bi bi-arrow-up-short align-middle align-middle" style="color: green;"
+                                class="bi bi-arrow-up-short align-middle align-middle" style="color: #1b5e20;"
                                 {% elif mercado.odd_change == 'D' %}
-                                class="bi bi-arrow-down-short align-middle" style="color: red;"
+                                class="bi bi-arrow-down-short align-middle" style="color: #b71c1c;"
                                 {% endif %}></i>
                               {{ mercado.odd }}
                               <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="{{ mercado.id_event }}" title="Atualizar odd change">

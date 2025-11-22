@@ -150,11 +150,11 @@ function updateOwnerBallTable(markets) {
         const getStatusOdd = (result) => {
             switch(result) {
                 case "S":
-                    return `<i class="bi bi-arrow-up-short align-middle align-middle" style="color: green;"></i>`;
+                    return `<i class="bi bi-arrow-up-short align-middle align-middle" style="color: #1b5e20;"></i>`;
                 case "D":
-                    return `<i class="bi bi-arrow-down-short align-middle" style="color: red;"></i>`;
+                    return `<i class="bi bi-arrow-down-short align-middle" style="color: #b71c1c;"></i>`;
                 default:
-                    return `<i class="bi bi-stop align-middle" style="1rem; color: yellow;"></i>`;
+                    return `<i class="bi bi-stop align-middle" style="1rem; color: #e65100;"></i>`;
             }
         }
 
@@ -178,6 +178,14 @@ function updateOwnerBallTable(markets) {
                                 title="Registrar resultado entrada manualmente.">${idEvent}</a>
                         </span>`
             }
+        }
+
+        const checkWinnerOddHomeZero = (result) => {
+            if (result === 0) {
+                return `<td class="bg-danger-subtle">${result}%</td>`
+            } 
+
+            return `<td>${result}%</td>`
         }
 
         return `
@@ -213,8 +221,8 @@ function updateOwnerBallTable(markets) {
                         <i class="bi bi-arrow-clockwise"></i>
                     </a>
                 </td>
-                <td>${market.home_actual}%</td>
-                <td>${market.away_actual}%</td>
+                <span>${checkWinnerOddHomeZero(market.home_actual)}</span>
+                <td>${market.away_actual}</td>
                 <td>${dataFormatada || 'N/A'}</td>
                 <td>
                     <div class="d-grid gap-4 d-md-block">

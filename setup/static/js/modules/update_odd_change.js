@@ -82,16 +82,16 @@ async function atualizarIconeOdd(row, oddChangeData, oddValueEdited=null) {
 
     let changeType = 'P'; 
     let iconClass = 'bi-stop';
-    let iconColor = 'yellow';
+    let iconColor = '#e65100';
 
     if (newOddValue > currentOddValue) {
         changeType = 'S'; 
         iconClass = 'bi-arrow-up-short';
-        iconColor = 'green';
+        iconColor = '#1b5e20';
     } else if (newOddValue < currentOddValue) {
         changeType = 'D'; 
         iconClass = 'bi-arrow-down-short';
-        iconColor = 'red';
+        iconColor = '#b71c1c';
     }
 
     updateOddCell(oddCell, newOddValue, iconClass, iconColor);
