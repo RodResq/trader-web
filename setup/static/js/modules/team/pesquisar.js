@@ -1,5 +1,6 @@
 import { showNotification } from "../notifications.js";
-import { renderizarCardTeam } from './card_event.js';
+import { renderizarCardTeam, compareTeams, renderizarCardEventoTeam } from './card_event.js';
+import { apiClient } from "../shared/apiClient.js";
 
 export function setupFindTeam() {
 
@@ -36,23 +37,18 @@ export function setupFindTeam() {
 
 async function buscarTeam(nome) {
     try {
-        const url = `api/v1/team/find?name=${nome}`;
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
-        
-        if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`); 
-        }
-
-        const data = await response.json();
+        const url = `/team/find?name=${nome}`;
+        const data = await apiClient.get(url)
         
         if (data.success) {
-            console.log('Time encontrado:', data.team.name);
             await renderizarCardTeam(data.team.id_team);
+
+            const dados = await apiClient.get(`/team/${data.team.id_team}/events?page=1&page_size=5`);
+
+            const resultados = await compareTeams(dados.results);
+
+            await renderizarCardEventoTeam(dados.results, resultados);
+            
             showNotification(`Time "${data.team.name}" carregado com sucesso`, 'success');
         } else {
             console.warn('Time não encontrado');

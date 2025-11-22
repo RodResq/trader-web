@@ -7,7 +7,7 @@ import { setupEventVote } from '../entrada/event_vote.js';
 import { setupStatisticOwnerBall } from "./statistic_owner_ball.js";
 
 let currentPage = 1;
-let itemsPerPage = 10;
+let itemsPerPage = 20;
 let totalPages = 1;
 let isLoading = false;
 
@@ -180,12 +180,16 @@ function updateOwnerBallTable(markets) {
             }
         }
 
-        const checkWinnerOddHomeZero = (result) => {
+        const checkWinnerOddHomeZero = (result, win) => {
             if (result === 0) {
-                return `<td class="bg-danger-subtle">${result}%</td>`
+                return `<td class="cell-home-win bg-danger-subtle">${result}% / <span class="span-home-win">${win || 0}</span>%</td>`
             } 
 
-            return `<td>${result}%</td>`
+            return `<td class="cell-home-win">${result}% / <span class="span-home-win">${win || 0}</span>%</td>`
+        }
+
+        const buildWinnerOddAway = (result, win) => {
+            return `<td class="cell-away-win">${result}% / <span class="span-away-win">${win || 0}</span>%</td>`
         }
 
         return `
@@ -221,8 +225,8 @@ function updateOwnerBallTable(markets) {
                         <i class="bi bi-arrow-clockwise"></i>
                     </a>
                 </td>
-                <span>${checkWinnerOddHomeZero(market.home_actual)}</span>
-                <td>${market.away_actual}</td>
+                <span>${checkWinnerOddHomeZero(market.home_actual, market.home_win)}</span>
+                <span>${buildWinnerOddAway(market.away_actual, market.away_win)}</span>
                 <td>${dataFormatada || 'N/A'}</td>
                 <td>
                     <div class="d-grid gap-4 d-md-block">

@@ -79,7 +79,7 @@ export async function carregarEventosTime(idTeam) {
 
 }
 
-async function compareTeams(events) {
+export async function compareTeams(events) {
     try {
 
         if (!events || events.length === 0) {
@@ -160,7 +160,7 @@ export async function renderizarCardTeam(idTeam) {
 }
 
 
-async function renderizarCardEventoTeam(dados, resultados) {
+export async function renderizarCardEventoTeam(dados, resultados) {
     const tournament = document.querySelector('.tournament');
 
     if (!tournament) {

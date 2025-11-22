@@ -216,6 +216,11 @@
                                   <img src="{% static 'images/icons/next-event-priority.svg' %}" alt="next-event-priority" class="me-2r">
                                 </span>
                               {% endif %}
+                              {% if mercado.event_vote_home == "H" %}
+                                <i style="color:#198754;" class="icon-vote align-middle fs-6 bi bi-house-up-fill"></i>
+                              {% elif mercado.event_vote_home == "A" %}
+                                <i style="color:#dc3545;" class="icon-vote align-middle fs-6 bi bi-house-down-fill"></i>
+                              {% endif %}
                               {% if mercado.resultado_estatistica %}
                                 <i style="color:#198754;" class="bi bi-bar-chart-line-fill align-middle"></i>
                               {% else %}
@@ -238,11 +243,7 @@
                                   <img src="{% static 'images/icons/calendar-question.svg' %}" alt="calendar-question" style="width: 17px; height: 30px;">
                                 </span>
                               {% endif %}
-                              {% if mercado.event_vote_home == "H" %}
-                                <i style="color:#198754;" class="icon-vote align-middle fs-6 bi bi-house-up-fill"></i>
-                              {% elif mercado.event_vote_home == "A" %}
-                                <i style="color:#dc3545;" class="icon-vote align-middle fs-6 bi bi-house-down-fill"></i>
-                              {% endif %}
+                              
                             </td>
                             <td class="mercado-column">
                                 {{ mercado.mercado_name }}

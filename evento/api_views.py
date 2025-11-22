@@ -55,6 +55,14 @@ def win_probability(request, id_event):
             if not data['success']:
                 return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
+            home_win_data = data['data']['home_win']
+            away_win_data = data['data']['away_win']
+            draw_data = data['data']['draw']
+            
+            home_win = home_win_data if home_win_data else 0
+            away_win = away_win_data if away_win_data else 0
+            draw = draw_data if draw_data else 0
+            
             if event_origin == EventOriginEnum.SCORE_DATA.value:
                 entrada = Entrada.objects.get(id_event=id_event)
             
@@ -64,9 +72,9 @@ def win_probability(request, id_event):
                         'message': 'Entrada Score Date nao encontrada'
                     }, status=status.HTTP_404_NOT_FOUND)
                 
-                entrada.home_win = int(data['data']['home_win'])
-                entrada.away_win = int(data['data']['away_win']) 
-                entrada.draw_probability = int(data['data']['draw'])
+                entrada.home_win = home_win
+                entrada.away_win = away_win 
+                entrada.draw_probability = draw
                 entrada.save()
             
             elif event_origin == EventOriginEnum.OWNER_BALL.value:
@@ -78,11 +86,17 @@ def win_probability(request, id_event):
                         'message': 'Entrada owner ball nao encontrada'
                     }, status=status.HTTP_404_NOT_FOUND)
                     
-                owner_ball_entry.home_win = int(data['data']['home_win'])
-                owner_ball_entry.away_win = int(data['data']['away_win'])
+                owner_ball_entry.home_win = home_win
+                owner_ball_entry.away_win = away_win
+                owner_ball_entry.draw_probability = draw
                 owner_ball_entry.save()
             
-            return Response(data, status=status.HTTP_200_OK)    
+            return Response({
+                'success': True,
+                'home_win': home_win,
+                'draw': draw,
+                'away_win': away_win    
+            }, status=status.HTTP_200_OK)    
         else:
             raise NotFound()    
             
