@@ -189,7 +189,7 @@ def find_team(request):
     if request.method == 'GET':
         name = request.GET.get('name')
         try:
-            team = get_object_or_404(TeamSofascore, name=name)
+            team = get_object_or_404(TeamSofascore, name=name, ativo=1)
             return JsonResponse({
                 'success': True,
                 'team': model_to_dict(team)

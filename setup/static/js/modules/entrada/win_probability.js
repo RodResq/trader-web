@@ -12,20 +12,21 @@ export function setupWinProbability() {
 
         btn.addEventListener('click', async function(e) {
             e.preventDefault();
+
             const idEvent = this.getAttribute('data-event-id');
-            if (!idEvent) console.error('ID do evento nao recuperado');
-    
             const eventOrigin = this.getAttribute('data-event-origin');
-            if (!eventOrigin) console.error('Event Origin nao recuperado');
-    
             const currentRow = this.closest('tr');
-            if(!currentRow) console.error('Nao foi possivel recuperar a linha atual');
+            
+            if (!idEvent || !eventOrigin || !currentRow) {
+                showNotification('Dados Incompletos', 'danger')
+                return;
+            }
 
             const url = `/events/${idEvent}/win_probability?event_origin=${eventOrigin}`;
 
             try {
                 const data = await apiClient.get(url);
-                updateWinProbability(currentRow, data);
+                _updateWinProbability(currentRow, data);
                 showNotification('Resultado de win probability recuperado com sucesso', 'success');
             } catch (error) {
                 showNotification(error.message, 'danger');
@@ -36,7 +37,7 @@ export function setupWinProbability() {
 }
 
 
-function updateWinProbability(row, data) {
+function _updateWinProbability(row, data) {
 
     if (!row || !data) {
         console.error('Paramentros passados incorretamente: ', row, data);
@@ -54,13 +55,19 @@ function updateWinProbability(row, data) {
     spanHomeWin.textContent = data.home_win;
     spanAwayWin.textContent = data.away_win;
     
-    cellHomeWin.style.transition = 'background-color 1s';
-    cellHomeWin.style.backgroundColor = data.home_win > 0? '#28a745': '#CC0000';
-    cellHomeWin.style.color = 'white';
+    _aplicarHighLightEfeito(cellHomeWin, data.home_win);
+
+}
+
+
+function _aplicarHighLightEfeito(element, value) {
+    element.style.transition = 'background-color 1s';
+    element.style.backgroundColor = value > 0? '#28a745': '#CC0000';
+    element.style.color = 'white';
 
     setTimeout(() => {
-        cellHomeWin.style.backgroundColor = '';
-        cellHomeWin.style.color = '';
+        element.style.backgroundColor = '';
+        element.style.color = '';
     }, 1000);
 
 }
