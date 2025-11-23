@@ -204,6 +204,47 @@ export async function renderizarCardEventoTeam(dados, resultados) {
                 return event.awayTeam.icon;
             }
 
+            const renderMetrics  = (comparasion) => {
+                if (!comparasion) return '';
+
+                return `
+                    <span class="home-analyisis-metric">Home Total Player: ${comparasion.home_analysis?.total_players}</span>
+                    <span class="home-analyisis-metric">Away Total Player: ${comparasion.away_analysis?.total_players}</span>
+                `;
+            }
+
+            const renderComparasionOverAllAndDefensiveTeams = (comparison) => {
+                if (!comparison) {
+                    return '';
+                }
+
+                return `
+                    <p>OverAll Winner: ${comparison.compareAll?.overall_winner}</p>
+                    <p>Analyse Scenarios: ${comparison.analyseAttackVsDefense?.likely_scenario?.description}</p>
+                `;
+            }
+
+            const renderComparasionAttackVsDefenseTeams = (comparison) => {
+                if (!comparison) {
+                    return '';
+                }
+
+                return `
+                    <p>Analyse Attack Home Vs Defense Away: ${comparison.home_attack_vs_away_defense?.winner}</p>
+                    <p>Analyse Attack Away Vs Defense Home: ${comparison.away_attack_vs_home_defense?.winner}</p>
+                `;
+            }
+
+            const renderPrediction = (comparison) => {
+                if (!comparison) {
+                    return '';
+                }
+
+                return `
+                    <p>Prediction: ${comparison.analyseAttackVsDefense?.likely_scenario?.prediction}</p>
+                `;
+            }
+
             cardDiv.innerHTML = `
                 <div class="card" style="border-radius: unset;">
                     <div class="row g-0">
@@ -228,14 +269,28 @@ export async function renderizarCardEventoTeam(dados, resultados) {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center gap-2">
-                                    <img class="unique-tournament-logo img-fluid" 
-                                        style="max-width: 30px; height: 30px; object-fit: contain;"
-                                        src="data:imagem/png;base64,${iconeTimeConfronto(teamId)}" 
-                                        alt=${timeConfronto(teamId)}>
-                                    <h6 class="card-title">${timeConfronto(teamId)}</h6>
+                        <div class="col-md">
+                            <div class="row g-0">
+                                <div class="col-sm-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <img class="unique-tournament-logo img-fluid" 
+                                                style="max-width: 30px; height: 30px; object-fit: contain;"
+                                                src="data:imagem/png;base64,${iconeTimeConfronto(teamId)}" 
+                                                alt=${timeConfronto(teamId)}>
+                                            <h6 class="card-title">${timeConfronto(teamId)}</h6>
+                                        </div>
+                                        <div class="p-3">${renderMetrics(comparacao?.comparison?.compareAll)}</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 p-3">
+                                    <div>${renderComparasionOverAllAndDefensiveTeams(comparacao?.comparison)}</div>
+                                </div>
+                                <div class="col-sm-4 p-3">
+                                    <div>${renderComparasionAttackVsDefenseTeams(comparacao?.comparison?.analyseAttackVsDefense)}</div>
+                                </div>
+                                <div class="col-12 bg-success-subtle">
+                                    ${renderPrediction(comparacao?.comparison)}
                                 </div>
                             </div>
                         </div>

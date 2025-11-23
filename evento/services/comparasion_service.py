@@ -17,6 +17,9 @@ class PositionStats:
     avg_rating: float
     players: List[str]
     
+    def __post_init__(self):
+        self.avg_rating = round(self.avg_rating, 2)
+    
 
 @dataclass
 class TeamAnalysis:
@@ -27,6 +30,12 @@ class TeamAnalysis:
     midfield_rating: float
     offensive_rating: float
     position_stats: Dict[str, PositionStats] = field(default_factory=dict)
+    
+    def __post_init__(self):
+        self.overall_rating = round(self.overall_rating, 2)
+        self.defensive_rating = round(self.defensive_rating, 2)
+        self.midfield_rating = round(self.midfield_rating, 2)
+        self.offensive_rating = round(self.offensive_rating, 2)
     
     
 @dataclass
@@ -46,6 +55,9 @@ class Player:
     avg_rating: float
     team_id: int
     
+    def __post_init__(self):
+        self.avg_rating = round(self.avg_rating, 2)
+    
     
 @dataclass
 class AttackVsDefenseComparison:
@@ -55,6 +67,11 @@ class AttackVsDefenseComparison:
     defense_rating: float
     difference: float
     winner: str
+    
+    def __post_init__(self):
+        self.attack_rating = round(self.attack_rating, 2)
+        self.defense_rating = round(self.defense_rating, 2)
+        self.difference = round(self.difference, 2)
     
     
 @dataclass
@@ -127,32 +144,32 @@ class LineupComparationService:
         home_analysis = LineupComparationService.analyse_team(home_players, 'Home')
         away_analysis = LineupComparationService.analyse_team(away_players, 'Away')
         
-        defensive_diff = home_analysis.defensive_rating - away_analysis.defensive_rating
+        defensive_diff = round(home_analysis.defensive_rating - away_analysis.defensive_rating, 2)
         defensive_winner = (
             home_players[0].team_id if defensive_diff > 0.1 else
             away_players[0].team_id if defensive_diff < -0.1 else
-            None
+            'Indefinido'
         )
         
-        midfield_diff = home_analysis.midfield_rating - away_analysis.midfield_rating
+        midfield_diff = round(home_analysis.midfield_rating - away_analysis.midfield_rating, 2)
         midfield_winner = (
             home_players[0].team_id if midfield_diff > 0.1 else
             away_players[0].team_id if midfield_diff < -0.1 else
-            None
+            'Indefinido'
         )
         
-        offensive_diff = home_analysis.offensive_rating - away_analysis.offensive_rating
+        offensive_diff = round(home_analysis.offensive_rating - away_analysis.offensive_rating, 2)
         offensive_winner = (
             home_players[0].team_id if offensive_diff > 0.1 else
             away_players[0].team_id if offensive_diff < -0.1 else
-            None
+            'Indefinido'
         )
         
-        overall_diff = home_analysis.overall_rating - away_analysis.overall_rating
+        overall_diff = round(home_analysis.overall_rating - away_analysis.overall_rating, 2)
         overall_winner = (
             home_players[0].team_id if overall_diff > 0.1 else
             away_players[0].team_id if overall_diff < -0.1 else
-            None
+            'Indefinido'
         )
         
         
