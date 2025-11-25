@@ -15,7 +15,7 @@ export function setupCardEventTeam() {
 
     teamsTableBody.addEventListener('click', async function(event) {
         const row = event.target.closest('.tr-clubes');
-
+        
         if (!row) {
             console.log('Clique não foi em uma linha válida');
             return;
@@ -39,57 +39,43 @@ export function setupCardEventTeam() {
 
 export async function carregarEventosTime(idTeam) {
 
+    const spinnerLoadEvents = document.getElementById('spinner-load-events');
+    if (spinnerLoadEvents) {
+        spinnerLoadEvents.classList.remove('visually-hidden');
+    }
+
     try {
-        const url = `api/v1/team/${idTeam}/events?page=1&page_size=5`;
-
-        const controller = new AbortController();
-        const timoutId = setTimeout(() => controller.abort(), 10000);
+        const url = `/team/${idTeam}/events?page=1&page_size=5`;
         
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            },
-            signal: controller.signal
-        });
-
-        clearTimeout(timoutId);
-
-        if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`); 
-        }
-
-        const data = await response.json();
+        const data = await apiClient.get(url);
         
-        if (data.results && data.results.length > 0) {
-            await renderizarCardTeam(idTeam);
-            const resultados = await compareTeams(data.results);
-            await renderizarCardEventoTeam(data.results, resultados);
-            return;
-        } else {
-            console.error('Resposta API sem sucesso:', data);
-            showNotification(`Falha ao recuperar dados de evento do time`, 'danger');
-        }
+        await renderizarCardTeam(idTeam);
+        const resultados = await compareTeams(data.results);
+        await renderizarCardEventoTeam(data.results, resultados);
+        return;
 
     } catch(error) {
         console.error('Todas as tentativas falharam');
-        showNotification(`Erro ao carregar eventos após ${tentativas} tentativas`, 'danger');
+        showNotification(`Erro ao carregar eventos`, 'danger');
         
-    } 
+    } finally {
+        spinnerLoadEvents.className = 'visually-hidden';
+    }
 
 }
 
-export async function compareTeams(events) {
+
+export async function compareTeams(results) {
     try {
 
-        if (!events || events.length === 0) {
+        if (!results || results.events.length === 0) {
             console.warn('Nenhum evento fornecido');
             return [];
         }
         
-        console.log(`Iniciando comparação de ${events.length} eventos`);
+        console.log(`Iniciando comparação de ${results.events.length} eventos`);
 
-        const promisses = events.map(async event => {
+        const promisses = results.events.map(async event => {
             try {
                 const url = `/events/${event.idEvent}/compare_players`;
                 const dados = await apiClient.get(url);
@@ -128,21 +114,10 @@ export async function renderizarCardTeam(idTeam) {
     }
 
     try {
-        const url = `api/v1/team/${idTeam}`;
+        const url = `/team/${idTeam}`;
         console.log(`Buscando dados do time ${idTeam}...`);
         
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`); 
-        }
-        
-        const data = await response.json();
+        const data = await apiClient.get(url);
 
         if (data.success) {
             teamName.textContent = data.team.name
@@ -162,17 +137,17 @@ export async function renderizarCardTeam(idTeam) {
 
 export async function renderizarCardEventoTeam(dados, resultados) {
     const tournament = document.querySelector('.tournament');
-
+    
+    
     if (!tournament) {
         console.warn('Elemento .tournament não encontrado');
         return;
     }
-
+    
     tournament.innerHTML = '';
-
-    if (dados.length > 0) {
-        dados.forEach(event => {
-
+    
+    if (dados.events.length > 0 ) {
+        dados.events.map(event => {
             const comparacao = resultados.find(r => r.eventId === event.idEvent);
 
             let styleCard = 'None';
@@ -192,8 +167,8 @@ export async function renderizarCardEventoTeam(dados, resultados) {
 
             const timeConfronto = (idTeam) => {
                 if (idTeam == event.awayTeam.id) {
-                    return event.homeTeam.name;
-                } 
+                return event.homeTeam.name;
+            }
                 return event.awayTeam.name;
             }
 
@@ -213,13 +188,14 @@ export async function renderizarCardEventoTeam(dados, resultados) {
                 `;
             }
 
-            const renderComparasionOverAllAndDefensiveTeams = (comparison) => {
+            const renderComparasionOverAllAndDefensiveTeams = (comparison, idTeam) => {
                 if (!comparison) {
                     return '';
                 }
 
+                const bgWinner = comparison.compareAll?.overall_winner == idTeam ? 'bg-success-subtle pe-5 rounded': 'None';
                 return `
-                    <p>OverAll Winner: ${comparison.compareAll?.overall_winner}</p>
+                    <p>OverAll Winner: <span class="${bgWinner}">${comparison.compareAll?.overall_winner}</span></p>
                     <p>Analyse Scenarios: ${comparison.analyseAttackVsDefense?.likely_scenario?.description}</p>
                 `;
             }
@@ -241,7 +217,7 @@ export async function renderizarCardEventoTeam(dados, resultados) {
                 }
 
                 return `
-                    <p>Prediction: ${comparison.analyseAttackVsDefense?.likely_scenario?.prediction}</p>
+                    <div class="bg-success-subtle text-light-emphasis p-1">Prediction: ${comparison.analyseAttackVsDefense?.likely_scenario?.prediction}</div>
                 `;
             }
 
@@ -271,27 +247,29 @@ export async function renderizarCardEventoTeam(dados, resultados) {
                         </div>
                         <div class="col-md">
                             <div class="row g-0">
-                                <div class="col-sm-4">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <img class="unique-tournament-logo img-fluid" 
-                                                style="max-width: 30px; height: 30px; object-fit: contain;"
-                                                src="data:imagem/png;base64,${iconeTimeConfronto(teamId)}" 
-                                                alt=${timeConfronto(teamId)}>
-                                            <h6 class="card-title">${timeConfronto(teamId)}</h6>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <img class="unique-tournament-logo img-fluid" 
+                                                    style="max-width: 30px; height: 30px; object-fit: contain;"
+                                                    src="data:imagem/png;base64,${iconeTimeConfronto(dados?.idTeamRef)}" 
+                                                    alt=${timeConfronto(dados?.idTeamRef)}>
+                                                <h6 class="card-title">${timeConfronto(dados?.idTeamRef)}</h6>
+                                            </div>
+                                            <div class="p-3">${renderMetrics(comparacao?.comparison?.compareAll)}</div>
                                         </div>
-                                        <div class="p-3">${renderMetrics(comparacao?.comparison?.compareAll)}</div>
+                                    </div>
+                                    <div class="col-sm-4 p-3">
+                                        <div>${renderComparasionOverAllAndDefensiveTeams(comparacao?.comparison, dados?.idTeamRef)}</div>
+                                    </div>
+                                    <div class="col-sm-4 p-3">
+                                        <div>${renderComparasionAttackVsDefenseTeams(comparacao?.comparison?.analyseAttackVsDefense)}</div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 p-3">
-                                    <div>${renderComparasionOverAllAndDefensiveTeams(comparacao?.comparison)}</div>
-                                </div>
-                                <div class="col-sm-4 p-3">
-                                    <div>${renderComparasionAttackVsDefenseTeams(comparacao?.comparison?.analyseAttackVsDefense)}</div>
-                                </div>
-                                <div class="col-12 bg-success-subtle">
+                                <span class="col-12">
                                     ${renderPrediction(comparacao?.comparison)}
-                                </div>
+                                </span>
                             </div>
                         </div>
                     </div>

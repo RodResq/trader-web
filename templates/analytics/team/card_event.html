@@ -1,6 +1,12 @@
 {% load static %}
 <div id="teamsScrollContainer" class="table-scroll-container-full"> 
     {% include 'analytics/team/card_team.html' %}
-    <div class="tournament"></div>
+    <div class="tournament">
+        <div class="text-center">
+            <div id="spinner-load-events" class="spinner-border text-secondary visually-hidden" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
 </div>
             

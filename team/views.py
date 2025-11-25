@@ -83,7 +83,10 @@ class TeamEvents(generics.ListCreateAPIView):
                 'current_page': page_number,
                 'has_next': page_number < total_pages,
                 'has_previous': page_number > 1,
-                'results': paginated_data
+                'results': {
+                    'idTeamRef': id_team,
+                    'events': paginated_data
+                }
             }, status=status.HTTP_200_OK)
             
         except requests.RequestException as e:
