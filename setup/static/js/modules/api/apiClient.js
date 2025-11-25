@@ -1,11 +1,11 @@
 export class ApiClient {
     constructor(baseUrl = '') {
         this.baseUrl = baseUrl;
-        this.defaultHearders = {
+        this.defaultHeaders = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         };
-        this.timeout = 10000;
+        this.timeout = 100000;
     }
 
     async get(endpoint, options = {}) {
@@ -35,9 +35,9 @@ export class ApiClient {
 
     _buildConfig(options) {
         return {
-            method: options.methd || 'GET',
+            method: options.method || 'GET',
             headers: {
-                ...this.defaultHearders,
+                ...this.defaultHeaders,
                 ...options.headers
             },
             ...(options.body && { body: options.body })
@@ -46,7 +46,7 @@ export class ApiClient {
 
     async _fetchWithTimeout(url, config) {
         const controller = new AbortController();
-        const timeoutId = this.setTimout(() => controller.abort(), this.timeout);
+        const timeoutId = this.setTimeout(() => controller.abort(), this.timeout);
 
         try {
             return await fetch(url, {
@@ -100,13 +100,13 @@ export class ApiClient {
 
     }
 
-    setTimout(ms) {
+    setTimeout(ms) {
         this.timeout = ms;
         return this;
     }
 
     setHeaders(headers) {
-        this.defaultHearders = { ...this.defaultHearders, ...headers };
+        this.defaultHeaders = { ...this.defaultHeaders, ...headers };
         return this;
     }
 }

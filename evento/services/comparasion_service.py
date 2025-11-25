@@ -200,9 +200,9 @@ class LineupComparationService:
     @staticmethod
     def compare_attack_vs_defense(
         attaking_players: List[Player],
-        attaking_team: str,
+        attaking_team: int,
         defense_players: List[Player],
-        defending_team: str
+        defending_team: int
     ) -> AttackVsDefenseComparison:
         
         attacking_untis = [
@@ -248,11 +248,11 @@ class LineupComparationService:
     ) -> DualAttackDefenseAnalysis:
         
         home_attack_vs_away_defense = LineupComparationService.compare_attack_vs_defense(
-            home_players, "home", away_players, "Away"
+            home_players, home_players[0].team_id, away_players, away_players[0].team_id
         )
         
         away_attack_vs_home_defense = LineupComparationService.compare_attack_vs_defense(
-            away_players, "Away", home_players, "Home"
+            away_players, away_players[0].team_id, home_players, home_players[0].team_id
         )
         
         likely_scenario = LineupComparationService._analyze_scenario(

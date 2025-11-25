@@ -75,26 +75,34 @@ export async function compareTeams(results) {
         
         console.log(`Iniciando comparação de ${results.events.length} eventos`);
 
-        const promisses = results.events.map(async event => {
-            try {
-                const url = `/events/${event.idEvent}/compare_players`;
-                const dados = await apiClient.get(url);
+        const BATCH_SIZE = 5;
+        const resultados = [];
 
-                if (dados.success) {
-                    return {
-                        eventId: event.idEvent,
-                        comparison: dados.data 
-                    };
+        for (let i = 0; i < results.events.length; i += BATCH_SIZE) {
+            const batch = results.events.slice(i, i + BATCH_SIZE);
+
+            const promisses = batch.map(async event => {
+                try {
+                    const url = `/events/${event.idEvent}/compare_players`;
+                    const dados = await apiClient.get(url);
+    
+                    if (dados.success) {
+                        return {
+                            eventId: event.idEvent,
+                            comparison: dados.data 
+                        };
+                    }
+                } catch(error) {
+                    console.error(`Erro ao comparar evento ${event.idEvent}:`, error);
+                    showNotification('Erro ao comparar times', 'danger');
+                    return null;
                 }
-            } catch(error) {
-                console.error(`Erro ao comparar evento ${event.idEvent}:`, error);
-                showNotification('Erro ao comparar times', 'danger');
-                return null;
-            }
-        });
-    
-        const resultados = await Promise.all(promisses);
-    
+            });
+
+            const batchResultados = await Promise.all(promisses);
+            resultados.push(...batchResultados);
+        }
+
         return resultados.filter(resultado => resultado !== null);
     } catch(error) {
         console.error('Erro em compareTeams:', error);
@@ -200,14 +208,17 @@ export async function renderizarCardEventoTeam(dados, resultados) {
                 `;
             }
 
-            const renderComparasionAttackVsDefenseTeams = (comparison) => {
+            const renderAnalyseAttackVsDefenseTeams = (comparison) => {
                 if (!comparison) {
                     return '';
                 }
 
                 return `
-                    <p>Analyse Attack Home Vs Defense Away: ${comparison.home_attack_vs_away_defense?.winner}</p>
-                    <p>Analyse Attack Away Vs Defense Home: ${comparison.away_attack_vs_home_defense?.winner}</p>
+                    <p>Analyse Attack home Vs Defense away: <span>${
+                        comparison.analyseAttackVsDefense?.home_attack_vs_away_defense?.winner == "attack" ?
+                        comparison.analyseAttackVsDefense?.home_attack_vs_away_defense?.attacking_team:
+                        comparison.analyseAttackVsDefense?.home_attack_vs_away_defense?.defending_team
+                    }</span></p>
                 `;
             }
 
@@ -264,7 +275,7 @@ export async function renderizarCardEventoTeam(dados, resultados) {
                                         <div>${renderComparasionOverAllAndDefensiveTeams(comparacao?.comparison, dados?.idTeamRef)}</div>
                                     </div>
                                     <div class="col-sm-4 p-3">
-                                        <div>${renderComparasionAttackVsDefenseTeams(comparacao?.comparison?.analyseAttackVsDefense)}</div>
+                                        <div>${renderAnalyseAttackVsDefenseTeams(comparacao?.comparison)}</div>
                                     </div>
                                 </div>
                                 <span class="col-12">

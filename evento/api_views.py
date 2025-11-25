@@ -224,9 +224,9 @@ class LineupComparationView(APIView):
             
             attack_vs_defense = analyser.compare_attack_vs_defense(
                 home_players, 
-                'home',
+                home_players[0].team_id,
                 away_players,
-                'away'
+                away_players[0].team_id
             )
             
             analyse_attack_vs_defense = analyser.analyse_attack_vs_defense_dual(
