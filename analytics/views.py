@@ -652,10 +652,10 @@ def verificar_ciclo(request):
                     }, status=400)
             
             datas_formatadas.append(data)
-        
+            
         ciclo = Ciclo.objects.filter(
-            Q(data_inicial__gte=min(datas_formatadas)) |
-            Q(data_final__lte=max(datas_formatadas))
+            data_inicial__lte=min(datas_formatadas),
+            data_final__gte=max(datas_formatadas)
         ).first()
         
         if not ciclo:
