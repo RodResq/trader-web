@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'owner_ball.apps.OwnerBallConfig',
     'grafico.apps.GraficoConfig',
     'team.apps.TeamConfig',
+    'tournament.apps.TournamentConfig',
     'score_data.apps.ScoreDataConfig',
     'unique_tournament.apps.UniqueTournamentConfig',
     'market.apps.MarketConfig',
