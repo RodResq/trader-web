@@ -96,13 +96,8 @@ class TeamEvents(generics.ListCreateAPIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
 
-def teams(request):
-    teams = TeamSofascore.objects.filter(ativo=1)\
-        .exclude(name__iregex=r'U\d{2}$').all()
-    
-    return render(request, 'analytics/team/index.html', {
-        'teams': teams
-    })
+def teams(request):    
+    return render(request, 'analytics/team/index.html')
 
 # deprecated
 def events(request):
