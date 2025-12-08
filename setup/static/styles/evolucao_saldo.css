@@ -1,5 +1,5 @@
 #evolucaoSaldoModal .modal-dialog {
-    max-width: 60%;
+    max-width: 45%;
 }
 
 #evolucaoSaldoModal .modal-content {
@@ -10,9 +10,8 @@
 
 #evolucaoSaldoModal .modal-header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #004d40 !important;
     color: white;
-    padding: 1.5rem;
 }
 
 #evolucaoSaldoModal .modal-header .btn-close {
@@ -30,7 +29,7 @@
 }
 
 #evolucaoSaldoModal .modal-body {
-    padding: 2rem;
+    padding: none;
 }
 
 #evolucaoSaldoModal .modal-footer {
@@ -62,13 +61,12 @@
 }
 
 #evolucaoSaldoModal .card-body {
-    padding: 1.5rem;
+    padding: 0.5rem;
 }
 
 #evolucaoSaldoModal .card h4 {
     font-weight: 700;
     margin-bottom: 0.5rem;
-    font-size: 1.8rem;
 }
 
 #evolucaoSaldoModal .card h6 {
