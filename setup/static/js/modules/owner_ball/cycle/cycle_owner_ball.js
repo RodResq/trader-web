@@ -141,11 +141,18 @@ export function initCycleOwnerBall() {
         ?.split('=')[1];
     }
     
-    function exibirMensagem(texto, tipo) {
+    function exibirMensagem(message, tipo) {
         const span = document.createElement('span');
         span.innerHTML = `
-            <div class="alert alert-${tipo}" role="alert">
-                ${texto}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <i class="bi 
+                    {% if message.tags == ${tipo} %}bi-check-circle-fill
+                    {% elif message.tags == ${tipo} %}bi-exclamation-triangle-fill
+                    {% elif message.tags == ${tipo} %}bi-exclamation-triangle-fill
+                    {% else %}bi-info-circle-fill
+                    {% endif %} me-2"></i>
+                {{ ${message} }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         `;
         
