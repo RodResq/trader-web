@@ -7,7 +7,7 @@ import { setupEventVote } from '../entrada/event_vote.js';
 import { setupStatisticOwnerBall } from "./statistic_owner_ball.js";
 
 let currentPage = 1;
-let itemsPerPage = 20;
+let itemsPerPage = 10;
 let totalPages = 1;
 let isLoading = false;
 

@@ -118,7 +118,7 @@ export function initCycleOwnerBall() {
             const data = await response.json();
             if (data.success) {
                 updateOwnerBallTable(data.data);
-                exibirMensagem('Tabela Owner Ball atualizada com sucesso.');
+                exibirMensagem('Tabela Owner Ball atualizada com sucesso.', 'success');
             } else {
                 exibirMensagem('Erro ao recuperar listagem.', 'danger');
             }
@@ -142,20 +142,19 @@ export function initCycleOwnerBall() {
     }
     
     function exibirMensagem(texto, tipo) {
-        const alerta = document.createElement('div');
-        alerta.className = `alert alert-${tipo} alert-dismissible fade show`;
-        alerta.role = 'alert';
-        alerta.innerHTML = `
-        ${texto}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        const span = document.createElement('span');
+        span.innerHTML = `
+            <div class="alert alert-${tipo}" role="alert">
+                ${texto}
+            </div>
         `;
         
-        const container = document.querySelector('.container-fluid');
-        container.insertBefore(alerta, container.firstChild);
+        const cycleTitle = document.querySelector('.alert-message');
+        cycleTitle.appendChild(span);
         
         setTimeout(() => {
-            alerta.classList.remove('show');
-            setTimeout(() => alerta.remove(), 300);
+            span.classList.remove('show');
+            setTimeout(() => span.remove(), 300);
         }, 5000);
     }
 
