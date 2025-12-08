@@ -39,7 +39,7 @@
                 <td>
                 <div class="d-flex align-items-center">
                     <span class="me-2">R$ {{ cycle.current_balance|floatformat:2 }}</span>
-                    <button class="btn btn-sm btn-outline-info btn-evolucao-saldo" 
+                    <button class="btn-evolucao-saldo" 
                             data-ciclo-id="{{ cycle.id }}"
                             data-ciclo-categoria="{{ cycle.category }}"
                             data-ciclo-periodo="{{ cycle.start_date|date:'d/m/Y' }} à {{ ciclo.end_date|date:'d/m/Y' }}"

@@ -98,19 +98,15 @@
 
 /* Botão de evolução do saldo */
 .btn-evolucao-saldo {
-    border: 1px solid #17a2b8;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     background: transparent;
-    color: #17a2b8;
 }
 
 .btn-evolucao-saldo:hover {
-    background-color: #17a2b8;
     color: white;
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
 }
 
 .btn-evolucao-saldo::before {
@@ -154,41 +150,6 @@
     border-radius: 8px;
     border: none;
     background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-}
-
-/* Animações */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideInFromTop {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pulseGlow {
-    0% {
-        box-shadow: 0 0 5px rgba(78, 115, 223, 0.5);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(78, 115, 223, 0.8);
-    }
-    100% {
-        box-shadow: 0 0 5px rgba(78, 115, 223, 0.5);
-    }
 }
 
 #evolucaoSaldoContent {
