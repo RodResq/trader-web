@@ -176,7 +176,11 @@ const globalModules = [
     { 
         name: 'setupLinkActivateManager',
         init: () => import('./link_activate_manager.js').then(m => m.setupLinkActivateManager)
-    }
+    },
+    {
+        name: 'initMessage',
+        init: () => import('./modules/shared/message.js').then(m => m.showMensagem)
+    },
 ];
 
 

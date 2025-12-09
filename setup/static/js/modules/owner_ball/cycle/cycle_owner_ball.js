@@ -1,3 +1,4 @@
+import { showMensagem } from "../../shared/message.js";
 import { showSpinner, hideSpinner } from "../../utils.js";
 
 const API_BASE_URL = '/api/v1';
@@ -68,6 +69,8 @@ export function initCycleOwnerBall() {
         available_value: parseFloat(availebleValue.value)
        }
 
+       const modalInstance = bootstrap.Modal.getInstance(modal);
+       
        try {
            const response = await fetch(getApiUrl('/owner_ball/cycle'), {
                 method: 'POST',
@@ -85,15 +88,15 @@ export function initCycleOwnerBall() {
        
            const data = await response.json();
            if (data.success) {
-                const modalInstance = bootstrap.Modal.getInstance(modal);
-                modalInstance.hide();
                 refreshCycleOwnerBall();
            } else {
-                exibirMensagem(`Erro: ${data.message}`, 'danger'); 
+                showMensagem(`Erro: ${data.message}`, 'danger'); 
            }
        } catch(error) {
             console.error('Erro ao gravar ciclo Owner Ball:', error);
-            exibirMensagem('Erro ao Gravar Ciclo Owner Ball. Verifique o console para mais detalhes.', 'danger');
+            showMensagem('Erro ao Gravar Ciclo Owner Ball. Verifique o console para mais detalhes.', 'danger');
+       } finally {
+        modalInstance.hide();
        }
     }
 
@@ -118,14 +121,14 @@ export function initCycleOwnerBall() {
             const data = await response.json();
             if (data.success) {
                 updateOwnerBallTable(data.data);
-                exibirMensagem('Tabela Owner Ball atualizada com sucesso.', 'success');
+                showMensagem('Tabela Owner Ball atualizada com sucesso.', 'success');
             } else {
-                exibirMensagem('Erro ao recuperar listagem.', 'danger');
+                showMensagem('Erro ao recuperar listagem.', 'danger');
             }
             
         } catch (error) {
             console.error('Erro ao atualizar listagem de Cycle Owner Ball: ', error);
-            exibirMensagem('Erro ao atualizar Listagem Cycle Owner Ball.', 'danger');
+            showMensagem('Erro ao atualizar Listagem Cycle Owner Ball.', 'danger');
         } finally {
             setTimeout(() => {
                 hideSpinner(tableContainer);
@@ -133,38 +136,8 @@ export function initCycleOwnerBall() {
         }
 
     }
-    
-    function getCSRFToken() {
-        return document.cookie
-        .split('; ')
-        .find(row => row.startsWith('csrftoken='))
-        ?.split('=')[1];
-    }
-    
-    function exibirMensagem(message, tipo) {
-        const span = document.createElement('span');
-        span.innerHTML = `
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <i class="bi 
-                    {% if message.tags == ${tipo} %}bi-check-circle-fill
-                    {% elif message.tags == ${tipo} %}bi-exclamation-triangle-fill
-                    {% elif message.tags == ${tipo} %}bi-exclamation-triangle-fill
-                    {% else %}bi-info-circle-fill
-                    {% endif %} me-2"></i>
-                {{ ${message} }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-        
-        const cycleTitle = document.querySelector('.alert-message');
-        cycleTitle.appendChild(span);
-        
-        setTimeout(() => {
-            span.classList.remove('show');
-            setTimeout(() => span.remove(), 300);
-        }, 5000);
-    }
 
+    
     function updateOwnerBallTable(cycles) {
         const tbody = document.querySelector('#ciclosOwnerBallTable tbody');
         
