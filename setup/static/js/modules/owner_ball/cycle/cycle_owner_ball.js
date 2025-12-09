@@ -170,7 +170,7 @@ export function initCycleOwnerBall() {
                     <td>
                         <div class="d-flex align-items-center">
                             <span class="me-2">R$ ${Number(cycle.current_balance).toFixed(2)}</span>
-                            <button class="btn btn-sm btn-outline-info btn-evolucao-saldo" 
+                            <button class="btn-evolucao-saldo" 
                                     data-ciclo-id="${cycle.id}"
                                     data-ciclo-categoria="${cycle.category_display}"
                                     data-ciclo-periodo="${startDate} à ${endDate}"
