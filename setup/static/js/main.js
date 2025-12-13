@@ -121,6 +121,13 @@ const routeModules = {
             dependencies: []
         }
     ],
+    '/tournaments': [
+        {
+            name: 'setupTournamentList',
+            module: () => import('./modules/tournament/tournamentList.js').then(m => m.setupTournamentList),
+            dependencies: []
+        }
+    ]
 };
 
 
