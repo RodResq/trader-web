@@ -28,22 +28,17 @@ export function initThemeToggler() {
 
 
   function setTheme(theme) {
-    // Atualizar atributos de tema do documento
     html.setAttribute('data-bs-theme', theme);
     document.body.setAttribute('data-bs-theme', theme);
     
-    // Limpar classes de tema existentes
     document.body.classList.remove('theme-light', 'theme-dark');
     html.classList.remove('theme-light', 'theme-dark');
     
-    // Adicionar classe apropriada ao body e html
     html.classList.add('theme-' + theme);
     document.body.classList.add('theme-' + theme);
     
-    // Atualizar o ícone
     updateThemeIcon(theme);
     
-    // Forçar reflow para garantir que todas as mudanças de estilo sejam aplicadas
     void document.body.offsetHeight;
   }
 }

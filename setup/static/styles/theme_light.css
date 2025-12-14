@@ -43,11 +43,6 @@
     border-bottom: 2px solid var(--bet365-yellow);
   }
   
-  body.theme-light .navbar-brand,
-  body.theme-light .nav-link,
-  body.theme-light .navbar-nav .nav-link.active {
-    color: white !important;
-  }
   
   body.theme-light .navbar .dropdown-menu {
     background-color: white;
