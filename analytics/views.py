@@ -300,7 +300,7 @@ def editar_odd(request):
     if request.method == 'GET':
         event_id = request.GET.get('event_id')
         nova_odd = request.GET.get('odd')
-        event_origin = request.GET.get('event_origin')
+        event_origin = str(request.GET.get('event_origin'))
         
         if not event_id or not nova_odd:
             return JsonResponse({
@@ -317,7 +317,7 @@ def editar_odd(request):
                     'message': 'Odd inválida. Valor mínimo é 1.01.'
                 }, status=400)
               
-            if event_origin ==  EventOriginEnum.SCORE_DATA.value:
+            if event_origin.lower() ==  EventOriginEnum.SCORE_DATA.value:
                 entrada = get_object_or_404(Entrada, id_event=event_id)
                 entrada.odd = nova_odd
                 entrada.save()
