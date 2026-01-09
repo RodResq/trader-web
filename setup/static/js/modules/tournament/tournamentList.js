@@ -42,9 +42,17 @@ async function renderizarCardsTournaments(uniqueTournaments) {
                             </div>
                             <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">${uniqueTournament.name}</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title">${uniqueTournament.name}(${uniqueTournament.id})</h5>
+                                    <button class="refreshUniqueTournamentBtn btn btn-sm btn-success" data-unique-id=${uniqueTournament.id} title="Atualizar">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </button>
+                                </div>
                                 <p class="card-subtitle">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-muted">Last Playing 31/01/2025</small></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="card-text text-muted">Inicio 01/01/2026</small>
+                                    <small class="card-text text-muted">Fim 31/12/2026</small>
+                                </div>
                             </div>
                             </div>
                         </div>
