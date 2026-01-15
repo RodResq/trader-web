@@ -34,3 +34,6 @@ class UniqueTournaments(generics.ListCreateAPIView):
                 'success': False,
                 'message': f'Erro ao buscar dados {str(e)}'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+
+            

@@ -6,8 +6,6 @@ export async function setupTournamentList() {
     let isLoading = false;
     let hasNextPage = true;
 
-   
-
     try {
         const page = 1;
         const size = 100
@@ -48,10 +46,12 @@ async function renderizarCardsTournaments(uniqueTournaments) {
                                         <i class="bi bi-arrow-repeat"></i>
                                     </button>
                                 </div>
-                                <p class="card-subtitle">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="card-text text-muted">Inicio 01/01/2026</small>
-                                    <small class="card-text text-muted">Fim 31/12/2026</small>
+                                <div id="data-card-${uniqueTournament.id}">
+                                    <p class="card-subtitle">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="card-text text-muted">Inicio 01/01/2026</small>
+                                        <small class="card-text text-muted">Fim 31/12/2026</small>
+                                    </div>
                                 </div>
                             </div>
                             </div>
@@ -64,5 +64,4 @@ async function renderizarCardsTournaments(uniqueTournaments) {
         });
     }
 
-    
 }

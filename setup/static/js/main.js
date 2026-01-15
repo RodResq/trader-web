@@ -126,6 +126,11 @@ const routeModules = {
             name: 'setupTournamentList',
             module: () => import('./modules/tournament/tournamentList.js').then(m => m.setupTournamentList),
             dependencies: []
+        }, 
+        {
+            name: 'initRefreshUniqueTournament',
+            module: () => import('./modules/tournament/refreshUniqueTournament.js').then(m => m.initRefresUniqueTournament),
+            dependencies: ['setupTournamentList']
         }
     ]
 };
