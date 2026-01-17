@@ -9,7 +9,7 @@ class UniqueTournament(models.Model):
     end_date_timestamp = models.DateTimeField(blank=True, null=True)
     country_name = models.CharField(max_length=255, blank=True, null=True)
     id_team_title_holder = models.BigIntegerField(null=True)
-    id_team_most_titles = models.BigIntegerField(null=True)
+    ids_teams_most_titles = models.CharField(max_length=255, blank=True, null=True, db_comment='Armazena os IDS dos times com mais titulos')
     has_rounds = models.BooleanField(null=True, default=False)
     has_groups = models.BooleanField(null=True, default=False)
     

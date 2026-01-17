@@ -8,8 +8,12 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
 from .models import UniqueTournament
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
+
+def unique_tournaments_render(request):
+    return render(request, 'analytics/unique_tournament/index.html')
 
 # Create your views here.
 def get_icon_unique_tournament(request):
@@ -43,13 +47,14 @@ def get_icon_unique_tournament(request):
                 'erro': str(e)
             }, status=500)
             
-            
-class UniqueTournaments(generics.GenericAPIView):
+class UniqueTournamentsList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
-    def get(self, request, id_unique):
+    def get(self, request):
         try:
-            response = requests.get(f'http://127.0.0.1:8081/api/v1/unique-tournaments/{id_unique}')
+            page_number = request.query_params.get('page', 1)
+            page_size = request.query_params.get('size', 10)
+            response = requests.get(f'http://127.0.0.1:8081/api/v1/unique-tournaments?page={page_number}&size={page_size}')
             response.raise_for_status()
             response_data = response.json()
             
@@ -57,6 +62,45 @@ class UniqueTournaments(generics.GenericAPIView):
                 return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
             
             return Response(response_data, status=status.HTTP_200_OK)
+        except requests.RequestException as e:
+            return Response({
+                'success': False,
+                'message': f'Erro ao buscar dados {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+  
+def extract_unique_tournament_data(response_data):
+    ut = response_data.get('uniqueTournament', {})
+    
+    to_datetime = lambda ts: datetime.fromtimestamp(ts) if ts else None
+    
+    return {
+        'country_name': str(ut.get('category', {}).get('name', {})).upper(),
+        'has_groups': ut.get('hasGroups', {}),
+        'has_rounds': ut.get('hasRounds', {}),
+        'ids_teams_most_titles': ','.join(str(team.get('id')) for team in ut.get('mostTitlesTeams', [])), # Corrigir para armazenar apenaus 1 id
+        'id_team_title_holder': ut.get('titleHolder', {}).get('id'),
+        'start_date_timestamp': to_datetime(ut.get('startDateTimestamp', {})),
+        'end_date_timestamp': to_datetime(ut.get('endDateTimestamp', {})),
+    }
+    
+class UniqueTournaments(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def get(self, request, id_unique):
+        try:
+            unique_tournament = get_object_or_404(UniqueTournament, id=id_unique)
+            if unique_tournament:
+                response = requests.get(f'http://127.0.0.1:8081/api/v1/unique-tournaments/{id_unique}')
+                response.raise_for_status()
+                response_data = response.json()
+                
+                if not response_data:
+                    return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+                
+                unique_tournament.__dict__.update(extract_unique_tournament_data(response_data))
+                unique_tournament.save(force_update=True)
+                
+                return Response(response_data, status=status.HTTP_200_OK)
         except requests.RequestException as e:
             return Response({
                 'success': False,

@@ -4,5 +4,4 @@ from tournament.views import tournaments_render
 app_name = 'tournaments'
 
 urlpatterns = [
-    path('', tournaments_render, name='index')
 ]

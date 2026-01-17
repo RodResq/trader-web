@@ -9,7 +9,7 @@ export async function setupTournamentList() {
     try {
         const page = 1;
         const size = 100
-        const url = `/tournaments?page=${page}&size=${size}`;
+        const url = `/unique-tournaments?page=${page}&size=${size}`;
         const response = await apiClient.get(url);
 
         await renderizarCardsTournaments(response.content);

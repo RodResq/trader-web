@@ -38,7 +38,7 @@ web_urlpatterns = [
     path('evento/', include('evento.urls')),
     path('performace/', include('performace.urls')),
     path('team', include('team.urls'), name='team'),
-    path('tournaments', include('tournament.urls'), name='tournaments')
+    path('unique-tournaments', include('unique_tournament.urls'), name='unique-tournament')
 ]
 
 api_urlpatterns = [
@@ -63,7 +63,6 @@ api_urlpatterns = [
     path('api/v1/unique-tournaments/', include('unique_tournament.api_urls')),
     path('api/v1/owner_ball/', include('owner_ball.api_urls')),
     path('api/v1/events/', include('evento.api_urls')),
-    path('api/v1/tournaments', include('tournament.api_urls'))
 ]
 
 admin_urlpatterns = [
