@@ -29,7 +29,7 @@ export function initRefresUniqueTournament() {
 function atualizarCard(dados) {
     const dataCard = document.getElementById(`data-card-${dados.uniqueTournament.id}`);
     const newContent = `
-        <div class="">
+        <div>
             <div class="card-subtitle">
                 <span>Country: </span>${dados.uniqueTournament.category.name}<br>
                 <span>Tem Grupos: </span>${dados.uniqueTournament.hasGroups}<br>

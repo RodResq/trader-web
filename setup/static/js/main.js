@@ -193,6 +193,14 @@ const globalModules = [
         name: 'initMessage',
         init: () => import('./modules/shared/message.js').then(m => m.showMensagem)
     },
+    {
+        name: 'initConvertTimestampToDate',
+        init: () => import('./modules/shared/convertTimestampDate.js').then(m => m.convertTimestampToDate)
+    },
+    {
+        name: 'initFormatDate',
+        init: () => import('./modules/shared/formatDate.js').then(m => m.formatDate)
+    }
 ];
 
 

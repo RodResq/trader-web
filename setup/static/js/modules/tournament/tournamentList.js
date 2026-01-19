@@ -1,5 +1,7 @@
 import { showNotification } from "../notifications.js";
 import { apiClient } from "../shared/apiClient.js";
+import { convertTimestampToDate } from "../shared/convertTimestampDate.js";
+import { formatDate } from '../shared/formatDate.js'
 
 export async function setupTournamentList() {
     let currentPage = 0;
@@ -47,10 +49,14 @@ async function renderizarCardsTournaments(uniqueTournaments) {
                                     </button>
                                 </div>
                                 <div id="data-card-${uniqueTournament.id}">
-                                    <p class="card-subtitle">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <div class="card-subtitle">
+                                        <span>Country: </span>${uniqueTournament.countryName}<br>
+                                        <span>Tem Grupos: </span>${uniqueTournament.hasGroups}<br>
+                                        <span>Tem Rounds: </span>${uniqueTournament.hasRounds}<br>
+                                    </div>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <small class="card-text text-muted">Inicio 01/01/2026</small>
-                                        <small class="card-text text-muted">Fim 31/12/2026</small>
+                                        <small class="card-text text-muted">${uniqueTournament.startDateTimestamp}</small>
+                                        <small class="card-text text-muted">${uniqueTournament.endDateTimestamp}</small>
                                     </div>
                                 </div>
                             </div>
