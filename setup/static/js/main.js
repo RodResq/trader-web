@@ -74,6 +74,10 @@ const routeModules = {
             module: () => import('./modules/entrada/compare_team.js').then(m => m.setupCompareTeam),
             dependencies: ['setupApiOwnerBallSuperFavoriteHome']
         },
+        {
+            name: 'setupPredictions',
+            module: () => import('./modules/entrada/predictions.js').then(m => m.setupPredictions)
+        }
     ],
     '/gerencia': [
         {

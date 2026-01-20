@@ -1,7 +1,5 @@
 import { showNotification } from "../notifications.js";
 import { apiClient } from "../shared/apiClient.js";
-import { convertTimestampToDate } from "../shared/convertTimestampDate.js";
-import { formatDate } from '../shared/formatDate.js'
 
 export async function setupTournamentList() {
     let currentPage = 0;
