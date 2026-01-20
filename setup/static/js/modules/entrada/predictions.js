@@ -8,7 +8,7 @@ export function setupPredictions() {
         btn.addEventListener('click', async function(e) {
             e.preventDefault();
             console.log('Click em Predictions...');
-            
+            //TODO recuperar primeiramente os ids das Leagues
         });
     });
 
