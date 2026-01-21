@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'unique_tournament.apps.UniqueTournamentConfig',
     'market.apps.MarketConfig',
     'entrada.apps.EntradaConfig',
+    'league.apps.LeagueConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework.authtoken',

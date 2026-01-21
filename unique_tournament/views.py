@@ -10,6 +10,11 @@ from rest_framework.response import Response
 from .models import UniqueTournament
 from datetime import datetime
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 logger = logging.getLogger(__name__)
 
 def unique_tournaments_render(request):
@@ -99,6 +104,22 @@ class UniqueTournaments(generics.GenericAPIView):
                 
                 unique_tournament.__dict__.update(extract_unique_tournament_data(response_data))
                 unique_tournament.save(force_update=True)
+                
+                external_response = requests.get(
+                    'https://v3.football.api-sports.io/leagues',
+                    params={
+                        'season': unique_tournament.start_date_timestamp.year,
+                        'country': response_data.get('uniqueTournament', {}).get('category', {}).get('name', {})
+                    },
+                    headers={
+                        'x-apisports-key': os.getenv('API_SPORTS_KEY')
+                    },
+                    timeout=5
+                )
+                external_response.raise_for_status()
+                league_data = external_response.json()
+                
+                logger.info(f'League Date: {league_data}')
                 
                 return Response(response_data, status=status.HTTP_200_OK)
         except requests.RequestException as e:
