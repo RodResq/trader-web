@@ -8,7 +8,7 @@ export async function setupTournamentList() {
 
     try {
         const page = 1;
-        const size = 100
+        const size = 10
         const url = `/unique-tournaments?page=${page}&size=${size}`;
         const response = await apiClient.get(url);
 

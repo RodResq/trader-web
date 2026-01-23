@@ -3,7 +3,7 @@ from django_countries.fields import CountryField
 from datetime import datetime
 
 class League(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=50)
     logo = models.URLField(max_length=500, blank=True, null=True)
@@ -13,7 +13,7 @@ class League(models.Model):
     season_year = models.PositiveIntegerField(default=datetime.now().year)
     season_start = models.DateField()
     season_end = models.DateField()
-    season_coverege_perdictions = models.BooleanField(default=False, help_text="Possui Predictions")
+    season_coverege_predictions = models.BooleanField(default=False, help_text="Possui Predictions")
     
     class Meta:
         managed = True

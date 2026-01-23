@@ -8,6 +8,8 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
 from .models import UniqueTournament
+from league.service import LeagueDataClass
+from league.models import League
 from datetime import datetime
 
 from dotenv import load_dotenv
@@ -119,7 +121,26 @@ class UniqueTournaments(generics.GenericAPIView):
                 external_response.raise_for_status()
                 league_data = external_response.json()
                 
-                logger.info(f'League Date: {league_data}')
+                response = league_data.get('response')
+                
+                for r in response:
+                    lg = r.get('league', {})
+                    country = r.get('country', {})
+                    seasons = r.get('seasons', {})[0]
+                    league = LeagueDataClass(
+                        name=lg.get('name', {}),
+                        type=lg.get('type', {}),
+                        logo=lg.get('logo', {}),
+                        country_name=country.get('name', {}),
+                        country_flag=country.get('flag', {}),
+                        country_code=country.get('code', {}),
+                        season_year=seasons.get('year', {}),
+                        season_start=seasons.get('start', {}),
+                        season_end=seasons.get('end', {}),
+                        season_coverege_perdictions=seasons.get('coverage', {}).get('predictions', {})
+                    )
+                    logger.info(f'League Date: {league}')
+
                 
                 return Response(response_data, status=status.HTTP_200_OK)
         except requests.RequestException as e:
