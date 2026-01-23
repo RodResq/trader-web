@@ -109,7 +109,7 @@ class UniqueTournaments(generics.GenericAPIView):
                 unique_tournament.save(force_update=True)
                 
                 external_response = requests.get(
-                    'https://v3.football.api-sports.io/leagues',
+                    os.getenv('URL_API_SPORTS'),
                     params={
                         'season': unique_tournament.start_date_timestamp.year,
                         'country': response_data.get('uniqueTournament', {}).get('category', {}).get('name', {})
