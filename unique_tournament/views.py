@@ -13,6 +13,7 @@ from league.models import League
 from datetime import datetime
 
 from dotenv import load_dotenv
+from dataclasses import asdict
 import os
 
 load_dotenv()
@@ -127,7 +128,8 @@ class UniqueTournaments(generics.GenericAPIView):
                     lg = r.get('league', {})
                     country = r.get('country', {})
                     seasons = r.get('seasons', {})[0]
-                    league = LeagueDataClass(
+                    league_data_class = LeagueDataClass(
+                        id=lg.get('id', {}),
                         name=lg.get('name', {}),
                         type=lg.get('type', {}),
                         logo=lg.get('logo', {}),
@@ -137,10 +139,16 @@ class UniqueTournaments(generics.GenericAPIView):
                         season_year=seasons.get('year', {}),
                         season_start=seasons.get('start', {}),
                         season_end=seasons.get('end', {}),
-                        season_coverege_perdictions=seasons.get('coverage', {}).get('predictions', {})
+                        season_coverege_predictions=seasons.get('coverage', {}).get('predictions', {})
                     )
-                    logger.info(f'League Date: {league}')
+                    
+                    league_dict = asdict(league_data_class)
+                    league = League.objects.update_or_create(
+                        id=league_data_class.id,
+                        defaults=league_dict
+                    )
 
+                    logger.info(f'League Date: {league}')
                 
                 return Response(response_data, status=status.HTTP_200_OK)
         except requests.RequestException as e:

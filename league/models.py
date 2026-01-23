@@ -8,11 +8,11 @@ class League(models.Model):
     type = models.CharField(max_length=50)
     logo = models.URLField(max_length=500, blank=True, null=True)
     country_name = models.CharField(max_length=100)
-    coyntry_code = CountryField()
+    country_code = models.CharField(max_length=10)
     country_flag = models.URLField(max_length=500, blank=True, null=True)
     season_year = models.PositiveIntegerField(default=datetime.now().year)
-    season_start = models.DateField()
-    season_end = models.DateField()
+    season_start = models.DateField(null=True)
+    season_end = models.DateField(null=True)
     season_coverege_predictions = models.BooleanField(default=False, help_text="Possui Predictions")
     
     class Meta:

@@ -3,6 +3,7 @@ from datetime import date
 
 @dataclass
 class LeagueDataClass:
+    id: int
     name: str
     type: str
     logo: str
@@ -12,4 +13,4 @@ class LeagueDataClass:
     season_year: int
     season_start: date
     season_end: date
-    season_coverege_perdictions: bool
+    season_coverege_predictions: bool
