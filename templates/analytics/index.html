@@ -320,7 +320,11 @@
                                     <li>
                                       <a 
                                         class="dropdown-item predictions"
+                                        data-home-id="{{ mercado.id_home }}"
                                         data-home-name="{{ mercado.name_home }}"
+                                        data-away-id="{{ mercado.id_away }}" 
+                                        data-away-name="{{ mercado.name_away }}"
+                                        data-event-date="{{ mercado.data_jogo|date:"Y-m-d" }}"
                                         data-event-origin="score-data">
                                         Predictions
                                       </a>
