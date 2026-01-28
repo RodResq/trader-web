@@ -7,6 +7,7 @@ export function setupPredictions() {
     btnPredictions.forEach(btn => {
         btn.addEventListener('click', async function(e) {
             e.preventDefault();
+            const idEvent = this.getAttribute("data-event-id");
             const idHome = this.getAttribute("data-home-id")
             const nameHome = this.getAttribute("data-home-name");
             const idAWay = this.getAttribute("data-away-id");
@@ -14,8 +15,9 @@ export function setupPredictions() {
             const eventDate = this.getAttribute("data-event-date");
 
 
-            if (!idHome || !nameHome || !idAWay || !nameWay || !eventDate) return;
+            if (!idEvent || !idHome || !nameHome || !idAWay || !nameWay || !eventDate) return;
 
+            console.log('Click em Predictions com event ID: ', idEvent);
             console.log('Click em Predictions com idHome e nameHome na data: ', idHome, String(nameHome).toLowerCase(), eventDate);
             console.log('Click em Predictions com idAway e nameAway na data: ', idAWay, String(nameWay).toLowerCase().replace("_", " "), eventDate);
 

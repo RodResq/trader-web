@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'market.apps.MarketConfig',
     'entrada.apps.EntradaConfig',
     'league.apps.LeagueConfig',
+    'team_sports.apps.TeamSportsConfig',
     'prediction.apps.PredictionConfig',
     'rest_framework',
     'rest_framework_simplejwt',
