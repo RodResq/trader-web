@@ -107,9 +107,10 @@ class UniqueTournaments(generics.GenericAPIView):
                 
                 unique_tournament.__dict__.update(extract_unique_tournament_data(response_data))
                 unique_tournament.save(force_update=True)
+                url = os.getenv('URL_BASE_API_SPORTS') + '/leagues'
                 
                 external_response = requests.get(
-                    os.getenv('URL_API_SPORTS'),
+                    url,
                     params={
                         'season': unique_tournament.start_date_timestamp.year,
                         'country': response_data.get('uniqueTournament', {}).get('category', {}).get('name', {})

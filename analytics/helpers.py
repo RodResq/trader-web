@@ -27,7 +27,8 @@ def dump_mercados_para_entrada() -> bool:
                     home_vote=0,
                     away_actual=mercado.away_actual,
                     away_vote=0,
-                    data_jogo=mercado.data_jogo
+                    data_jogo=mercado.data_jogo,
+                    country=mercado.country_name
                 )
                 contador_inseridos += 1
             else:

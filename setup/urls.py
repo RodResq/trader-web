@@ -63,6 +63,7 @@ api_urlpatterns = [
     path('api/v1/unique-tournaments', include('unique_tournament.api_urls')),
     path('api/v1/owner_ball/', include('owner_ball.api_urls')),
     path('api/v1/events/', include('evento.api_urls')),
+    path('api/v1/predictions/', include('prediction.api_urls')),
 ]
 
 admin_urlpatterns = [

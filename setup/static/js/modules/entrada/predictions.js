@@ -11,18 +11,19 @@ export function setupPredictions() {
             const idHome = this.getAttribute("data-home-id")
             const nameHome = this.getAttribute("data-home-name");
             const idAWay = this.getAttribute("data-away-id");
-            const nameWay = this.getAttribute("data-away-name");
+            const nameAWay = this.getAttribute("data-away-name");
             const eventDate = this.getAttribute("data-event-date");
+            const country = this.getAttribute("data-event-country");
 
-
-            if (!idEvent || !idHome || !nameHome || !idAWay || !nameWay || !eventDate) return;
+            if (!idEvent || !idHome || !nameHome || !idAWay || !nameAWay || !eventDate) return;
 
             console.log('Click em Predictions com event ID: ', idEvent);
+            console.log('Click em Predictions com country: ', String(country).toLowerCase());
             console.log('Click em Predictions com idHome e nameHome na data: ', idHome, String(nameHome).toLowerCase(), eventDate);
-            console.log('Click em Predictions com idAway e nameAway na data: ', idAWay, String(nameWay).toLowerCase().replace("_", " "), eventDate);
+            console.log('Click em Predictions com idAway e nameAway na data: ', idAWay, String(nameAWay).toLowerCase().replace("_", " "), eventDate);
 
             try {
-                //TODO Request para retornar dados da api
+                
             } catch (error) {
 
             }

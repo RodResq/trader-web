@@ -99,6 +99,7 @@ class Entrada(models.Model):
     event_vote_home = models.CharField(max_length=20, blank=False, choices=VOTACAO, default="N")
     id_home = models.BigIntegerField(null=True)
     id_away = models.BigIntegerField(null=True)
+    country = models.CharField(max_length=255, blank=True, null=True)
         
     def __str__(self):
         return f"Entrada - {self.id_event} - id_home: {self.id_home} - id_away: {self.id_away} - mercado: {self.mercado} - odd: {self.odd}"    
