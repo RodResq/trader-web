@@ -8,7 +8,7 @@ from django.db.models import Q
 class PerformaceAPIView(View):
     
     def get(self, request):
-        resultado = Entrada.objects.aggregate(
+        resultado = Entrada.objects.filter(opcao_entrada='A').aggregate(
             total_registros=Count('id_event'),
             total_com_resultado=Count('entry_result'),
             total_green=Count(Case(When(entry_result='W', then=1))),
