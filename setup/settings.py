@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'league.apps.LeagueConfig',
     'team_sports.apps.TeamSportsConfig',
     'prediction.apps.PredictionConfig',
+    'ia.apps.IaConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
