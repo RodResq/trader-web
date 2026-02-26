@@ -5,6 +5,7 @@ from rest_framework.authentication import TokenAuthentication, BaseAuthenticatio
 from .services import GeminiService
 
 import json
+from datetime import datetime, timedelta    
 
 class AnalisePartidaAPIView(APIView):
     
@@ -17,8 +18,10 @@ class AnalisePartidaAPIView(APIView):
         tournament_name = request.data.get("tournament_name")
         
         tournament_formated = str(tournament_name).lower().replace(" ", "-")
+        tomorow = (datetime.now() + timedelta(days=1)).strftime("%d-%m-%Y")
+        
         urls_especializadas = [
-            f"https://aposta10.com/futebol/{team_home}-{team_away}-26-02-2026-{tournament_formated}/palpite "
+            f"https://aposta10.com/futebol/{team_home}-{team_away}-{tomorow}-{tournament_formated}/palpite "
         ]
         
         print(f"Url Pesquisada: {urls_especializadas}")
