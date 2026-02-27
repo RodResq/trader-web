@@ -31,6 +31,7 @@ def dump_mercados_para_entrada() -> bool:
                         'away_vote': 0,
                         'data_jogo': mercado.data_jogo,
                         'country': mercado.country_name,
+                        'tournament': mercado.name_tournament,
                     }
                 )
                 contador_inseridos += 1

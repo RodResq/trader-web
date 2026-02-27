@@ -77,7 +77,11 @@ const routeModules = {
         {
             name: 'setupPredictions',
             module: () => import('./modules/entrada/predictions.js').then(m => m.setupPredictions)
-        }
+        },
+        {
+            name: 'setupBtnIa',
+            module: () => import('./modules/entrada/ia.js').then(m => m.setupIA)
+        }   
     ],
     '/gerencia': [
         {
