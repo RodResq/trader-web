@@ -1,5 +1,6 @@
 {% extends "analytics/base.html" %}
 {% load static %}
+{% load custom_filters %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'styles/index.css' %}">
 
@@ -181,6 +182,7 @@
                           <th class="text-center col-odd">Odd</th>
                           <th class="col-home">HWin[odd/Win]</th>
                           <th class="col-away">AWin[odd/Win]</th>
+                          <th class="col-ia">Analyse IA</th>  
                           <th class="col-data">Data</th>
                           <th class="text-center col-acoes">Ações</th>
                         </tr>
@@ -243,7 +245,6 @@
                                   <img src="{% static 'images/icons/calendar-question.svg' %}" alt="calendar-question" style="width: 17px; height: 30px;">
                                 </span>
                               {% endif %}
-                              
                             </td>
                             <td class="mercado-column">
                                 {{ mercado.mercado_name }}
@@ -252,38 +253,39 @@
                                         <img src="{{ mercado.icon_home_data_url }}"
                                             alt="Logo {{ mercado.name_home }}"
                                             class="team-logo"
-                                            style="width: 20px; height: 20px; object-fit: contain;"
+                                            style="width: 15px; height: 15px; object-fit: contain;"
                                             onerror="this.style.display='none'">
                                     {% endif %}
-                                    <span class="align-middle text-light-emphasis">{{ mercado.name_home }}</span> 
-                                    <span class="align-middle text-light-emphasis">{{ mercado.mercado }}</span> 
+                                    <span class="align-middle text-light-emphasis">{{ mercado.name_home|as_lower_capitalise_case  }}</span> 
+                                    <span class="align-middle text-light-emphasis">{{ mercado.mercado|as_lower_capitalise_case }}</span> 
                                     {% if mercado.icon_away_data_url %}
                                         <img src="{{ mercado.icon_away_data_url }}"
                                             alt="Logo {{ mercado.name_away }}"
                                             class="team-logo"
-                                            style="width: 20px; height: 20px; object-fit: contain;"
+                                            style="width: 15px; height: 15px; object-fit: contain;"
                                             onerror="this.style.display='none'">
                                     {% endif %}
-                                    <span class="align-middle text-light-emphasis">{{ mercado.name_away }}</span>
+                                    <span class="align-middle text-light-emphasis">{{ mercado.name_away|as_lower_capitalise_case }}</span>
                                 {% else %}
                                   {{ mercado.mercado }}
                                 {% endif %}
                             </td>
                             <td class="text-light-emphasis">
                               <i {% if mercado.odd_change == 'P' %}
-                                class="bi bi-stop align-middle" style="1rem; color: #e65100;" 
+                                class="bi bi-stop align-middle" style="color: #e65100;" 
                                 {% elif mercado.odd_change == 'S' %}
                                 class="bi bi-arrow-up-short align-middle align-middle" style="color: #1b5e20;"
                                 {% elif mercado.odd_change == 'D' %}
                                 class="bi bi-arrow-down-short align-middle" style="color: #b71c1c;"
                                 {% endif %}></i>
-                              {{ mercado.odd }}
+                              {{ mercado.odd|as_point_decimal }}
                               <a id="atualizar-odd-change" class="btn btn-sm odd-change-btn" data-event-id="{{ mercado.id_event }}" title="Atualizar odd change">
                                 <i class="bi bi-arrow-clockwise"></i>
                               </a>
                             </td>
                             <td class="cell-home-win text-light-emphasis">{{ mercado.home_actual }}% / <span class="span-home-win">{{ mercado.home_win }}</span>%</td>
                             <td class="cell-away-win text-light-emphasis">{{ mercado.away_actual }}% / <span class="span-away-win">{{ mercado.away_win }}</span>%</td>
+                            <td class="cell-ia-{{ mercado.id_event }} text-light-emphasis"><span class="ia-probabilities-home">{{ mercado.ia_home|as_percent }}%</span> / <span class="ia-probabilities-draw">{{ mercado.ia_draw|as_percent }}%</span> / <span class="ia-probabilities-away">{{ mercado.ia_away|as_percent }}%</span></td>
                             <td class="text-light-emphasis">{{ mercado.data_jogo|date:"d/m/Y H:i:s" }}</td>
                             <td>
                               <div class="d-grid gap-4 d-md-block">
@@ -334,6 +336,7 @@
                                     <li>
                                       <a 
                                         class="dropdown-item btn-ia"
+                                        data-event-id="{{ mercado.id_event }}"
                                         data-home-name="{{ mercado.name_home }}"
                                         data-away-name="{{ mercado.name_away }}"
                                         data-event-date="{{ mercado.data_jogo|date:"Y-m-d" }}"

@@ -9,6 +9,7 @@ export function setupIA() {
         btn.addEventListener('click', async function(e) {
             e.preventDefault();
 
+            const idEvent = this.getAttribute("data-event-id");
             const teamHome = this.getAttribute("data-home-name");
             const teamAway = this.getAttribute("data-away-name");
             const tournament = this.getAttribute("data-tournament-name");
@@ -32,12 +33,14 @@ export function setupIA() {
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: JSON.stringify({
+                        id_event: idEvent,
                         team_home: teamHomeFormated,
                         team_away: teamAwayFormated,
                         tournament_name: tournamentFormated,
                     })
                 });
-                console.log('Retorno Api IA: ', await data.json());
+                const response = await data.json();
+                atualizarProbabilidadesIA(idEvent, response, teamHomeFormated, teamAwayFormated);
             } catch (error) {
                 showNotification(error.message, 'danger');
             }
@@ -54,4 +57,19 @@ function getCSRFToken() {
         .split('; ')
         .find(row => row.startsWith('csrftoken='))
         ?.split('=')[1];
+}
+
+function atualizarProbabilidadesIA(idEvent, response, teamHomeFormated, teamAwayFormated) {
+    const entradaCell = document.querySelector(`.cell-ia-${idEvent}`);
+    if (!entradaCell) return;
+    entradaCell.querySelector('.ia-probabilities-home').innerHTML = converterParaPorcentagem(response['probabilidades_vitoria'][teamHomeFormated]);
+    entradaCell.querySelector('.ia-probabilities-draw').innerHTML = converterParaPorcentagem(response['probabilidades_vitoria']['empate']);
+    entradaCell.querySelector('.ia-probabilities-away').innerHTML = converterParaPorcentagem(response['probabilidades_vitoria'][teamAwayFormated]);
+}
+
+function converterParaPorcentagem(numero) {
+    if (!numero) return '0%';   
+    if (numero.length > 1) 
+        numero = numero / 100;
+    return (numero * 100).toFixed(2) + '%';
 }

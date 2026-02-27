@@ -101,6 +101,9 @@ class Entrada(models.Model):
     id_away = models.BigIntegerField(null=True)
     country = models.CharField(max_length=255, blank=True, null=True)
     tournament = models.CharField(max_length=255, blank=True, null=True)
+    ia_home = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=0)
+    ia_away = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=0)
+    ia_draw = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=0) 
         
     def __str__(self):
         return f"Entrada - {self.id_event} - id_home: {self.id_home} - id_away: {self.id_away} - mercado: {self.mercado} - odd: {self.odd}"    

@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, BaseAuthentication
 from .services import GeminiService
+from analytics.models import Entrada
 
 import json
 from datetime import datetime, timedelta    
@@ -13,6 +14,7 @@ class AnalisePartidaAPIView(APIView):
     permission_classes = []
     
     def post(self, request):
+        id_event = request.data.get("id_event")
         team_home = request.data.get("team_home")
         team_away = request.data.get("team_away")
         tournament_name = request.data.get("tournament_name")
@@ -71,8 +73,14 @@ class AnalisePartidaAPIView(APIView):
             service = GeminiService()
             response_ia = service.analisar_partida(prompt)
             limpa_resposta = response_ia.replace("```json", "").replace("```", "").strip()
-            
+
             dados_json = json.loads(limpa_resposta)
+            
+            entrada = Entrada.objects.get(id_event=id_event)
+            entrada.ia_home = dados_json['probabilidades_vitoria'][team_home.lower()]
+            entrada.ia_draw = dados_json['probabilidades_vitoria']['empate']
+            entrada.ia_away = dados_json['probabilidades_vitoria'][team_away.lower()]
+            entrada.save()
             
             return Response(dados_json, status=status.HTTP_200_OK)
         except json.JSONDecodeError as e:

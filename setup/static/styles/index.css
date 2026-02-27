@@ -4,6 +4,7 @@ body {
   flex-direction: column;
   background-color: #121212;
   color: #e0e0e0;
+  font-size: 14px;
 }
 
 .sidebar {
@@ -353,7 +354,7 @@ a .card {
 }
 
 .mercado-column {
-  max-width: 300px;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
