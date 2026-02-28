@@ -2,6 +2,14 @@ let graficoResultadoAposta = null;
 
 export function setupGraficoResultadoTotalGanhos() {
     inicializarGraficoResultadoTotalGanhos();
+
+    // Atualiza a cor da borda do gráfico ao trocar de tema (sem precisar de reload)
+    document.addEventListener('themeChanged', ({ detail }) => {
+        if (!graficoResultadoAposta) return;
+        const borderColor = detail.theme === 'dark' ? '#444444' : '#ffffff';
+        graficoResultadoAposta.data.datasets[0].borderColor = borderColor;
+        graficoResultadoAposta.update();
+    });
 }
 
 

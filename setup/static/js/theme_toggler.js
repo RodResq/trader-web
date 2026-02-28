@@ -40,5 +40,8 @@ export function initThemeToggler() {
     updateThemeIcon(theme);
     
     void document.body.offsetHeight;
+
+    // Notifica outros módulos sobre a mudança de tema
+    document.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
   }
 }

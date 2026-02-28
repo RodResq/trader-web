@@ -137,9 +137,11 @@ function renderizarGrafico(container, dados) {
             scales: {
                 x: {
                     stacked: false,
+                    grid: { display: false },
                 },
                 y: {
                     stacked: false,
+                    grid: { display: false },
                     ticks: {
                         autoSkip: false,
                     }

@@ -144,23 +144,25 @@ a:active .card {
 /* Melhoria específica para o cartão de resultado */
 a .card.border-left-primary {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 4px solid #1a8fff !important;
 }
 
 /* Efeito de elevação e sombra aumentado para o cartão de resultados */
 a:hover .card.border-left-primary {
   transform: translateY(-10px);
-  box-shadow: 0 1rem 2rem rgba(13, 110, 253, 0.15)!important;
+  box-shadow: 0 1rem 2rem rgba(26, 143, 255, 0.25)!important;
 }
 
 /* Efeito de elevação e sombra aumentado para o cartão de eventos */
 a:hover .card.border-left-success {
   transform: translateY(-10px);
-  box-shadow: 0 1rem 2rem rgba(25, 135, 84, 0.15)!important;
+  box-shadow: 0 1rem 2rem rgba(29, 185, 84, 0.25)!important;
 }
 
 /* Melhoria específica para o cartão de eventos */
 a .card.border-left-success {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 4px solid #1db954 !important;
 }
 
 /* Efeito de pressionamento para o cartão de eventos */
@@ -206,6 +208,24 @@ a:hover .card.border-left-warning {
 
 /* Efeito de pressionamento para o cartão de períodos */
 a:active .card.border-left-warning {
+  transform: translateY(-3px);
+}
+
+/* Card Futuro: borda esquerda laranja */
+.card.border-left-orange {
+  border-left: 4px solid #fd7e14 !important;
+}
+
+a .card.border-left-orange {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+a:hover .card.border-left-orange {
+  transform: translateY(-10px);
+  box-shadow: 0 1rem 2rem rgba(253, 126, 20, 0.2) !important;
+}
+
+a:active .card.border-left-orange {
   transform: translateY(-3px);
 }/* Cartões com efeito de transição suave */
 a .card {
