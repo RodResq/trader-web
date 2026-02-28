@@ -65,6 +65,7 @@ api_urlpatterns = [
     path('api/v1/events/', include('evento.api_urls')),
     path('api/v1/predictions/', include('prediction.api_urls')),
     path('api/v1/ia/', include('ia.api_urls')),
+    path('api/v1/months/', include('month_performace.api_urls')),
 ]
 
 admin_urlpatterns = [

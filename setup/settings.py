@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'team_sports.apps.TeamSportsConfig',
     'prediction.apps.PredictionConfig',
     'ia.apps.IaConfig',
+    'month_performace.apps.MonthPerformaceConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
