@@ -11,6 +11,7 @@ function inicializarGraficoMelhorDia() {
 
     chartContainer.style.height = '150px';
     chartContainer.style.overflow = 'hidden';
+    chartContainer.style.position = 'relative';
 
     chartContainer.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>';
     
@@ -76,8 +77,8 @@ function renderizarGrafico(container, dados) {
     }
 
     const mainChartContainer = document.createElement('div');
-    mainChartContainer.style.width = '60%';
-    mainChartContainer.style.height = '50%';
+    mainChartContainer.style.width = '95%';
+    mainChartContainer.style.height = '90%';
     mainChartContainer.style.position = 'absolute';
     containerGrafico.appendChild(mainChartContainer);
 
@@ -130,16 +131,19 @@ function renderizarGrafico(container, dados) {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             indexAxis: 'y',
             scales: {
                 x: {
                     stacked: false,
-
                 },
                 y: {
                     stacked: false,
+                    ticks: {
+                        autoSkip: false,
+                    }
                 }
-
             }
         }
     })

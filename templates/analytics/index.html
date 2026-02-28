@@ -13,133 +13,192 @@
       <div class="col-lg-9">
         <div class="main-cards-scroll-container">
           <div class="row g-3">
-            <!-- Card Gerência Apostas -->
-            <div class="col-xl-6 col-md-6">
-              <a href="{% url 'gerencia:index' %}" class="text-decoration-none">
-                <div class="card border-left-primary shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters">
-                      <div class="col-4 mr-2">
-                        <div class="font-weight-bold text-primary mb-1">
-                          Total Investido
-                        </div>
-                        <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
-                          <span class="bi bi-cash-coin text-gray-300 me-2"></span>
-                          <span class="text-gray-300" style="margin-top: -15px; font-size: 14px;">R$ {{ total_investido }}</span>
-                        </div>
-                        <div class="font-weight-bold text-primary mb-1">
-                          ROI
-                        </div>
-                        <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
-                          <span class="bi bi-cash-coin text-gray-300 me-2"></span>
-                          <span class="text-gray-300" style="margin-top: -15px; font-size: 14px;">R$ {{ soma_total_retorno }}</span>
-                        </div>
-                        <div class="font-weight-bold text-primary mb-1">
-                          Ganho/Perda
-                        </div>
-                        <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
-                          <span class="bi bi-cash-coin text-gray-300 me-2"></span>
-                          <span class="text-gray-300" style="margin-top: -15px; font-size: 14px;">R$ {{ ganho_perda }}</span>
-                        </div>
-                      </div>
-                      <div class="col-4 mr-2">
-                        <div id="graficoResultadoAposta">
-                          <!-- O gráfico será renderizado aqui via JavaScript -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
+            <!-- Carrossel: Summary Score Data / Summary OB -->
+            <div id="summaryCarousel" class="carousel slide w-100" data-bs-ride="false">
 
-            <!-- Card Quantidade Eventos -->
-            <div class="col-xl-6 col-md-6">
-              <a class="text-decoration-none">
-                <div class="card border-left-success shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters">
-                      <div class="col md-2">
-                        <div id="graficoMelhorDia">
-                          <!-- O gráfico será renderizado aqui via JavaScript -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
+              <!-- Indicadores -->
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#summaryCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Score Data"></button>
+                <button type="button" data-bs-target="#summaryCarousel" data-bs-slide-to="1" aria-label="OB"></button>
+              </div>
 
-            <!-- Card Performance -->
-            <div class="col-xl-6 col-md-6">
-              <a href="#" class="text-decoration-none">
-                <div class="card border-left-info shadow h-100">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="font-weight-bold text-info mb-1">
-                          Performance
-                        </div>
-                        <div class="row no-gutters align-items-center">
-                          <div class="col-auto">
-                            <div class="h6 mb-0 mr-3 font-weight-bold text-gray-800">
-                              <span id="textoProgressBar" class="text-gray-300"></span>
-                            </div>
-                          </div>
-                          <div class="col">
-                            <div class="progress progress-sm mr-2">
-                              <div id="progressPerformace" class="progress-bar" role="progressbar"></div>
+              <div class="carousel-inner">
+
+                <!-- Slide 1: Score Data -->
+                <div class="carousel-item active">
+                  <div class="row g-3 summary-score-data">
+
+                    <!-- Card Gerência Apostas -->
+                    <div class="col-md-4">
+                      <a href="{% url 'gerencia:index' %}" class="text-decoration-none">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                          <div class="card-body">
+                            <div class="row no-gutters">
+                              <div class="col-sm-4 mr-2">
+                                <div class="font-weight-bold text-primary mb-1">
+                                  Total Investido
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
+                                  <span class="bi bi-cash-coin text-gray-300 me-2"></span>
+                                  <span class="text-gray-300" style="font-size: 14px;">R$ {{ total_investido }}</span>
+                                </div>
+                                <div class="font-weight-bold text-primary mb-1">
+                                  ROI
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
+                                  <span class="bi bi-cash-coin text-gray-300 me-2"></span>
+                                  <span class="text-gray-300" style="font-size: 14px;">R$ {{ soma_total_retorno }}</span>
+                                </div>
+                                <div class="font-weight-bold text-primary mb-1">
+                                  Ganho/Perda
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800 d-flex align-items-center">
+                                  <span class="bi bi-cash-coin text-gray-300 me-2"></span>
+                                  <span class="text-gray-300" style="font-size: 14px;">R$ {{ ganho_perda }}</span>
+                                </div>
+                              </div>
+                              <div class="col-sm-4 mr-2">
+                                <div id="graficoResultadoAposta">
+                                  <!-- O gráfico será renderizado aqui via JavaScript -->
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="bi bi-graph-up-arrow fs-2 text-gray-300"></i>
-                      </div>
+                      </a>
                     </div>
-                  </div>
-                </div>
-              </a>
-            </div>
 
-            <!-- Card Ciclos -->
-            <div class="col-xl-6 col-md-6">
-              <a href="{% url 'ciclo:index' %}" class="text-decoration-none">
-                <div class="card border-left-warning shadow h-100">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-1">
-                        <div class="font-weight-bold text-warning mb-1">
-                          Ciclos
+                    <!-- Card Melhor Dia -->
+                    <div class="col-md-4">
+                      <a class="text-decoration-none">
+                        <div class="card border-left-success shadow h-100 py-2">
+                          <div class="card-body">
+                            <div class="row no-gutters">
+                              <div class="col md-2">
+                                <div id="graficoMelhorDia">
+                                  <!-- O gráfico será renderizado aqui via JavaScript -->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div class="h6 mb-0 font-weight-bold text-gray-800">
-                          <span class="text-gray-300">{{ qtd_ciclos }}</span>
+                      </a>
+                    </div>
+
+                    <!-- Card Futuro -->
+                    <div class="col-md-4">
+                      <a class="text-decoration-none">
+                        <div class="card border-left-success shadow h-100 py-2">
+                          <div class="card-body">
+                            <div class="row no-gutters">
+                              <div class="col md-2">
+                                <div id="graficoMelhorDia">
+                                  <!-- O gráfico será renderizado aqui via JavaScript -->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div class="col mr-1">
-                        <div class="font-weight-bold text-warning mb-1">
-                          Último Ciclo
+                      </a>
+                    </div>
+
+                    <!-- Card Performance -->
+                    <div class="col-xl-6 col-md-6">
+                      <a href="#" class="text-decoration-none">
+                        <div class="card border-left-info shadow h-100">
+                          <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                              <div class="col mr-2">
+                                <div class="font-weight-bold text-info mb-1">
+                                  Performance
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                  <div class="col-auto">
+                                    <div class="h6 mb-0 mr-3 font-weight-bold text-gray-800">
+                                      <span id="textoProgressBar" class="text-gray-300"></span>
+                                    </div>
+                                  </div>
+                                  <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                      <div id="progressPerformace" class="progress-bar" role="progressbar"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-auto">
+                                <i class="bi bi-graph-up-arrow fs-2 text-gray-300"></i>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div class="h6 mb-0 font-weight-bold text-gray-800">
-                          <span class="text-gray-300">{{ ciclo_atual }}</span>
+                      </a>
+                    </div>
+
+                    <!-- Card Ciclos -->
+                    <div class="col-xl-6 col-md-6">
+                      <a href="{% url 'ciclo:index' %}" class="text-decoration-none">
+                        <div class="card border-left-warning shadow h-100">
+                          <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                              <div class="col mr-1">
+                                <div class="font-weight-bold text-warning mb-1">
+                                  Ciclos
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                  <span class="text-gray-300">{{ qtd_ciclos }}</span>
+                                </div>
+                              </div>
+                              <div class="col mr-1">
+                                <div class="font-weight-bold text-warning mb-1">
+                                  Último Ciclo
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                  <span class="text-gray-300">{{ ciclo_atual }}</span>
+                                </div>
+                              </div>
+                              <div class="col mr-1">
+                                <div class="font-weight-bold text-warning mb-1">
+                                  Disponível
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                  <span class="text-gray-300">R$ <span id="valor-total-disponivel">{{ ciclo_atual_disponivel }}</span></span>
+                                </div>
+                              </div>
+                              <div class="col-auto">
+                                <i class="bi bi-bell fs-2 text-gray-300"></i>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div class="col mr-1">
-                        <div class="font-weight-bold text-warning mb-1">
-                          Disponível
-                        </div>
-                        <div class="h6 mb-0 font-weight-bold text-gray-800">
-                         <span class="text-gray-300">R$ <span id="valor-total-disponivel">{{ ciclo_atual_disponivel }}</span></span>
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="bi bi-bell fs-2 text-gray-300"></i>
-                      </div>
+                      </a>
+                    </div>
+
+                  </div><!-- /.row summary-score-data -->
+                </div><!-- /.carousel-item (Slide 1) -->
+
+                <!-- Slide 2: OB -->
+                <div class="carousel-item">
+                  <div class="row g-3 summary-ob">
+                    <!-- Conteúdo OB será adicionado aqui -->
+                    <div class="col-12 d-flex align-items-center justify-content-center" style="min-height: 160px;">
+                      <span class="text-muted">Owner Ball — em breve</span>
                     </div>
                   </div>
-                </div>
-              </a>
-            </div>
+                </div><!-- /.carousel-item (Slide 2) -->
+
+              </div><!-- /.carousel-inner -->
+
+              <!-- Controles prev/next -->
+              <button class="carousel-control-prev" type="button" data-bs-target="#summaryCarousel" data-bs-slide="prev" style="width: 2rem;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#summaryCarousel" data-bs-slide="next" style="width: 2rem;">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+              </button>
+
+            </div><!-- /#summaryCarousel -->
 
             <!-- Segunda linha: Lista de Mercados -->
           {% comment %} <div class="main-cards-scroll-container"> {% endcomment %}

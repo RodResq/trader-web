@@ -47,6 +47,10 @@ body {
   color: #888;
 }
 
+.carousel-indicators {
+  bottom: unset;
+}
+
 /* Quando a sidebar estiver recolhida */
 body.sidebar-collapsed .sidebar {
   margin-left: -250px;

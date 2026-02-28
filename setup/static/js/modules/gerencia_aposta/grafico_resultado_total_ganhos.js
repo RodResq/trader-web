@@ -9,11 +9,22 @@ function inicializarGraficoResultadoTotalGanhos() {
     const chartContainer = document.getElementById('graficoResultadoAposta');
     if (!chartContainer) return;
 
-    chartContainer.style.height = '175px';
+    // Dimensiona o container como 90% altura x 95% largura do card-body pai
+    const cardBody = chartContainer.closest('.card-body');
+    if (cardBody) {
+        const cardBodyHeight = cardBody.offsetHeight;
+        const cardBodyWidth  = cardBody.offsetWidth;
+        chartContainer.style.height = (cardBodyHeight * 0.9) + 'px';
+        chartContainer.style.width  = (cardBodyWidth  * 0.95) + 'px';
+    } else {
+        chartContainer.style.height = '175px';
+        chartContainer.style.width  = '95%';
+    }
     chartContainer.style.overflow = 'hidden';
+    chartContainer.style.position = 'relative';
 
     chartContainer.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Carregando...</span></div></div>';
-    
+
     carregarDadosGraficoResultadoTotalGanhos(chartContainer);
 }
 
@@ -29,11 +40,11 @@ async function carregarDadosGraficoResultadoTotalGanhos(chartContainer) {
             renderizarDados(chartContainer, dados);
         } else {
             chartContainer.innerHTML = '<div class="alert alert-info">Não foi possível extrair dados dos ciclos. Verifique se a tabela está carregada corretamente.</div>';
-            throw new Error(data.error || 'Erro desconhecido ao carregar dados');
+            throw new Error(dados.error || 'Erro desconhecido ao carregar dados');
         }
     } catch (error) {
-        console.error('Erro ao carregar dados de resutltado das apostas:', error);
-    } 
+        console.error('Erro ao carregar dados de resultado das apostas:', error);
+    }
 }
 
 function renderizarDados(container, dados) {
@@ -71,29 +82,23 @@ function renderizarGrafico(container, dados) {
 
     if (typeof Chart === 'undefined') {
         console.error('Chart.js não está carregado');
-        containerGrafico.parentElement.innerHTML = '<div class="alert alert-warning">Chart.js não está disponível</div>';
+        containerGrafico.innerHTML = '<div class="alert alert-warning">Chart.js não está disponível</div>';
         return;
     }
 
-    const mainChartContainer = document.createElement('div');
-    mainChartContainer.style.width = '45%';
-    mainChartContainer.style.height = '85%';
-    mainChartContainer.style.position = 'absolute';
-    containerGrafico.appendChild(mainChartContainer);
+    // Wrapper com dimensões explícitas em px para que o Chart.js calcule corretamente
+    const wrapper = document.createElement('div');
+    wrapper.style.width  = containerGrafico.style.width  || '95%';
+    wrapper.style.height = containerGrafico.style.height || '150px';
+    wrapper.style.margin = '0 -90px';
+    containerGrafico.appendChild(wrapper);
 
     const canvas = document.createElement('canvas');
     canvas.id = 'mainChartResultadoTotalGanhos';
-    mainChartContainer.appendChild(canvas);
+    wrapper.appendChild(canvas);
 
     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-    const textColor = isDarkTheme ? '#cccccc' : '#666666';
     const borderColor = isDarkTheme ? '#444444' : '#ffffff';
-
-    if (typeof Chart === 'undefined') {
-        container.innerHTML = '<div class="alert alert-danger">Chart.js não está disponível. Não foi possível renderizar o gráfico.</div>';
-        console.error('Chart.js não está disponível');
-        return;
-    }
 
     const labels = dados.map(item => item.resultado);
     const totais = dados.map(item => Number(item.total)) || 0;
@@ -104,7 +109,7 @@ function renderizarGrafico(container, dados) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'My First Dataset',
+                label: 'Resultado das Apostas',
                 data: totais,
                 backgroundColor: [
                     'rgb(54, 162, 235)',
@@ -119,13 +124,17 @@ function renderizarGrafico(container, dados) {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-            legend: {
-                position: 'right'
-            }
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 10,
+                        padding: 6,
+                        font: { size: 10 }
+                    }
+                }
             }
         }
-    })
-
+    });
 }
 
 window.setupGraficoResultadoTotalGanhos = setupGraficoResultadoTotalGanhos;
