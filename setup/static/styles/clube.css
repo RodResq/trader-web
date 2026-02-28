@@ -39,7 +39,6 @@
     background: transparent;
     color: #8e9297;
     font-weight: 500;
-    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     padding: 16px 20px 12px 20px;
@@ -67,7 +66,6 @@
 .tbody-clubes .td-clubes {
     background: transparent;
     padding: 16px 20px;
-    font-size: 0.9rem;
     font-weight: 400;
 }
 
@@ -83,7 +81,6 @@
     color: #6c757d;
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
     font-weight: 600;
-    font-size: 0.85rem;
 }
 
 /* Team info styling */

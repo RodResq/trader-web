@@ -170,7 +170,7 @@ function addCheckboxToRow(row, index) {
     
     const mercado = row.querySelector('td:nth-child(3)').textContent.trim();
     const odd = parseFloat(row.querySelector('td:nth-child(4)').textContent.replace(',', '.').trim());
-    const dataJogo = row.querySelector('td:nth-child(7)').textContent.trim();
+    const dataJogo = row.querySelector('td:nth-child(8)').textContent.trim();
     
     checkbox.dataset.mercado = mercado;
     checkbox.dataset.odd = odd;

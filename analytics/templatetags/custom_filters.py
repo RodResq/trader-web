@@ -10,7 +10,10 @@ def subtract(value, arg):
 def as_percent(value):
     """Converte valor decimal (0-1) para porcentagem com 2 casas. Ex: 0.75 → 75.00"""
     try:
-        return f"{float(value) * 100:.2f}"
+        value = float(value)
+        if 0.0 < value <= 1.0:
+            return f"{value * 100:.2f}"
+        return f"{value:.2f}"
     except (TypeError, ValueError):
         return "0.00"
 

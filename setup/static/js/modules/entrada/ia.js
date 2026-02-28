@@ -69,7 +69,8 @@ function atualizarProbabilidadesIA(idEvent, response, teamHomeFormated, teamAway
 
 function converterParaPorcentagem(numero) {
     if (!numero) return '0%';   
-    if (numero.length > 1) 
-        numero = numero / 100;
-    return (numero * 100).toFixed(2) + '%';
+    if (numero >= 0.0 && numero <= 1.0) {
+        numero = numero * 100;
+    }
+    return numero.toFixed(2) + '%';
 }

@@ -26,7 +26,7 @@ export function setupTeamList() {
 
         const iconHtml = team.icon_data_url 
             ? `<img src="${team.icon_data_url}" 
-                alt="Logo ${team.name}" 
+                alt="Logo ${team.name.toLowerCase().replace('_', ' ')}" 
                 class="team-logo" 
                 style="width: 20px; height: 20px; object-fit: contain; margin-right: 8px;" 
                 onerror="this.style.display='none'" />`
@@ -39,7 +39,7 @@ export function setupTeamList() {
             <td class="td-clubes">
                 <div class="team-info">
                     ${iconHtml}
-                    <span>${team.name}</span>
+                    <span>${team.name.toLowerCase().replace('_', ' ')}</span>
                 </div>
             </td>
         `;
